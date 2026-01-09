@@ -8,6 +8,7 @@ import { ThemeProvider } from './context/ThemeContext'
 import { AuthProvider } from './context/AuthContext'
 import { LoginPage } from './pages/LoginPage'
 import { SubscriptionPage } from './pages/SubscriptionPage'
+import DesignSystemPage from './pages/DesignSystemPage';
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { AppLayout } from './layouts/AppLayout'
 
@@ -32,6 +33,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/subscription" element={<SubscriptionPage />} />
+                {import.meta.env.DEV && <Route path="/design" element={<DesignSystemPage />} />}
 
                 {/* Module Routes */}
                 <Route path="/macro/*" element={<MacroRoutes />} />

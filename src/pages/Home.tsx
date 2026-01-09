@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom';
 import {
-    TrendingUp,
     ArrowRight,
     Play,
-    PieChart,
-    BarChart3,
-    Users,
     Calendar,
     Lightbulb,
     Sparkles
@@ -13,44 +9,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { Card } from '../components/ui/Card';
 import { MOCK_HOME_DASHBOARD, type ModuleProgress, type ContentItem, type DeadlineItem } from './homeMock';
-
-// Explicit color classes for Tailwind (icons only)
-const moduleStyles = {
-    macro: {
-        iconBgLight: 'bg-blue-50 dark:bg-blue-500/10',
-        text: 'text-blue-600 dark:text-blue-400',
-        name: 'Macroéconomie'
-    },
-    micro: {
-        iconBgLight: 'bg-emerald-50 dark:bg-emerald-500/10',
-        text: 'text-emerald-600 dark:text-emerald-400',
-        name: 'Microéconomie'
-    },
-    stats: {
-        iconBgLight: 'bg-amber-50 dark:bg-amber-500/10',
-        text: 'text-amber-600 dark:text-amber-400',
-        name: 'Statistiques'
-    },
-    socio: {
-        iconBgLight: 'bg-violet-50 dark:bg-violet-500/10',
-        text: 'text-violet-600 dark:text-violet-400',
-        name: 'Sociologie'
-    }
-} as const;
-
-const moduleIcons = {
-    macro: TrendingUp,
-    micro: PieChart,
-    stats: BarChart3,
-    socio: Users
-} as const;
-
-const contentTypeStyles = {
-    'Chapitre': 'bg-muted text-muted-foreground',
-    'Fiche': 'bg-muted text-muted-foreground',
-    'QCM': 'bg-muted text-muted-foreground',
-    'Annale': 'bg-muted text-muted-foreground'
-} as const;
+import { MODULE_CONFIG, CONTENT_TYPE_STYLES } from '../config/modules';
 
 // Resume Hero
 function ResumeHero() {
@@ -121,16 +80,16 @@ function ResumeHero() {
 
 // Module card with progress
 function ModuleProgressCard({ module }: { module: ModuleProgress }) {
-    const styles = moduleStyles[module.id];
-    const Icon = moduleIcons[module.id];
+    const config = MODULE_CONFIG[module.id];
+    const Icon = config.icon;
 
     return (
         <Link to={module.href} className="no-underline group focus-visible:outline-none">
             <Card className="p-5 xl:p-6 h-full min-h-[140px] hover:bg-muted/30 transition-colors group-focus-visible:ring-2 group-focus-visible:ring-ring">
                 <div className="flex flex-col h-full">
                     <div className="flex items-start gap-3 mb-4">
-                        <div className={`w-10 h-10 rounded-lg ${styles.iconBgLight} flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200`}>
-                            <Icon size={18} className={styles.text} />
+                        <div className={`w-10 h-10 rounded-lg ${config.iconBgLight} flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200`}>
+                            <Icon size={18} className={config.text} />
                         </div>
                         <div className="flex-1 min-w-0 pt-0.5">
                             <div className="flex items-start justify-between gap-2">
@@ -173,8 +132,8 @@ function ModuleProgressCard({ module }: { module: ModuleProgress }) {
 
 // Content item (Nouveautés)
 function ContentItemRow({ item }: { item: ContentItem }) {
-    const styles = moduleStyles[item.module];
-    const typeStyle = contentTypeStyles[item.type];
+    const config = MODULE_CONFIG[item.module];
+    const typeStyle = CONTENT_TYPE_STYLES[item.type];
 
     return (
         <Link 
@@ -185,7 +144,7 @@ function ContentItemRow({ item }: { item: ContentItem }) {
                 {item.type}
             </span>
             <span className="text-xs text-muted-foreground shrink-0">
-                {styles.name}
+                {config.name}
             </span>
             <span className="flex-1 text-sm xl:text-base text-foreground/80 truncate group-hover:text-foreground transition-colors">
                 {item.title}

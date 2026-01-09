@@ -77,7 +77,7 @@ function ResumeHero() {
                     
                     <Link 
                         to="/macro"
-                        className="inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 active:scale-[0.98] transition-all no-underline shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        className="inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 active:scale-[0.98] transition-all no-underline shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                     >
                         Continuer
                         <ArrowRight size={16} />
@@ -109,7 +109,7 @@ function ResumeHero() {
                 
                 <Link 
                     to={lastModule.href}
-                    className="inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 active:scale-[0.98] transition-all no-underline shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    className="inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 active:scale-[0.98] transition-all no-underline shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                 >
                     Continuer
                     <ArrowRight size={16} />
@@ -134,7 +134,7 @@ function ModuleProgressCard({ module }: { module: ModuleProgress }) {
                         </div>
                         <div className="flex-1 min-w-0 pt-0.5">
                             <div className="flex items-start justify-between gap-2">
-                                <h3 className="text-base xl:text-lg font-semibold text-foreground mb-1 group-hover:text-foreground/80 transition-colors">
+                                <h3 className="text-base xl:text-lg font-semibold text-foreground mb-1 group-hover:text-accent transition-colors">
                                     {module.title}
                                 </h3>
                                 <ArrowRight 
@@ -179,7 +179,7 @@ function ContentItemRow({ item }: { item: ContentItem }) {
     return (
         <Link 
             to={item.href} 
-            className="flex items-center gap-3 py-3 min-h-[48px] hover:bg-muted/30 -mx-1 px-1 rounded-lg transition-colors no-underline group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center gap-3 py-3.5 min-h-[52px] hover:bg-muted/30 -mx-1 px-1 rounded-lg transition-colors no-underline group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
             <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${typeStyle} shrink-0`}>
                 {item.type}
@@ -232,7 +232,7 @@ function Widget({ title, icon: Icon, children, action }: {
                 {action && (
                     <Link 
                         to={action.href}
-                        className="text-xs text-foreground/60 hover:text-foreground hover:underline no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 -mx-1"
+                        className="text-xs text-accent hover:text-accent/80 hover:underline no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 -mx-1"
                     >
                         {action.label}
                     </Link>
@@ -294,10 +294,20 @@ export function Home() {
                         </h2>
                         <Card className="p-5 xl:p-6">
                             <div className="space-y-1">
-                                {dashboard.nouveautes.map(item => (
+                                {dashboard.nouveautes.slice(0, 4).map(item => (
                                     <ContentItemRow key={item.id} item={item} />
                                 ))}
                             </div>
+                            {dashboard.nouveautes.length > 4 && (
+                                <div className="mt-4 pt-4 border-t border-border">
+                                    <Link 
+                                        to="/nouveautes"
+                                        className="text-sm text-accent hover:text-accent/80 hover:underline no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 -mx-1"
+                                    >
+                                        Voir tout ({dashboard.nouveautes.length})
+                                    </Link>
+                                </div>
+                            )}
                         </Card>
                     </section>
                 </div>
@@ -328,7 +338,7 @@ export function Home() {
                                         key={item.id}
                                         className="flex items-start gap-2.5 text-sm xl:text-base"
                                     >
-                                        <Sparkles size={16} className="text-foreground/40 shrink-0 mt-0.5" />
+                                        <Sparkles size={16} className="text-accent/60 shrink-0 mt-0.5" />
                                         <p className="text-foreground/80 leading-relaxed">
                                             {item.content}
                                         </p>

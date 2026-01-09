@@ -30,16 +30,16 @@ function Breadcrumb() {
     if (segments.length === 0) {
         return (
             <div className="flex items-center gap-1.5 text-sm">
-                <span className="text-gray-400 dark:text-gray-500">Espace étudiant</span>
-                <ChevronRight size={12} className="text-gray-300 dark:text-gray-600" />
-                <span className="text-gray-900 dark:text-white font-medium">Accueil</span>
+                <span className="text-muted-foreground">Espace étudiant</span>
+                <ChevronRight size={12} className="text-muted-foreground/50" />
+                <span className="text-foreground font-medium">Accueil</span>
             </div>
         );
     }
 
     return (
         <div className="flex items-center gap-1.5 text-sm">
-            <Link to="/" className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors no-underline">
+            <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors no-underline">
                 Espace étudiant
             </Link>
             {segments.map((segment, idx) => {
@@ -49,11 +49,11 @@ function Breadcrumb() {
                 
                 return (
                     <span key={path} className="flex items-center gap-1.5">
-                        <ChevronRight size={12} className="text-gray-300 dark:text-gray-600" />
+                        <ChevronRight size={12} className="text-muted-foreground/50" />
                         {isLast ? (
-                            <span className="text-gray-900 dark:text-white font-medium">{label}</span>
+                            <span className="text-foreground font-medium">{label}</span>
                         ) : (
-                            <Link to={path} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors no-underline">
+                            <Link to={path} className="text-muted-foreground hover:text-foreground transition-colors no-underline">
                                 {label}
                             </Link>
                         )}
@@ -69,12 +69,12 @@ function TopBar({ onMobileMenuClick }: { onMobileMenuClick: () => void }) {
     const { theme, setTheme } = useTheme();
 
     return (
-        <header className="sticky top-0 z-30 h-14 flex items-center justify-between px-4 sm:px-6 bg-background/80 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.03)] dark:shadow-[0_1px_0_rgba(255,255,255,0.03)]">
+        <header className="sticky top-0 z-30 h-14 flex items-center justify-between px-4 sm:px-6 bg-card/95 backdrop-blur-md border-b border-border">
             {/* Left */}
             <div className="flex items-center gap-3">
                 <button 
                     onClick={onMobileMenuClick} 
-                    className="lg:hidden p-2 -ml-2 rounded-lg text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                    className="lg:hidden p-2 -ml-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     aria-label="Menu"
                 >
                     <Menu size={20} />
@@ -85,14 +85,14 @@ function TopBar({ onMobileMenuClick }: { onMobileMenuClick: () => void }) {
             </div>
 
             {/* Center: Search */}
-            <div className="hidden sm:flex flex-1 justify-center max-w-sm mx-4">
+            <div className="hidden sm:flex flex-1 justify-center max-w-md mx-4">
                 <button
                     onClick={openSearch}
-                    className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/[0.05] hover:bg-gray-200 dark:hover:bg-white/[0.08] text-gray-400 dark:text-gray-500 text-sm transition-colors"
+                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-muted/50 hover:bg-muted text-muted-foreground text-sm transition-colors"
                 >
                     <Search size={14} />
-                    <span className="flex-1 text-left text-gray-500 dark:text-gray-400">Rechercher...</span>
-                    <kbd className="hidden sm:flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-white dark:bg-white/10 text-[10px] font-medium text-gray-400 dark:text-gray-500 shadow-sm">
+                    <span className="flex-1 text-left">Rechercher...</span>
+                    <kbd className="hidden sm:flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-background text-[10px] font-medium text-muted-foreground">
                         <Command size={9} />K
                     </kbd>
                 </button>
@@ -102,7 +102,7 @@ function TopBar({ onMobileMenuClick }: { onMobileMenuClick: () => void }) {
             <div className="flex items-center gap-1">
                 <button
                     onClick={openSearch}
-                    className="sm:hidden p-2 rounded-lg text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                    className="sm:hidden p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     aria-label="Rechercher"
                 >
                     <Search size={20} />
@@ -110,7 +110,7 @@ function TopBar({ onMobileMenuClick }: { onMobileMenuClick: () => void }) {
 
                 <button 
                     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} 
-                    className="p-2 rounded-lg text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                    className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     aria-label={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
                 >
                     {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}

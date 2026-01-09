@@ -16,30 +16,30 @@
   --radius-xl: 1rem;
   --radius-2xl: 1rem;
   
-  /* Light Mode Colors */
-  --color-background: #FAFAFA;
+  /* Light Mode Colors - Comfort Mode (less snowblind) */
+  --color-background: #F8F8F8;
   --color-foreground: #171717;
   
   --color-card: #FFFFFF;
   --color-card-foreground: #171717;
   
-  --color-muted: #F5F5F5;
-  --color-muted-foreground: #737373;
+  --color-muted: #F0F0F0;
+  --color-muted-foreground: #6B6B6B;
   
-  --color-accent: #F5F5F5;
+  --color-accent: #F0F0F0;
   --color-accent-foreground: #171717;
   
   --color-primary: #171717;
   --color-primary-foreground: #FAFAFA;
   
-  --color-secondary: #F5F5F5;
+  --color-secondary: #F0F0F0;
   --color-secondary-foreground: #171717;
   
   --color-destructive: #EF4444;
   --color-destructive-foreground: #FAFAFA;
   
-  --color-border: #E5E5E5;
-  --color-input: #E5E5E5;
+  --color-border: #D9D9D9;
+  --color-input: #D9D9D9;
   --color-ring: #171717;
   
   --color-popover: #FFFFFF;

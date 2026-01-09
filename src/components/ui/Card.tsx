@@ -15,16 +15,15 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     ({ className, variant = "default", ...props }, ref) => {
         const variants = {
             default: [
-                "bg-white dark:bg-zinc-900",
-                "ring-1 ring-black/[0.04] dark:ring-white/[0.06]",
-                "shadow-[0_1px_2px_rgba(0,0,0,0.03)]",
+                "bg-card dark:bg-zinc-900",
+                "ring-1 ring-black/[0.05] dark:ring-white/[0.06]",
+                "shadow-sm",
                 "dark:shadow-none",
-                "hover:ring-black/[0.08] dark:hover:ring-white/[0.1]",
                 "transition-shadow duration-200"
             ].join(" "),
             outline: [
-                "bg-white dark:bg-zinc-900",
-                "border border-gray-200 dark:border-zinc-800",
+                "bg-card dark:bg-zinc-900",
+                "border border-border dark:border-zinc-800",
                 "hover:border-gray-300 dark:hover:border-zinc-700",
                 "transition-colors duration-200"
             ].join(" "),

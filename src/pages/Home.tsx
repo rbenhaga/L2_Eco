@@ -193,7 +193,7 @@ function Widget({ title, icon: Icon, children, action }: {
                 {action && (
                     <Link 
                         to={action.href}
-                        className="text-xs text-accent hover:text-accent/80 hover:underline no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 -mx-1"
+                        className="text-xs text-accent hover:text-accent/80 hover:underline no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-2 -mx-2 py-1 -my-1"
                     >
                         {action.label}
                     </Link>
@@ -263,7 +263,7 @@ export function Home() {
                                 <div className="mt-4 pt-4 border-t border-border">
                                     <Link 
                                         to="/nouveautes"
-                                        className="text-sm text-accent hover:text-accent/80 hover:underline no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 -mx-1"
+                                        className="text-sm text-accent hover:text-accent/80 hover:underline no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-2 -mx-2 py-1 -my-1"
                                     >
                                         Voir tout ({dashboard.nouveautes.length})
                                     </Link>

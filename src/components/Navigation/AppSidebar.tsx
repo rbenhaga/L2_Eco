@@ -1,261 +1,184 @@
-import { Home, TrendingUp, PieChart, BarChart3, Users, ChevronRight, BookOpen, CheckSquare, FileCheck } from 'lucide-react';
+import { 
+    Home,
+    BookOpen,
+    LogOut,
+    ChevronRight
+} from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { cn } from '../../utils/cn';
+import { useAuth } from '../../context/AuthContext';
 
-// --- Types ---
-interface NavItem {
+interface NavItemProps {
     to: string;
-    icon: typeof Home;
+    icon: React.ElementType;
     label: string;
-    subject?: 'macro' | 'micro' | 'stats' | 'socio';
+    isActive?: boolean;
+    badge?: string;
 }
 
-interface NavGroup {
-    title: string;
-    icon: typeof BookOpen;
-    items: { to: string; label: string }[];
-    defaultOpen?: boolean;
+interface ModuleItemProps {
+    to: string;
+    label: string;
+    dotColor: string;
+    isActive?: boolean;
 }
 
-// --- Config ---
-const navItems: NavItem[] = [
-    { to: '/', icon: Home, label: 'Accueil' },
-    { to: '/macro', icon: TrendingUp, label: 'Macroéconomie', subject: 'macro' },
-    { to: '/micro', icon: PieChart, label: 'Microéconomie', subject: 'micro' },
-    { to: '/stats', icon: BarChart3, label: 'Statistiques', subject: 'stats' },
-    { to: '/socio', icon: Users, label: 'Sociologie', subject: 'socio' }
+const modules = [
+    { to: '/macro', label: 'Macroéconomie', dotColor: 'bg-blue-500' },
+    { to: '/micro', label: 'Microéconomie', dotColor: 'bg-emerald-500' },
+    { to: '/stats', label: 'Statistiques', dotColor: 'bg-amber-500' },
+    { to: '/socio', label: 'Sociologie', dotColor: 'bg-violet-500' },
 ];
 
-const subjectConfig = {
-    macro: {
-        name: 'Macroéconomie',
-        color: 'text-blue-600 dark:text-blue-400',
-        groups: [
-            {
-                title: 'Cours',
-                icon: BookOpen,
-                defaultOpen: true,
-                items: [
-                    { to: '/macro/chapitre-1', label: 'Ch1: IS-LM' },
-                    { to: '/macro/chapitre-2', label: 'Ch2: Marché du Travail' },
-                    { to: '/macro/chapitre-3', label: 'Ch3: AS-AD' },
-                    { to: '/macro/chapitre-4', label: 'Ch4: Phillips' }
-                ]
-            },
-            {
-                title: "S'entraîner",
-                icon: CheckSquare,
-                items: [
-                    { to: '/macro/qcm', label: 'QCM' },
-                    { to: '/macro/exercices', label: 'TD & Exercices' },
-                    { to: '/macro/simulations', label: 'Simulations' }
-                ]
-            },
-            {
-                title: 'Révisions',
-                icon: FileCheck,
-                items: [
-                    { to: '/macro/revision', label: 'Fiche de synthèse' },
-                    { to: '/macro/revision-ch1', label: 'Fiche Ch1' },
-                    { to: '/macro/revision-ch2', label: 'Fiche Ch2' },
-                    { to: '/macro/revision-ch3', label: 'Fiche Ch3' },
-                    { to: '/macro/revision-ch4', label: 'Fiche Ch4' }
-                ]
-            }
-        ]
-    },
-    micro: {
-        name: 'Microéconomie',
-        color: 'text-emerald-600 dark:text-emerald-400',
-        groups: [
-            {
-                title: 'Cours',
-                icon: BookOpen,
-                defaultOpen: true,
-                items: [
-                    { to: '/micro/chapitre-1', label: 'Ch1: Consommateur' },
-                    { to: '/micro/chapitre-2', label: 'Ch2: Producteur' },
-                    { to: '/micro/chapitre-3', label: 'Ch3: Équilibre' }
-                ]
-            },
-            {
-                title: "S'entraîner",
-                icon: CheckSquare,
-                items: [
-                    { to: '/micro/qcm', label: 'QCM' },
-                    { to: '/micro/exercices', label: 'TD & Exercices' }
-                ]
-            }
-        ]
-    },
-    stats: {
-        name: 'Statistiques',
-        color: 'text-cyan-600 dark:text-cyan-400',
-        groups: [
-            {
-                title: 'Cours',
-                icon: BookOpen,
-                defaultOpen: true,
-                items: [
-                    { to: '/stats/chapitre-1', label: 'Ch1: Probabilités' },
-                    { to: '/stats/chapitre-2', label: 'Ch2: Variables aléatoires' }
-                ]
-            },
-            {
-                title: "S'entraîner",
-                icon: CheckSquare,
-                items: [
-                    { to: '/stats/qcm', label: 'QCM' },
-                    { to: '/stats/td', label: 'TD' }
-                ]
-            }
-        ]
-    },
-    socio: {
-        name: 'Sociologie',
-        color: 'text-violet-600 dark:text-violet-400',
-        groups: [
-            {
-                title: 'Cours',
-                icon: BookOpen,
-                defaultOpen: true,
-                items: [
-                    { to: '/socio/chapitre-1', label: 'Ch1: Introduction' }
-                ]
-            },
-            {
-                title: "S'entraîner",
-                icon: CheckSquare,
-                items: [
-                    { to: '/socio/qcm', label: 'QCM' },
-                    { to: '/socio/revision-intensive', label: 'Révision Intensive' }
-                ]
-            }
-        ]
-    }
-};
 
-// --- Sub-components ---
-function NavGroupComponent({ group, defaultOpen }: { group: NavGroup; defaultOpen?: boolean }) {
-    const location = useLocation();
-    const [isExpanded, setIsExpanded] = useState(defaultOpen || false);
-    const Icon = group.icon;
 
-    // Auto-expand if child active
-    useEffect(() => {
-        if (group.items.some(item => location.pathname === item.to)) {
-            setIsExpanded(true);
-        }
-    }, [location.pathname, group.items]);
-
+function NavItem({ to, icon: Icon, label, isActive, badge }: NavItemProps) {
     return (
-        <div className="mb-2">
-            <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="flex items-center w-full gap-2 px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wider"
-            >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{group.title}</span>
-                <ChevronRight className={cn("ml-auto w-3 h-3 transition-transform opacity-50", isExpanded && "rotate-90")} />
-            </button>
-            {isExpanded && (
-                <div className="space-y-0.5 mt-0.5">
-                    {group.items.map((item) => {
-                        const isActive = location.pathname === item.to;
-                        return (
-                            <Link
-                                key={item.to}
-                                to={item.to}
-                                className={cn(
-                                    "flex items-center relative pl-8 pr-3 py-2 text-sm transition-all no-underline",
-                                    isActive
-                                        ? "text-primary font-medium bg-primary/5"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
-                                )}
-                            >
-                                {isActive && (
-                                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-full bg-primary" />
-                                )}
-                                {item.label}
-                            </Link>
-                        );
-                    })}
-                </div>
+        <Link
+            to={to}
+            className={cn(
+                "flex items-center gap-3 px-3 py-2 min-h-[40px] rounded-lg text-[13px] font-medium transition-colors no-underline",
+                isActive 
+                    ? "bg-gray-100 dark:bg-white/[0.06] text-gray-900 dark:text-white" 
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/[0.03]"
             )}
+        >
+            <Icon size={16} className={isActive ? "text-gray-700 dark:text-gray-200" : "text-gray-400 dark:text-gray-500"} />
+            <span className="flex-1">{label}</span>
+            {badge && (
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400">
+                    {badge}
+                </span>
+            )}
+        </Link>
+    );
+}
+
+function ModuleItem({ to, label, dotColor, isActive }: ModuleItemProps) {
+    return (
+        <Link
+            to={to}
+            className={cn(
+                "group flex items-center gap-3 px-3 py-2 min-h-[40px] rounded-lg text-[13px] transition-colors no-underline",
+                isActive 
+                    ? "bg-gray-100 dark:bg-white/[0.06] text-gray-900 dark:text-white font-medium" 
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/[0.03]"
+            )}
+        >
+            <span className={cn(
+                "w-2 h-2 rounded-full",
+                dotColor,
+                isActive ? "opacity-100" : "opacity-50 group-hover:opacity-80"
+            )} />
+            <span className="flex-1">{label}</span>
+            <ChevronRight 
+                size={12} 
+                className={cn(
+                    "text-gray-400 dark:text-gray-500 transition-opacity",
+                    isActive ? "opacity-50" : "opacity-0 group-hover:opacity-50"
+                )} 
+            />
+        </Link>
+    );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+    return (
+        <div className="px-3 py-2">
+            <span className="text-[11px] font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wider">
+                {children}
+            </span>
         </div>
     );
 }
 
-// --- Main Sidebar Component ---
-export function AppSidebar({ className }: { className?: string }) {
+export function AppSidebar() {
     const location = useLocation();
+    const { user, signOut } = useAuth();
 
-    // Determine current subject
-    const currentSubjectKey = (['macro', 'micro', 'stats', 'socio'] as const).find(k => location.pathname.startsWith(`/${k}`));
-    const activeConfig = currentSubjectKey ? subjectConfig[currentSubjectKey] : null;
+    const isHome = location.pathname === '/';
+    const isCours = location.pathname.startsWith('/cours');
 
     return (
-        <aside className={cn("flex flex-col h-full bg-card border-r border-border", className)}>
-            {/* Header / Logo */}
-            <div className="h-14 flex items-center px-4 shrink-0">
-                <Link to="/" className="flex items-center gap-2 font-semibold text-foreground no-underline">
-                    <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shadow-sm border border-primary/20">
-                        <Home className="w-4 h-4" />
+        <aside className="flex flex-col h-full bg-[#F7F7F8] dark:bg-[#0C0C0D] shadow-[inset_-1px_0_0_rgba(0,0,0,0.04)] dark:shadow-[inset_-1px_0_0_rgba(255,255,255,0.04)]">
+            {/* Logo */}
+            <div className="h-14 flex items-center px-4">
+                <Link to="/" className="flex items-center gap-2 no-underline">
+                    <div className="w-6 h-6 rounded-md bg-gray-900 dark:bg-white flex items-center justify-center">
+                        <span className="text-white dark:text-gray-900 font-bold text-[10px]">E</span>
                     </div>
-                    <span className="tracking-tight">RevP2</span>
+                    <span className="font-semibold text-gray-900 dark:text-white text-sm tracking-tight">
+                        Eco<span className="text-gray-400 dark:text-gray-500">Master</span>
+                    </span>
                 </Link>
             </div>
 
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto py-2">
-                {/* Main Navigation */}
-                <div className="mb-6">
-                    <div className="px-4 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                        Menu Principal
-                    </div>
-                    <nav className="space-y-0.5">
-                        {navItems.map((item) => {
-                            const isActive = location.pathname === item.to || (item.to !== '/' && location.pathname.startsWith(item.to));
-                            return (
-                                <Link
-                                    key={item.to}
-                                    to={item.to}
-                                    className={cn(
-                                        "flex items-center gap-3 px-4 py-2 text-sm transition-all no-underline relative",
-                                        isActive
-                                            ? "text-primary font-medium bg-primary/5"
-                                            : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
-                                    )}
-                                >
-                                    {isActive && (
-                                        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary" />
-                                    )}
-                                    <item.icon className={cn("w-4 h-4", isActive ? "text-primary" : "text-slate-400")} />
-                                    {item.label}
-                                </Link>
-                            );
-                        })}
-                    </nav>
+            {/* Navigation */}
+            <nav className="flex-1 overflow-y-auto py-2 px-2 space-y-4">
+                {/* Main */}
+                <div className="space-y-0.5">
+                    <SectionLabel>Menu</SectionLabel>
+                    <NavItem to="/" icon={Home} label="Accueil" isActive={isHome} />
+                    <NavItem to="/cours" icon={BookOpen} label="Mes Cours" isActive={isCours} badge="4" />
                 </div>
 
-                {/* Subject Specific Navigation */}
-                {activeConfig && (
-                    <div className="animate-in fade-in slide-in-from-left-2 duration-300">
-                        <div className="px-4 mb-2">
-                            <h3 className={cn("text-xs font-bold uppercase tracking-wider opacity-90", activeConfig.color)}>
-                                {activeConfig.name}
-                            </h3>
+                {/* Modules */}
+                <div className="space-y-0.5">
+                    <SectionLabel>Modules</SectionLabel>
+                    {modules.map((module) => (
+                        <ModuleItem
+                            key={module.to}
+                            to={module.to}
+                            label={module.label}
+                            dotColor={module.dotColor}
+                            isActive={location.pathname.startsWith(module.to)}
+                        />
+                    ))}
+                </div>
+
+
+            </nav>
+
+            {/* User Footer */}
+            <div className="p-3">
+                {user ? (
+                    <div className="space-y-1">
+                        <div className="flex items-center gap-2.5 px-2 py-1.5">
+                            <div className="w-7 h-7 rounded-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center overflow-hidden">
+                                {user.photoURL ? (
+                                    <img src={user.photoURL} alt="" className="w-full h-full object-cover" />
+                                ) : (
+                                    <span className="text-[10px] font-medium text-gray-600 dark:text-gray-300">
+                                        {user.displayName?.charAt(0) || 'U'}
+                                    </span>
+                                )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-[13px] font-medium text-gray-900 dark:text-white truncate">
+                                    {user.displayName || 'Étudiant'}
+                                </p>
+                                <p className="text-[11px] text-gray-500 dark:text-gray-500 truncate">
+                                    L2 Économie
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            {activeConfig.groups.map(group => (
-                                <NavGroupComponent key={group.title} group={group} defaultOpen={group.defaultOpen} />
-                            ))}
-                        </div>
+                        <button
+                            onClick={signOut}
+                            className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-[13px] text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+                        >
+                            <LogOut size={14} />
+                            <span>Déconnexion</span>
+                        </button>
                     </div>
+                ) : (
+                    <Link
+                        to="/login"
+                        className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors no-underline"
+                    >
+                        Se connecter
+                    </Link>
                 )}
             </div>
-            {/* No Footer - Moved to TopBar */}
         </aside>
     );
 }

@@ -1,0 +1,1136 @@
+This file is a merged representation of a subset of the codebase, containing specifically included files, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Only files matching these patterns are included: src/components/Navigation/AppSidebar.tsx, src/layouts/AppLayout.tsx, src/pages/Home.tsx, src/index.css, src/components/ui/Card.tsx, src/components/ui/Button.tsx, src/components/ui/Badge.tsx, src/components/ui/Input.tsx, src/components/ui/Tabs.tsx
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+src/components/Navigation/AppSidebar.tsx
+src/components/ui/Badge.tsx
+src/components/ui/Button.tsx
+src/components/ui/Card.tsx
+src/components/ui/Input.tsx
+src/components/ui/Tabs.tsx
+src/index.css
+src/layouts/AppLayout.tsx
+src/pages/Home.tsx
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="src/components/ui/Badge.tsx">
+import * as React from "react"
+import { cn } from "../../utils/cn"
+
+export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
+    variant?: "default" | "secondary" | "destructive" | "outline"
+}
+
+function Badge({ className, variant = "default", ...props }: BadgeProps) {
+    const variants = {
+        default: "border-transparent bg-primary/10 text-primary",
+        secondary: "border-transparent bg-secondary text-secondary-foreground",
+        destructive: "border-transparent bg-destructive/10 text-destructive",
+        outline: "border-border/50 text-foreground bg-transparent",
+    }
+
+    return (
+        <div
+            className={cn(
+                "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-medium transition-colors",
+                variants[variant],
+                className
+            )}
+            {...props}
+        />
+    )
+}
+
+export { Badge }
+</file>
+
+<file path="src/components/ui/Button.tsx">
+import * as React from "react"
+import { cn } from "../../utils/cn"
+
+export interface ButtonProps
+    extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?: "default" | "secondary" | "ghost" | "destructive" | "outline"
+    size?: "default" | "sm" | "lg" | "icon"
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+    ({ className, variant = "default", size = "default", ...props }, ref) => {
+        const baseStyles = "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]"
+
+        const variants = {
+            default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md",
+            destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+            outline: "border border-border/50 bg-background hover:bg-accent hover:text-accent-foreground hover:border-border",
+            secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+            ghost: "hover:bg-accent hover:text-accent-foreground",
+        }
+
+        const sizes = {
+            default: "h-10 px-4 py-2",
+            sm: "h-9 px-3 text-xs",
+            lg: "h-12 px-6 text-base",
+            icon: "h-10 w-10",
+        }
+
+        return (
+            <button
+                className={cn(baseStyles, variants[variant], sizes[size], className)}
+                ref={ref}
+                {...props}
+            />
+        )
+    }
+)
+Button.displayName = "Button"
+
+export { Button }
+</file>
+
+<file path="src/components/ui/Card.tsx">
+import * as React from "react"
+import { cn } from "../../utils/cn"
+
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+    hover?: boolean;
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+    ({ className, hover = true, ...props }, ref) => (
+        <div
+            ref={ref}
+            className={cn(
+                "bg-white dark:bg-[#111113] border border-gray-200 dark:border-[#27272A] rounded-xl",
+                hover && "hover:border-gray-300 dark:hover:border-[#3f3f46] hover:shadow-sm transition-all duration-200",
+                className
+            )}
+            {...props}
+        />
+    )
+)
+Card.displayName = "Card"
+
+const CardHeader = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+    <div
+        ref={ref}
+        className={cn("flex flex-col space-y-1.5 p-6", className)}
+        {...props}
+    />
+))
+CardHeader.displayName = "CardHeader"
+
+const CardTitle = React.forwardRef<
+    HTMLParagraphElement,
+    React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+    <h3
+        ref={ref}
+        className={cn(
+            "font-semibold text-gray-900 dark:text-white leading-tight tracking-tight",
+            className
+        )}
+        {...props}
+    />
+))
+CardTitle.displayName = "CardTitle"
+
+const CardDescription = React.forwardRef<
+    HTMLParagraphElement,
+    React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+    <p
+        ref={ref}
+        className={cn("text-sm text-gray-500 dark:text-gray-400", className)}
+        {...props}
+    />
+))
+CardDescription.displayName = "CardDescription"
+
+const CardContent = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+))
+CardContent.displayName = "CardContent"
+
+const CardFooter = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+    <div
+        ref={ref}
+        className={cn("flex items-center p-6 pt-0", className)}
+        {...props}
+    />
+))
+CardFooter.displayName = "CardFooter"
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+</file>
+
+<file path="src/components/ui/Input.tsx">
+import * as React from "react"
+import { cn } from "../../utils/cn"
+
+export interface InputProps
+    extends React.InputHTMLAttributes<HTMLInputElement> { }
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+    ({ className, type, ...props }, ref) => {
+        return (
+            <input
+                type={type}
+                className={cn(
+                    "flex h-10 w-full rounded-lg border border-border/50 bg-background px-3 py-2 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:border-ring/50 disabled:cursor-not-allowed disabled:opacity-50",
+                    className
+                )}
+                ref={ref}
+                {...props}
+            />
+        )
+    }
+)
+Input.displayName = "Input"
+
+export { Input }
+</file>
+
+<file path="src/components/ui/Tabs.tsx">
+import * as React from "react"
+import { cn } from "../../utils/cn"
+
+const TabsContext = React.createContext<{
+    value: string
+    onValueChange: (value: string) => void
+} | null>(null)
+
+interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
+    defaultValue: string
+    value?: string
+    onValueChange?: (value: string) => void
+}
+
+function Tabs({ defaultValue, value, onValueChange, className, children, ...props }: TabsProps) {
+    const [internalValue, setInternalValue] = React.useState(defaultValue)
+    const currentValue = value !== undefined ? value : internalValue
+
+    const handleValueChange = (newValue: string) => {
+        if (value === undefined) {
+            setInternalValue(newValue)
+        }
+        onValueChange?.(newValue)
+    }
+
+    return (
+        <TabsContext.Provider value={{ value: currentValue, onValueChange: handleValueChange }}>
+            <div className={cn("", className)} {...props}>
+                {children}
+            </div>
+        </TabsContext.Provider>
+    )
+}
+
+const TabsList = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+    <div
+        ref={ref}
+        className={cn(
+            "inline-flex h-10 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
+            className
+        )}
+        {...props}
+    />
+))
+TabsList.displayName = "TabsList"
+
+interface TabsTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    value: string
+}
+
+const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
+    ({ className, value, ...props }, ref) => {
+        const context = React.useContext(TabsContext)
+        const isSelected = context?.value === value
+
+        return (
+            <button
+                ref={ref}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                onClick={() => context?.onValueChange(value)}
+                className={cn(
+                    "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 disabled:pointer-events-none disabled:opacity-50",
+                    isSelected && "bg-background text-foreground shadow-sm",
+                    !isSelected && "hover:bg-background/50 hover:text-foreground",
+                    className
+                )}
+                {...props}
+            />
+        )
+    }
+)
+TabsTrigger.displayName = "TabsTrigger"
+
+interface TabsContentProps extends React.HTMLAttributes<HTMLDivElement> {
+    value: string
+}
+
+const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
+    ({ className, value, ...props }, ref) => {
+        const context = React.useContext(TabsContext)
+        if (context?.value !== value) return null
+
+        return (
+            <div
+                ref={ref}
+                role="tabpanel"
+                className={cn(
+                    "mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
+                    className
+                )}
+                {...props}
+            />
+        )
+    }
+)
+TabsContent.displayName = "TabsContent"
+
+export { Tabs, TabsList, TabsTrigger, TabsContent }
+</file>
+
+<file path="src/pages/Home.tsx">
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import {
+    TrendingUp,
+    ArrowRight,
+    Play,
+    PieChart,
+    BarChart3,
+    Users,
+    BookOpen,
+    FileText,
+    HelpCircle
+} from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+
+// Explicit color classes for Tailwind compilation
+const moduleStyles = {
+    macro: {
+        iconBg: 'bg-blue-500',
+        iconBgLight: 'bg-blue-50 dark:bg-blue-500/10',
+        text: 'text-blue-600 dark:text-blue-400',
+    },
+    micro: {
+        iconBg: 'bg-emerald-500',
+        iconBgLight: 'bg-emerald-50 dark:bg-emerald-500/10',
+        text: 'text-emerald-600 dark:text-emerald-400',
+    },
+    stats: {
+        iconBg: 'bg-amber-500',
+        iconBgLight: 'bg-amber-50 dark:bg-amber-500/10',
+        text: 'text-amber-600 dark:text-amber-400',
+    },
+    socio: {
+        iconBg: 'bg-violet-500',
+        iconBgLight: 'bg-violet-50 dark:bg-violet-500/10',
+        text: 'text-violet-600 dark:text-violet-400',
+    }
+} as const;
+
+type ModuleKey = keyof typeof moduleStyles;
+
+interface Module {
+    id: ModuleKey;
+    title: string;
+    subtitle: string;
+    href: string;
+    icon: React.ElementType;
+}
+
+const MODULES: Module[] = [
+    { id: 'macro', title: 'Macroéconomie', subtitle: 'IS-LM, AS-AD, Politiques', href: '/macro', icon: TrendingUp },
+    { id: 'micro', title: 'Microéconomie', subtitle: 'Consommateur, Producteur', href: '/micro', icon: PieChart },
+    { id: 'stats', title: 'Statistiques', subtitle: 'Probabilités, Variables', href: '/stats', icon: BarChart3 },
+    { id: 'socio', title: 'Sociologie', subtitle: 'Weber, Durkheim', href: '/socio', icon: Users },
+];
+
+const TOOLS = [
+    { title: 'Annales', description: 'Sujets corrigés', href: '/annales', icon: FileText },
+    { title: 'QCM', description: 'Entraînement', href: '/qcm', icon: HelpCircle },
+    { title: 'Fiches', description: 'Synthèses', href: '/fiches', icon: BookOpen },
+];
+
+// Premium Card
+function Card({ children, className = "", hover = false }: { children: React.ReactNode; className?: string; hover?: boolean }) {
+    return (
+        <div className={`
+            bg-white dark:bg-zinc-900 
+            border border-gray-200/60 dark:border-white/[0.06] 
+            rounded-xl 
+            shadow-sm shadow-gray-900/[0.04] dark:shadow-none
+            ${hover ? 'hover:border-gray-300 dark:hover:border-white/10 hover:shadow-md hover:shadow-gray-900/[0.08] dark:hover:shadow-none transition-all duration-200' : ''}
+            ${className}
+        `}>
+            {children}
+        </div>
+    );
+}
+
+// Resume Hero
+function ResumeSection() {
+    const [lastChapter, setLastChapter] = useState<{ title: string; href: string; module?: string } | null>(null);
+
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem('last_chapter');
+            if (stored) setLastChapter(JSON.parse(stored));
+        } catch { /* silent */ }
+    }, []);
+
+    const displayData = lastChapter || {
+        title: 'Commencer avec Macroéconomie',
+        href: '/macro',
+        module: 'macro'
+    };
+
+    const styles = moduleStyles[(displayData.module as ModuleKey) || 'macro'];
+
+    return (
+        <Card className="p-6 relative overflow-hidden" hover={false}>
+            {/* Very subtle gradient glow */}
+            <div className={`absolute top-0 right-0 w-64 h-64 ${styles.iconBgLight} blur-3xl -mr-32 -mt-32 opacity-30`} />
+            
+            <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 rounded-xl ${styles.iconBg} flex items-center justify-center text-white shrink-0`}>
+                        <Play size={20} fill="currentColor" />
+                    </div>
+                    <div>
+                        <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">
+                            {lastChapter ? 'Reprendre' : 'Commencer'}
+                        </p>
+                        <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                            {displayData.title}
+                        </p>
+                    </div>
+                </div>
+                
+                <Link 
+                    to={displayData.href}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold hover:bg-gray-800 dark:hover:bg-gray-100 active:scale-[0.98] transition-all no-underline shrink-0 shadow-lg shadow-gray-900/10 dark:shadow-none"
+                >
+                    Continuer
+                    <ArrowRight size={16} />
+                </Link>
+            </div>
+        </Card>
+    );
+}
+
+// Module Card
+function ModuleCard({ module }: { module: Module }) {
+    const styles = moduleStyles[module.id];
+    const Icon = module.icon;
+
+    return (
+        <Link to={module.href} className="no-underline group">
+            <Card className="p-5 h-full" hover>
+                <div className="flex items-start gap-4">
+                    <div className={`w-11 h-11 rounded-xl ${styles.iconBgLight} flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300`}>
+                        <Icon size={20} className={styles.text} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            {module.title}
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {module.subtitle}
+                        </p>
+                    </div>
+                    <ArrowRight 
+                        size={16} 
+                        className="text-gray-300 dark:text-gray-600 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all mt-1" 
+                    />
+                </div>
+            </Card>
+        </Link>
+    );
+}
+
+// Tool Card
+function ToolCard({ tool }: { tool: typeof TOOLS[0] }) {
+    const Icon = tool.icon;
+
+    return (
+        <Link to={tool.href} className="no-underline group">
+            <Card className="p-4 flex items-center gap-3" hover>
+                <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-gray-200 dark:group-hover:bg-white/10 transition-colors">
+                    <Icon size={18} className="text-gray-500 dark:text-gray-400" />
+                </div>
+                <div className="min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        {tool.title}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {tool.description}
+                    </p>
+                </div>
+            </Card>
+        </Link>
+    );
+}
+
+export function Home() {
+    const { user } = useAuth();
+    const firstName = user?.displayName?.split(' ')[0] || 'Étudiant';
+
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('fr-FR', { 
+        weekday: 'long', 
+        day: 'numeric', 
+        month: 'long' 
+    });
+
+    return (
+        <div className="max-w-5xl mx-auto space-y-8">
+            {/* Header */}
+            <header className="space-y-1">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+                    Bonjour, {firstName}
+                </h1>
+                <p className="text-gray-500 dark:text-gray-400 text-sm capitalize">
+                    {dateStr}
+                </p>
+            </header>
+
+            {/* Resume Hero */}
+            <ResumeSection />
+
+            {/* Modules */}
+            <section>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    Modules
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {MODULES.map(module => (
+                        <ModuleCard key={module.id} module={module} />
+                    ))}
+                </div>
+            </section>
+
+            {/* Tools */}
+            <section>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    Outils
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {TOOLS.map(tool => (
+                        <ToolCard key={tool.title} tool={tool} />
+                    ))}
+                </div>
+            </section>
+        </div>
+    );
+}
+</file>
+
+<file path="src/components/Navigation/AppSidebar.tsx">
+import { 
+    Home,
+    BookOpen,
+    FileText,
+    HelpCircle,
+    LogOut,
+    ChevronRight
+} from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { cn } from '../../utils/cn';
+import { useAuth } from '../../context/AuthContext';
+
+interface NavItemProps {
+    to: string;
+    icon: React.ElementType;
+    label: string;
+    isActive?: boolean;
+    badge?: string;
+}
+
+interface ModuleItemProps {
+    to: string;
+    label: string;
+    dotColor: string;
+    isActive?: boolean;
+}
+
+const modules = [
+    { to: '/macro', label: 'Macroéconomie', dotColor: 'bg-blue-500' },
+    { to: '/micro', label: 'Microéconomie', dotColor: 'bg-emerald-500' },
+    { to: '/stats', label: 'Statistiques', dotColor: 'bg-amber-500' },
+    { to: '/socio', label: 'Sociologie', dotColor: 'bg-violet-500' },
+];
+
+const shortcuts = [
+    { to: '/annales', label: 'Annales', icon: FileText },
+    { to: '/qcm', label: 'QCM', icon: HelpCircle },
+    { to: '/fiches', label: 'Fiches', icon: BookOpen },
+];
+
+function NavItem({ to, icon: Icon, label, isActive, badge }: NavItemProps) {
+    return (
+        <Link
+            to={to}
+            className={cn(
+                "flex items-center gap-3 px-3 py-2.5 min-h-[44px] rounded-lg text-sm font-medium transition-all no-underline",
+                isActive 
+                    ? "bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white" 
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5"
+            )}
+        >
+            <Icon size={18} className={isActive ? "text-gray-900 dark:text-white" : "text-gray-400 dark:text-gray-500"} />
+            <span className="flex-1">{label}</span>
+            {badge && (
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                    {badge}
+                </span>
+            )}
+        </Link>
+    );
+}
+
+function ModuleItem({ to, label, dotColor, isActive }: ModuleItemProps) {
+    return (
+        <Link
+            to={to}
+            className={cn(
+                "group flex items-center gap-3 px-3 py-2.5 min-h-[44px] rounded-lg text-sm transition-all no-underline",
+                isActive 
+                    ? "bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white font-medium" 
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5"
+            )}
+        >
+            <span className={cn(
+                "w-2 h-2 rounded-full transition-opacity",
+                dotColor,
+                isActive ? "opacity-100" : "opacity-60 group-hover:opacity-100"
+            )} />
+            <span className="flex-1">{label}</span>
+            <ChevronRight 
+                size={14} 
+                className={cn(
+                    "transition-all text-gray-400 dark:text-gray-500",
+                    isActive 
+                        ? "opacity-60" 
+                        : "opacity-0 group-hover:opacity-40 -translate-x-1 group-hover:translate-x-0"
+                )} 
+            />
+        </Link>
+    );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+    return (
+        <div className="px-3 py-2">
+            <span className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
+                {children}
+            </span>
+        </div>
+    );
+}
+
+export function AppSidebar() {
+    const location = useLocation();
+    const { user, signOut } = useAuth();
+
+    const isHome = location.pathname === '/';
+    const isCours = location.pathname.startsWith('/cours');
+
+    return (
+        <aside className="flex flex-col h-full bg-[#FAFAFA] dark:bg-[#09090B] border-r border-gray-200/60 dark:border-white/[0.06]">
+            {/* Logo */}
+            <div className="h-14 flex items-center px-4 border-b border-gray-200/60 dark:border-white/[0.06]">
+                <Link to="/" className="flex items-center gap-2.5 no-underline">
+                    <div className="w-7 h-7 rounded-lg bg-gray-900 dark:bg-white flex items-center justify-center">
+                        <span className="text-white dark:text-gray-900 font-bold text-xs">E</span>
+                    </div>
+                    <span className="font-semibold text-gray-900 dark:text-white tracking-tight">
+                        Eco<span className="text-gray-400 dark:text-gray-500">Master</span>
+                    </span>
+                </Link>
+            </div>
+
+            {/* Navigation */}
+            <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-6">
+                {/* Main */}
+                <div className="space-y-1">
+                    <SectionLabel>Menu</SectionLabel>
+                    <NavItem to="/" icon={Home} label="Accueil" isActive={isHome} />
+                    <NavItem to="/cours" icon={BookOpen} label="Mes Cours" isActive={isCours} badge="4" />
+                </div>
+
+                {/* Modules */}
+                <div className="space-y-1">
+                    <SectionLabel>Modules</SectionLabel>
+                    {modules.map((module) => (
+                        <ModuleItem
+                            key={module.to}
+                            to={module.to}
+                            label={module.label}
+                            dotColor={module.dotColor}
+                            isActive={location.pathname.startsWith(module.to)}
+                        />
+                    ))}
+                </div>
+
+                {/* Shortcuts */}
+                <div className="space-y-1">
+                    <SectionLabel>Raccourcis</SectionLabel>
+                    {shortcuts.map((item) => (
+                        <NavItem
+                            key={item.to}
+                            to={item.to}
+                            icon={item.icon}
+                            label={item.label}
+                            isActive={location.pathname === item.to}
+                        />
+                    ))}
+                </div>
+            </nav>
+
+            {/* User Footer */}
+            <div className="p-3 border-t border-gray-200/60 dark:border-white/[0.06]">
+                {user ? (
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-3 px-2 py-1.5">
+                            <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center overflow-hidden">
+                                {user.photoURL ? (
+                                    <img src={user.photoURL} alt="" className="w-full h-full object-cover" />
+                                ) : (
+                                    <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                                        {user.displayName?.charAt(0) || 'U'}
+                                    </span>
+                                )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                    {user.displayName || 'Étudiant'}
+                                </p>
+                                <p className="text-[11px] text-gray-500 dark:text-gray-400 truncate">
+                                    L2 Économie
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={signOut}
+                            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+                        >
+                            <LogOut size={16} />
+                            <span>Déconnexion</span>
+                        </button>
+                    </div>
+                ) : (
+                    <Link
+                        to="/login"
+                        className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors no-underline"
+                    >
+                        Se connecter
+                    </Link>
+                )}
+            </div>
+        </aside>
+    );
+}
+</file>
+
+<file path="src/layouts/AppLayout.tsx">
+import { ReactNode, useState } from 'react';
+import { Menu, Search, Sun, Moon, Command, ChevronRight } from 'lucide-react';
+import { AppSidebar } from '../components/Navigation/AppSidebar';
+import { MobileDrawer } from '../components/Navigation/MobileDrawer';
+import { SearchModal } from '../components/SearchModal';
+import { SearchProvider, useSearch } from '../context/SearchContext';
+import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+
+interface AppLayoutProps {
+    children: ReactNode;
+}
+
+const pathLabels: Record<string, string> = {
+    '': 'Accueil',
+    'macro': 'Macroéconomie',
+    'micro': 'Microéconomie',
+    'stats': 'Statistiques',
+    'socio': 'Sociologie',
+    'cours': 'Mes Cours',
+    'qcm': 'QCM',
+    'exercices': 'Exercices',
+    'revision': 'Révision',
+};
+
+function Breadcrumb() {
+    const location = useLocation();
+    const segments = location.pathname.split('/').filter(Boolean);
+    
+    if (segments.length === 0) {
+        return (
+            <div className="flex items-center gap-2 text-sm">
+                <span className="text-gray-400 dark:text-gray-500">Espace étudiant</span>
+                <ChevronRight size={14} className="text-gray-300 dark:text-gray-600" />
+                <span className="text-gray-900 dark:text-white font-medium">Accueil</span>
+            </div>
+        );
+    }
+
+    return (
+        <div className="flex items-center gap-2 text-sm">
+            <Link to="/" className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors no-underline">
+                Espace étudiant
+            </Link>
+            {segments.map((segment, idx) => {
+                const path = '/' + segments.slice(0, idx + 1).join('/');
+                const isLast = idx === segments.length - 1;
+                const label = pathLabels[segment] || segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
+                
+                return (
+                    <span key={path} className="flex items-center gap-2">
+                        <ChevronRight size={14} className="text-gray-300 dark:text-gray-600" />
+                        {isLast ? (
+                            <span className="text-gray-900 dark:text-white font-medium">{label}</span>
+                        ) : (
+                            <Link to={path} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors no-underline">
+                                {label}
+                            </Link>
+                        )}
+                    </span>
+                );
+            })}
+        </div>
+    );
+}
+
+function TopBar({ onMobileMenuClick }: { onMobileMenuClick: () => void }) {
+    const { open: openSearch } = useSearch();
+    const { theme, setTheme } = useTheme();
+    const { user } = useAuth();
+
+    return (
+        <header className="sticky top-0 z-30 h-14 flex items-center justify-between px-4 sm:px-6 bg-[#FAFAFA]/80 dark:bg-[#09090B]/80 backdrop-blur-lg border-b border-gray-200/60 dark:border-white/[0.06]">
+            {/* Left */}
+            <div className="flex items-center gap-3">
+                <button 
+                    onClick={onMobileMenuClick} 
+                    className="lg:hidden p-2 -ml-2 rounded-lg text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                    aria-label="Menu"
+                >
+                    <Menu size={20} />
+                </button>
+                <div className="hidden md:block">
+                    <Breadcrumb />
+                </div>
+            </div>
+
+            {/* Center: Search */}
+            <div className="hidden sm:flex flex-1 justify-center max-w-md mx-4">
+                <button
+                    onClick={openSearch}
+                    className="w-full flex items-center gap-3 px-3 py-2 rounded-lg bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-400 dark:text-gray-500 text-sm transition-all shadow-sm"
+                >
+                    <Search size={16} />
+                    <span className="flex-1 text-left">Rechercher...</span>
+                    <kbd className="hidden sm:flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/10 border border-gray-200 dark:border-white/10 text-[10px] font-medium text-gray-500 dark:text-gray-400">
+                        <Command size={10} />K
+                    </kbd>
+                </button>
+            </div>
+
+            {/* Right */}
+            <div className="flex items-center gap-1">
+                <button
+                    onClick={openSearch}
+                    className="sm:hidden p-2 rounded-lg text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                    aria-label="Rechercher"
+                >
+                    <Search size={20} />
+                </button>
+
+                <button 
+                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} 
+                    className="p-2 rounded-lg text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                    aria-label={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
+                >
+                    {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                </button>
+
+                {user ? (
+                    <div className="ml-2 w-8 h-8 rounded-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center overflow-hidden ring-2 ring-white dark:ring-zinc-900">
+                        {user.photoURL ? (
+                            <img src={user.photoURL} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                            <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                                {user.displayName?.charAt(0) || 'U'}
+                            </span>
+                        )}
+                    </div>
+                ) : (
+                    <Link 
+                        to="/login"
+                        className="ml-2 px-3 py-1.5 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors no-underline"
+                    >
+                        Connexion
+                    </Link>
+                )}
+            </div>
+        </header>
+    );
+}
+
+function AppLayoutContent({ children }: AppLayoutProps) {
+    const { isOpen, close } = useSearch();
+    const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+
+    return (
+        <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#09090B] text-gray-900 dark:text-gray-100">
+            {/* Desktop Sidebar */}
+            <aside className="fixed inset-y-0 left-0 z-40 w-[260px] hidden lg:block">
+                <AppSidebar />
+            </aside>
+
+            {/* Main Content */}
+            <div className="lg:ml-[260px] min-h-screen flex flex-col">
+                <TopBar onMobileMenuClick={() => setIsMobileDrawerOpen(true)} />
+                <main className="flex-1 p-4 sm:p-6 lg:p-8">
+                    {children}
+                </main>
+            </div>
+
+            <MobileDrawer isOpen={isMobileDrawerOpen} onClose={() => setIsMobileDrawerOpen(false)} />
+            <SearchModal isOpen={isOpen} onClose={close} />
+        </div>
+    );
+}
+
+export function AppLayout({ children }: AppLayoutProps) {
+    return (
+        <SearchProvider>
+            <AppLayoutContent>{children}</AppLayoutContent>
+        </SearchProvider>
+    );
+}
+</file>
+
+<file path="src/index.css">
+@import "tailwindcss";
+
+/* ============================================
+   DESIGN SYSTEM - Linear/Vercel Premium Style
+   ============================================ */
+
+@theme {
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  
+  /* Light Mode Colors */
+  --color-background: #FAFAFA;
+  --color-foreground: #171717;
+  
+  --color-card: #FFFFFF;
+  --color-card-foreground: #171717;
+  
+  --color-muted: #F5F5F5;
+  --color-muted-foreground: #737373;
+  
+  --color-accent: #F5F5F5;
+  --color-accent-foreground: #171717;
+  
+  --color-primary: #171717;
+  --color-primary-foreground: #FAFAFA;
+  
+  --color-secondary: #F5F5F5;
+  --color-secondary-foreground: #171717;
+  
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #FAFAFA;
+  
+  --color-border: #E5E5E5;
+  --color-input: #E5E5E5;
+  --color-ring: #171717;
+  
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #171717;
+}
+
+/* Dark Mode Override */
+@variant dark (&:is(.dark *));
+
+.dark {
+  --color-background: #09090B;
+  --color-foreground: #FAFAFA;
+  
+  --color-card: #18181B;
+  --color-card-foreground: #FAFAFA;
+  
+  --color-muted: #27272A;
+  --color-muted-foreground: #A1A1AA;
+  
+  --color-accent: #27272A;
+  --color-accent-foreground: #FAFAFA;
+  
+  --color-primary: #FAFAFA;
+  --color-primary-foreground: #18181B;
+  
+  --color-secondary: #27272A;
+  --color-secondary-foreground: #FAFAFA;
+  
+  --color-destructive: #7F1D1D;
+  --color-destructive-foreground: #FAFAFA;
+  
+  --color-border: #27272A;
+  --color-input: #27272A;
+  --color-ring: #D4D4D8;
+  
+  --color-popover: #18181B;
+  --color-popover-foreground: #FAFAFA;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+:root {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4D4D4;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A3A3A3;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3F3F46;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #52525B;
+}
+
+/* ============================================
+   FOCUS STYLES
+   ============================================ */
+
+*:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   CONTENT PROTECTION
+   ============================================ */
+
+.protected-content {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media print {
+  body {
+    display: none !important;
+  }
+}
+</file>
+
+</files>

@@ -1,9 +1,6 @@
 import * as React from "react"
 import { cn } from "../../utils/cn"
 
-// Simplified Tabs without Radix UI
-// Uses Context to share state between List and Content
-
 const TabsContext = React.createContext<{
     value: string
     onValueChange: (value: string) => void
@@ -17,9 +14,6 @@ interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
 
 function Tabs({ defaultValue, value, onValueChange, className, children, ...props }: TabsProps) {
     const [internalValue, setInternalValue] = React.useState(defaultValue)
-
-    // Handle controlled vs uncontrolled
-
     const currentValue = value !== undefined ? value : internalValue
 
     const handleValueChange = (newValue: string) => {
@@ -45,7 +39,7 @@ const TabsList = React.forwardRef<
     <div
         ref={ref}
         className={cn(
-            "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
+            "inline-flex h-10 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
             className
         )}
         {...props}
@@ -70,7 +64,7 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
                 aria-selected={isSelected}
                 onClick={() => context?.onValueChange(value)}
                 className={cn(
-                    "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+                    "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 disabled:pointer-events-none disabled:opacity-50",
                     isSelected && "bg-background text-foreground shadow-sm",
                     !isSelected && "hover:bg-background/50 hover:text-foreground",
                     className
@@ -96,7 +90,7 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
                 ref={ref}
                 role="tabpanel"
                 className={cn(
-                    "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                    "mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
                     className
                 )}
                 {...props}

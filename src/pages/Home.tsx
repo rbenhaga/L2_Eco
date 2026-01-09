@@ -2,198 +2,255 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
     TrendingUp,
+    ArrowRight,
+    Play,
+    PieChart,
     BarChart3,
     Users,
-    PieChart,
-    ArrowRight,
-    BookOpen,
-    Clock
+    Clock,
+    BookMarked
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
+import { Card } from '../components/ui/Card';
 
-// --- Types ---
-interface SubjectCardProps {
+// Explicit color classes for Tailwind compilation
+const moduleStyles = {
+    macro: {
+        iconBg: 'bg-blue-500',
+        iconBgLight: 'bg-blue-50 dark:bg-blue-500/10',
+        text: 'text-blue-600 dark:text-blue-400',
+        ring: 'ring-blue-500/20',
+    },
+    micro: {
+        iconBg: 'bg-emerald-500',
+        iconBgLight: 'bg-emerald-50 dark:bg-emerald-500/10',
+        text: 'text-emerald-600 dark:text-emerald-400',
+        ring: 'ring-emerald-500/20',
+    },
+    stats: {
+        iconBg: 'bg-amber-500',
+        iconBgLight: 'bg-amber-50 dark:bg-amber-500/10',
+        text: 'text-amber-600 dark:text-amber-400',
+        ring: 'ring-amber-500/20',
+    },
+    socio: {
+        iconBg: 'bg-violet-500',
+        iconBgLight: 'bg-violet-50 dark:bg-violet-500/10',
+        text: 'text-violet-600 dark:text-violet-400',
+        ring: 'ring-violet-500/20',
+    }
+} as const;
+
+type ModuleKey = keyof typeof moduleStyles;
+
+interface Module {
+    id: ModuleKey;
     title: string;
-    description: string;
-    icon: React.ReactNode;
+    subtitle: string;
     href: string;
-    available: boolean;
-    semester: 2 | 3;
-    color: string; // Token-based color class (e.g., "bg-blue-500")
+    icon: React.ElementType;
 }
 
-// --- Mock Data (Ideally moved to a separate file later) ---
-const subjects: SubjectCardProps[] = [
-    {
-        title: "Macroéconomie",
-        description: "IS-LM, WS-PS, AS-AD",
-        icon: <TrendingUp size={20} />,
-        href: "/macro",
-        available: true,
-        semester: 2,
-        color: "bg-blue-500"
-    },
-    {
-        title: "Microéconomie",
-        description: "Consommateur & Producteur",
-        icon: <PieChart size={20} />,
-        href: "/micro",
-        available: true,
-        semester: 2,
-        color: "bg-emerald-500"
-    },
-    {
-        title: "Statistiques",
-        description: "Probas & Variables Aléatoires",
-        icon: <BarChart3 size={20} />,
-        href: "/stats",
-        available: true,
-        semester: 2,
-        color: "bg-cyan-500"
-    },
-    {
-        title: "Sociologie",
-        description: "Théories Sociologiques",
-        icon: <Users size={20} />,
-        href: "/socio",
-        available: true,
-        semester: 2,
-        color: "bg-violet-500"
-    }
+const MODULES: Module[] = [
+    { id: 'macro', title: 'Macroéconomie', subtitle: 'IS-LM, AS-AD, Politiques', href: '/macro', icon: TrendingUp },
+    { id: 'micro', title: 'Microéconomie', subtitle: 'Consommateur, Producteur', href: '/micro', icon: PieChart },
+    { id: 'stats', title: 'Statistiques', subtitle: 'Probabilités, Variables', href: '/stats', icon: BarChart3 },
+    { id: 'socio', title: 'Sociologie', subtitle: 'Weber, Durkheim', href: '/socio', icon: Users },
 ];
 
-function ResumeCard() {
-    const [lastChapter, setLastChapter] = useState<{ title: string; href: string; timestamp: number } | null>(null);
+// Resume Hero
+function ResumeHero() {
+    const [lastChapter, setLastChapter] = useState<{ title: string; href: string; module?: string } | null>(null);
 
     useEffect(() => {
         try {
             const stored = localStorage.getItem('last_chapter');
-            if (stored) {
-                setLastChapter(JSON.parse(stored));
-            }
-        } catch (e) {
-            console.error("Failed to parse last_chapter", e);
-        }
+            if (stored) setLastChapter(JSON.parse(stored));
+        } catch { /* silent */ }
     }, []);
 
-    if (!lastChapter) return null;
+    const displayData = lastChapter || {
+        title: 'Commencer avec Macroéconomie',
+        href: '/macro',
+        module: 'macro'
+    };
+
+    const styles = moduleStyles[(displayData.module as ModuleKey) || 'macro'];
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full bg-white dark:bg-card border border-border rounded-xl p-4 shadow-sm flex items-center justify-between gap-4 group hover:border-primary/50 transition-all"
-        >
-            <div className="flex items-center gap-4 overflow-hidden">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                    <Clock size={20} />
+        <Card className="p-5 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 rounded-xl ${styles.iconBg} flex items-center justify-center text-white shrink-0`}>
+                        <Play size={20} fill="currentColor" />
+                    </div>
+                    <div>
+                        <p className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">
+                            {lastChapter ? 'Reprendre' : 'Commencer'}
+                        </p>
+                        <p className="text-base font-semibold text-gray-900 dark:text-white">
+                            {displayData.title}
+                        </p>
+                    </div>
                 </div>
-                <div className="min-w-0">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Reprendre votre lecture</p>
-                    <p className="text-sm font-medium text-foreground truncate">{lastChapter.title}</p>
-                </div>
+                
+                <Link 
+                    to={displayData.href}
+                    className="inline-flex items-center justify-center gap-2 h-10 px-5 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold hover:bg-gray-800 dark:hover:bg-gray-100 active:scale-[0.98] transition-all no-underline"
+                >
+                    Continuer
+                    <ArrowRight size={16} />
+                </Link>
             </div>
-            <Link
-                to={lastChapter.href}
-                className="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1 shrink-0 px-3 py-1.5 rounded-md hover:bg-primary/5 transition-colors"
-            >
-                Continuer <ArrowRight size={14} />
-            </Link>
-        </motion.div>
+        </Card>
     );
 }
 
-function CompactSubjectCard({ title, description, icon, href, available, color }: SubjectCardProps) {
-    if (!available) return null; // Or render disabled state if needed, but per density spec, simple is better.
+// Module card (grid style)
+function ModuleCard({ module }: { module: Module }) {
+    const styles = moduleStyles[module.id];
+    const Icon = module.icon;
 
     return (
-        <Link to={href} className="group relative flex flex-col p-5 rounded-xl border border-border bg-card shadow-sm hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-start justify-between mb-3">
-                <div className={`w-10 h-10 rounded-lg ${color} bg-opacity-10 dark:bg-opacity-20 flex items-center justify-center text-foreground`}>
-                    {/* Color handling: using text color relative to bg token might be tricky without full classes. 
-               Let's simplify: Use the prop 'color' for bg, and text-primary or white.
-               Actually spec said: "Icon (Top Left, colored background token)" */}
-                    <div className={`text-${color.replace('bg-', '')}`}>
-                        {icon}
+        <Link to={module.href} className="no-underline group">
+            <Card className="p-4 h-full hover:ring-2 hover:ring-blue-500/10 dark:hover:ring-blue-400/10">
+                <div className="flex items-start gap-3">
+                    <div className={`w-10 h-10 rounded-lg ${styles.iconBgLight} flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200`}>
+                        <Icon size={18} className={styles.text} />
                     </div>
+                    <div className="flex-1 min-w-0 pt-0.5">
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-0.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            {module.title}
+                        </h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {module.subtitle}
+                        </p>
+                    </div>
+                    <ArrowRight 
+                        size={14} 
+                        className="text-gray-300 dark:text-gray-600 mt-1 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" 
+                    />
                 </div>
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                    <ArrowRight size={16} className="text-muted-foreground" />
-                </div>
-            </div>
-
-            <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{title}</h3>
-            <p className="text-sm text-muted-foreground leading-snug line-clamp-2">{description}</p>
-
-            {/* Micro-progress / Footer could go here if we had real stats. For now, clean. */}
-            {/* <div className="mt-4 pt-4 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground">
-         <span>4 Chapitres</span>
-      </div> */}
+            </Card>
         </Link>
     );
 }
 
+// Recent activity item
+function RecentItem({ title, time, module }: { title: string; time: string; module: ModuleKey }) {
+    const styles = moduleStyles[module];
+    
+    return (
+        <div className="flex items-center gap-3 py-2">
+            <div className={`w-2 h-2 rounded-full ${styles.iconBg}`} />
+            <div className="flex-1 min-w-0">
+                <p className="text-sm text-gray-700 dark:text-gray-300 truncate">{title}</p>
+            </div>
+            <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">{time}</span>
+        </div>
+    );
+}
+
+// Sidebar widget
+function SidebarWidget({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
+    return (
+        <Card className="p-4">
+            <div className="flex items-center gap-2 mb-3">
+                <Icon size={14} className="text-gray-400 dark:text-gray-500" />
+                <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    {title}
+                </h3>
+            </div>
+            {children}
+        </Card>
+    );
+}
+
 export function Home() {
-    const [semester, setSemester] = useState<2 | 3>(2);
-    const filteredSubjects = subjects.filter(sub => sub.semester === semester);
+    const { user } = useAuth();
+    const firstName = user?.displayName?.split(' ')[0] || 'Étudiant';
+
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('fr-FR', { 
+        weekday: 'long', 
+        day: 'numeric', 
+        month: 'long' 
+    });
+
+    // Mock recent activity (would come from localStorage in real app)
+    const recentActivity = [
+        { title: 'Chapitre 3 : Modèle AS-AD', time: 'Hier', module: 'macro' as ModuleKey },
+        { title: 'QCM Variables aléatoires', time: '2j', module: 'stats' as ModuleKey },
+        { title: 'Fiche Consommateur', time: '3j', module: 'micro' as ModuleKey },
+    ];
 
     return (
-        <div className="w-full max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
+        <div className="max-w-6xl mx-auto">
+            {/* Header */}
+            <header className="mb-8">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+                    Bonjour, {firstName}
+                </h1>
+                <p className="text-gray-500 dark:text-gray-400 text-sm capitalize mt-1">
+                    {dateStr}
+                </p>
+            </header>
 
-            {/* Resume Section (Conditional) */}
-            <ResumeCard />
+            {/* Main grid: 8 + 4 columns */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left column (8 cols) */}
+                <div className="lg:col-span-8 space-y-6">
+                    {/* Resume Hero */}
+                    <ResumeHero />
 
-            {/* Main Grid Section */}
-            <section>
-                <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-semibold text-foreground">Mes Modules</h2>
-                    <div className="flex p-0.5 bg-muted rounded-lg border border-border">
-                        {[2, 3].map(s => (
-                            <button
-                                key={s}
-                                onClick={() => setSemester(s as 2 | 3)}
-                                className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${semester === s ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                    {/* Modules */}
+                    <section>
+                        <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                            Modules
+                        </h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {MODULES.map(module => (
+                                <ModuleCard key={module.id} module={module} />
+                            ))}
+                        </div>
+                    </section>
+                </div>
+
+                {/* Right column (4 cols) */}
+                <div className="lg:col-span-4 space-y-4">
+                    {/* Recent Activity */}
+                    <SidebarWidget title="Activité récente" icon={Clock}>
+                        <div className="divide-y divide-gray-100 dark:divide-white/5">
+                            {recentActivity.map((item, i) => (
+                                <RecentItem key={i} {...item} />
+                            ))}
+                        </div>
+                        {recentActivity.length === 0 && (
+                            <p className="text-sm text-gray-400 dark:text-gray-500 py-2">
+                                Aucune activité récente
+                            </p>
+                        )}
+                    </SidebarWidget>
+
+                    {/* Quick revision */}
+                    <SidebarWidget title="À réviser" icon={BookMarked}>
+                        <div className="space-y-2">
+                            <Link 
+                                to="/macro/revision" 
+                                className="block text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline"
                             >
-                                S{s}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                <motion.div
-                    key={semester}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
-                >
-                    {filteredSubjects.length > 0 ? (
-                        filteredSubjects.map(sub => (
-                            <CompactSubjectCard key={sub.title} {...sub} />
-                        ))
-                    ) : (
-                        <div className="col-span-full py-12 text-center border border-dashed border-border rounded-xl bg-muted/30">
-                            <p className="text-sm text-muted-foreground">Semestre 3 bientôt disponible.</p>
+                                Fiche IS-LM
+                            </Link>
+                            <Link 
+                                to="/stats/revision" 
+                                className="block text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline"
+                            >
+                                Formules Probas
+                            </Link>
                         </div>
-                    )}
-                </motion.div>
-            </section>
-
-            {/* Secondary Section (Quick Actions / Revision Tools placeholder) */}
-            <section>
-                <h2 className="text-lg font-semibold text-foreground mb-4">Outils de Révision</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {/* Placeholder Cards */}
-                    <div className="p-4 rounded-xl border border-border bg-card/50 hover:bg-card transition-colors flex items-center gap-3">
-                        <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary"><BookOpen size={16} /></div>
-                        <div>
-                            <p className="text-sm font-medium">Annales Corrigées</p>
-                            <p className="text-xs text-muted-foreground">Sujets 2023-2024</p>
-                        </div>
-                    </div>
-                    {/* Add more later */}
+                    </SidebarWidget>
                 </div>
-            </section>
+            </div>
         </div>
     );
 }

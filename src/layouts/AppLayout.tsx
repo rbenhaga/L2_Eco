@@ -5,7 +5,6 @@ import { MobileDrawer } from '../components/Navigation/MobileDrawer';
 import { SearchModal } from '../components/SearchModal';
 import { SearchProvider, useSearch } from '../context/SearchContext';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
 interface AppLayoutProps {
@@ -68,7 +67,6 @@ function Breadcrumb() {
 function TopBar({ onMobileMenuClick }: { onMobileMenuClick: () => void }) {
     const { open: openSearch } = useSearch();
     const { theme, setTheme } = useTheme();
-    const { user } = useAuth();
 
     return (
         <header className="sticky top-0 z-30 h-14 flex items-center justify-between px-4 sm:px-6 bg-background/80 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.03)] dark:shadow-[0_1px_0_rgba(255,255,255,0.03)]">
@@ -117,25 +115,6 @@ function TopBar({ onMobileMenuClick }: { onMobileMenuClick: () => void }) {
                 >
                     {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
-
-                {user ? (
-                    <div className="ml-1 w-8 h-8 rounded-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center overflow-hidden">
-                        {user.photoURL ? (
-                            <img src={user.photoURL} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                            <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
-                                {user.displayName?.charAt(0) || 'U'}
-                            </span>
-                        )}
-                    </div>
-                ) : (
-                    <Link 
-                        to="/login"
-                        className="ml-2 px-3 py-1.5 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors no-underline"
-                    >
-                        Connexion
-                    </Link>
-                )}
             </div>
         </header>
     );

@@ -19,15 +19,14 @@ interface NavItemProps {
 interface ModuleItemProps {
     to: string;
     label: string;
-    dotColor: string;
     isActive?: boolean;
 }
 
 const modules = [
-    { to: '/macro', label: 'Macroéconomie', dotColor: 'bg-blue-500' },
-    { to: '/micro', label: 'Microéconomie', dotColor: 'bg-emerald-500' },
-    { to: '/stats', label: 'Statistiques', dotColor: 'bg-amber-500' },
-    { to: '/socio', label: 'Sociologie', dotColor: 'bg-violet-500' },
+    { to: '/macro', label: 'Macroéconomie' },
+    { to: '/micro', label: 'Microéconomie' },
+    { to: '/stats', label: 'Statistiques' },
+    { to: '/socio', label: 'Sociologie' },
 ];
 
 
@@ -54,7 +53,7 @@ function NavItem({ to, icon: Icon, label, isActive, badge }: NavItemProps) {
     );
 }
 
-function ModuleItem({ to, label, dotColor, isActive }: ModuleItemProps) {
+function ModuleItem({ to, label, isActive }: ModuleItemProps) {
     return (
         <Link
             to={to}
@@ -65,11 +64,6 @@ function ModuleItem({ to, label, dotColor, isActive }: ModuleItemProps) {
                     : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/[0.03]"
             )}
         >
-            <span className={cn(
-                "w-2 h-2 rounded-full",
-                dotColor,
-                isActive ? "opacity-100" : "opacity-50 group-hover:opacity-80"
-            )} />
             <span className="flex-1">{label}</span>
             <ChevronRight 
                 size={12} 
@@ -105,10 +99,10 @@ export function AppSidebar() {
             <div className="h-14 flex items-center px-4">
                 <Link to="/" className="flex items-center gap-2 no-underline">
                     <div className="w-6 h-6 rounded-md bg-gray-900 dark:bg-white flex items-center justify-center">
-                        <span className="text-white dark:text-gray-900 font-bold text-[10px]">E</span>
+                        <span className="text-white dark:text-gray-900 font-bold text-[10px]">R</span>
                     </div>
                     <span className="font-semibold text-gray-900 dark:text-white text-sm tracking-tight">
-                        Eco<span className="text-gray-400 dark:text-gray-500">Master</span>
+                        RevP2
                     </span>
                 </Link>
             </div>
@@ -130,7 +124,6 @@ export function AppSidebar() {
                             key={module.to}
                             to={module.to}
                             label={module.label}
-                            dotColor={module.dotColor}
                             isActive={location.pathname.startsWith(module.to)}
                         />
                     ))}

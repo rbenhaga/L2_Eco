@@ -19,7 +19,7 @@ function ResumeHero() {
     if (!lastModule) {
         return (
             <Card className="p-6 xl:p-7">
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="flex items-center gap-4 min-w-0">
                         <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shrink-0">
                             <Play size={20} fill="currentColor" />
@@ -36,7 +36,7 @@ function ResumeHero() {
                     
                     <Link 
                         to="/macro"
-                        className="inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 active:scale-[0.98] transition-all no-underline shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                        className="inline-flex w-full sm:w-auto justify-center items-center gap-2 h-11 px-5 rounded-xl bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 active:scale-[0.98] transition-all no-underline shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                     >
                         Continuer
                         <ArrowRight size={16} />
@@ -48,7 +48,7 @@ function ResumeHero() {
 
     return (
         <Card className="p-6 xl:p-7">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-4 min-w-0">
                     <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shrink-0">
                         <Play size={20} fill="currentColor" />
@@ -68,7 +68,7 @@ function ResumeHero() {
                 
                 <Link 
                     to={lastModule.href}
-                    className="inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 active:scale-[0.98] transition-all no-underline shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    className="inline-flex w-full sm:w-auto justify-center items-center gap-2 h-11 px-5 rounded-xl bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 active:scale-[0.98] transition-all no-underline shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                 >
                     Continuer
                     <ArrowRight size={16} />
@@ -112,9 +112,9 @@ function ModuleProgressCard({ module }: { module: ModuleProgress }) {
                             <span className="text-muted-foreground">{module.completed}/{module.total} chapitres</span>
                             <span className="font-semibold text-foreground">{module.progress}%</span>
                         </div>
-                        <div className="h-2 bg-muted rounded-full overflow-hidden">
+                        <div className="h-2 bg-muted/60 dark:bg-muted/50 rounded-full overflow-hidden">
                             <div 
-                                className="h-full bg-foreground/80 transition-all duration-300"
+                                className="h-full bg-foreground/70 dark:bg-foreground/55 rounded-full transition-all duration-300"
                                 style={{ width: `${module.progress}%` }}
                             />
                         </div>
@@ -138,18 +138,20 @@ function ContentItemRow({ item }: { item: ContentItem }) {
     return (
         <Link 
             to={item.href} 
-            className="flex items-center gap-3 py-3.5 min-h-[52px] hover:bg-muted/30 -mx-1 px-1 rounded-lg transition-colors no-underline group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 py-3.5 min-h-[52px] hover:bg-muted/30 -mx-1 px-1 rounded-lg transition-colors no-underline group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-            <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${typeStyle} shrink-0`}>
-                {item.type}
-            </span>
-            <span className="text-xs text-muted-foreground shrink-0">
-                {config.name}
-            </span>
-            <span className="flex-1 text-sm xl:text-base text-foreground/80 truncate group-hover:text-foreground transition-colors">
-                {item.title}
-            </span>
-            <span className="text-xs text-muted-foreground shrink-0">{item.date}</span>
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+                <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${typeStyle} shrink-0`}>
+                    {item.type}
+                </span>
+                <span className="text-xs text-muted-foreground shrink-0 hidden sm:inline">
+                    {config.name}
+                </span>
+                <span className="flex-1 text-sm xl:text-base text-foreground/80 truncate group-hover:text-foreground transition-colors">
+                    {item.title}
+                </span>
+            </div>
+            <span className="text-xs text-muted-foreground shrink-0 sm:ml-auto">{item.date}</span>
         </Link>
     );
 }

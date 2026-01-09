@@ -94,6 +94,7 @@ function useLastChapter() {
 // Resume Hero
 function ResumeHero() {
     const lastChapter = useLastChapter();
+    const recentActivity = useRecentActivity();
 
     const displayData = lastChapter || {
         title: 'Commencer avec Macroéconomie',
@@ -103,6 +104,9 @@ function ResumeHero() {
 
     const styles = moduleStyles[(displayData.module as ModuleKey) || 'macro'];
 
+    // Get last activity time if available
+    const lastActivityTime = recentActivity.length > 0 ? recentActivity[0].time : null;
+
     return (
         <Card className="p-5">
             <div className="flex items-center justify-between gap-4">
@@ -111,18 +115,23 @@ function ResumeHero() {
                         <Play size={18} fill="currentColor" />
                     </div>
                     <div className="min-w-0">
-                        <p className="text-[11px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-0.5">
+                        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">
                             {lastChapter ? 'Reprendre' : 'Commencer'}
                         </p>
-                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                        <p className="text-sm font-semibold text-foreground truncate">
                             {displayData.title}
                         </p>
+                        {lastChapter && lastActivityTime && (
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                                Dernière activité : {lastActivityTime}
+                            </p>
+                        )}
                     </div>
                 </div>
                 
                 <Link 
                     to={displayData.href}
-                    className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 active:scale-[0.98] transition-all no-underline shrink-0"
+                    className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 active:scale-[0.98] transition-all no-underline shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                     Continuer
                     <ArrowRight size={14} />
@@ -138,17 +147,23 @@ function ModuleCard({ module }: { module: Module }) {
     const Icon = module.icon;
 
     return (
-        <Link to={module.href} className="no-underline group">
-            <Card className="p-4 h-full hover:ring-1 hover:ring-blue-500/20 dark:hover:ring-blue-400/20">
+        <Link to={module.href} className="no-underline group focus-visible:outline-none">
+            <Card className="p-4 h-full min-h-[88px] hover:bg-muted/50 transition-colors group-focus-visible:ring-2 group-focus-visible:ring-ring">
                 <div className="flex items-start gap-3">
                     <div className={`w-9 h-9 rounded-lg ${styles.iconBgLight} flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200`}>
                         <Icon size={16} className={styles.text} />
                     </div>
                     <div className="flex-1 min-w-0 pt-0.5">
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-0.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                            {module.title}
-                        </h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
+                        <div className="flex items-start justify-between gap-2">
+                            <h3 className="text-sm font-semibold text-foreground mb-0.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                {module.title}
+                            </h3>
+                            <ArrowRight 
+                                size={14} 
+                                className="text-muted-foreground opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all shrink-0 mt-0.5" 
+                            />
+                        </div>
+                        <p className="text-xs text-muted-foreground line-clamp-1">
                             {module.subtitle}
                         </p>
                     </div>
@@ -163,12 +178,12 @@ function RecentItem({ title, href, time, module }: RecentActivity) {
     const styles = moduleStyles[module];
     
     return (
-        <Link to={href} className="flex items-center gap-3 py-2.5 hover:bg-gray-50 dark:hover:bg-white/[0.02] -mx-1 px-1 rounded transition-colors no-underline group">
+        <Link to={href} className="flex items-center gap-3 py-2.5 hover:bg-muted/50 -mx-1 px-1 rounded transition-colors no-underline group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             <div className={`w-1.5 h-1.5 rounded-full ${styles.iconBg}`} />
-            <span className="flex-1 text-sm text-gray-700 dark:text-gray-300 truncate group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+            <span className="flex-1 text-sm text-foreground/80 truncate group-hover:text-foreground transition-colors">
                 {title}
             </span>
-            <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">{time}</span>
+            <span className="text-xs text-muted-foreground shrink-0">{time}</span>
         </Link>
     );
 }
@@ -176,7 +191,7 @@ function RecentItem({ title, href, time, module }: RecentActivity) {
 // Empty state for sidebar widgets
 function EmptyState({ message }: { message: string }) {
     return (
-        <p className="text-sm text-gray-400 dark:text-gray-500 py-3 text-center">
+        <p className="text-sm text-muted-foreground py-3 text-center">
             {message}
         </p>
     );
@@ -187,8 +202,8 @@ function Widget({ title, icon: Icon, children }: { title: string; icon: React.El
     return (
         <div>
             <div className="flex items-center gap-2 mb-3">
-                <Icon size={14} className="text-gray-400 dark:text-gray-500" />
-                <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <Icon size={14} className="text-muted-foreground" />
+                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                     {title}
                 </h3>
             </div>
@@ -213,10 +228,10 @@ export function Home() {
         <div className="max-w-7xl mx-auto">
             {/* Header */}
             <header className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+                <h1 className="text-2xl font-bold text-foreground tracking-tight">
                     Bonjour, {firstName}
                 </h1>
-                <p className="text-gray-500 dark:text-gray-400 text-sm capitalize mt-0.5">
+                <p className="text-muted-foreground text-sm capitalize mt-0.5">
                     {dateStr}
                 </p>
             </header>
@@ -230,10 +245,10 @@ export function Home() {
 
                     {/* Modules 2x2 */}
                     <section>
-                        <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">
+                        <h2 className="text-sm font-semibold text-muted-foreground mb-3">
                             Modules
                         </h2>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             {MODULES.map(module => (
                                 <ModuleCard key={module.id} module={module} />
                             ))}
@@ -264,13 +279,13 @@ export function Home() {
                             <div className="space-y-2">
                                 <Link 
                                     to="/macro/revision" 
-                                    className="block text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline"
+                                    className="block text-sm text-foreground/70 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 py-0.5 -mx-1"
                                 >
                                     Fiche IS-LM
                                 </Link>
                                 <Link 
                                     to="/stats/revision" 
-                                    className="block text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline"
+                                    className="block text-sm text-foreground/70 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 py-0.5 -mx-1"
                                 >
                                     Formules Probas
                                 </Link>

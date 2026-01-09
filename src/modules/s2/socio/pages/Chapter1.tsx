@@ -1,0 +1,444 @@
+import { useState } from 'react';
+import { Zap, BookOpen, ChevronRight } from 'lucide-react';
+import { Section, Callout, PageHeader, ChapterNav, AuthorCard } from '../../../../components';
+import ChapterQCM from '../components/ChapterQCM';
+import { chapter1Questions } from '../data/questions';
+
+export default function Chapter1() {
+    const [view, setView] = useState<'quick' | 'full'>('full');
+
+    return (
+        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <PageHeader
+                number="Chapitre 01"
+                title="Naissance de la sociologie"
+                description="De l'Antiquité aux Lumières : les penseurs qui ont préparé l'émergence de la sociologie."
+            />
+
+            {/* Toggle version */}
+            <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-slate-100 rounded-xl w-full sm:w-fit">
+                <button
+                    onClick={() => setView('full')}
+                    className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'full'
+                        ? 'bg-white dark:bg-slate-900/80 text-slate-900 shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900'
+                        }`}
+                >
+                    <BookOpen className="w-4 h-4" />
+                    <span className="hidden sm:inline">Cours complet</span>
+                    <span className="sm:hidden">Complet</span>
+                </button>
+                <button
+                    onClick={() => setView('quick')}
+                    className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'quick'
+                        ? 'bg-white dark:bg-slate-900/80 text-slate-900 shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900'
+                        }`}
+                >
+                    <Zap className="w-4 h-4" />
+                    <span>L'essentiel</span>
+                </button>
+            </div>
+
+            {/* VERSION RAPIDE - L'ESSENTIEL POUR LA DISSERTATION */}
+            {view === 'quick' && (
+                <div className="space-y-5 sm:space-y-6">
+                    {/* Thèse centrale */}
+                    <div className="p-5 sm:p-7 bg-linear-to-br from-indigo-50 via-violet-50/50 to-slate-50 rounded-2xl border border-indigo-100/80">
+                        <h3 className="font-semibold text-slate-900 mb-4 sm:mb-5 flex items-center gap-2 text-base sm:text-lg">
+                            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
+                                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                            </div>
+                            Thèse centrale du chapitre
+                        </h3>
+                        <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+                            La sociologie naît progressivement grâce aux <strong>précurseurs</strong> de l'Antiquité aux Lumières.
+                            Ces penseurs posent les bases de la réflexion sur la société, mais la sociologie comme
+                            <strong> science autonome</strong> naît au XIXe siècle avec Auguste Comte.
+                        </p>
+                    </div>
+
+                    {/* Les précurseurs */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="p-4 bg-white dark:bg-slate-900/80 border border-slate-200 rounded-2xl shadow-sm">
+                            <h4 className="font-semibold text-slate-900 mb-2 text-sm flex items-center gap-2">
+                                <span className="text-lg">🏛️</span> Platon
+                            </h4>
+                            <p className="text-xs text-slate-600">
+                                <strong>Vision organique et fonctionnaliste</strong>. Trois groupes :
+                                les gouvernants, les gardiens, les producteurs. Défend l'éducation des femmes.
+                            </p>
+                        </div>
+
+                        <div className="p-4 bg-white dark:bg-slate-900/80 border border-slate-200 rounded-2xl shadow-sm">
+                            <h4 className="font-semibold text-slate-900 mb-2 text-sm flex items-center gap-2">
+                                <span className="text-lg">🏛️</span> Aristote
+                            </h4>
+                            <p className="text-xs text-slate-600">
+                                <strong>"L'homme est un animal politique"</strong>.
+                                La politique a un rôle central dans l'organisation de la société.
+                            </p>
+                        </div>
+
+                        <div className="p-4 bg-white dark:bg-slate-900/80 border border-slate-200 rounded-2xl shadow-sm">
+                            <h4 className="font-semibold text-slate-900 mb-2 text-sm flex items-center gap-2">
+                                <span className="text-lg">📚</span> Ibn Khaldoun
+                            </h4>
+                            <p className="text-xs text-slate-600">
+                                Première <strong>analyse scientifique</strong> de la société.
+                                <strong>Théorie cyclique</strong> : simplicité → prospérité → décadence → renouveau.
+                            </p>
+                        </div>
+
+                        <div className="p-4 bg-white dark:bg-slate-900/80 border border-slate-200 rounded-2xl shadow-sm">
+                            <h4 className="font-semibold text-slate-900 mb-2 text-sm flex items-center gap-2">
+                                <span className="text-lg">👑</span> Hobbes
+                            </h4>
+                            <p className="text-xs text-slate-600">
+                                <strong>Contrat social</strong>. État de nature = conflit permanent.
+                                Les hommes ne sont pas naturellement sociaux.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Les Lumières */}
+                    <div className="p-4 sm:p-6 bg-linear-to-br from-violet-50/50 to-indigo-50/30 border border-violet-100 rounded-2xl">
+                        <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+                            <span className="text-lg">💡</span> Les Lumières : naissance de la pensée sociologique
+                        </h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+                            <div className="p-3 bg-white/80 rounded-xl">
+                                <p className="font-semibold text-slate-900 mb-1">Rousseau</p>
+                                <p className="text-xs text-slate-600">État de nature <strong>paisible</strong>. Propriété privée source d'inégalités.</p>
+                            </div>
+                            <div className="p-3 bg-white/80 rounded-xl">
+                                <p className="font-semibold text-slate-900 mb-1">Montesquieu</p>
+                                <p className="text-xs text-slate-600">Méthode comparative. <strong>Typologies</strong>. Critique sociale.</p>
+                            </div>
+                            <div className="p-3 bg-white/80 rounded-xl">
+                                <p className="font-semibold text-slate-900 mb-1">Voltaire</p>
+                                <p className="text-xs text-slate-600">Critique des institutions. <strong>Relativisme culturel</strong>. Progrès social.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Piège */}
+                    <Callout type="warning" title="⚠️ Piège à éviter">
+                        Ces penseurs ne sont <strong>PAS des sociologues</strong> mais des <strong>précurseurs</strong>.
+                        Pas de méthode scientifique rigoureuse, pas de discipline autonome. La sociologie comme science
+                        naît au XIXe avec Auguste Comte.
+                    </Callout>
+
+                    <button
+                        onClick={() => setView('full')}
+                        className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium transition-colors"
+                    >
+                        Voir le cours complet <ChevronRight className="w-4 h-4" />
+                    </button>
+                </div>
+            )}
+
+            {/* VERSION COMPLÈTE */}
+            {view === 'full' && (
+                <>
+                    <Section title="Introduction : De l'Antiquité aux Lumières">
+                        <p className="mb-4 text-slate-600">
+                            La sociologie comme <strong>science autonome</strong> naît au XIXe siècle, mais ses racines remontent
+                            à l'Antiquité. De nombreux penseurs ont préparé son émergence en réfléchissant sur l'organisation
+                            de la société.
+                        </p>
+
+                        <Callout type="key" title="À retenir">
+                            Ces penseurs ne sont <strong>PAS des sociologues</strong> mais des <strong>précurseurs</strong>.
+                            La sociologie comme discipline scientifique naîtra avec <strong>Auguste Comte</strong>,
+                            puis se développera avec <strong>Durkheim et Weber</strong>.
+                        </Callout>
+                    </Section>
+
+                    <Section title="I. L'Antiquité grecque">
+                        <AuthorCard
+                            name="Platon"
+                            dates="428-348 av. J.-C."
+                            work="La République, Les Lois, Le Politique"
+                            color="blue"
+                            image="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Plato_Silanion_Musei_Capitolini_MC1377.jpg/500px-Plato_Silanion_Musei_Capitolini_MC1377.jpg"
+                        >
+                            <p className="text-sm sm:text-base mb-4">
+                                Dans La République, Les Lois et Le Politique, Platon identifie <strong>trois groupes</strong> dans la cité grecque
+                                et développe une <strong>vision organique et fonctionnaliste</strong>.
+                            </p>
+
+                            <div className="grid grid-cols-3 gap-3 mb-4">
+                                <div className="text-center p-3 bg-linear-to-br from-blue-50 to-sky-50/30 rounded-xl border border-blue-100">
+                                    <p className="font-bold text-blue-700">Gouvernants</p>
+                                    <p className="text-xs text-slate-600 mt-1">Direction politique</p>
+                                </div>
+                                <div className="text-center p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
+                                    <p className="font-bold text-emerald-700">Gardiens</p>
+                                    <p className="text-xs text-slate-600 mt-1">Protection militaire</p>
+                                </div>
+                                <div className="text-center p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
+                                    <p className="font-bold text-amber-700">Producteurs</p>
+                                    <p className="text-xs text-slate-600 mt-1">Activité économique</p>
+                                </div>
+                            </div>
+
+                            <Callout type="key" title="Vision organique">
+                                La cité fonctionne comme un <strong>organisme vivant</strong>.
+                                Chaque groupe a une fonction complémentaire.
+                                L'ordre social repose sur la <strong>complémentarité</strong>.
+                            </Callout>
+
+                            <div className="mt-4 p-3 bg-linear-to-r from-violet-50/50 to-transparent rounded-xl border-l-3 border-violet-300">
+                                <p className="text-sm font-medium text-slate-900 mb-1">Innovation sociale :</p>
+                                <p className="text-xs text-slate-600">
+                                    Platon défend l'<strong>éducation des femmes</strong>,
+                                    vision égalitaire remarquable pour une société patriarcale.
+                                </p>
+                            </div>
+                        </AuthorCard>
+
+                        <AuthorCard
+                            name="Aristote"
+                            dates="384-322 av. J.-C."
+                            work="La Politique"
+                            color="emerald"
+                            image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/220px-Aristotle_Altemps_Inv8575.jpg"
+                        >
+                            <blockquote className="text-base italic text-slate-600 border-l-4 border-emerald-300 pl-4 mb-4">
+                                "L'homme est un animal politique"
+                            </blockquote>
+
+                            <p className="text-sm sm:text-base mb-4">
+                                Cette formule célèbre exprime <strong>deux idées fondamentales</strong> :
+                            </p>
+
+                            <ul className="space-y-2 text-sm sm:text-base mb-4">
+                                <li className="flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-950/30 mt-2 shrink-0" />
+                                    <span>La <strong>politique</strong> a un rôle central dans l'organisation de la société</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-950/30 mt-2 shrink-0" />
+                                    <span>L'Homme ne peut pas vivre en dehors des <strong>relations sociales</strong></span>
+                                </li>
+                            </ul>
+                        </AuthorCard>
+                    </Section>
+
+                    <Section title="II. Ibn Khaldoun : première analyse scientifique">
+                        <AuthorCard
+                            name="Ibn Khaldoun"
+                            dates="1332-1406"
+                            work="Muqaddima (Prolégomènes)"
+                            color="amber"
+                            image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Bust_of_Ibn_Khaldun_%28Casbah_of_Bejaia%2C_Algeria%29.jpg/500px-Bust_of_Ibn_Khaldun_%28Casbah_of_Bejaia%2C_Algeria%29.jpg"
+                        >
+                            <p className="text-sm sm:text-base mb-4">
+                                Ibn Khaldoun écrit la <strong>Muqaddima</strong>, un texte fondateur.
+                                Il pose les bases d'une première <strong>analyse scientifique</strong> de la société
+                                avec une méthode empirique : terrain et récolte de données.
+                            </p>
+
+                            <div className="grid grid-cols-2 gap-4 mb-4">
+                                <div className="p-3 bg-linear-to-br from-amber-50/50 to-transparent rounded-xl border border-amber-100">
+                                    <p className="font-semibold text-slate-900 text-sm mb-2">Sociétés nomades</p>
+                                    <p className="text-xs text-slate-600">
+                                        Rudesse, simplicité, <strong>forte solidarité</strong>
+                                    </p>
+                                </div>
+                                <div className="p-3 bg-linear-to-br from-amber-50/50 to-transparent rounded-xl border border-amber-100">
+                                    <p className="font-semibold text-slate-900 text-sm mb-2">Sociétés sédentaires</p>
+                                    <p className="text-xs text-slate-600">
+                                        Richesse, mais aussi <strong>inégalités</strong> et déclin de la cohésion
+                                    </p>
+                                </div>
+                            </div>
+
+                            <Callout type="key" title="Théorie cyclique">
+                                <strong>Simplicité et solidarité</strong> → Prospérité → <strong>Luxe et décadence</strong> →
+                                Remplacement par de nouvelles sociétés nomades → Le cycle recommence.
+                            </Callout>
+
+                            <div className="mt-4 p-3 bg-linear-to-r from-violet-50/50 to-transparent rounded-xl border-l-3 border-violet-300">
+                                <p className="text-sm font-medium text-slate-900 mb-2">Apports majeurs :</p>
+                                <ul className="text-xs text-slate-600 space-y-1">
+                                    <li>• La société <strong>évolue</strong>, elle n'est pas statique</li>
+                                    <li>• Anticipe des concepts modernes : cohésion sociale, lutte des classes, dynamiques de pouvoir</li>
+                                    <li>• Méthode empirique et comparative</li>
+                                </ul>
+                            </div>
+                        </AuthorCard>
+                    </Section>
+
+                    <Section title="III. Thomas Hobbes : le contrat social">
+                        <AuthorCard
+                            name="Thomas Hobbes"
+                            dates="1588-1679"
+                            work="Le Léviathan"
+                            color="slate"
+                            image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Thomas_Hobbes_%28portrait%29.jpg/220px-Thomas_Hobbes_%28portrait%29.jpg"
+                        >
+                            <p className="text-sm sm:text-base mb-4">
+                                Thomas Hobbes écrit <strong>Le Léviathan</strong>.
+                                Il pose les bases du <strong>contrat social</strong> pour justifier l'autorité royale.
+                                Son raisonnement suit un mécanisme en trois étapes :
+                            </p>
+
+                            <div className="space-y-3 mb-4">
+                                <div className="p-3 bg-linear-to-r from-red-50/50 to-transparent rounded-xl border-l-3 border-red-300">
+                                    <p className="font-semibold text-slate-900 text-sm mb-1">1. État de nature</p>
+                                    <p className="text-xs text-slate-600">Conflit permanent, "guerre de tous contre tous"</p>
+                                </div>
+                                <div className="p-3 bg-linear-to-r from-blue-50/50 to-transparent rounded-xl border-l-3 border-blue-300">
+                                    <p className="font-semibold text-slate-900 text-sm mb-1">2. Contrat social</p>
+                                    <p className="text-xs text-slate-600">Les hommes renoncent à leur liberté naturelle</p>
+                                </div>
+                                <div className="p-3 bg-linear-to-r from-emerald-50/50 to-transparent rounded-xl border-l-3 border-emerald-300">
+                                    <p className="font-semibold text-slate-900 text-sm mb-1">3. Souverain</p>
+                                    <p className="text-xs text-slate-600">Devient le garant de la paix et de l'ordre</p>
+                                </div>
+                            </div>
+
+                            <Callout type="key" title="Concept fondamental">
+                                Les hommes ne sont <strong>PAS naturellement sociaux</strong>.
+                                La société est le produit d'un <strong>contrat social</strong> nécessaire pour éviter le chaos.
+                            </Callout>
+                        </AuthorCard>
+                    </Section>
+
+                    <Section title="IV. Les Lumières : naissance de la pensée sociologique">
+                        <p className="mb-5 text-slate-600">
+                            Selon Raymond Aron, c'est au <strong>siècle des Lumières</strong> que naît véritablement la pensée sociologique.
+                        </p>
+
+                        <AuthorCard
+                            name="Jean-Jacques Rousseau"
+                            dates="1712-1778"
+                            work="Du contrat social, Discours sur l'inégalité"
+                            color="emerald"
+                            image="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Jean-Jacques_Rousseau_%28painted_portrait%29.jpg/220px-Jean-Jacques_Rousseau_%28painted_portrait%29.jpg"
+                        >
+                            <p className="text-sm sm:text-base mb-4">
+                                Dans Du contrat social, Rousseau s'oppose à Hobbes sur la nature humaine :
+                            </p>
+
+                            <div className="grid grid-cols-2 gap-3 mb-4">
+                                <div className="text-center p-3 bg-linear-to-br from-red-50 to-pink-50/30 rounded-xl border border-red-100">
+                                    <p className="font-bold text-red-700">Hobbes</p>
+                                    <p className="text-xs text-slate-600 mt-1">État de nature <strong>violent</strong></p>
+                                </div>
+                                <div className="text-center p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
+                                    <p className="font-bold text-emerald-700">Rousseau</p>
+                                    <p className="text-xs text-slate-600 mt-1">État de nature <strong>paisible</strong></p>
+                                </div>
+                            </div>
+
+                            <Callout type="key" title="Thèse de Rousseau">
+                                C'est la <strong>propriété privée</strong> qui introduit les inégalités et les conflits.
+                                La coopération sociale n'est pas naturelle (parabole des chasseurs).
+                            </Callout>
+                        </AuthorCard>
+
+                        <AuthorCard
+                            name="Montesquieu"
+                            dates="1689-1755"
+                            work="De l'esprit des lois, Lettres persanes"
+                            color="indigo"
+                            image="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Montesquieu_1.png/500px-Montesquieu_1.png"
+                        >
+                            <p className="text-sm sm:text-base mb-4">
+                                Dans De l'esprit des lois, Montesquieu apporte des <strong>contributions méthodologiques majeures</strong> :
+                            </p>
+
+                            <ul className="space-y-2 text-sm mb-4">
+                                <li className="flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 shrink-0" />
+                                    <span>La diversité des sociétés s'explique par l'<strong>adaptation aux circonstances</strong></span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 shrink-0" />
+                                    <span>Un phénomène social s'explique par une <strong>multitude de causes</strong></span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 shrink-0" />
+                                    <span>Méthode basée sur l'élaboration de <strong>typologies</strong></span>
+                                </li>
+                            </ul>
+
+                            <div className="p-3 bg-linear-to-r from-indigo-50/50 to-transparent rounded-xl border-l-3 border-indigo-300">
+                                <p className="text-sm font-medium text-slate-900 mb-2">Critique sociale (Lettres persanes) :</p>
+                                <div className="grid grid-cols-2 gap-2 text-xs">
+                                    <div>
+                                        <p>• Absolutisme monarchique</p>
+                                        <p>• Église</p>
+                                        <p>• Mœurs parisiennes</p>
+                                    </div>
+                                    <div>
+                                        <p>• Justice influencée par le statut</p>
+                                        <p>• Hiérarchies sociales</p>
+                                        <p>• Condition des femmes</p>
+                                    </div>
+                                </div>
+                                <p className="text-xs text-slate-500 mt-2 italic">→ L'oppression est universelle</p>
+                            </div>
+                        </AuthorCard>
+
+                        <AuthorCard
+                            name="Voltaire"
+                            dates="1694-1778"
+                            work="Candide, Traité sur la tolérance"
+                            color="amber"
+                            image="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Nicolas_de_Largilli%C3%A8re_-_Portrait_de_Voltaire_%281694-1778%29_en_1718_-_P208_-_Mus%C3%A9e_Carnavalet_-_2.jpg/250px-Nicolas_de_Largilli%C3%A8re_-_Portrait_de_Voltaire_%281694-1778%29_en_1718_-_P208_-_Mus%C3%A9e_Carnavalet_-_2.jpg"
+                        >
+                            <p className="text-sm sm:text-base mb-4">
+                                Dans Candide, Voltaire critique les institutions sociales et religieuses, défend le progrès social :
+                            </p>
+
+                            <ul className="space-y-2 text-sm mb-4">
+                                <li className="flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-950/30 mt-2 shrink-0" />
+                                    <span>Montre comment les structures sociales <strong>maintiennent les inégalités</strong></span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-950/30 mt-2 shrink-0" />
+                                    <span>Défend le <strong>relativisme culturel</strong> et la tolérance</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-950/30 mt-2 shrink-0" />
+                                    <span>Défend la <strong>liberté individuelle</strong> et la justice sociale</span>
+                                </li>
+                            </ul>
+
+                            <Callout type="key">
+                                La <strong>raison et l'éducation</strong> permettent le progrès social.
+                                Ces idées préparent la <strong>Révolution française</strong>.
+                            </Callout>
+                        </AuthorCard>
+                    </Section>
+
+                    <Section title="⚠️ Conclusion : Précurseurs, pas sociologues">
+                        <Callout type="warning" title="Piège à éviter">
+                            Ces penseurs ne sont <strong>PAS des sociologues</strong> mais des <strong>précurseurs</strong>.
+                            Ils n'ont pas de méthode scientifique rigoureuse ni de discipline autonome.
+                        </Callout>
+
+                        <div className="mt-4">
+                            <Callout type="key" title="À retenir">
+                                La sociologie comme <strong>science autonome</strong> naît au XIXe siècle avec <strong>Auguste Comte</strong>,
+                                puis se développe avec <strong>Durkheim et Weber</strong> qui établissent ses méthodes scientifiques.
+                            </Callout>
+                        </div>
+                    </Section>
+                </>
+            )}
+
+            <ChapterQCM chapter={1} title="Naissance de la sociologie" questions={chapter1Questions} />
+
+            <ChapterNav
+                prev={{ path: '/socio', label: '← Accueil', title: 'Sociologie' }}
+                next={{ path: '/socio/chapitre2', label: 'Chapitre suivant →', title: 'Contexte d\'émergence' }}
+            />
+        </main>
+    );
+}

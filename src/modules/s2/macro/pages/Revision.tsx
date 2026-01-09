@@ -1,0 +1,340 @@
+import { Link } from 'react-router-dom';
+import { Section, Callout, PageHeader, ChapterNav, Math, Table, TableRow, TableCell, Graph } from '../../../../components';
+import { CheckSquare, Dumbbell, ClipboardList, BookOpen } from 'lucide-react';
+
+export function Revision() {
+  return (
+    <main className="max-w-6xl px-6">
+      <PageHeader
+        number="Synthèse"
+        title="Fiche de Révision"
+        description="Tout ce qu'il faut maîtriser pour le jour J."
+      />
+
+      <Section type="key" title="Formules essentielles">
+        <Table headers={['Chapitre', 'Formule', 'Nom']}>
+          <TableRow>
+            <TableCell><span className="px-2 py-1 bg-blue-100 dark:bg-blue-950/30 text-blue-700 rounded text-xs font-medium">IS-LM</span></TableCell>
+            <TableCell><Math>{"k = \\frac{1}{1-c_1}"}</Math></TableCell>
+            <TableCell>Multiplicateur keynésien</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><span className="px-2 py-1 bg-blue-100 dark:bg-blue-950/30 text-blue-700 rounded text-xs font-medium">IS-LM</span></TableCell>
+            <TableCell><Math>{"Y = C(Y-T) + I(i) + G"}</Math></TableCell>
+            <TableCell>Équation IS</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><span className="px-2 py-1 bg-blue-100 dark:bg-blue-950/30 text-blue-700 rounded text-xs font-medium">IS-LM</span></TableCell>
+            <TableCell><Math>{"\\frac{M}{P} = L(Y, i)"}</Math></TableCell>
+            <TableCell>Équation LM</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><span className="px-2 py-1 bg-purple-100 dark:bg-purple-950/30 text-purple-700 rounded text-xs font-medium">WS-PS</span></TableCell>
+            <TableCell><Math>{"\\frac{W}{P^e} = F(u, z)"}</Math></TableCell>
+            <TableCell>Wage Setting</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><span className="px-2 py-1 bg-purple-100 dark:bg-purple-950/30 text-purple-700 rounded text-xs font-medium">WS-PS</span></TableCell>
+            <TableCell><Math>{"\\frac{W}{P} = \\frac{1}{1+\\mu}"}</Math></TableCell>
+            <TableCell>Price Setting</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><span className="px-2 py-1 bg-emerald-100 dark:bg-emerald-950/30 text-emerald-700 rounded text-xs font-medium">AS-AD</span></TableCell>
+            <TableCell><Math>{"P = P^e(1+\\mu)F(1-Y/L, z)"}</Math></TableCell>
+            <TableCell>Courbe AS</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><span className="px-2 py-1 bg-amber-100 dark:bg-amber-950/30 text-amber-700 rounded text-xs font-medium">Phillips</span></TableCell>
+            <TableCell><Math>{"\\pi = \\pi^e - \\alpha(u - u_n)"}</Math></TableCell>
+            <TableCell>Courbe de Phillips</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><span className="px-2 py-1 bg-red-100 dark:bg-red-950/30 text-red-700 rounded text-xs font-medium">Dette</span></TableCell>
+            <TableCell><Math>{"\\Delta(B/Y) = (r-g)(B/Y) + \\frac{G-T}{Y}"}</Math></TableCell>
+            <TableCell>Dynamique dette</TableCell>
+          </TableRow>
+        </Table>
+
+        <p className="mt-4 mb-2"><strong>Formules emploi/chômage :</strong></p>
+        <ul className="list-disc pl-6 space-y-1">
+          <li>Taux de chômage : <Math>{"u = \\frac{U}{L} = \\frac{L - N}{L} = 1 - \\frac{N}{L}"}</Math></li>
+          <li>où <Math>{"U"}</Math> = chômeurs, <Math>{"L"}</Math> = population active, <Math>{"N"}</Math> = employés</li>
+          <li>Emploi naturel : <Math>{"N_n = L(1-u_n)"}</Math></li>
+          <li>Produit naturel : <Math>{"Y_n = N_n = L(1-u_n)"}</Math> (si <Math>{"Y = N"}</Math>)</li>
+          <li>Ratio de sacrifice : <Math>{"\\frac{1}{\\alpha}"}</Math></li>
+        </ul>
+
+        <p className="mt-4 mb-2"><strong>Relations population :</strong></p>
+        <ul className="list-disc pl-6 space-y-1">
+          <li><Math>{"\\text{Pop. en âge de travailler} = L + \\text{Inactifs}"}</Math></li>
+          <li><Math>{"L = N + U"}</Math> (Population active = Employés + Chômeurs)</li>
+          <li>Taux d'activité : <Math>{"\\frac{L}{\\text{Pop. en âge de travailler}}"}</Math></li>
+          <li>Taux d'emploi : <Math>{"\\frac{N}{\\text{Pop. en âge de travailler}}"}</Math></li>
+        </ul>
+      </Section>
+
+      <Section type="intuition" title="Les 4 graphiques fondamentaux">
+        <Table headers={['Graphique', 'Axes', 'Pentes', 'Équilibre']}>
+          <TableRow>
+            <TableCell><strong>IS-LM</strong></TableCell>
+            <TableCell>(Y, i)</TableCell>
+            <TableCell>IS ↘, LM ↗</TableCell>
+            <TableCell><Math>{"(Y^*, i^*)"}</Math></TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><strong>WS-PS</strong></TableCell>
+            <TableCell>(u, W/P)</TableCell>
+            <TableCell>WS ↘, PS —</TableCell>
+            <TableCell><Math>{"u_n"}</Math></TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><strong>AS-AD</strong></TableCell>
+            <TableCell>(Y, P)</TableCell>
+            <TableCell>AS ↗, AD ↘</TableCell>
+            <TableCell><Math>{"(Y^*, P^*)"}</Math></TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><strong>Phillips</strong></TableCell>
+            <TableCell>(u, π)</TableCell>
+            <TableCell>CT ↘, LT |</TableCell>
+            <TableCell><Math>{"u_n"}</Math></TableCell>
+          </TableRow>
+        </Table>
+
+        <Callout type="tip" title="Astuce mémorisation">
+          IS et AD ont des pentes négatives (demande). LM et AS ont des pentes positives (offre). PS et Phillips LT sont horizontale/verticale.
+        </Callout>
+      </Section>
+
+      <Section type="intuition" title="Patterns de raisonnement">
+        <p className="mb-2"><strong>Pattern 1 — Effet d'un choc</strong></p>
+        <ol className="list-decimal pl-6 space-y-1 mb-6">
+          <li>Identifier le modèle pertinent (IS-LM, WS-PS, AS-AD)</li>
+          <li>Quelle courbe se déplace ? Dans quel sens ?</li>
+          <li>Nouveau point d'équilibre</li>
+          <li>Interpréter économiquement</li>
+        </ol>
+
+        <p className="mb-2"><strong>Pattern 2 — Court terme vs Moyen terme</strong></p>
+        <ol className="list-decimal pl-6 space-y-1 mb-6">
+          <li>CT : <Math>{"P^e"}</Math> fixe, <Math>{"Y \\neq Y_n"}</Math> possible</li>
+          <li>Ajustement : révision de <Math>{"P^e"}</Math> si <Math>{"P \\neq P^e"}</Math></li>
+          <li>MT : <Math>{"P = P^e"}</Math>, retour à <Math>{"Y_n"}</Math></li>
+        </ol>
+
+        <p className="mb-2"><strong>Pattern 3 — Politique économique</strong></p>
+        <ol className="list-decimal pl-6 space-y-1">
+          <li>Identifier l'instrument (G, T, M)</li>
+          <li>Effet sur IS, LM ou AD</li>
+          <li>Effet CT : variations de Y et i (ou P)</li>
+          <li>Effet MT : retour à <Math>{"Y_n"}</Math>, seul P change durablement</li>
+        </ol>
+      </Section>
+
+      <Section type="key" title="Effets des paramètres">
+        <Table headers={['Hausse de...', 'Effet sur uₙ', 'Mécanisme']}>
+          <TableRow>
+            <TableCell>μ (marge)</TableCell>
+            <TableCell>↑</TableCell>
+            <TableCell>PS ↓, moins d'emplois</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>z (allocations)</TableCell>
+            <TableCell>↑</TableCell>
+            <TableCell>WS ↑, salaires trop élevés</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Concurrence</TableCell>
+            <TableCell>↓</TableCell>
+            <TableCell>μ ↓, plus d'emplois</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Productivité</TableCell>
+            <TableCell>↓</TableCell>
+            <TableCell>PS ↑, plus d'emplois</TableCell>
+          </TableRow>
+        </Table>
+
+        <Table headers={['Variable ↑', 'Effet sur Y', 'Effet sur i', 'Effet sur u (CT)']}>
+          <TableRow><TableCell>G</TableCell><TableCell>↑</TableCell><TableCell>↑</TableCell><TableCell>↓</TableCell></TableRow>
+          <TableRow><TableCell>T</TableCell><TableCell>↓</TableCell><TableCell>↓</TableCell><TableCell>↑</TableCell></TableRow>
+          <TableRow><TableCell>M</TableCell><TableCell>↑</TableCell><TableCell>↓</TableCell><TableCell>↓</TableCell></TableRow>
+        </Table>
+      </Section>
+
+      <Section type="warning" title="Les pièges les plus fréquents">
+        <ul className="list-disc pl-6 space-y-2">
+          <li>Inverser les pentes des courbes</li>
+          <li>Oublier le multiplicateur (ΔY ≠ ΔG)</li>
+          <li>Négliger l'effet d'éviction</li>
+          <li>Confondre nominal et réel</li>
+          <li>Penser que PS dépend du chômage (PS est horizontale !)</li>
+          <li>Oublier le rôle des anticipations <Math>{"P^e"}</Math></li>
+          <li>Croire que les politiques sont efficaces à MT</li>
+          <li>Confondre dette (stock) et déficit (flux)</li>
+          <li>Négliger le terme (r - g)</li>
+          <li>Confondre anticipations nulles et adaptatives</li>
+        </ul>
+      </Section>
+
+      <Section type="graphique" title="Graphiques récapitulatifs">
+        <p className="mb-2"><strong>Modèle WS/PS :</strong></p>
+        <Graph
+          src="/macro/assets/5.png"
+          alt="Équilibre WS-PS"
+          figure={5}
+          caption="WS décroissante (pouvoir de négociation), PS horizontale à 1/(1+μ). Intersection = uₙ"
+        />
+
+        <p className="mb-2 mt-6"><strong>Modèle AS/AD :</strong></p>
+        <Graph
+          src="/macro/assets/9.png"
+          alt="Équilibre AS-AD"
+          figure={9}
+          caption="AD décroissante (via IS-LM), AS croissante (via WS-PS). Intersection = (Y*, P*)"
+        />
+
+        <p className="mb-2 mt-6"><strong>Dynamique CT → MT :</strong></p>
+        <Graph
+          src="/macro/assets/11.png"
+          alt="Convergence vers moyen terme"
+          figure={11}
+          caption="Après un choc, AS se déplace progressivement jusqu'au retour à Yₙ"
+        />
+
+        <Callout type="tip" title="Ajustement après choc de demande positif">
+          1. AD → droite : <Math>{"Y_1 > Y_n"}</Math>, <Math>{"P_1 > P_0"}</Math><br />
+          2. <Math>{"P_1 > P^e"}</Math> → révision des anticipations<br />
+          3. AS → haut : <Math>{"Y_2 < Y_1"}</Math>, <Math>{"P_2 > P_1"}</Math><br />
+          4. Répéter jusqu'à <Math>{"Y = Y_n"}</Math>
+        </Callout>
+      </Section>
+
+      <Section type="intuition" title="Vocabulaire Anglais / Français">
+        <Table headers={['Anglais', 'Français']}>
+          <TableRow><TableCell>Wage Setting (WS)</TableCell><TableCell>Fixation des salaires</TableCell></TableRow>
+          <TableRow><TableCell>Price Setting (PS)</TableCell><TableCell>Fixation des prix</TableCell></TableRow>
+          <TableRow><TableCell>Aggregate Supply (AS)</TableCell><TableCell>Offre agrégée</TableCell></TableRow>
+          <TableRow><TableCell>Aggregate Demand (AD)</TableCell><TableCell>Demande agrégée</TableCell></TableRow>
+          <TableRow><TableCell>Markup</TableCell><TableCell>Taux de marge</TableCell></TableRow>
+          <TableRow><TableCell>Natural rate</TableCell><TableCell>Taux naturel</TableCell></TableRow>
+          <TableRow><TableCell>Output gap</TableCell><TableCell>Écart de production</TableCell></TableRow>
+          <TableRow><TableCell>Crowding out</TableCell><TableCell>Effet d'éviction</TableCell></TableRow>
+          <TableRow><TableCell>Liquidity trap</TableCell><TableCell>Trappe à liquidité</TableCell></TableRow>
+          <TableRow><TableCell>Quantitative easing</TableCell><TableCell>Assouplissement quantitatif</TableCell></TableRow>
+          <TableRow><TableCell>Phillips curve</TableCell><TableCell>Courbe de Phillips</TableCell></TableRow>
+          <TableRow><TableCell>Sacrifice ratio</TableCell><TableCell>Ratio de sacrifice</TableCell></TableRow>
+          <TableRow><TableCell>Adaptive expectations</TableCell><TableCell>Anticipations adaptatives</TableCell></TableRow>
+          <TableRow><TableCell>Wage-price spiral</TableCell><TableCell>Spirale prix-salaires</TableCell></TableRow>
+        </Table>
+      </Section>
+
+      <section className="mb-16">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700">
+          <Dumbbell className="w-4 h-4" /> Ton profil
+        </span>
+        <h2 className="text-2xl font-semibold mb-5 tracking-tight">Avantage compétitif (ex-prépa)</h2>
+        <div className="text-slate-800 dark:text-slate-200 leading-relaxed text-lg">
+          <p className="mb-2"><strong>Ce que tu maîtrises déjà :</strong></p>
+          <ul className="list-disc pl-6 space-y-1 mb-4">
+            <li><strong>Systèmes d'équations</strong> — IS-LM = système 2×2, tu sais le résoudre instantanément</li>
+            <li><strong>Séries géométriques</strong> — Le multiplicateur, c'est <Math>{"\\sum c_1^n"}</Math></li>
+            <li><strong>Équations différentielles</strong> — La dynamique de la dette, tu connais</li>
+            <li><strong>Approximations</strong> — DL pour (r-g) petit</li>
+          </ul>
+
+          <Callout type="tip" title="Stratégie">
+            Aller plus vite sur les calculs pour avoir plus de temps sur l'intuition économique. Montrer la dérivation complète quand les autres mémorisent.
+          </Callout>
+        </div>
+      </section>
+
+      <section className="mb-16">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-blue-50 dark:bg-blue-950/30 text-blue-700">
+          <CheckSquare size={14} /> Checklist
+        </span>
+        <h2 className="text-2xl font-semibold mb-5 tracking-tight">Avant l'examen</h2>
+        <div className="grid md:grid-cols-2 gap-2">
+          {[
+            "Je sais calculer le multiplicateur keynésien",
+            "Je sais résoudre un système IS/LM",
+            "Je sais trouver uₙ dans le modèle WS/PS",
+            "Je sais calculer Yₙ à partir de uₙ",
+            "Je connais les effets de μ, z sur le chômage",
+            "Je sais analyser un choc dans AS/AD",
+            "Je distingue effets CT et MT",
+            "Je connais les instruments de la BCE",
+            "Je sais expliquer l'effet d'éviction",
+            "Je connais les politiques non conventionnelles",
+            "Je sais utiliser la courbe de Phillips",
+            "Je sais calculer le ratio de sacrifice",
+            "Je comprends la spirale prix-salaires",
+            "Je distingue anticipations nulles vs adaptatives",
+          ].map((item, i) => (
+            <label key={i} className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/60 hover:bg-slate-100/50 dark:hover:bg-white/5 cursor-pointer">
+              <input type="checkbox" className="w-4 h-4 rounded border-slate-300 dark:border-white/15" />
+              <span className="text-sm text-slate-800 dark:text-slate-200">{item}</span>
+            </label>
+          ))}
+        </div>
+      </section>
+
+      <section className="mb-16">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400">
+          <ClipboardList className="w-4 h-4" /> Fiches par chapitre
+        </span>
+        <h2 className="text-2xl font-semibold mb-5 tracking-tight">Fiches de révision rapide</h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {[
+            { path: '/revision-ch1', num: 'Fiche 01', title: 'Introduction & IS-LM', desc: 'Horizons, multiplicateur, éviction', color: 'bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-500/20 hover:border-blue-300 dark:hover:border-blue-500/40' },
+            { path: '/revision-ch2', num: 'Fiche 02', title: 'Marché du Travail', desc: 'WS-PS, types de chômage, μ et z', color: 'bg-purple-50 dark:bg-purple-950/30 border-purple-200 dark:border-purple-500/20 hover:border-purple-300 dark:hover:border-purple-500/40' },
+            { path: '/revision-ch3', num: 'Fiche 03', title: 'AS-AD', desc: 'CT vs MT, stagflation, trappe', color: 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-500/20 hover:border-emerald-300 dark:hover:border-emerald-500/40' },
+            { path: '/revision-ch4', num: 'Fiche 04', title: 'Politique & Phillips', desc: 'BCE, dette, anticipations, spirale', color: 'bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-500/20 hover:border-amber-300 dark:hover:border-amber-500/40' },
+          ].map((ch) => (
+            <Link
+              key={ch.path}
+              to={ch.path}
+              className={`p-6 rounded-xl border transition-all no-underline group ${ch.color}`}
+            >
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">{ch.num}</p>
+              <h3 className="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{ch.title}</h3>
+              <p className="text-sm text-slate-700 dark:text-slate-300">{ch.desc}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="mb-16">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-slate-100/80 dark:bg-white/5 text-slate-800 dark:text-slate-200">
+          <BookOpen className="w-4 h-4" /> Navigation
+        </span>
+        <h2 className="text-2xl font-semibold mb-5 tracking-tight">Accès rapide aux cours</h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {[
+            { path: '/macro/chapitre-1', num: '01', title: 'Introduction & IS-LM', desc: 'Cours complet' },
+            { path: '/macro/chapitre-2', num: '02', title: 'Marché du Travail', desc: 'Cours complet' },
+            { path: '/macro/chapitre-3', num: '03', title: 'AS-AD', desc: 'Cours complet' },
+            { path: '/macro/chapitre-4', num: '04', title: 'Politiques & Phillips', desc: 'Cours complet' },
+            { path: '/exercices', num: 'TD', title: 'Exercices', desc: 'Exercices corrigés type TD' },
+            { path: '/qcm', num: 'QCM', title: 'QCM', desc: 'QCM interactifs type examen' },
+          ].map((ch) => (
+            <Link
+              key={ch.path}
+              to={ch.path}
+              className="p-6 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/60 hover:border-slate-300 dark:hover:border-white/15 hover:bg-slate-100/50 dark:hover:bg-white/5 transition-all no-underline group"
+            >
+              <p className="text-sm text-slate-500 dark:text-slate-500 mb-1">{ch.num}</p>
+              <h3 className="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">{ch.title}</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">{ch.desc}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <ChapterNav
+        prev={{ path: '/qcm', label: '← QCM', title: 'QCM et Annales' }}
+        next={{ path: '/macro', label: 'Accueil →', title: 'Page d\'accueil' }}
+      />
+    </main>
+  );
+}

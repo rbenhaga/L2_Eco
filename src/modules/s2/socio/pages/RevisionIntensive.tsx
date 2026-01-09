@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Zap, BookOpen, ArrowRight, BarChart3 } from 'lucide-react';
+import { Zap, BookOpen, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Section, Callout, PageHeader, ChapterNav, AuthorCard } from '../../../../components';
 
@@ -19,8 +19,8 @@ export default function RevisionIntensive() {
         <button
           onClick={() => setView('theme1')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'theme1'
-              ? 'bg-white dark:bg-slate-900/80 text-slate-900 shadow-sm'
-              : 'text-slate-600 hover:text-slate-900'
+            ? 'bg-white dark:bg-slate-900/80 text-slate-900 shadow-sm'
+            : 'text-slate-600 hover:text-slate-900'
             }`}
         >
           <BookOpen className="w-4 h-4" />
@@ -29,8 +29,8 @@ export default function RevisionIntensive() {
         <button
           onClick={() => setView('theme2')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'theme2'
-              ? 'bg-white dark:bg-slate-900/80 text-slate-900 shadow-sm'
-              : 'text-slate-600 hover:text-slate-900'
+            ? 'bg-white dark:bg-slate-900/80 text-slate-900 shadow-sm'
+            : 'text-slate-600 hover:text-slate-900'
             }`}
         >
           <Zap className="w-4 h-4" />

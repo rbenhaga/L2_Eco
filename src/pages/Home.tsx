@@ -85,7 +85,7 @@ function ModuleProgressCard({ module }: { module: ModuleProgress }) {
 
     return (
         <Link to={module.href} className="no-underline group focus-visible:outline-none">
-            <Card className="p-5 xl:p-6 h-full min-h-[140px] hover:bg-muted/30 transition-colors group-focus-visible:ring-2 group-focus-visible:ring-ring">
+            <Card className="p-5 xl:p-6 h-full min-h-[140px] hover:bg-muted/40 dark:hover:bg-muted/60 transition-colors group-focus-visible:ring-2 group-focus-visible:ring-ring">
                 <div className="flex flex-col h-full">
                     <div className="flex items-start gap-3 mb-4">
                         <div className={`w-10 h-10 rounded-lg ${config.iconBgLight} flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200`}>
@@ -112,9 +112,9 @@ function ModuleProgressCard({ module }: { module: ModuleProgress }) {
                             <span className="text-muted-foreground">{module.completed}/{module.total} chapitres</span>
                             <span className="font-semibold text-foreground">{module.progress}%</span>
                         </div>
-                        <div className="h-2 bg-muted/60 dark:bg-muted/50 rounded-full overflow-hidden">
+                        <div className="h-2 bg-muted/60 dark:bg-muted/70 rounded-full overflow-hidden ring-1 ring-border/20 dark:ring-border/30">
                             <div 
-                                className="h-full bg-foreground/70 dark:bg-foreground/55 rounded-full transition-all duration-300"
+                                className="h-full bg-foreground/80 dark:bg-foreground/75 rounded-full transition-all duration-300"
                                 style={{ width: `${module.progress}%` }}
                             />
                         </div>
@@ -138,7 +138,7 @@ function ContentItemRow({ item }: { item: ContentItem }) {
     return (
         <Link 
             to={item.href} 
-            className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 py-3.5 min-h-[52px] hover:bg-muted/30 -mx-1 px-1 rounded-lg transition-colors no-underline group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 py-3.5 min-h-[52px] hover:bg-muted/40 dark:hover:bg-muted/60 -mx-1 px-1 rounded-lg transition-colors no-underline group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
             <div className="flex items-center gap-3 min-w-0 flex-1">
                 <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${typeStyle} shrink-0`}>
@@ -147,7 +147,7 @@ function ContentItemRow({ item }: { item: ContentItem }) {
                 <span className="text-xs text-muted-foreground shrink-0 hidden sm:inline">
                     {config.name}
                 </span>
-                <span className="flex-1 text-sm xl:text-base text-foreground/80 truncate group-hover:text-foreground transition-colors">
+                <span className="flex-1 text-sm xl:text-base text-foreground/80 sm:truncate leading-snug group-hover:text-foreground transition-colors">
                     {item.title}
                 </span>
             </div>
@@ -161,7 +161,7 @@ function DeadlineItemRow({ item }: { item: DeadlineItem }) {
     return (
         <Link 
             to={item.href} 
-            className="flex items-center gap-3 py-3 min-h-[48px] hover:bg-muted/30 -mx-1 px-1 rounded-lg transition-colors no-underline group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center gap-3 py-3 min-h-[48px] hover:bg-muted/40 dark:hover:bg-muted/60 -mx-1 px-1 rounded-lg transition-colors no-underline group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
             <Calendar size={16} className="text-muted-foreground shrink-0" />
             <span className="flex-1 text-sm xl:text-base text-foreground/80 truncate group-hover:text-foreground transition-colors">

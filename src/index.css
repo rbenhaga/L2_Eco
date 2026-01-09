@@ -26,7 +26,7 @@
   --color-muted: #F0F0F0;
   --color-muted-foreground: #6B6B6B;
   
-  --color-accent: #818CF8;
+  --color-accent: #4F46E5;
   --color-accent-foreground: #FFFFFF;
   
   --color-primary: #171717;
@@ -61,7 +61,7 @@ html.dark,
   --color-muted-foreground: #A1A1AA;
   
   --color-accent: #A78BFA;
-  --color-accent-foreground: #FFFFFF;
+  --color-accent-foreground: #09090B;
   
   --color-primary: #FAFAFA;
   --color-primary-foreground: #18181B;

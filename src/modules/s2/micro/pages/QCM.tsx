@@ -45,6 +45,7 @@ export function QCM() {
       config={qcmConfig}
       subjectColor="#10b981"
       backLink="/micro"
+      subjectId="micro"
     />
   );
 }

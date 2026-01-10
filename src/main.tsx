@@ -26,6 +26,9 @@ function App() {
         {/* Public Routes - No layout */}
         <Route path="/login" element={<LoginPage />} />
 
+        {/* Design page - standalone, no layout (dev only) */}
+        {import.meta.env.DEV && <Route path="/design" element={<DesignSystemPage />} />}
+
         {/* Protected Routes with AppLayout */}
         <Route path="/*" element={
           <ProtectedRoute>
@@ -33,7 +36,6 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/subscription" element={<SubscriptionPage />} />
-                {import.meta.env.DEV && <Route path="/design" element={<DesignSystemPage />} />}
 
                 {/* Module Routes */}
                 <Route path="/macro/*" element={<MacroRoutes />} />

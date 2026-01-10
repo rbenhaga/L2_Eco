@@ -34,6 +34,7 @@ export default function SocioQCM() {
       config={qcmConfig}
       subjectColor="#8b5cf6"
       backLink="/socio"
+      subjectId="socio"
     />
   );
 }

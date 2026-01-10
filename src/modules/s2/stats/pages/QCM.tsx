@@ -46,6 +46,7 @@ export function QCM() {
       config={qcmConfig}
       subjectColor="#3b82f6"
       backLink="/stats"
+      subjectId="stats"
     />
   );
 }

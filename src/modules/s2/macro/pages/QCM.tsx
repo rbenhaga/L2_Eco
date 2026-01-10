@@ -13,6 +13,7 @@ export function QCM() {
       config={qcmData as QCMConfig}
       subjectColor="#3b82f6"
       backLink="/macro"
+      subjectId="macro"
     />
   );
 }

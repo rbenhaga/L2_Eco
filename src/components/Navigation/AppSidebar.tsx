@@ -1,170 +1,186 @@
-import { 
+import {
     Home,
-    BookOpen,
-    LogOut,
-    ChevronRight
+    Library,
+    TrendingUp,
+    PieChart,
+    BarChart3,
+    Users,
+    Settings,
+    LogOut
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../../utils/cn';
 import { useAuth } from '../../context/AuthContext';
+
+/**  
+ * AppSidebar - Simplified Navigation
+ * 
+ * Structure:
+ * 1. Principal (Accueil, Bibliothèque)
+ * 2. Matières (Macro, Micro, Stats, Socio)
+ * 3. Footer (User + Settings)
+ */
 
 interface NavItemProps {
     to: string;
     icon: React.ElementType;
     label: string;
     isActive?: boolean;
-    badge?: string;
 }
 
-interface ModuleItemProps {
+interface CourseItemProps {
     to: string;
     label: string;
+    icon: React.ElementType;
     isActive?: boolean;
 }
 
-const modules = [
-    { to: '/macro', label: 'Macroéconomie' },
-    { to: '/micro', label: 'Microéconomie' },
-    { to: '/stats', label: 'Statistiques' },
-    { to: '/socio', label: 'Sociologie' },
-];
-
-
-
-function NavItem({ to, icon: Icon, label, isActive, badge }: NavItemProps) {
+function NavItem({ to, icon: Icon, label, isActive }: NavItemProps) {
     return (
         <Link
             to={to}
             className={cn(
-                "flex items-center gap-3 px-3 py-2 min-h-[40px] rounded-lg text-[13px] font-medium transition-colors no-underline",
-                isActive 
-                    ? "bg-gray-100 dark:bg-white/[0.06] text-gray-900 dark:text-white" 
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/[0.03]"
+                "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
+                isActive
+                    ? "bg-accent text-accent-foreground"
+                    : "text-foreground hover:bg-muted"
             )}
         >
-            <Icon size={16} className={isActive ? "text-gray-700 dark:text-gray-200" : "text-gray-400 dark:text-gray-500"} />
-            <span className="flex-1">{label}</span>
-            {badge && (
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400">
-                    {badge}
-                </span>
-            )}
+            <Icon size={18} strokeWidth={2} />
+            <span>{label}</span>
         </Link>
     );
 }
 
-function ModuleItem({ to, label, isActive }: ModuleItemProps) {
+function CourseItem({ to, label, icon: Icon, isActive }: CourseItemProps) {
     return (
         <Link
             to={to}
             className={cn(
-                "group flex items-center gap-3 px-3 py-2 min-h-[40px] rounded-lg text-[13px] transition-colors no-underline",
-                isActive 
-                    ? "bg-gray-100 dark:bg-white/[0.06] text-gray-900 dark:text-white font-medium" 
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/[0.03]"
+                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
+                isActive
+                    ? "bg-accent text-accent-foreground"
+                    : "text-foreground hover:bg-muted"
             )}
         >
-            <span className="flex-1">{label}</span>
-            <ChevronRight 
-                size={12} 
-                className={cn(
-                    "text-gray-400 dark:text-gray-500 transition-opacity",
-                    isActive ? "opacity-50" : "opacity-0 group-hover:opacity-50"
-                )} 
-            />
+            <Icon size={18} strokeWidth={isActive ? 2 : 1.5} />
+            <span>{label}</span>
         </Link>
     );
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
     return (
-        <div className="px-3 py-2">
-            <span className="text-[11px] font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wider">
-                {children}
-            </span>
-        </div>
+        <p className="px-3 pt-4 pb-2 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+            {children}
+        </p>
     );
 }
+
+const courses = [
+    { to: '/macro', label: 'Macroéconomie', icon: TrendingUp },
+    { to: '/micro', label: 'Microéconomie', icon: PieChart },
+    { to: '/stats', label: 'Statistiques', icon: BarChart3 },
+    { to: '/socio', label: 'Sociologie', icon: Users },
+];
 
 export function AppSidebar() {
     const location = useLocation();
     const { user, signOut } = useAuth();
 
     const isHome = location.pathname === '/';
-    const isCours = location.pathname.startsWith('/cours');
+    const isLibrary = location.pathname.startsWith('/cours') || location.pathname.startsWith('/library');
 
     return (
-        <aside className="flex flex-col h-full bg-[#F7F7F8] dark:bg-[#0C0C0D] shadow-[inset_-1px_0_0_rgba(0,0,0,0.04)] dark:shadow-[inset_-1px_0_0_rgba(255,255,255,0.04)]">
+        <aside className="flex flex-col h-full bg-(--color-sidebar) border-r border-border">
             {/* Logo */}
-            <div className="h-14 flex items-center px-4">
-                <Link to="/" className="flex items-center gap-2 no-underline">
-                    <div className="w-6 h-6 rounded-md bg-gray-900 dark:bg-white flex items-center justify-center">
-                        <span className="text-white dark:text-gray-900 font-bold text-[10px]">R</span>
+            <div className="h-16 flex items-center px-4 border-b border-border">
+                <Link to="/" className="flex items-center gap-2.5 no-underline">
+                    <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
+                        <span className="text-accent-foreground font-black text-sm">R</span>
                     </div>
-                    <span className="font-semibold text-gray-900 dark:text-white text-sm tracking-tight">
-                        RevP2
-                    </span>
+                    <span className="font-semibold text-foreground">RevP2</span>
                 </Link>
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 overflow-y-auto py-2 px-2 space-y-4">
-                {/* Main */}
-                <div className="space-y-0.5">
-                    <SectionLabel>Menu</SectionLabel>
-                    <NavItem to="/" icon={Home} label="Accueil" isActive={isHome} />
-                    <NavItem to="/cours" icon={BookOpen} label="Mes Cours" isActive={isCours} badge="4" />
+            <nav className="flex-1 overflow-y-auto py-4 px-3">
+                {/* Principal */}
+                <div className="space-y-1">
+                    <NavItem
+                        to="/"
+                        icon={Home}
+                        label="Accueil"
+                        isActive={isHome}
+                    />
+                    <NavItem
+                        to="/cours"
+                        icon={Library}
+                        label="Bibliothèque"
+                        isActive={isLibrary}
+                    />
                 </div>
 
-                {/* Modules */}
-                <div className="space-y-0.5">
-                    <SectionLabel>Modules</SectionLabel>
-                    {modules.map((module) => (
-                        <ModuleItem
-                            key={module.to}
-                            to={module.to}
-                            label={module.label}
-                            isActive={location.pathname.startsWith(module.to)}
-                        />
-                    ))}
+                {/* Matières */}
+                <div>
+                    <SectionLabel>Matières</SectionLabel>
+                    <div className="space-y-1">
+                        {courses.map((course) => (
+                            <CourseItem
+                                key={course.to}
+                                to={course.to}
+                                label={course.label}
+                                icon={course.icon}
+                                isActive={location.pathname.startsWith(course.to)}
+                            />
+                        ))}
+                    </div>
                 </div>
             </nav>
 
-            {/* User Footer */}
-            <div className="p-3">
+            {/* Footer */}
+            <div className="p-3 border-t border-border">
                 {user ? (
-                    <div className="space-y-1">
+                    <div className="space-y-2">
+                        {/* User */}
                         <div className="flex items-center gap-2.5 px-2 py-1.5">
-                            <div className="w-7 h-7 rounded-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center overflow-hidden">
+                            <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center overflow-hidden shrink-0">
                                 {user.photoURL ? (
                                     <img src={user.photoURL} alt="" className="w-full h-full object-cover" />
                                 ) : (
-                                    <span className="text-[10px] font-medium text-gray-600 dark:text-gray-300">
+                                    <span className="text-xs font-semibold text-muted-foreground">
                                         {user.displayName?.charAt(0) || 'U'}
                                     </span>
                                 )}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-[13px] font-medium text-gray-900 dark:text-white truncate">
+                                <p className="text-sm font-medium text-foreground truncate">
                                     {user.displayName || 'Étudiant'}
-                                </p>
-                                <p className="text-[11px] text-gray-500 dark:text-gray-500 truncate">
-                                    L2 Économie
                                 </p>
                             </div>
                         </div>
-                        <button
-                            onClick={signOut}
-                            className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-[13px] text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
-                        >
-                            <LogOut size={14} />
-                            <span>Déconnexion</span>
-                        </button>
+
+                        {/* Actions */}
+                        <div className="flex gap-1.5">
+                            <Link
+                                to="/settings"
+                                className="flex-1 flex items-center justify-center px-2 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors no-underline"
+                            >
+                                <Settings size={16} />
+                            </Link>
+                            <button
+                                onClick={signOut}
+                                className="flex items-center justify-center px-2 py-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                                title="Déconnexion"
+                            >
+                                <LogOut size={16} />
+                            </button>
+                        </div>
                     </div>
                 ) : (
                     <Link
                         to="/login"
-                        className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors no-underline"
+                        className="flex items-center justify-center px-3 py-2.5 rounded-lg bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 transition-colors no-underline"
                     >
                         Se connecter
                     </Link>

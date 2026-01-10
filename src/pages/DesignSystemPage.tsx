@@ -1,177 +1,193 @@
-import { Button } from "../components/ui/Button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/Card"
-import { Input } from "../components/ui/Input"
-import { Label } from "../components/ui/Label"
-import { Badge } from "../components/ui/Badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/Tabs"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/Dialog"
-import { Skeleton } from "../components/ui/Skeleton"
-import { ThemeToggle } from "../components/ThemeToggle"
+/**
+ * Agora Premium Template — Main Entry Point
+ * 
+ * Direction: Apple/Notion aesthetic with unified token system
+ * All design tokens are centralized in index.css
+ */
 
-export default function DesignSystemPage() {
+import { useState, useMemo } from "react";
+import { cx } from "./design/helpers";
+import { AppBackground } from "./design/background";
+import { Topbar, Navbar, Drawer, DrawerHeader, MobileBottomNav, SearchBar } from "./design/navigation";
+import { DashboardPage, LibraryPage, ActivityPage, CoursePage } from "./design/pages";
+import { COURSES } from "./design/data";
+import type { Page, CourseKey, Course } from "./design/types";
+
+export default function AgoraPremiumTemplate() {
+    const [page, setPage] = useState<Page>("dashboard");
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [dark, setDark] = useState(false);
+    const [activeCourseKey, setActiveCourseKey] = useState<CourseKey>("macro");
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+    const title = useMemo(() => {
+        if (page === "dashboard") return "Accueil";
+        if (page === "library") return "Bibliothèque";
+        if (page === "activity") return "Activité";
+        return "Cours";
+    }, [page]);
+
+    const activeCourse = useMemo(
+        () => COURSES.find((c: Course) => c.key === activeCourseKey) ?? COURSES[0],
+        [activeCourseKey]
+    );
+
     return (
-        <div className="min-h-screen bg-background text-foreground p-8 space-y-12">
-            <header className="flex items-center justify-between border-b pb-6">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Design System</h1>
-                    <p className="text-muted-foreground mt-2">
-                        Verification page for tokens, primitives, and accessibility.
-                    </p>
-                </div>
-                <ThemeToggle />
-            </header>
+        <div className={cx("min-h-screen", dark && "dark")}>
+            <AppBackground dark={dark} />
 
-            <section className="space-y-6">
-                <h2 className="text-2xl font-semibold">Buttons</h2>
-                <div className="flex flex-wrap gap-4">
-                    <Button>Primary</Button>
-                    <Button variant="secondary">Secondary</Button>
-                    <Button variant="outline">Outline</Button>
-                    <Button variant="ghost">Ghost</Button>
-                    <Button variant="destructive">Destructive</Button>
-                    <Button disabled>Disabled</Button>
-                </div>
-                <div className="flex flex-wrap gap-4">
-                    <Button size="sm">Small</Button>
-                    <Button size="default">Default</Button>
-                    <Button size="lg">Large</Button>
-                </div>
-            </section>
-
-            <section className="space-y-6">
-                <h2 className="text-2xl font-semibold">Badges</h2>
-                <div className="flex flex-wrap gap-4">
-                    <Badge>Default</Badge>
-                    <Badge variant="secondary">Secondary</Badge>
-                    <Badge variant="outline">Outline</Badge>
-                    <Badge variant="destructive">Destructive</Badge>
-                </div>
-            </section>
-
-            <section className="space-y-6">
-                <h2 className="text-2xl font-semibold">Inputs</h2>
-                <div className="max-w-sm space-y-4">
-                    <div className="grid w-full items-center gap-1.5">
-                        <Label htmlFor="email">Email</Label>
-                        <Input type="email" id="email" placeholder="Email" />
+            {/* Desktop layout */}
+            <div className="hidden lg:flex h-screen">
+                {/* Sidebar */}
+                <aside 
+                    className={cx(
+                        "shrink-0 border-r border-[var(--color-border)] bg-[var(--color-surface-raised)] shadow-[inset_-1px_0_0_rgba(0,0,0,0.05)] dark:shadow-[inset_-1px_0_0_rgba(255,255,255,0.05)] transition-all duration-300",
+                        sidebarCollapsed ? "w-[72px]" : "w-[280px]"
+                    )}
+                >
+                    <div className="h-full overflow-auto">
+                        <Navbar
+                            page={page}
+                            setPage={setPage}
+                            activeCourseKey={activeCourseKey}
+                            courses={COURSES}
+                            onOpenCourse={(k) => {
+                                setActiveCourseKey(k);
+                                setPage("course");
+                            }}
+                            collapsed={sidebarCollapsed}
+                            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+                        />
                     </div>
-                    <div className="grid w-full items-center gap-1.5">
-                        <Label htmlFor="disabled">Disabled</Label>
-                        <Input disabled id="disabled" placeholder="Disabled" />
-                    </div>
-                </div>
-            </section>
+                </aside>
 
-            <section className="space-y-6">
-                <h2 className="text-2xl font-semibold">Cards</h2>
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Card Title</CardTitle>
-                            <CardDescription>Card Description goes here.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <p>Card Content area. Background should be solid white/slate-950.</p>
-                        </CardContent>
-                        <CardFooter>
-                            <Button className="w-full">Action</Button>
-                        </CardFooter>
-                    </Card>
-                </div>
-            </section>
+                {/* Main content area */}
+                <div className="flex-1 flex flex-col min-w-0">
+                    {/* Topbar */}
+                    <Topbar 
+                        title={title} 
+                        onOpenSidebar={() => setDrawerOpen(true)} 
+                        dark={dark} 
+                        setDark={setDark}
+                        sidebarCollapsed={sidebarCollapsed}
+                    />
 
-            <section className="space-y-6">
-                <h2 className="text-2xl font-semibold">Tabs</h2>
-                <Tabs defaultValue="account" className="w-[400px]">
-                    <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="account">Account</TabsTrigger>
-                        <TabsTrigger value="password">Password</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="account">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Account</CardTitle>
-                                <CardDescription>Make changes to your account here.</CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-2">
-                                <div className="space-y-1">
-                                    <Label htmlFor="name">Name</Label>
-                                    <Input id="name" defaultValue="Pedro Duarte" />
-                                </div>
-                            </CardContent>
-                            <CardFooter>
-                                <Button>Save changes</Button>
-                            </CardFooter>
-                        </Card>
-                    </TabsContent>
-                    <TabsContent value="password">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Password</CardTitle>
-                                <CardDescription>Change your password here.</CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-2">
-                                <div className="space-y-1">
-                                    <Label htmlFor="current">Current password</Label>
-                                    <Input id="current" type="password" />
-                                </div>
-                            </CardContent>
-                            <CardFooter>
-                                <Button>Save password</Button>
-                            </CardFooter>
-                        </Card>
-                    </TabsContent>
-                </Tabs>
-            </section>
-
-            <section className="space-y-6">
-                <h2 className="text-2xl font-semibold">Dialog</h2>
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button variant="outline">Open Dialog</Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-md">
-                        <DialogHeader>
-                            <DialogTitle>Share link</DialogTitle>
-                            <DialogDescription>
-                                Anyone who has this link will be able to view this.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <div className="flex items-center space-x-2">
-                            <div className="grid flex-1 gap-2">
-                                <Label htmlFor="link" className="sr-only">
-                                    Link
-                                </Label>
-                                <Input
-                                    id="link"
-                                    defaultValue="https://ui.shadcn.com/docs/installation"
-                                    readOnly
+                    {/* Content */}
+                    <main className="flex-1 overflow-auto bg-[var(--color-surface-base)]">
+                        <div className="mx-auto max-w-[960px] px-6 py-10 lg:px-10">
+                            {page === "dashboard" && (
+                                <DashboardPage
+                                    onOpenCourse={() => {
+                                        setPage("course");
+                                    }}
                                 />
-                            </div>
-                            <Button type="submit" size="sm" className="px-3">
-                                <span className="sr-only">Copy</span>
-                                Copy
-                            </Button>
+                            )}
+                            {page === "library" && (
+                                <LibraryPage
+                                    onOpenCourse={() => {
+                                        setPage("course");
+                                    }}
+                                />
+                            )}
+                            {page === "activity" && <ActivityPage />}
+                            {page === "course" && <CoursePage course={activeCourse} />}
                         </div>
-                        <DialogFooter className="sm:justify-start">
-                            <Button type="button" variant="secondary">
-                                Close
-                            </Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
-            </section>
-
-            <section className="space-y-6">
-                <h2 className="text-2xl font-semibold">Skeleton</h2>
-                <div className="flex items-center space-x-4">
-                    <Skeleton className="h-12 w-12 rounded-full" />
-                    <div className="space-y-2">
-                        <Skeleton className="h-4 w-[250px]" />
-                        <Skeleton className="h-4 w-[200px]" />
-                    </div>
+                    </main>
                 </div>
-            </section>
+            </div>
+
+            {/* Tablet layout (768-1024px) */}
+            <div className="hidden md:block lg:hidden">
+                <Topbar 
+                    title={title} 
+                    onOpenSidebar={() => setDrawerOpen(true)} 
+                    dark={dark} 
+                    setDark={setDark}
+                    sidebarCollapsed={false}
+                />
+                
+                <main className="pb-16 bg-[var(--color-surface-base)]">
+                    <div className="mx-auto max-w-[720px] px-6 py-8">
+                        <div className="mb-6">
+                            <SearchBar />
+                        </div>
+
+                        {page === "dashboard" && (
+                            <DashboardPage
+                                onOpenCourse={() => {
+                                    setPage("course");
+                                }}
+                            />
+                        )}
+                        {page === "library" && (
+                            <LibraryPage
+                                onOpenCourse={() => {
+                                    setPage("course");
+                                }}
+                            />
+                        )}
+                        {page === "activity" && <ActivityPage />}
+                        {page === "course" && <CoursePage course={activeCourse} />}
+                    </div>
+                </main>
+            </div>
+
+            {/* Mobile layout */}
+            <div className="md:hidden">
+                <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+                    <DrawerHeader onClose={() => setDrawerOpen(false)} />
+
+                    <Navbar
+                        page={page}
+                        setPage={(p) => {
+                            setPage(p);
+                            setDrawerOpen(false);
+                        }}
+                        activeCourseKey={activeCourseKey}
+                        courses={COURSES}
+                        onOpenCourse={(k) => {
+                            setActiveCourseKey(k);
+                            setPage("course");
+                            setDrawerOpen(false);
+                        }}
+                        collapsed={false}
+                        onToggleCollapse={() => {}}
+                    />
+                </Drawer>
+
+                <Topbar 
+                    title={title} 
+                    onOpenSidebar={() => setDrawerOpen(true)} 
+                    dark={dark} 
+                    setDark={setDark}
+                    sidebarCollapsed={false}
+                />
+
+                <main className="py-6 pb-24 bg-[var(--color-surface-base)] px-4">
+                    <div className="mb-4">
+                        <SearchBar />
+                    </div>
+
+                    {page === "dashboard" && (
+                        <DashboardPage
+                            onOpenCourse={() => {
+                                setPage("course");
+                            }}
+                        />
+                    )}
+                    {page === "library" && (
+                        <LibraryPage
+                            onOpenCourse={() => {
+                                setPage("course");
+                            }}
+                        />
+                    )}
+                    {page === "activity" && <ActivityPage />}
+                    {page === "course" && <CoursePage course={activeCourse} />}
+                </main>
+
+                <MobileBottomNav page={page} setPage={setPage} />
+            </div>
         </div>
-    )
+    );
 }

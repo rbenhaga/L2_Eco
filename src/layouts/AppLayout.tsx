@@ -1,87 +1,51 @@
 import { ReactNode, useState } from 'react';
-import { Menu, Search, Sun, Moon, Command, ChevronRight } from 'lucide-react';
+import { Menu, Search, Sun, Moon, Command } from 'lucide-react';
 import { AppSidebar } from '../components/Navigation/AppSidebar';
 import { MobileDrawer } from '../components/Navigation/MobileDrawer';
 import { SearchModal } from '../components/SearchModal';
+import { GradientBackground } from '../components/ui/GradientBackground';
 import { SearchProvider, useSearch } from '../context/SearchContext';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 
 interface AppLayoutProps {
     children: ReactNode;
 }
 
+// Page titles
 const pathLabels: Record<string, string> = {
     '': 'Accueil',
     'macro': 'Macroéconomie',
     'micro': 'Microéconomie',
     'stats': 'Statistiques',
     'socio': 'Sociologie',
-    'cours': 'Mes Cours',
-    'qcm': 'QCM',
-    'exercices': 'Exercices',
-    'revision': 'Révision',
+    'cours': 'Bibliothèque',
 };
-
-function Breadcrumb() {
-    const location = useLocation();
-    const segments = location.pathname.split('/').filter(Boolean);
-    
-    if (segments.length === 0) {
-        return (
-            <div className="flex items-center gap-1.5 text-sm">
-                <span className="text-muted-foreground">Espace étudiant</span>
-                <ChevronRight size={12} className="text-muted-foreground/50" />
-                <span className="text-foreground font-medium">Accueil</span>
-            </div>
-        );
-    }
-
-    return (
-        <div className="flex items-center gap-1.5 text-sm">
-            <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors no-underline">
-                Espace étudiant
-            </Link>
-            {segments.map((segment, idx) => {
-                const path = '/' + segments.slice(0, idx + 1).join('/');
-                const isLast = idx === segments.length - 1;
-                const label = pathLabels[segment] || segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
-                
-                return (
-                    <span key={path} className="flex items-center gap-1.5">
-                        <ChevronRight size={12} className="text-muted-foreground/50" />
-                        {isLast ? (
-                            <span className="text-foreground font-medium">{label}</span>
-                        ) : (
-                            <Link to={path} className="text-muted-foreground hover:text-foreground transition-colors no-underline">
-                                {label}
-                            </Link>
-                        )}
-                    </span>
-                );
-            })}
-        </div>
-    );
-}
 
 function TopBar({ onMobileMenuClick }: { onMobileMenuClick: () => void }) {
     const { open: openSearch } = useSearch();
     const { theme, setTheme } = useTheme();
+    const location = useLocation();
+
+    // Get page title
+    const segments = location.pathname.split('/').filter(Boolean);
+    const firstSegment = segments[0] || '';
+    const pageTitle = pathLabels[firstSegment] || 'RevP2';
 
     return (
         <header className="sticky top-0 z-30 h-14 flex items-center justify-between px-4 sm:px-6 bg-card/95 backdrop-blur-md border-b border-border">
-            {/* Left */}
+            {/* Left: Menu + Title */}
             <div className="flex items-center gap-3">
-                <button 
-                    onClick={onMobileMenuClick} 
+                <button
+                    onClick={onMobileMenuClick}
                     className="lg:hidden p-2 -ml-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     aria-label="Menu"
                 >
                     <Menu size={20} />
                 </button>
-                <div className="hidden md:block">
-                    <Breadcrumb />
-                </div>
+                <h1 className="text-base font-semibold text-foreground">
+                    {pageTitle}
+                </h1>
             </div>
 
             {/* Center: Search */}
@@ -98,7 +62,7 @@ function TopBar({ onMobileMenuClick }: { onMobileMenuClick: () => void }) {
                 </button>
             </div>
 
-            {/* Right */}
+            {/* Right: Theme + Search (mobile) */}
             <div className="flex items-center gap-1">
                 <button
                     onClick={openSearch}
@@ -108,8 +72,8 @@ function TopBar({ onMobileMenuClick }: { onMobileMenuClick: () => void }) {
                     <Search size={20} />
                 </button>
 
-                <button 
-                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} 
+                <button
+                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                     className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     aria-label={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
                 >
@@ -125,23 +89,28 @@ function AppLayoutContent({ children }: AppLayoutProps) {
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
     return (
-        <div className="min-h-screen bg-background text-foreground">
-            {/* Desktop Sidebar */}
-            <aside className="fixed inset-y-0 left-0 z-40 w-[240px] hidden lg:block">
-                <AppSidebar />
-            </aside>
+        <>
+            {/* Premium gradient background - at root level */}
+            <GradientBackground />
 
-            {/* Main Content */}
-            <div className="lg:ml-[240px] min-h-screen flex flex-col">
-                <TopBar onMobileMenuClick={() => setIsMobileDrawerOpen(true)} />
-                <main className="flex-1 p-4 sm:p-6 lg:p-8">
-                    {children}
-                </main>
+            <div className="min-h-screen text-foreground relative" style={{ backgroundColor: 'var(--color-background)' }}>
+                {/* Desktop Sidebar */}
+                <aside className="fixed inset-y-0 left-0 z-40 w-[240px] hidden lg:block">
+                    <AppSidebar />
+                </aside>
+
+                {/* Main Content */}
+                <div className="lg:ml-[240px] min-h-screen flex flex-col relative z-10">
+                    <TopBar onMobileMenuClick={() => setIsMobileDrawerOpen(true)} />
+                    <main className="flex-1 p-4 sm:p-6 lg:p-8">
+                        {children}
+                    </main>
+                </div>
+
+                <MobileDrawer isOpen={isMobileDrawerOpen} onClose={() => setIsMobileDrawerOpen(false)} />
+                <SearchModal isOpen={isOpen} onClose={close} />
             </div>
-
-            <MobileDrawer isOpen={isMobileDrawerOpen} onClose={() => setIsMobileDrawerOpen(false)} />
-            <SearchModal isOpen={isOpen} onClose={close} />
-        </div>
+        </>
     );
 }
 

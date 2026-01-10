@@ -5,17 +5,31 @@
  * 
  * FREE content includes:
  * - Home pages (/, /macro, /micro, /stats, /socio)
- * - Chapter 1 of each subject (/macro/chapitre-1, etc.)
- * - Revision sheet for Chapter 1 (/macro/revision-ch1, etc.)
- * - QCM page (but only Chapter 1 questions - to be handled separately)
+ * - FIRST chapter of each subject:
+ *   - /macro/chapitre-1 (first is chapter 1)
+ *   - /micro/chapitre-0 (first is chapter 0)
+ *   - /stats/chapitre-1 (first is chapter 1)
+ *   - /socio/chapitre1 (first is chapter 1, no hyphen)
+ * - Revision sheet for first chapter
+ * - QCM page (first chapter questions only)
  * - Subscription page
  * - Login page
  * 
  * PREMIUM content includes:
- * - Chapters 2, 3, 4, etc.
- * - Revision sheets for Chapters 2, 3, 4
+ * - All other chapters
+ * - Revision sheets for other chapters
  * - Exercices, Simulations
  */
+
+/**
+ * Map of subjects to their first (free) chapter patterns
+ */
+const FIRST_CHAPTERS: Record<string, RegExp> = {
+    macro: /\/macro\/chapitre-1$/,
+    micro: /\/micro\/chapitre-0$/,
+    stats: /\/stats\/chapitre-1$/,
+    socio: /\/socio\/chapitre1$/,   // Note: no hyphen in socio URLs
+};
 
 /**
  * Check if a URL path represents free content
@@ -34,10 +48,19 @@ export function isFreeContent(pathname: string): boolean {
         return true;
     }
 
-    // Free content patterns for chapter 1
+    // Check if this is the first chapter of any subject
+    for (const pattern of Object.values(FIRST_CHAPTERS)) {
+        if (pattern.test(path)) {
+            return true;
+        }
+    }
+
+    // Free content patterns
     const freePatterns = [
-        /\/chapitre-1$/,           // Chapter 1 of any subject
-        /\/revision-ch1$/,          // Revision sheet for Chapter 1
+        /\/macro\/revision-ch1$/,   // Revision for first chapters
+        /\/micro\/revision-ch0$/,
+        /\/stats\/revision-ch1$/,
+        /\/socio\/revision-ch1$/,
         /\/revision$/,              // Revision index page (shows all chapters)
         /\/qcm$/,                   // QCM page (questions filtered separately)
     ];
@@ -83,9 +106,35 @@ export function getContentTitle(pathname: string): string {
 }
 
 /**
- * Check if a QCM question is free (only Chapter 1 questions are free)
+ * Check if a QCM question is free based on subject and chapter
+ * 
+ * First chapter per subject:
+ * - macro: 'islm' (text-based ID) or numeric 1
+ * - micro: '0' or 'ch0' (chapter 0)
+ * - stats, socio: '1' or 'ch1' (chapter 1)
  */
-export function isQcmQuestionFree(chapterId: number | string): boolean {
-    const chapter = typeof chapterId === 'string' ? parseInt(chapterId, 10) : chapterId;
-    return chapter === 1;
+export function isQcmQuestionFree(chapterId: number | string, subject?: string): boolean {
+    const id = String(chapterId).toLowerCase().trim();
+
+    // Handle micro: first chapter is 0
+    if (subject === 'micro') {
+        return id === '0' || id === 'ch0' || id.startsWith('ch0-') || id.startsWith('0-');
+    }
+
+    // Handle macro: first chapter is 'islm' (text-based)
+    if (subject === 'macro') {
+        return id === 'islm' || id === '1' || id === 'ch1' || id.startsWith('ch1-') || id.startsWith('1-');
+    }
+
+    // Handle all other subjects (stats, socio): first chapter is 1
+    const numericId = parseInt(id.replace(/\D/g, ''), 10);
+    return numericId === 1 || id === 'ch1' || id.startsWith('ch1-');
 }
+
+/**
+ * Get the first free chapter number for a given subject
+ */
+export function getFirstFreeChapter(subject: string): number {
+    return subject === 'micro' ? 0 : 1;
+}
+

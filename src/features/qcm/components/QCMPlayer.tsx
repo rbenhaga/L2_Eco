@@ -31,12 +31,15 @@ interface QCMPlayerProps {
     config: QCMConfig;
     subjectColor?: string;
     backLink?: string;
+    /** Subject identifier for content gating (e.g., 'macro', 'micro') */
+    subjectId?: string;
 }
 
 export function QCMPlayer({
     config,
     subjectColor = '#3b82f6',
     backLink,
+    subjectId,
 }: QCMPlayerProps) {
     const [viewState, setViewState] = useState<ViewState>('selector');
     const [selectedChapterId, setSelectedChapterId] = useState<string | undefined>();
@@ -116,6 +119,7 @@ export function QCMPlayer({
                     selectedChapterId={selectedChapterId}
                     onSelectChapter={handleSelectChapter}
                     onStartAll={handleStartAll}
+                    subject={subjectId}
                 />
             </div>
         );

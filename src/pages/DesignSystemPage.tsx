@@ -5,20 +5,30 @@
  * All design tokens are centralized in index.css
  */
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, lazy, Suspense } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { cx } from "./design/helpers";
 import { AppBackground } from "./design/background";
 import { Topbar, Navbar, Drawer, DrawerHeader, MobileBottomNav, SearchBar } from "./design/navigation";
-import { DashboardPage, LibraryPage, ActivityPage, CoursePage } from "./design/pages";
+import { LoadingState } from "./design/states";
 import { COURSES } from "./design/data";
 import type { Page, CourseKey, Course } from "./design/types";
+
+// Lazy load pages for code splitting
+const DashboardPage = lazy(() => import("./design/pages").then(m => ({ default: m.DashboardPage })));
+const LibraryPage = lazy(() => import("./design/pages").then(m => ({ default: m.LibraryPage })));
+const ActivityPage = lazy(() => import("./design/pages").then(m => ({ default: m.ActivityPage })));
+const CoursePage = lazy(() => import("./design/pages").then(m => ({ default: m.CoursePage })));
+
+type SidebarMode = 'expanded' | 'compact' | 'mini';
 
 export default function AgoraPremiumTemplate() {
     const [page, setPage] = useState<Page>("dashboard");
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [dark, setDark] = useState(false);
     const [activeCourseKey, setActiveCourseKey] = useState<CourseKey>("macro");
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [sidebarMode, setSidebarMode] = useState<SidebarMode>('expanded');
+    const [searchOpen, setSearchOpen] = useState(false);
 
     // Apply dark class to document root
     useState(() => {
@@ -27,6 +37,25 @@ export default function AgoraPremiumTemplate() {
         } else {
             document.documentElement.classList.remove('dark');
         }
+    });
+
+    // Keyboard shortcuts
+    useState(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // ⌘K or Ctrl+K to open search
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                setSearchOpen(true);
+            }
+            // Escape to close search or drawer
+            if (e.key === 'Escape') {
+                if (searchOpen) setSearchOpen(false);
+                if (drawerOpen) setDrawerOpen(false);
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
     });
 
     // Update dark class when dark state changes
@@ -38,6 +67,19 @@ export default function AgoraPremiumTemplate() {
             document.documentElement.classList.remove('dark');
         }
     };
+
+    // Keyboard shortcuts
+    useState(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // Escape to close drawer
+            if (e.key === 'Escape') {
+                setDrawerOpen(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    });
 
     const title = useMemo(() => {
         if (page === "dashboard") return "Accueil";
@@ -61,7 +103,7 @@ export default function AgoraPremiumTemplate() {
                 <aside 
                     className={cx(
                         "shrink-0 border-r border-[var(--color-border)] bg-[var(--color-surface-raised)] shadow-[inset_-1px_0_0_rgba(0,0,0,0.05)] dark:shadow-[inset_-1px_0_0_rgba(255,255,255,0.05)] transition-all duration-300",
-                        sidebarCollapsed ? "w-[72px]" : "w-[280px]"
+                        sidebarMode === 'mini' ? "w-[72px]" : sidebarMode === 'compact' ? "w-[200px]" : "w-[280px]"
                     )}
                 >
                     <div className="h-full overflow-auto">
@@ -74,8 +116,13 @@ export default function AgoraPremiumTemplate() {
                                 setActiveCourseKey(k);
                                 setPage("course");
                             }}
-                            collapsed={sidebarCollapsed}
-                            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+                            sidebarMode={sidebarMode}
+                            onCycleSidebarMode={() => {
+                                setSidebarMode(prev => 
+                                    prev === 'expanded' ? 'compact' : 
+                                    prev === 'compact' ? 'mini' : 'expanded'
+                                );
+                            }}
                         />
                     </div>
                 </aside>
@@ -88,28 +135,39 @@ export default function AgoraPremiumTemplate() {
                         onOpenSidebar={() => setDrawerOpen(true)} 
                         dark={dark} 
                         setDark={toggleDark}
-                        sidebarCollapsed={sidebarCollapsed}
                     />
 
                     {/* Content */}
                     <main className="flex-1 overflow-auto bg-[var(--color-surface-base)]">
                         <div className="mx-auto max-w-[960px] px-6 py-10 lg:px-10">
-                            {page === "dashboard" && (
-                                <DashboardPage
-                                    onOpenCourse={() => {
-                                        setPage("course");
-                                    }}
-                                />
-                            )}
-                            {page === "library" && (
-                                <LibraryPage
-                                    onOpenCourse={() => {
-                                        setPage("course");
-                                    }}
-                                />
-                            )}
-                            {page === "activity" && <ActivityPage />}
-                            {page === "course" && <CoursePage course={activeCourse} />}
+                            <Suspense fallback={<LoadingState message="Chargement..." />}>
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={page}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        {page === "dashboard" && (
+                                            <DashboardPage
+                                                onOpenCourse={() => {
+                                                    setPage("course");
+                                                }}
+                                            />
+                                        )}
+                                        {page === "library" && (
+                                            <LibraryPage
+                                                onOpenCourse={() => {
+                                                    setPage("course");
+                                                }}
+                                            />
+                                        )}
+                                        {page === "activity" && <ActivityPage />}
+                                        {page === "course" && <CoursePage course={activeCourse} />}
+                                    </motion.div>
+                                </AnimatePresence>
+                            </Suspense>
                         </div>
                     </main>
                 </div>
@@ -122,7 +180,6 @@ export default function AgoraPremiumTemplate() {
                     onOpenSidebar={() => setDrawerOpen(true)} 
                     dark={dark} 
                     setDark={toggleDark}
-                    sidebarCollapsed={false}
                 />
                 
                 <main className="pb-16 bg-[var(--color-surface-base)]">
@@ -131,22 +188,34 @@ export default function AgoraPremiumTemplate() {
                             <SearchBar />
                         </div>
 
-                        {page === "dashboard" && (
-                            <DashboardPage
-                                onOpenCourse={() => {
-                                    setPage("course");
-                                }}
-                            />
-                        )}
-                        {page === "library" && (
-                            <LibraryPage
-                                onOpenCourse={() => {
-                                    setPage("course");
-                                }}
-                            />
-                        )}
-                        {page === "activity" && <ActivityPage />}
-                        {page === "course" && <CoursePage course={activeCourse} />}
+                        <Suspense fallback={<LoadingState message="Chargement..." />}>
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={page}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    {page === "dashboard" && (
+                                        <DashboardPage
+                                            onOpenCourse={() => {
+                                                setPage("course");
+                                            }}
+                                        />
+                                    )}
+                                    {page === "library" && (
+                                        <LibraryPage
+                                            onOpenCourse={() => {
+                                                setPage("course");
+                                            }}
+                                        />
+                                    )}
+                                    {page === "activity" && <ActivityPage />}
+                                    {page === "course" && <CoursePage course={activeCourse} />}
+                                </motion.div>
+                            </AnimatePresence>
+                        </Suspense>
                     </div>
                 </main>
             </div>
@@ -169,8 +238,8 @@ export default function AgoraPremiumTemplate() {
                             setPage("course");
                             setDrawerOpen(false);
                         }}
-                        collapsed={false}
-                        onToggleCollapse={() => {}}
+                        sidebarMode="expanded"
+                        onCycleSidebarMode={() => {}}
                     />
                 </Drawer>
 
@@ -179,7 +248,6 @@ export default function AgoraPremiumTemplate() {
                     onOpenSidebar={() => setDrawerOpen(true)} 
                     dark={dark} 
                     setDark={toggleDark}
-                    sidebarCollapsed={false}
                 />
 
                 <main className="py-6 pb-24 bg-[var(--color-surface-base)] px-4">
@@ -187,22 +255,34 @@ export default function AgoraPremiumTemplate() {
                         <SearchBar />
                     </div>
 
-                    {page === "dashboard" && (
-                        <DashboardPage
-                            onOpenCourse={() => {
-                                setPage("course");
-                            }}
-                        />
-                    )}
-                    {page === "library" && (
-                        <LibraryPage
-                            onOpenCourse={() => {
-                                setPage("course");
-                            }}
-                        />
-                    )}
-                    {page === "activity" && <ActivityPage />}
-                    {page === "course" && <CoursePage course={activeCourse} />}
+                    <Suspense fallback={<LoadingState message="Chargement..." />}>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={page}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                {page === "dashboard" && (
+                                    <DashboardPage
+                                        onOpenCourse={() => {
+                                            setPage("course");
+                                        }}
+                                    />
+                                )}
+                                {page === "library" && (
+                                    <LibraryPage
+                                        onOpenCourse={() => {
+                                            setPage("course");
+                                        }}
+                                    />
+                                )}
+                                {page === "activity" && <ActivityPage />}
+                                {page === "course" && <CoursePage course={activeCourse} />}
+                            </motion.div>
+                        </AnimatePresence>
+                    </Suspense>
                 </main>
 
                 <MobileBottomNav page={page} setPage={setPage} />

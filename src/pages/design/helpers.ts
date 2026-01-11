@@ -36,7 +36,8 @@ export const ICON_STROKE = {
 } as const;
 
 /* ============================================
-   COURSE METADATA (With Colors)
+   COURSE METADATA (With Colors - Palette épurée)
+   Apple/Notion style: 2-3 teintes principales
    ============================================ */
 export const COURSE_META: Record<
     CourseKey,
@@ -51,30 +52,30 @@ export const COURSE_META: Record<
     macro: {
         short: "Macro",
         icon: TrendingUp,
-        color: "var(--color-macro)",
-        colorLight: "var(--color-macro-light)",
-        gradient: "linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)",
+        color: "#0A84FF",           // Apple Blue
+        colorLight: "rgba(10, 132, 255, 0.12)",
+        gradient: "linear-gradient(135deg, #0A84FF 0%, #0066CC 100%)",
     },
     micro: {
         short: "Micro",
         icon: Target,
-        color: "var(--color-micro)",
-        colorLight: "var(--color-micro-light)",
-        gradient: "linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)",
+        color: "#BF5AF2",           // Apple Purple
+        colorLight: "rgba(191, 90, 242, 0.12)",
+        gradient: "linear-gradient(135deg, #BF5AF2 0%, #9F44D3 100%)",
     },
     stats: {
         short: "Stats",
         icon: Layers,
-        color: "var(--color-stats)",
-        colorLight: "var(--color-stats-light)",
-        gradient: "linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)",
+        color: "#5AC8FA",           // Apple Cyan
+        colorLight: "rgba(90, 200, 250, 0.12)",
+        gradient: "linear-gradient(135deg, #5AC8FA 0%, #32ADE6 100%)",
     },
     socio: {
         short: "Socio",
         icon: Users,
-        color: "var(--color-socio)",
-        colorLight: "var(--color-socio-light)",
-        gradient: "linear-gradient(135deg, #EC4899 0%, #DB2777 100%)",
+        color: "#FF375F",           // Apple Pink
+        colorLight: "rgba(255, 55, 95, 0.12)",
+        gradient: "linear-gradient(135deg, #FF375F 0%, #FF2D55 100%)",
     },
 };
 

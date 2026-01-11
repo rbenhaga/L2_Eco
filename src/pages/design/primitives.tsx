@@ -6,7 +6,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cx } from "./helpers";
-import { SPRING, tapScale } from "./animations";
+import { INTERACTION_PRESETS } from "../../design-tokens";
 
 export function Chip({ children, subtle }: { children: React.ReactNode; subtle?: boolean }) {
     return (
@@ -67,15 +67,8 @@ export function PremiumButton({
             onClick={onClick}
             disabled={disabled}
             className={cx(base, sizes, variants[variant])}
-            whileHover={
-                disabled
-                    ? undefined
-                    : {
-                          y: -1,
-                          transition: SPRING.snappy,
-                      }
-            }
-            whileTap={disabled ? undefined : tapScale}
+            whileHover={disabled ? undefined : { y: -1, transition: { duration: 0.15 } }}
+            whileTap={disabled ? undefined : INTERACTION_PRESETS.buttonTap}
         >
             {left}
             {children}
@@ -138,17 +131,7 @@ export function Surface({
                 styles.shadow,
                 className
             )}
-            whileHover={
-                hover
-                    ? {
-                          y: -2,
-                          boxShadow: variant === "elevated" 
-                              ? "var(--shadow-lg)" 
-                              : "var(--shadow-md)",
-                          transition: SPRING.smooth,
-                      }
-                    : undefined
-            }
+            whileHover={hover ? INTERACTION_PRESETS.cardHover : undefined}
         >
             {/* Inner highlight (premium depth) - Only for card/elevated */}
             {(variant === "card" || variant === "elevated") && (
@@ -178,10 +161,7 @@ export function IconPill({ children, className }: { children: React.ReactNode; c
                 "inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-border-soft)] bg-[var(--color-surface-overlay)] shadow-[var(--shadow-xs)]",
                 className
             )}
-            whileHover={{
-                scale: 1.05,
-                transition: SPRING.snappy,
-            }}
+            whileHover={INTERACTION_PRESETS.iconBounce}
         >
             {children}
         </motion.span>
@@ -194,11 +174,8 @@ export function NewBadge() {
             className="inline-flex items-center rounded-lg border border-[var(--color-accent)]/20 bg-gradient-to-r from-[var(--color-accent)]/10 to-[var(--color-accent)]/5 px-2 py-0.5 text-xs font-semibold text-[var(--color-accent)] shadow-[var(--shadow-xs)]"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={SPRING.bouncy}
-            whileHover={{
-                scale: 1.05,
-                transition: SPRING.snappy,
-            }}
+            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            whileHover={INTERACTION_PRESETS.iconBounce}
         >
             <span className="relative flex h-1.5 w-1.5 mr-1.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-accent)] opacity-75"></span>

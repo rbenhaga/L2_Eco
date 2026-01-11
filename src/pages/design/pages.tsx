@@ -10,7 +10,10 @@ import { cx, COURSE_META, TYPE_ICON, RESOURCE_ICON, isNewLabel, ICON_SIZES, ICON
 import { Chip, PremiumButton, Surface, IconPill, NewBadge } from "./primitives";
 import { COURSES, UPDATES, COURSE_RESOURCES } from "./data";
 import type { Course, UpdateItem, ResourceItem, ResourceType } from "./types";
-import { SPRING, staggerContainer, staggerItem } from "./animations";
+import { staggerContainer, staggerItem } from "./animations";
+import { INTERACTION_PRESETS } from "../../design-tokens";
+import { shouldReduceAnimations } from "./performance";
+import { usePerformanceMode } from "../../hooks/useReducedMotion";
 
 // --- PremiumHeader ---
 function PremiumHeader({
@@ -37,26 +40,31 @@ function PremiumHeader({
 function ContinueHero({ course, onContinue }: { course: Course; onContinue: () => void }) {
     const meta = COURSE_META[course.key];
     const Icon = meta.icon;
+    const reduceAnimations = shouldReduceAnimations();
 
     return (
         <div className="relative group">
-            {/* Ambient glow */}
-            <div
-                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl -z-10"
-                style={{
-                    background: meta.gradient,
-                    filter: "blur(32px)",
-                }}
-                aria-hidden="true"
-            />
-
-            <Surface hover className="p-4 sm:p-6 relative overflow-hidden">
-                {/* Gradient overlay */}
+            {/* Ambient glow - disabled on low-end devices */}
+            {!reduceAnimations && (
                 <div
-                    className="absolute top-0 right-0 w-64 h-64 opacity-5 group-hover:opacity-10 transition-opacity duration-700 blur-3xl pointer-events-none"
-                    style={{ background: meta.gradient }}
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl -z-10"
+                    style={{
+                        background: meta.gradient,
+                        filter: "blur(32px)",
+                    }}
                     aria-hidden="true"
                 />
+            )}
+
+            <Surface hover className="p-4 sm:p-6 relative overflow-hidden">
+                {/* Gradient overlay - disabled on low-end devices */}
+                {!reduceAnimations && (
+                    <div
+                        className="absolute top-0 right-0 w-64 h-64 opacity-5 group-hover:opacity-10 transition-opacity duration-700 blur-3xl pointer-events-none"
+                        style={{ background: meta.gradient }}
+                        aria-hidden="true"
+                    />
+                )}
 
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between relative z-10">
                     <div className="min-w-0">
@@ -104,6 +112,7 @@ function CourseCard({ c, onOpen }: { c: Course; onOpen: () => void }) {
     const meta = COURSE_META[c.key];
     const Icon = meta.icon;
     const isLocked = c.locked;
+    const { shouldReduceMotion } = usePerformanceMode();
 
     return (
         <motion.button
@@ -116,25 +125,11 @@ function CourseCard({ c, onOpen }: { c: Course; onOpen: () => void }) {
                 "rounded-2xl will-change-transform",
                 isLocked ? "cursor-not-allowed opacity-60" : ""
             )}
-            whileHover={
-                isLocked
-                    ? undefined
-                    : {
-                          y: -4,
-                          transition: SPRING.smooth,
-                      }
-            }
-            whileTap={
-                isLocked
-                    ? undefined
-                    : {
-                          scale: 0.98,
-                          transition: SPRING.snappy,
-                      }
-            }
+            whileHover={isLocked || shouldReduceMotion ? undefined : INTERACTION_PRESETS.cardHover}
+            whileTap={isLocked || shouldReduceMotion ? undefined : INTERACTION_PRESETS.buttonTap}
         >
             {/* Glow effect on hover */}
-            {!isLocked && (
+            {!isLocked && !shouldReduceMotion && (
                 <motion.div
                     className="absolute inset-0 rounded-2xl -z-10"
                     style={{
@@ -155,14 +150,15 @@ function CourseCard({ c, onOpen }: { c: Course; onOpen: () => void }) {
                 )}
             >
                 {/* Subtle gradient overlay */}
-                <motion.div
-                    className="absolute top-0 right-0 w-32 h-32 blur-2xl pointer-events-none"
-                    style={{ background: meta.gradient }}
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 0.1 }}
-                    transition={{ duration: 0.5 }}
-                    aria-hidden="true"
-                />
+                {!shouldReduceMotion && (
+                    <motion.div
+                        className="absolute top-0 right-0 w-32 h-32 blur-2xl pointer-events-none"
+                        style={{ background: meta.gradient }}
+                        initial={{ opacity: 0 }}
+                        whileHover={INTERACTION_PRESETS.glowFade}
+                        aria-hidden="true"
+                    />
+                )}
 
                 <div className="flex items-start gap-3 relative z-10">
                     <motion.div
@@ -173,15 +169,7 @@ function CourseCard({ c, onOpen }: { c: Course; onOpen: () => void }) {
                                 ? "var(--color-surface-soft)"
                                 : `linear-gradient(135deg, ${meta.colorLight}, transparent)`,
                         }}
-                        whileHover={
-                            isLocked
-                                ? undefined
-                                : {
-                                      scale: 1.1,
-                                      rotate: 5,
-                                      transition: SPRING.bouncy,
-                                  }
-                        }
+                        whileHover={isLocked || shouldReduceMotion ? undefined : INTERACTION_PRESETS.iconBounce}
                     >
                         <Icon
                             size={ICON_SIZES.md}
@@ -246,8 +234,7 @@ function CourseCard({ c, onOpen }: { c: Course; onOpen: () => void }) {
                                     <motion.span
                                         className="inline-flex items-center gap-2 text-xs font-semibold"
                                         style={{ color: meta.color }}
-                                        whileHover={{ x: 2 }}
-                                        transition={SPRING.snappy}
+                                        whileHover={{ x: 2, transition: { duration: 0.15 } }}
                                     >
                                         Aller
                                         <ArrowRight size={14} />

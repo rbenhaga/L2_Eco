@@ -25,6 +25,8 @@ import { cx, COURSE_META, ICON_SIZES, ICON_STROKE } from "./helpers";
 import { Kbd } from "./primitives";
 import type { Page, Course, CourseKey } from "./types";
 
+export type SidebarMode = 'expanded' | 'compact' | 'mini';
+
 // --- SearchBar ---
 export function SearchBar() {
     return (
@@ -129,27 +131,29 @@ function NavLink({
     icon: Icon,
     label,
     onClick,
-    collapsed,
+    sidebarMode,
 }: {
     active?: boolean;
     icon: React.ElementType;
     label: string;
     onClick: () => void;
-    collapsed?: boolean;
+    sidebarMode?: SidebarMode;
 }) {
+    const isMini = sidebarMode === 'mini';
+    
     return (
         <button
             onClick={onClick}
             className={cx(
                 "relative w-full flex items-center gap-2.5 rounded-lg text-sm font-semibold transition-all duration-200",
-                collapsed ? "justify-center px-2 py-3" : "px-3 py-2.5",
+                isMini ? "justify-center px-2 py-3" : "px-3 py-2.5",
                 "min-h-[44px]",
                 active
                     ? "bg-[var(--color-surface-hover)] text-[var(--color-text-base)] shadow-[var(--shadow-xs)]"
                     : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-overlay)] hover:text-[var(--color-text-base)]"
             )}
             aria-current={active ? "page" : undefined}
-            title={collapsed ? label : undefined}
+            title={isMini ? label : undefined}
         >
             <Icon
                 size={ICON_SIZES.md}
@@ -159,7 +163,7 @@ function NavLink({
                     active ? "text-[var(--color-accent)]" : "text-[var(--color-text-muted)]"
                 )}
             />
-            {!collapsed && <span className="flex-1 truncate text-left">{label}</span>}
+            {!isMini && <span className="flex-1 truncate text-left">{label}</span>}
             
             {/* Active indicator - More visible and animated */}
             {active && (
@@ -185,9 +189,11 @@ function NavLink({
 }
 
 // --- CourseMiniRow ---
-function CourseMiniRow({ c, active, onOpen, collapsed }: { c: Course; active: boolean; onOpen: () => void; collapsed?: boolean }) {
+function CourseMiniRow({ c, active, onOpen, sidebarMode }: { c: Course; active: boolean; onOpen: () => void; sidebarMode?: SidebarMode }) {
     const meta = COURSE_META[c.key];
     const Icon = meta.icon;
+    const isCompact = sidebarMode === 'compact';
+    const isMini = sidebarMode === 'mini';
     
     return (
         <button
@@ -197,7 +203,7 @@ function CourseMiniRow({ c, active, onOpen, collapsed }: { c: Course; active: bo
             aria-label={c.locked ? `${c.title} - Contenu premium verrouillé` : `Ouvrir ${c.title}`}
             className={cx(
                 "w-full rounded-lg text-left transition-all duration-200 min-h-[44px]",
-                collapsed ? "px-2 py-3 flex justify-center" : "px-3 py-2.5",
+                isMini ? "px-2 py-3 flex justify-center" : "px-3 py-2.5",
                 c.locked && "opacity-60 cursor-not-allowed",
                 active
                     ? "bg-[var(--color-surface-hover)] shadow-[var(--shadow-xs)]"
@@ -206,9 +212,9 @@ function CourseMiniRow({ c, active, onOpen, collapsed }: { c: Course; active: bo
             style={{
                 ...(active && { borderLeft: `2px solid ${meta.color}` }),
             }}
-            title={collapsed ? c.title : undefined}
+            title={isMini ? c.title : undefined}
         >
-            {collapsed ? (
+            {isMini ? (
                 <span
                     className="inline-flex h-8 w-8 items-center justify-center rounded-lg border shadow-[var(--shadow-xs)] transition-all duration-200"
                     style={{
@@ -244,22 +250,24 @@ function CourseMiniRow({ c, active, onOpen, collapsed }: { c: Course; active: bo
                     <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between gap-2">
                             <div className="truncate text-sm font-medium text-[var(--color-text-base)]">{c.title}</div>
-                            <div className="shrink-0 text-xs tabular-nums text-[var(--color-text-secondary)]">{c.progress}%</div>
+                            {!isCompact && <div className="shrink-0 text-xs tabular-nums text-[var(--color-text-secondary)]">{c.progress}%</div>}
                         </div>
-                        <div className="mt-0.5 flex items-center gap-2 text-xs text-[var(--color-text-muted)]">
-                            {c.locked ? (
-                                <span className="inline-flex items-center gap-1">
-                                    <Lock size={12} /> Premium
-                                </span>
-                            ) : (
-                                <span className="truncate">{c.subtitle}</span>
-                            )}
-                            {c.unreadUpdates > 0 && (
-                                <span className="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full border border-[var(--color-border-soft)] bg-[var(--color-surface-overlay)] px-1.5 text-[11px] font-semibold text-[var(--color-text-secondary)]">
-                                    {c.unreadUpdates}
-                                </span>
-                            )}
-                        </div>
+                        {!isCompact && (
+                            <div className="mt-0.5 flex items-center gap-2 text-xs text-[var(--color-text-muted)]">
+                                {c.locked ? (
+                                    <span className="inline-flex items-center gap-1">
+                                        <Lock size={12} /> Premium
+                                    </span>
+                                ) : (
+                                    <span className="truncate">{c.subtitle}</span>
+                                )}
+                                {c.unreadUpdates > 0 && (
+                                    <span className="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full border border-[var(--color-border-soft)] bg-[var(--color-surface-overlay)] px-1.5 text-[11px] font-semibold text-[var(--color-text-secondary)]">
+                                        {c.unreadUpdates}
+                                    </span>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
@@ -274,21 +282,24 @@ export function Navbar({
     activeCourseKey,
     onOpenCourse,
     courses,
-    collapsed,
-    onToggleCollapse,
+    sidebarMode,
+    onCycleSidebarMode,
 }: {
     page: Page;
     setPage: (p: Page) => void;
     activeCourseKey: CourseKey;
     onOpenCourse: (k: CourseKey) => void;
     courses: Course[];
-    collapsed: boolean;
-    onToggleCollapse: () => void;
+    sidebarMode: SidebarMode;
+    onCycleSidebarMode: () => void;
 }) {
+    const isCompact = sidebarMode === 'compact';
+    const isMini = sidebarMode === 'mini';
+    
     return (
         <div className="flex h-full flex-col px-4 py-6">
             {/* Collapse toggle (desktop only) */}
-            {!collapsed && (
+            {!isMini && (
                 <div className="hidden lg:flex items-center justify-between mb-6">
                     <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-[var(--color-border-soft)] bg-[var(--color-surface-overlay)] shadow-[var(--shadow-xs)]">
                         <div
@@ -300,19 +311,20 @@ export function Navbar({
                         <GraduationCap size={ICON_SIZES.md} strokeWidth={ICON_STROKE.regular} className="relative text-[var(--color-text-base)]" />
                     </div>
                     <button
-                        onClick={onToggleCollapse}
+                        onClick={onCycleSidebarMode}
                         className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)] transition-colors"
-                        aria-label="Réduire la sidebar"
+                        aria-label="Changer le mode de la sidebar"
+                        title={sidebarMode === 'expanded' ? 'Mode compact' : 'Mode mini'}
                     >
                         <ChevronLeft size={16} />
                     </button>
                 </div>
             )}
 
-            {collapsed && (
+            {isMini && (
                 <div className="hidden lg:flex justify-center mb-6">
                     <button
-                        onClick={onToggleCollapse}
+                        onClick={onCycleSidebarMode}
                         className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)] transition-colors"
                         aria-label="Agrandir la sidebar"
                     >
@@ -322,24 +334,24 @@ export function Navbar({
             )}
 
             <div className="mt-2">
-                {!collapsed && <div className="mb-2 text-[11px] font-semibold tracking-wide uppercase text-[var(--color-text-muted)]">Navigation</div>}
+                {!isMini && <div className="mb-2 text-[11px] font-semibold tracking-wide uppercase text-[var(--color-text-muted)]">Navigation</div>}
                 <nav className="space-y-1" role="navigation" aria-label="Navigation principale">
                     {NAV_PRIMARY.map((it) => (
-                        <NavLink key={it.id} active={it.id === page} icon={it.icon} label={it.label} onClick={() => setPage(it.id)} collapsed={collapsed} />
+                        <NavLink key={it.id} active={it.id === page} icon={it.icon} label={it.label} onClick={() => setPage(it.id)} sidebarMode={sidebarMode} />
                     ))}
                 </nav>
             </div>
 
             <div className="mt-7">
-                {!collapsed && (
+                {!isMini && (
                     <div className="flex items-center justify-between mb-2">
                         <div className="text-[11px] font-semibold tracking-wide uppercase text-[var(--color-text-muted)]">Matières</div>
-                        <span className="text-[11px] text-[var(--color-text-muted)] tabular-nums">{courses.length}</span>
+                        {!isCompact && <span className="text-[11px] text-[var(--color-text-muted)] tabular-nums">{courses.length}</span>}
                     </div>
                 )}
                 <div className="space-y-1" role="navigation" aria-label="Liste des cours">
                     {courses.map((c) => (
-                        <CourseMiniRow key={c.key} c={c} active={c.key === activeCourseKey} onOpen={() => onOpenCourse(c.key)} collapsed={collapsed} />
+                        <CourseMiniRow key={c.key} c={c} active={c.key === activeCourseKey} onOpen={() => onOpenCourse(c.key)} sidebarMode={sidebarMode} />
                     ))}
                 </div>
             </div>
@@ -349,13 +361,13 @@ export function Navbar({
                     <button 
                         className={cx(
                             "w-full inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-xs font-medium text-[var(--color-text-base)] hover:bg-[var(--color-surface-hover)] transition-colors min-h-[44px]",
-                            collapsed ? "justify-center px-2 py-2.5" : "justify-center px-3 py-2.5"
+                            isMini ? "justify-center px-2 py-2.5" : "justify-center px-3 py-2.5"
                         )}
                         aria-label="Ouvrir les réglages"
-                        title={collapsed ? "Réglages" : undefined}
+                        title={isMini ? "Réglages" : undefined}
                     >
                         <Settings size={14} className="text-[var(--color-text-secondary)]" />
-                        {!collapsed && "Réglages"}
+                        {!isMini && "Réglages"}
                     </button>
                 </div>
             </div>
@@ -373,41 +385,108 @@ export function Drawer({
     onClose: () => void;
     children: React.ReactNode;
 }) {
+    const drawerRef = React.useRef<HTMLDivElement>(null);
+
+    // Focus trap
+    React.useEffect(() => {
+        if (!open) return;
+
+        const drawer = drawerRef.current;
+        if (!drawer) return;
+
+        // Focus first focusable element
+        const focusableElements = drawer.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (firstElement) {
+            firstElement.focus();
+        }
+
+        // Trap focus
+        const handleTab = (e: KeyboardEvent) => {
+            if (e.key !== 'Tab') return;
+
+            if (e.shiftKey) {
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement?.focus();
+                }
+            } else {
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement?.focus();
+                }
+            }
+        };
+
+        drawer.addEventListener('keydown', handleTab as any);
+        return () => drawer.removeEventListener('keydown', handleTab as any);
+    }, [open]);
+
     return (
         <>
             <AnimatePresence>
                 {open && (
                     <motion.div
-                        className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm md:hidden"
+                        className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm md:hidden"
                         onClick={onClose}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
                         aria-hidden="true"
                     />
                 )}
             </AnimatePresence>
             
-            <motion.div
-                className="fixed left-0 top-0 bottom-0 z-50 w-[320px] max-w-[90vw] md:hidden"
-                initial={{ x: "-100%" }}
-                animate={{ x: open ? 0 : "-100%" }}
-                transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                role="dialog"
-                aria-modal="true"
-                aria-label="Menu de navigation"
-            >
-                <div className="h-full bg-[var(--color-surface-raised)] p-3 shadow-2xl overflow-auto">
-                    {children}
-                </div>
-            </motion.div>
+            <AnimatePresence>
+                {open && (
+                    <motion.div
+                        ref={drawerRef}
+                        className="fixed left-0 top-0 bottom-0 z-50 w-[320px] max-w-[85vw] md:hidden"
+                        initial={{ x: "-100%" }}
+                        animate={{ x: 0 }}
+                        exit={{ x: "-100%" }}
+                        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Menu de navigation"
+                    >
+                        <div className="h-full bg-[var(--color-surface-raised)] p-3 shadow-2xl overflow-auto">
+                            {children}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 }
 
 export function MobileBottomNav({ page, setPage }: { page: Page; setPage: (p: Page) => void }) {
+    const [scrollingDown, setScrollingDown] = React.useState(false);
+    const [lastScrollY, setLastScrollY] = React.useState(0);
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            setScrollingDown(currentScrollY > lastScrollY && currentScrollY > 50);
+            setLastScrollY(currentScrollY);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [lastScrollY]);
+
     return (
-        <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-[var(--color-border)] bg-[var(--color-surface-raised)]/95 backdrop-blur-xl md:hidden">
+        <motion.div
+            className="fixed bottom-0 left-0 right-0 z-40 border-t border-[var(--color-border)] bg-[var(--color-surface-raised)]/95 backdrop-blur-xl md:hidden"
+            initial={{ y: 0 }}
+            animate={{ y: scrollingDown ? 100 : 0 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        >
             <div className="mx-auto max-w-[1440px] px-2">
                 <div className="grid grid-cols-3">
                     {NAV_PRIMARY.map((it) => {
@@ -431,7 +510,7 @@ export function MobileBottomNav({ page, setPage }: { page: Page; setPage: (p: Pa
                     })}
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
 

@@ -3,7 +3,6 @@
  * Reusable animated wrappers with Apple-grade interactions
  */
 
-import React from "react";
 import { motion, type HTMLMotionProps } from "framer-motion";
 import { SPRING, hoverLift, tapScale, fadeInUp, scaleIn } from "./animations";
 
@@ -41,7 +40,6 @@ export function AnimatedCard({
     children,
     className,
     onClick,
-    disabled,
     hover = true,
     ...props
 }: HTMLMotionProps<"div"> & { hover?: boolean }) {
@@ -53,14 +51,14 @@ export function AnimatedCard({
             animate="visible"
             variants={fadeInUp}
             whileHover={
-                hover && !disabled
+                hover
                     ? {
                           y: -4,
                           transition: SPRING.smooth,
                       }
                     : undefined
             }
-            whileTap={disabled ? undefined : tapScale}
+            whileTap={tapScale}
             {...props}
         >
             {children}

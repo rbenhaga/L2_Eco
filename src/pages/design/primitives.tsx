@@ -6,7 +6,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cx } from "./helpers";
-import { SPRING, hoverLift, tapScale } from "./animations";
+import { SPRING, tapScale } from "./animations";
 
 export function Chip({ children, subtle }: { children: React.ReactNode; subtle?: boolean }) {
     return (

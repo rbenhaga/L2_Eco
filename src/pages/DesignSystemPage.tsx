@@ -20,6 +20,25 @@ export default function AgoraPremiumTemplate() {
     const [activeCourseKey, setActiveCourseKey] = useState<CourseKey>("macro");
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
+    // Apply dark class to document root
+    useState(() => {
+        if (dark) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    });
+
+    // Update dark class when dark state changes
+    const toggleDark = (value: boolean) => {
+        setDark(value);
+        if (value) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    };
+
     const title = useMemo(() => {
         if (page === "dashboard") return "Accueil";
         if (page === "library") return "Bibliothèque";
@@ -33,7 +52,7 @@ export default function AgoraPremiumTemplate() {
     );
 
     return (
-        <div className={cx("min-h-screen", dark && "dark")}>
+        <div className="min-h-screen">
             <AppBackground dark={dark} />
 
             {/* Desktop layout */}
@@ -68,7 +87,7 @@ export default function AgoraPremiumTemplate() {
                         title={title} 
                         onOpenSidebar={() => setDrawerOpen(true)} 
                         dark={dark} 
-                        setDark={setDark}
+                        setDark={toggleDark}
                         sidebarCollapsed={sidebarCollapsed}
                     />
 
@@ -102,7 +121,7 @@ export default function AgoraPremiumTemplate() {
                     title={title} 
                     onOpenSidebar={() => setDrawerOpen(true)} 
                     dark={dark} 
-                    setDark={setDark}
+                    setDark={toggleDark}
                     sidebarCollapsed={false}
                 />
                 
@@ -159,7 +178,7 @@ export default function AgoraPremiumTemplate() {
                     title={title} 
                     onOpenSidebar={() => setDrawerOpen(true)} 
                     dark={dark} 
-                    setDark={setDark}
+                    setDark={toggleDark}
                     sidebarCollapsed={false}
                 />
 

@@ -57,6 +57,7 @@ export function Topbar({
     onOpenSidebar: () => void;
     dark: boolean;
     setDark: (d: boolean) => void;
+    sidebarCollapsed?: boolean;
 }) {
     return (
         <div className="sticky top-0 z-40 bg-[var(--color-surface-raised)]/95 backdrop-blur-xl border-b border-[var(--color-border)]">

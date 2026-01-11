@@ -3,7 +3,6 @@
  * Skeleton screens, spinners, and progress indicators
  */
 
-import React from "react";
 import { motion } from "framer-motion";
 import { cx } from "./helpers";
 import { SPRING } from "./animations";

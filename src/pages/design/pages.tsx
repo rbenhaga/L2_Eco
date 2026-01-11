@@ -4,13 +4,13 @@
  */
 
 import React, { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronRight, ArrowRight, Lock } from "lucide-react";
 import { cx, COURSE_META, TYPE_ICON, RESOURCE_ICON, isNewLabel, ICON_SIZES, ICON_STROKE } from "./helpers";
 import { Chip, PremiumButton, Surface, IconPill, NewBadge } from "./primitives";
 import { COURSES, UPDATES, COURSE_RESOURCES } from "./data";
 import type { Course, UpdateItem, ResourceItem, ResourceType } from "./types";
-import { SPRING, staggerContainer, staggerItem, fadeInUp } from "./animations";
+import { SPRING, staggerContainer, staggerItem } from "./animations";
 
 // --- PremiumHeader ---
 function PremiumHeader({

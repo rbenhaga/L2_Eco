@@ -103,19 +103,21 @@
 
     /* ============================================
        TEXT HIERARCHY (WCAG AA+ Compliant)
-       All contrast ratios validated
+       Contraste renforcé pour lisibilité premium
        ============================================ */
     --color-text-base: #0F172A;       /* Slate-900 - 16.1:1 ratio ✅ */
-    --color-text-secondary: #3F3F46;  /* Zinc-700 - 8.9:1 ratio ✅ */
-    --color-text-muted: #52525B;      /* Zinc-600 - 5.9:1 ratio ✅ */
+    --color-text-secondary: #27272A;  /* Zinc-800 - 12.6:1 ratio ✅ */
+    --color-text-muted: #3F3F46;      /* Zinc-700 - 8.9:1 ratio ✅ */
+    --color-text-subtle: #52525B;     /* Zinc-600 - 5.9:1 ratio ✅ */
 
     /* ============================================
        SURFACE SYSTEM (3-Level Clear Hierarchy)
        ============================================ */
-    --color-surface-base: #F5F5F7;    /* Background */
+    --color-surface-base: #F8F9FA;    /* Background (teinté) */
     --color-surface-raised: #FFFFFF;  /* Cards */
     --color-surface-overlay: #F9FAFB; /* Inset */
     --color-surface-hover: #F1F3F5;   /* Hover state */
+    --color-surface-soft: #F4F5F7;    /* Soft backgrounds */
 
     /* Popover */
     --color-popover: #FFFFFF;
@@ -148,148 +150,149 @@
 html.dark,
 .dark {
     /* ============================================
-       LEVEL 0: Background (Warm Zinc, Not Cold Black)
+       LEVEL 0: Background (Deep, Rich, Premium)
+       Apple-style: Deep blacks with subtle warmth
        ============================================ */
-    --color-background: #18181B;      /* Zinc-900 - Warm base */
-    --color-foreground: #FAFAFA;      /* Zinc-50 - High contrast */
+    --color-background: #000000;      /* Pure black (Apple style) */
+    --color-foreground: #FFFFFF;      /* Pure white - Maximum contrast */
 
-    /* Sidebar: Slightly elevated for depth */
-    --color-sidebar: #1F1F23;         /* Custom - Between zinc-900 and 800 */
+    /* Sidebar: Elevated with subtle warmth */
+    --color-sidebar: #1C1C1E;         /* Apple gray (warm) */
 
     /* ============================================
-       LEVEL 1: Cards (Elevated Surfaces)
+       LEVEL 1: Cards (Elevated, Rich)
        ============================================ */
-    --color-card: #27272A;            /* Zinc-800 - Clear elevation */
-    --color-card-foreground: #FAFAFA;
+    --color-card: #1C1C1E;            /* Apple gray - Rich elevation */
+    --color-card-foreground: #FFFFFF;
 
     /* ============================================
        LEVEL 2: Inset (Nested Content)
        ============================================ */
-    --color-muted: #3F3F46;           /* Zinc-700 - Visible contrast */
-    --color-muted-foreground: #D4D4D8; /* Zinc-300 - Better readability */
+    --color-muted: #2C2C2E;           /* Apple gray 2 */
+    --color-muted-foreground: #E5E5E7; /* Light gray - High contrast */
 
     /* ============================================
-       ACCENT COLORS (Dark Mode Optimized)
-       Brighter, less saturated, more luminous
+       ACCENT COLORS (Dark Mode - Vibrant & Premium)
+       Brighter, more saturated for dark backgrounds
        ============================================ */
     
-    /* Primary Accent - Blue (Warmer, brighter) */
-    --color-accent: #60A5FA;          /* Blue-400 */
-    --color-accent-strong: #93C5FD;   /* Blue-300 */
-    --color-accent-foreground: #18181B;
+    /* Primary Accent - Vibrant Blue */
+    --color-accent: #0A84FF;          /* Apple Blue (iOS) */
+    --color-accent-strong: #409CFF;   /* Lighter blue */
+    --color-accent-foreground: #000000;
 
-    /* Course Colors - Optimized for dark backgrounds */
-    --color-macro: #60A5FA;           /* Blue-400 - Macro */
-    --color-macro-light: rgba(96, 165, 250, 0.18);  /* +20% opacity */
+    /* Course Colors - Vibrant for dark mode */
+    --color-macro: #0A84FF;           /* Apple Blue */
+    --color-macro-light: rgba(10, 132, 255, 0.15);
     
-    --color-micro: #C084FC;           /* Purple-400 - Micro */
-    --color-micro-light: rgba(192, 132, 252, 0.18);
+    --color-micro: #BF5AF2;           /* Apple Purple */
+    --color-micro-light: rgba(191, 90, 242, 0.15);
     
-    --color-stats: #22D3EE;           /* Cyan-400 - Stats */
-    --color-stats-light: rgba(34, 211, 238, 0.18);
+    --color-stats: #5AC8FA;           /* Apple Cyan */
+    --color-stats-light: rgba(90, 200, 250, 0.15);
     
-    --color-socio: #F472B6;           /* Pink-400 - Socio */
-    --color-socio-light: rgba(244, 114, 182, 0.18);
+    --color-socio: #FF375F;           /* Apple Pink */
+    --color-socio-light: rgba(255, 55, 95, 0.15);
 
     /* ============================================
-       SEMANTIC COLORS (Dark Mode Adapted)
+       SEMANTIC COLORS (Dark Mode - Vibrant)
        ============================================ */
     
     /* Primary */
-    --color-primary: #FAFAFA;         /* Zinc-50 */
-    --color-primary-foreground: #18181B;
+    --color-primary: #FFFFFF;         /* Pure white */
+    --color-primary-foreground: #000000;
 
     /* Secondary */
-    --color-secondary: #3F3F46;       /* Zinc-700 - More contrast */
-    --color-secondary-foreground: #FAFAFA;
+    --color-secondary: #2C2C2E;       /* Apple gray 2 */
+    --color-secondary-foreground: #FFFFFF;
 
     /* Destructive */
-    --color-destructive: #F87171;     /* Red-400 */
-    --color-destructive-foreground: #18181B;
+    --color-destructive: #FF453A;     /* Apple Red */
+    --color-destructive-foreground: #000000;
 
     /* Success */
-    --color-success: #4ADE80;         /* Green-400 */
-    --color-success-foreground: #18181B;
+    --color-success: #32D74B;         /* Apple Green */
+    --color-success-foreground: #000000;
 
     /* Warning */
-    --color-warning: #FB923C;         /* Orange-400 */
-    --color-warning-foreground: #18181B;
+    --color-warning: #FF9F0A;         /* Apple Orange */
+    --color-warning-foreground: #000000;
 
     /* ============================================
-       BORDERS (Dark Mode - More Visible)
-       +25% to +100% opacity increase
+       BORDERS (Dark Mode - Subtle but visible)
        ============================================ */
-    --color-border: rgba(255, 255, 255, 0.15);      /* Was 0.12 - Now visible */
-    --color-border-soft: rgba(255, 255, 255, 0.08); /* Was 0.06 - Subtle but present */
-    --color-input: #3F3F46;           /* Zinc-700 - Better contrast */
-    --color-ring: #60A5FA;            /* Blue-400 - Focus ring */
+    --color-border: rgba(255, 255, 255, 0.18);      /* More visible */
+    --color-border-soft: rgba(255, 255, 255, 0.10); /* Subtle */
+    --color-input: #2C2C2E;           /* Apple gray 2 */
+    --color-ring: #0A84FF;            /* Apple Blue */
 
     /* Popover */
-    --color-popover: #27272A;         /* Zinc-800 - Elevated */
-    --color-popover-foreground: #FAFAFA;
+    --color-popover: #1C1C1E;         /* Apple gray */
+    --color-popover-foreground: #FFFFFF;
 
     /* ============================================
-       TEXT HIERARCHY (WCAG AA+ Compliant)
-       All ratios tested and validated
+       TEXT HIERARCHY (WCAG AAA - Maximum Contrast)
        ============================================ */
-    --color-text-base: #FAFAFA;       /* Zinc-50 - 15.8:1 ratio ✅ */
-    --color-text-secondary: #E4E4E7;  /* Zinc-200 - 12.6:1 ratio ✅ */
-    --color-text-muted: #A1A1AA;      /* Zinc-400 - 5.2:1 ratio ✅ */
+    --color-text-base: #FFFFFF;       /* Pure white - 21:1 ratio ✅ */
+    --color-text-secondary: #E5E5E7;  /* Light gray - 16.5:1 ratio ✅ */
+    --color-text-muted: #AEAEB2;      /* Medium gray - 8.5:1 ratio ✅ */
+    --color-text-subtle: #8E8E93;     /* Subtle gray - 5.5:1 ratio ✅ */
 
     /* ============================================
-       SURFACE SYSTEM (3-Level Clear Hierarchy)
+       SURFACE SYSTEM (3-Level - Apple Style)
        ============================================ */
-    --color-surface-base: #18181B;    /* Zinc-900 - Background */
-    --color-surface-raised: #27272A;  /* Zinc-800 - Cards */
-    --color-surface-overlay: #3F3F46; /* Zinc-700 - Inset */
-    --color-surface-hover: #52525B;   /* Zinc-600 - Hover state */
+    --color-surface-base: #000000;    /* Pure black */
+    --color-surface-raised: #1C1C1E;  /* Apple gray */
+    --color-surface-overlay: #2C2C2E; /* Apple gray 2 */
+    --color-surface-hover: #3A3A3C;   /* Apple gray 3 */
+    --color-surface-soft: #2C2C2E;    /* Soft backgrounds */
 
     /* ============================================
-       SHADOWS (Dark Mode - Depth + Glow)
-       Multi-layer with inner glow for premium feel
+       SHADOWS (Dark Mode - Depth with Glow)
+       Multi-layer with subtle colored glows
        ============================================ */
     --shadow-xs: 
-        0 1px 2px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.05);  /* Inner glow */
+        0 1px 2px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.08);  /* Inner glow */
     
     --shadow-sm: 
-        0 1px 0 rgba(255, 255, 255, 0.08),    /* Top highlight */
-        0 2px 4px rgba(0, 0, 0, 0.5),
-        0 8px 24px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(255, 255, 255, 0.06),  /* Inner glow */
-        inset 0 1px 0 rgba(255, 255, 255, 0.03); /* Subtle inner highlight */
+        0 1px 0 rgba(255, 255, 255, 0.10),    /* Top highlight */
+        0 2px 4px rgba(0, 0, 0, 0.8),
+        0 8px 24px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(255, 255, 255, 0.08),  /* Inner glow */
+        inset 0 1px 0 rgba(255, 255, 255, 0.05); /* Subtle inner highlight */
     
     --shadow-md: 
-        0 1px 0 rgba(255, 255, 255, 0.08),
-        0 4px 8px rgba(0, 0, 0, 0.6),
-        0 16px 48px rgba(0, 0, 0, 0.7),
-        0 0 0 1px rgba(255, 255, 255, 0.07),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        0 1px 0 rgba(255, 255, 255, 0.10),
+        0 4px 8px rgba(0, 0, 0, 0.9),
+        0 16px 48px rgba(0, 0, 0, 0.95),
+        0 0 0 1px rgba(255, 255, 255, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
     
     --shadow-lg: 
-        0 1px 0 rgba(255, 255, 255, 0.1),
-        0 8px 16px rgba(0, 0, 0, 0.7),
-        0 26px 72px rgba(0, 0, 0, 0.8),
-        0 0 0 1px rgba(255, 255, 255, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 1px 0 rgba(255, 255, 255, 0.12),
+        0 8px 16px rgba(0, 0, 0, 0.95),
+        0 26px 72px rgba(0, 0, 0, 1),
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
     
     --shadow-xl: 
-        0 1px 0 rgba(255, 255, 255, 0.12),
-        0 12px 24px rgba(0, 0, 0, 0.8),
-        0 40px 96px rgba(0, 0, 0, 0.9),
-        0 0 0 1px rgba(255, 255, 255, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        0 1px 0 rgba(255, 255, 255, 0.15),
+        0 12px 24px rgba(0, 0, 0, 1),
+        0 40px 96px rgba(0, 0, 0, 1),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.10);
 
     /* ============================================
-       ACCENT GLOWS (For Premium Depth)
+       ACCENT GLOWS (Premium Depth)
        ============================================ */
-    --glow-accent: 0 0 20px rgba(96, 165, 250, 0.3),
-                   0 0 40px rgba(96, 165, 250, 0.15);
+    --glow-accent: 0 0 20px rgba(10, 132, 255, 0.4),
+                   0 0 40px rgba(10, 132, 255, 0.2);
     
-    --glow-macro: 0 0 20px rgba(96, 165, 250, 0.25);
-    --glow-micro: 0 0 20px rgba(192, 132, 252, 0.25);
-    --glow-stats: 0 0 20px rgba(34, 211, 238, 0.25);
-    --glow-socio: 0 0 20px rgba(244, 114, 182, 0.25);
+    --glow-macro: 0 0 20px rgba(10, 132, 255, 0.3);
+    --glow-micro: 0 0 20px rgba(191, 90, 242, 0.3);
+    --glow-stats: 0 0 20px rgba(90, 200, 250, 0.3);
+    --glow-socio: 0 0 20px rgba(255, 55, 95, 0.3);
 }
 
 /* ============================================

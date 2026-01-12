@@ -1,13 +1,17 @@
 @import "tailwindcss";
 
 /* ============================================
-   PREMIUM DEPTH SYSTEM
-   3-level surfaces: Background → Cards → Inset
-   Apple/Linear methodology
+   AGORA PREMIUM DESIGN SYSTEM v2.0
+   
+   Philosophy: Apple/Notion/Linear grade
+   - 3-level depth system (not flat, not noisy)
+   - Borderless design (shadows > borders)
+   - Contrast-first (WCAG AA minimum)
+   - Dark mode = designed, not inverted
    ============================================ */
 
 @theme {
-    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
     /* ============================================
        SPACING SYSTEM (8pt Grid - Apple Standard)
@@ -24,282 +28,171 @@
     --space-16: 4rem;     /* 64px */
 
     /* ============================================
-       RADIUS SYSTEM (Premium Curves)
+       RADIUS SYSTEM (Floating Panels)
        ============================================ */
-    --radius-sm: 0.5rem;    /* 8px */
-    --radius: 0.625rem;     /* 10px */
-    --radius-md: 0.75rem;   /* 12px */
-    --radius-lg: 1rem;      /* 16px */
-    --radius-xl: 1.25rem;   /* 20px */
-    --radius-2xl: 1.5rem;   /* 24px */
-    --radius-3xl: 2rem;     /* 32px */
+    --radius-sm: 0.5rem;    /* 8px - chips, badges */
+    --radius: 0.625rem;     /* 10px - inputs, small cards */
+    --radius-md: 0.75rem;   /* 12px - buttons, panels */
+    --radius-lg: 1rem;      /* 16px - cards */
+    --radius-xl: 1.25rem;   /* 20px - modals */
+    --radius-2xl: 1.5rem;   /* 24px - large cards */
+    --radius-3xl: 2rem;     /* 32px - hero elements */
+    --radius-panel: 1.75rem;  /* 28px - floating panels */
+    --radius-card: 1.375rem;  /* 22px - cards */
+    --radius-item: 1rem;      /* 16px - nav items */
 
     /* ============================================
-     LIGHT MODE - Premium 3-Level Surface System
-     Clear hierarchy with improved contrast
-     ============================================ */
-
-    /* Level 0: Background (warm, subtle) */
-    --color-background: #F5F5F7;      /* Slightly darker for better contrast */
-    --color-foreground: #0F172A;      /* Slate-900 - Deep, readable */
-
-    /* Sidebar: distinct surface */
-    --color-sidebar: #FFFFFF;         /* Pure white - Clear elevation */
-
-    /* Level 1: Cards/Surfaces (white, elevated) */
-    --color-card: #FFFFFF;
-    --color-card-foreground: #0F172A;
-
-    /* Level 2: Inset (for nested content) */
-    --color-muted: #F1F3F5;           /* Slightly darker for visibility */
-    --color-muted-foreground: #52525B; /* Zinc-600 - Better contrast (5.9:1) */
+       NAVIGATION SYSTEM
+       ============================================ */
+    --nav-width: 280px;
+    --nav-compact-width: 200px;
+    --nav-mini-width: 72px;
+    --topbar-height: 56px;
+    --nav-item-radius: 0.625rem;
+    --nav-item-padding-x: 0.75rem;
+    --nav-item-padding-y: 0.625rem;
+    --nav-item-min-height: 44px;
+    --nav-section-spacing: 1.75rem;
 
     /* ============================================
-       ACCENT COLORS (Semantic + Course Colors)
+       DARK MODE - DEFAULT (App is dark-only)
        ============================================ */
-    
-    /* Primary Accent */
-    --color-accent: #2563EB;
-    --color-accent-strong: #1D4ED8;
-    --color-accent-foreground: #FFFFFF;
 
-    /* Course Colors (Subtle, Premium) */
-    --color-macro: #3B82F6;
-    --color-macro-light: #DBEAFE;
-    --color-micro: #8B5CF6;
-    --color-micro-light: #EDE9FE;
-    --color-stats: #06B6D4;
-    --color-stats-light: #CFFAFE;
-    --color-socio: #EC4899;
-    --color-socio-light: #FCE7F3;
+    /* Background: Rich layered blacks */
+    --color-background: #070A10;
+    --color-foreground: #F5F5F7;
 
-    /* Primary */
-    --color-primary: #0F172A;
-    --color-primary-foreground: #FAFAFA;
+    /* Sidebar: Clearly elevated */
+    --color-sidebar: rgba(255, 255, 255, 0.06);
 
-    /* Secondary */
-    --color-secondary: #F4F5F7;
-    --color-secondary-foreground: #0F172A;
+    /* Cards: Strong elevation from background */
+    --color-card: rgba(255, 255, 255, 0.06);
+    --color-card-foreground: #F5F5F7;
 
-    /* Destructive */
-    --color-destructive: #DC2626;
-    --color-destructive-foreground: #FFFFFF;
-
-    /* Success */
-    --color-success: #16A34A;
-    --color-success-foreground: #FFFFFF;
-
-    /* Warning */
-    --color-warning: #EA580C;
-    --color-warning-foreground: #FFFFFF;
+    /* Muted/Inset: Nested content */
+    --color-muted: #2C2C2E;
+    --color-muted-foreground: #E5E5E7;
 
     /* ============================================
-       BORDERS (Improved Visibility)
+       ACCENT COLORS (Vibrant for dark backgrounds)
        ============================================ */
-    --color-border: rgba(15, 23, 42, 0.12);      /* +50% opacity */
-    --color-border-soft: rgba(15, 23, 42, 0.06); /* +50% opacity */
-    --color-input: #E4E4E7;
-    --color-ring: #2563EB;
-
-    /* ============================================
-       TEXT HIERARCHY (WCAG AA+ Compliant)
-       Contraste renforcé pour lisibilité premium
-       ============================================ */
-    --color-text-base: #0F172A;       /* Slate-900 - 16.1:1 ratio ✅ */
-    --color-text-secondary: #27272A;  /* Zinc-800 - 12.6:1 ratio ✅ */
-    --color-text-muted: #3F3F46;      /* Zinc-700 - 8.9:1 ratio ✅ */
-    --color-text-subtle: #52525B;     /* Zinc-600 - 5.9:1 ratio ✅ */
-
-    /* ============================================
-       SURFACE SYSTEM (3-Level Clear Hierarchy)
-       ============================================ */
-    --color-surface-base: #F8F9FA;    /* Background (teinté) */
-    --color-surface-raised: #FFFFFF;  /* Cards */
-    --color-surface-overlay: #F9FAFB; /* Inset */
-    --color-surface-hover: #F1F3F5;   /* Hover state */
-    --color-surface-soft: #F4F5F7;    /* Soft backgrounds */
-
-    /* Popover */
-    --color-popover: #FFFFFF;
-    --color-popover-foreground: #0F172A;
-
-    /* ============================================
-       SHADOWS (Multi-Layer Depth)
-       ============================================ */
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-sm: 0 1px 0 rgba(255, 255, 255, 0.35), 
-                 0 2px 4px rgba(0, 0, 0, 0.04),
-                 0 8px 24px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 1px 0 rgba(255, 255, 255, 0.35),
-                 0 4px 8px rgba(0, 0, 0, 0.06),
-                 0 16px 48px rgba(0, 0, 0, 0.10);
-    --shadow-lg: 0 1px 0 rgba(255, 255, 255, 0.35),
-                 0 8px 16px rgba(0, 0, 0, 0.08),
-                 0 26px 72px rgba(0, 0, 0, 0.16);
-    --shadow-xl: 0 1px 0 rgba(255, 255, 255, 0.4),
-                 0 12px 24px rgba(0, 0, 0, 0.10),
-                 0 40px 96px rgba(0, 0, 0, 0.20);
-}
-
-/* ============================================
-   DARK MODE - Premium 3-Level Surface System
-   Apple/Notion Grade - Warm, Deep, Contrasty
-   ============================================ */
-@variant dark (&:is(.dark *));
-
-html.dark,
-.dark {
-    /* ============================================
-       LEVEL 0: Background (Deep, Rich, Premium)
-       Apple-style: Deep blacks with subtle warmth
-       ============================================ */
-    --color-background: #000000;      /* Pure black (Apple style) */
-    --color-foreground: #FFFFFF;      /* Pure white - Maximum contrast */
-
-    /* Sidebar: Elevated with subtle warmth */
-    --color-sidebar: #1C1C1E;         /* Apple gray (warm) */
-
-    /* ============================================
-       LEVEL 1: Cards (Elevated, Rich)
-       ============================================ */
-    --color-card: #1C1C1E;            /* Apple gray - Rich elevation */
-    --color-card-foreground: #FFFFFF;
-
-    /* ============================================
-       LEVEL 2: Inset (Nested Content)
-       ============================================ */
-    --color-muted: #2C2C2E;           /* Apple gray 2 */
-    --color-muted-foreground: #E5E5E7; /* Light gray - High contrast */
-
-    /* ============================================
-       ACCENT COLORS (Dark Mode - Vibrant & Premium)
-       Brighter, more saturated for dark backgrounds
-       ============================================ */
-    
-    /* Primary Accent - Vibrant Blue */
-    --color-accent: #0A84FF;          /* Apple Blue (iOS) */
-    --color-accent-strong: #409CFF;   /* Lighter blue */
+    --color-accent: #0A84FF;
+    --color-accent-strong: #409CFF;
     --color-accent-foreground: #000000;
+    --color-accent-rgb: 10, 132, 255;
 
-    /* Course Colors - Vibrant for dark mode */
-    --color-macro: #0A84FF;           /* Apple Blue */
-    --color-macro-light: rgba(10, 132, 255, 0.15);
-    
-    --color-micro: #BF5AF2;           /* Apple Purple */
-    --color-micro-light: rgba(191, 90, 242, 0.15);
-    
-    --color-stats: #5AC8FA;           /* Apple Cyan */
-    --color-stats-light: rgba(90, 200, 250, 0.15);
-    
-    --color-socio: #FF375F;           /* Apple Pink */
-    --color-socio-light: rgba(255, 55, 95, 0.15);
+    /* Course Colors - Dark Mode Optimized */
+    --color-macro: #0A84FF;
+    --color-macro-light: rgba(10, 132, 255, 0.12);
+    --color-micro: #BF5AF2;
+    --color-micro-light: rgba(191, 90, 242, 0.12);
+    --color-stats: #64D2FF;
+    --color-stats-light: rgba(100, 210, 255, 0.12);
+    --color-socio: #FF375F;
+    --color-socio-light: rgba(255, 55, 95, 0.12);
 
-    /* ============================================
-       SEMANTIC COLORS (Dark Mode - Vibrant)
-       ============================================ */
-    
-    /* Primary */
-    --color-primary: #FFFFFF;         /* Pure white */
-    --color-primary-foreground: #000000;
-
-    /* Secondary */
-    --color-secondary: #2C2C2E;       /* Apple gray 2 */
-    --color-secondary-foreground: #FFFFFF;
-
-    /* Destructive */
-    --color-destructive: #FF453A;     /* Apple Red */
+    /* Semantic Colors - Dark Mode */
+    --color-primary: #F5F5F7;
+    --color-primary-foreground: #070A10;
+    --color-secondary: #2C2C2E;
+    --color-secondary-foreground: #F5F5F7;
+    --color-destructive: #FF453A;
     --color-destructive-foreground: #000000;
-
-    /* Success */
-    --color-success: #32D74B;         /* Apple Green */
+    --color-success: #30D158;
     --color-success-foreground: #000000;
-
-    /* Warning */
-    --color-warning: #FF9F0A;         /* Apple Orange */
+    --color-warning: #FFD60A;
     --color-warning-foreground: #000000;
 
     /* ============================================
-       BORDERS (Dark Mode - Subtle but visible)
+       BORDERS (Glow style)
        ============================================ */
-    --color-border: rgba(255, 255, 255, 0.18);      /* More visible */
-    --color-border-soft: rgba(255, 255, 255, 0.10); /* Subtle */
-    --color-input: #2C2C2E;           /* Apple gray 2 */
-    --color-ring: #0A84FF;            /* Apple Blue */
+    --color-border: rgba(255, 255, 255, 0.14);
+    --color-border-soft: rgba(255, 255, 255, 0.09);
+    --color-input: rgba(255, 255, 255, 0.14);
+    --color-ring: rgba(10, 132, 255, 0.34);
+
+    /* ============================================
+       TEXT HIERARCHY (Boosted for dark mode)
+       ============================================ */
+    --color-text-base: rgba(255, 255, 255, 0.92);
+    --color-text-secondary: rgba(255, 255, 255, 0.66);
+    --color-text-muted: rgba(255, 255, 255, 0.50);
+    --color-text-subtle: rgba(255, 255, 255, 0.36);
+
+    /* ============================================
+       SURFACE SYSTEM (High delta for hierarchy)
+       ============================================ */
+    --color-surface-base: #070A10;
+    --color-surface-raised: rgba(255, 255, 255, 0.06);
+    --color-surface-overlay: rgba(255, 255, 255, 0.045);
+    --color-surface-hover: rgba(255, 255, 255, 0.075);
+    --color-surface-soft: rgba(255, 255, 255, 0.06);
 
     /* Popover */
-    --color-popover: #1C1C1E;         /* Apple gray */
-    --color-popover-foreground: #FFFFFF;
+    --color-popover: rgba(255, 255, 255, 0.06);
+    --color-popover-foreground: #F5F5F7;
 
     /* ============================================
-       TEXT HIERARCHY (WCAG AAA - Maximum Contrast)
-       ============================================ */
-    --color-text-base: #FFFFFF;       /* Pure white - 21:1 ratio ✅ */
-    --color-text-secondary: #E5E5E7;  /* Light gray - 16.5:1 ratio ✅ */
-    --color-text-muted: #AEAEB2;      /* Medium gray - 8.5:1 ratio ✅ */
-    --color-text-subtle: #8E8E93;     /* Subtle gray - 5.5:1 ratio ✅ */
-
-    /* ============================================
-       SURFACE SYSTEM (3-Level - Apple Style)
-       ============================================ */
-    --color-surface-base: #000000;    /* Pure black */
-    --color-surface-raised: #1C1C1E;  /* Apple gray */
-    --color-surface-overlay: #2C2C2E; /* Apple gray 2 */
-    --color-surface-hover: #3A3A3C;   /* Apple gray 3 */
-    --color-surface-soft: #2C2C2E;    /* Soft backgrounds */
-
-    /* ============================================
-       SHADOWS (Dark Mode - Depth with Glow)
-       Multi-layer with subtle colored glows
+       SHADOWS (Dramatic for dark mode)
        ============================================ */
     --shadow-xs: 
-        0 1px 2px rgba(0, 0, 0, 0.8),
-        0 0 0 1px rgba(255, 255, 255, 0.08);  /* Inner glow */
+        0 1px 0 rgba(0, 0, 0, 0.45),
+        0 14px 34px rgba(0, 0, 0, 0.38);
     
     --shadow-sm: 
-        0 1px 0 rgba(255, 255, 255, 0.10),    /* Top highlight */
-        0 2px 4px rgba(0, 0, 0, 0.8),
-        0 8px 24px rgba(0, 0, 0, 0.9),
-        0 0 0 1px rgba(255, 255, 255, 0.08),  /* Inner glow */
-        inset 0 1px 0 rgba(255, 255, 255, 0.05); /* Subtle inner highlight */
+        0 18px 46px rgba(0, 0, 0, 0.44);
     
     --shadow-md: 
-        0 1px 0 rgba(255, 255, 255, 0.10),
-        0 4px 8px rgba(0, 0, 0, 0.9),
-        0 16px 48px rgba(0, 0, 0, 0.95),
-        0 0 0 1px rgba(255, 255, 255, 0.10),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        0 26px 72px rgba(0, 0, 0, 0.52);
     
     --shadow-lg: 
-        0 1px 0 rgba(255, 255, 255, 0.12),
-        0 8px 16px rgba(0, 0, 0, 0.95),
-        0 26px 72px rgba(0, 0, 0, 1),
-        0 0 0 1px rgba(255, 255, 255, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        0 34px 98px rgba(0, 0, 0, 0.62);
     
     --shadow-xl: 
-        0 1px 0 rgba(255, 255, 255, 0.15),
-        0 12px 24px rgba(0, 0, 0, 1),
-        0 40px 96px rgba(0, 0, 0, 1),
-        0 0 0 1px rgba(255, 255, 255, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.10);
+        0 42px 130px rgba(0, 0, 0, 0.72);
 
     /* ============================================
-       ACCENT GLOWS (Premium Depth)
+       GLASS MATERIAL SYSTEM (Keynote-grade Dark)
        ============================================ */
-    --glow-accent: 0 0 20px rgba(10, 132, 255, 0.4),
-                   0 0 40px rgba(10, 132, 255, 0.2);
-    
-    --glow-macro: 0 0 20px rgba(10, 132, 255, 0.3);
-    --glow-micro: 0 0 20px rgba(191, 90, 242, 0.3);
-    --glow-stats: 0 0 20px rgba(90, 200, 250, 0.3);
-    --glow-socio: 0 0 20px rgba(255, 55, 95, 0.3);
+    --glass-panel: rgb(255 255 255 / 0.055);
+    --glass-panel-strong: rgb(255 255 255 / 0.085);
+    --glass-border: rgb(255 255 255 / 0.12);
+    --glass-highlight: linear-gradient(to bottom, rgb(255 255 255 / 0.16), transparent 55%);
+
+    /* ============================================
+       PAPER CANVAS (Reading mode inside dark app)
+       ============================================ */
+    --paper-bg: #FFFFFF;
+    --paper-text: rgba(2, 6, 23, 0.92);
+    --paper-secondary: rgba(2, 6, 23, 0.62);
+    --paper-muted: rgba(2, 6, 23, 0.44);
+    --paper-border: rgba(15, 23, 42, 0.10);
+    --paper-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+
+    /* ============================================
+       BACKGROUND COMPOSITION TOKENS (Keynote-grade Dark)
+       ============================================ */
+    --bg-base: linear-gradient(135deg, #0A0E1A 0%, #050812 50%, #020408 100%);
+    --bg-glow-1: radial-gradient(circle at center, rgba(var(--color-accent-rgb), 0.35) 0%, rgba(var(--color-accent-rgb), 0.18) 40%, transparent 70%);
+    --bg-glow-2: radial-gradient(circle at center, rgba(191, 90, 242, 0.28) 0%, rgba(255, 55, 95, 0.14) 40%, transparent 70%);
+    --bg-vignette: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.65) 100%);
+    --bg-noise-opacity: 0.028;
+}
+
+/* Paper Canvas tokens (for reading mode inside dark app) */
+:root {
+    --paper-bg: #FFFFFF;
+    --paper-text: rgba(2, 6, 23, 0.92);
+    --paper-secondary: rgba(2, 6, 23, 0.62);
+    --paper-muted: rgba(2, 6, 23, 0.44);
+    --paper-border: rgba(15, 23, 42, 0.10);
+    --paper-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
 /* ============================================
    TYPOGRAPHY SYSTEM (Apple-Grade)
    ============================================ */
 
-/* Base */
 html {
     font-family: var(--font-sans);
     line-height: 1.5;
@@ -401,7 +294,9 @@ body {
 .font-semibold { font-weight: 600; }
 .font-bold { font-weight: 700; }
 
-/* Scrollbar */
+/* ============================================
+   SCROLLBAR (Minimal, Premium)
+   ============================================ */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -412,40 +307,44 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.12);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.18);
 }
 
 html.dark ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 html.dark ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.18);
 }
 
+/* ============================================
+   FOCUS STATES (Accessible + Premium)
+   ============================================ */
 *:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px var(--color-ring),
-                0 0 0 1px var(--color-background);
+    box-shadow: 
+        0 0 0 2px var(--color-background),
+        0 0 0 4px var(--color-ring);
     border-radius: 0.5rem;
-    transition: box-shadow 0.2s ease-out;
+    transition: box-shadow 0.15s ease-out;
 }
 
-/* Focus states for interactive elements */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px var(--color-ring),
-                0 0 0 1px var(--color-background),
-                0 0 20px rgba(37, 99, 235, 0.2);
+    box-shadow: 
+        0 0 0 2px var(--color-background),
+        0 0 0 4px var(--color-ring),
+        0 0 16px rgba(0, 122, 255, 0.2);
 }
 
 html.dark button:focus-visible,
@@ -453,107 +352,67 @@ html.dark a:focus-visible,
 html.dark input:focus-visible,
 html.dark textarea:focus-visible,
 html.dark select:focus-visible {
-    box-shadow: 0 0 0 3px var(--color-ring),
-                0 0 0 1px var(--color-background),
-                0 0 20px rgba(96, 165, 250, 0.3);
+    box-shadow: 
+        0 0 0 2px var(--color-background),
+        0 0 0 4px var(--color-ring),
+        0 0 20px rgba(10, 132, 255, 0.25);
 }
 
 /* ============================================
-   PREMIUM ANIMATIONS (Apple-Grade)
+   ANIMATIONS (Apple-Grade)
    ============================================ */
 
 @keyframes lift {
-    from {
-        transform: translateY(0);
-    }
-    to {
-        transform: translateY(-2px);
-    }
+    from { transform: translateY(0); }
+    to { transform: translateY(-2px); }
 }
 
 @keyframes shimmer {
-    0% {
-        background-position: -1000px 0;
-    }
-    100% {
-        background-position: 1000px 0;
-    }
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.96);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(-16px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(-16px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-/* Skeleton Loading Animation */
 @keyframes skeleton {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 
 /* ============================================
    PREMIUM UTILITY CLASSES
+   Borderless design: shadows > borders
    ============================================ */
 
+/* Surface with premium depth (no border, shadow only) */
 .surface-premium {
-    background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 1),
-        rgba(255, 255, 255, 0.98)
-    );
-    border: 1px solid var(--color-border);
+    background: var(--color-surface-raised);
     box-shadow: var(--shadow-sm);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--radius-lg);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .surface-premium:hover {
@@ -561,32 +420,39 @@ html.dark select:focus-visible {
     transform: translateY(-1px);
 }
 
-.dark .surface-premium {
-    background: linear-gradient(
-        to bottom,
-        rgba(24, 24, 27, 1),
-        rgba(24, 24, 27, 0.98)
-    );
-}
-
+/* Glass effect (for headers, overlays) */
 .glass-effect {
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.5),
+        var(--shadow-sm);
 }
 
 .dark .glass-effect {
-    background: rgba(24, 24, 27, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(28, 28, 30, 0.8);
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.05),
+        var(--shadow-sm);
 }
 
+/* Accent glow (for CTAs, active states) */
 .glow-accent {
-    box-shadow: 0 0 0 1px var(--color-accent),
-                0 0 20px rgba(37, 99, 235, 0.3),
-                0 0 40px rgba(37, 99, 235, 0.1);
+    box-shadow: 
+        var(--shadow-sm),
+        0 0 20px rgba(0, 122, 255, 0.15),
+        0 0 40px rgba(0, 122, 255, 0.08);
 }
 
+.dark .glow-accent {
+    box-shadow: 
+        var(--shadow-sm),
+        0 0 24px rgba(10, 132, 255, 0.2),
+        0 0 48px rgba(10, 132, 255, 0.1);
+}
+
+/* Text gradient (for hero text) */
 .text-gradient {
     background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-strong) 100%);
     -webkit-background-clip: text;
@@ -620,7 +486,7 @@ html.dark select:focus-visible {
 }
 
 /* ============================================
-   LOADING SPINNER (Premium)
+   LOADING SPINNER
    ============================================ */
 
 .spinner {
@@ -639,13 +505,14 @@ html.dark select:focus-visible {
 }
 
 /* ============================================
-   FOCUS STATES (Premium)
+   FOCUS RING UTILITIES
    ============================================ */
 
 .focus-ring {
     outline: none;
-    box-shadow: 0 0 0 3px var(--color-ring),
-                0 0 0 1px var(--color-background);
+    box-shadow: 
+        0 0 0 2px var(--color-background),
+        0 0 0 4px var(--color-ring);
 }
 
 .focus-ring-inset {
@@ -653,7 +520,9 @@ html.dark select:focus-visible {
     box-shadow: inset 0 0 0 2px var(--color-ring);
 }
 
-/* Reduced motion support (Accessibility) */
+/* ============================================
+   REDUCED MOTION (Accessibility)
+   ============================================ */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

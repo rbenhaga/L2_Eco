@@ -1,220 +1,274 @@
 /**
- * Design Tokens - Centralized Design System Variables
- * Single source of truth for all design values
+ * Agora Premium - Design Tokens (Apple/Notion Grade)
+ * Centralized system for animations, interactions, and premium effects
  */
 
-export const DESIGN_TOKENS = {
-    colors: {
-        surface: {
-            base: 'var(--color-surface-base)',
-            raised: 'var(--color-surface-raised)',
-            overlay: 'var(--color-surface-overlay)',
-            hover: 'var(--color-surface-hover)',
-            soft: 'var(--color-surface-soft)',
-        },
-        text: {
-            base: 'var(--color-text-base)',
-            secondary: 'var(--color-text-secondary)',
-            muted: 'var(--color-text-muted)',
-            subtle: 'var(--color-text-subtle)',
-        },
-        border: {
-            default: 'var(--color-border)',
-            soft: 'var(--color-border-soft)',
-        },
-        accent: {
-            default: 'var(--color-accent)',
-            strong: 'var(--color-accent-strong)',
-            foreground: 'var(--color-accent-foreground)',
-        },
-        primary: {
-            default: 'var(--color-primary)',
-            foreground: 'var(--color-primary-foreground)',
-        },
-        success: {
-            default: 'var(--color-success)',
-            foreground: 'var(--color-success-foreground)',
-        },
-        warning: {
-            default: 'var(--color-warning)',
-            foreground: 'var(--color-warning-foreground)',
-        },
-        destructive: {
-            default: 'var(--color-destructive)',
-            foreground: 'var(--color-destructive-foreground)',
-        },
-    },
-    shadows: {
-        xs: 'var(--shadow-xs)',
-        sm: 'var(--shadow-sm)',
-        md: 'var(--shadow-md)',
-        lg: 'var(--shadow-lg)',
-        xl: 'var(--shadow-xl)',
-    },
-    radius: {
-        sm: 'var(--radius-sm)',
-        default: 'var(--radius)',
-        md: 'var(--radius-md)',
-        lg: 'var(--radius-lg)',
-        xl: 'var(--radius-xl)',
-        '2xl': 'var(--radius-2xl)',
-        '3xl': 'var(--radius-3xl)',
-    },
-    spacing: {
-        1: 'var(--space-1)',
-        2: 'var(--space-2)',
-        3: 'var(--space-3)',
-        4: 'var(--space-4)',
-        5: 'var(--space-5)',
-        6: 'var(--space-6)',
-        8: 'var(--space-8)',
-        10: 'var(--space-10)',
-        12: 'var(--space-12)',
-        16: 'var(--space-16)',
-    },
-} as const;
-
-/**
- * Course Colors - Palette épurée (2-3 teintes principales)
- */
-export const COURSE_COLORS = {
-    macro: {
-        base: '#3B82F6',      // Blue-500
-        light: '#EFF6FF',     // Blue-50
-        dark: '#1E40AF',      // Blue-800
-        ring: '#60A5FA',      // Blue-400
-    },
-    micro: {
-        base: '#8B5CF6',      // Purple-500
-        light: '#F5F3FF',     // Purple-50
-        dark: '#5B21B6',      // Purple-800
-        ring: '#A78BFA',      // Purple-400
-    },
-    stats: {
-        base: '#06B6D4',      // Cyan-500
-        light: '#ECFEFF',     // Cyan-50
-        dark: '#0E7490',      // Cyan-700
-        ring: '#22D3EE',      // Cyan-400
-    },
-    socio: {
-        base: '#EC4899',      // Pink-500
-        light: '#FDF2F8',     // Pink-50
-        dark: '#BE185D',      // Pink-700
-        ring: '#F472B6',      // Pink-400
-    },
-} as const;
-
-/**
- * Animation Presets - Uniformisation des interactions
- */
-export const INTERACTION_PRESETS = {
-    // Hover lift (cartes)
-    cardHover: {
-        y: -2,
-        boxShadow: 'var(--shadow-md)',
-        transition: { duration: 0.15, ease: [0, 0, 0.2, 1] },
+/* ============================================
+   SPRING ANIMATIONS (Apple-Grade Physics)
+   ============================================ */
+export const SPRING = {
+    // Gentle - For page transitions, large movements
+    gentle: {
+        type: "spring" as const,
+        stiffness: 300,
+        damping: 30,
+        mass: 0.8,
     },
     
-    // Tap scale (boutons)
+    // Smooth - For cards, surfaces, medium elements
+    smooth: {
+        type: "spring" as const,
+        stiffness: 400,
+        damping: 25,
+        mass: 0.6,
+    },
+    
+    // Snappy - For buttons, small interactions
+    snappy: {
+        type: "spring" as const,
+        stiffness: 500,
+        damping: 20,
+        mass: 0.4,
+    },
+    
+    // Bouncy - For icons, badges, playful elements
+    bouncy: {
+        type: "spring" as const,
+        stiffness: 600,
+        damping: 15,
+        mass: 0.3,
+    },
+} as const;
+
+/* ============================================
+   INTERACTION PRESETS (Premium Micro-interactions)
+   ============================================ */
+export const INTERACTION_PRESETS = {
+    // Button interactions
+    buttonHover: {
+        y: -1,
+        scale: 1.02,
+        transition: SPRING.snappy,
+    },
+    
     buttonTap: {
         scale: 0.98,
         transition: { duration: 0.1 },
     },
     
-    // Glow fade (backgrounds)
+    // Card interactions
+    cardHover: {
+        y: -4,
+        scale: 1.01,
+        boxShadow: "var(--shadow-lg)",
+        borderColor: "var(--color-accent)/20",
+        transition: SPRING.smooth,
+    },
+    
+    cardTap: {
+        scale: 0.99,
+        transition: { duration: 0.1 },
+    },
+    
+    // Icon interactions
+    iconBounce: {
+        scale: 1.1,
+        rotate: 5,
+        transition: SPRING.bouncy,
+    },
+    
+    iconHover: {
+        scale: 1.05,
+        transition: SPRING.snappy,
+    },
+    
+    // Glow effects
     glowFade: {
-        opacity: 0.12,
+        opacity: 0.1,
         transition: { duration: 0.3 },
     },
     
-    // Icon bounce
-    iconBounce: {
-        scale: 1.05,
-        transition: { type: 'spring', stiffness: 400, damping: 17 },
+    // Focus states
+    focusRing: {
+        boxShadow: "0 0 0 3px var(--color-ring), 0 0 20px rgba(0, 122, 255, 0.3)",
+        transition: { duration: 0.2 },
     },
 } as const;
 
-/**
- * Typography Scale
- */
-export const TYPOGRAPHY = {
-    display: {
-        fontSize: '3rem',
-        fontWeight: 700,
-        lineHeight: 1.1,
-        letterSpacing: '-0.03em',
+/* ============================================
+   STAGGER ANIMATIONS (List & Grid Animations)
+   ============================================ */
+export const STAGGER = {
+    container: {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.08,
+                delayChildren: 0.1,
+            },
+        },
     },
-    h1: {
-        fontSize: '2rem',
-        fontWeight: 700,
-        lineHeight: 1.2,
-        letterSpacing: '-0.02em',
+    
+    item: {
+        hidden: { 
+            opacity: 0, 
+            y: 10,
+            scale: 0.98,
+        },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: SPRING.smooth,
+        },
     },
-    h2: {
-        fontSize: '1.5rem',
-        fontWeight: 600,
-        lineHeight: 1.3,
-        letterSpacing: '-0.01em',
-    },
-    h3: {
-        fontSize: '1.25rem',
-        fontWeight: 600,
-        lineHeight: 1.4,
-        letterSpacing: '-0.005em',
-    },
-    h4: {
-        fontSize: '1.125rem',
-        fontWeight: 600,
-        lineHeight: 1.4,
-        letterSpacing: 0,
-    },
-    bodyLg: {
-        fontSize: '1rem',
-        fontWeight: 400,
-        lineHeight: 1.6,
-        letterSpacing: 0,
-    },
-    body: {
-        fontSize: '0.9375rem',
-        fontWeight: 400,
-        lineHeight: 1.6,
-        letterSpacing: 0,
-    },
-    bodySm: {
-        fontSize: '0.875rem',
-        fontWeight: 400,
-        lineHeight: 1.5,
-        letterSpacing: 0,
-    },
-    caption: {
-        fontSize: '0.8125rem',
-        fontWeight: 500,
-        lineHeight: 1.4,
-        letterSpacing: '0.01em',
+    
+    // Faster stagger for small elements
+    fast: {
+        container: {
+            hidden: { opacity: 0 },
+            visible: {
+                opacity: 1,
+                transition: {
+                    staggerChildren: 0.05,
+                    delayChildren: 0.05,
+                },
+            },
+        },
+        item: {
+            hidden: { opacity: 0, y: 5 },
+            visible: {
+                opacity: 1,
+                y: 0,
+                transition: SPRING.snappy,
+            },
+        },
     },
 } as const;
 
-/**
- * Breakpoints
- */
+/* ============================================
+   PAGE TRANSITIONS (Smooth Navigation)
+   ============================================ */
+export const PAGE_TRANSITIONS = {
+    fadeInUp: {
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: -20 },
+        transition: SPRING.gentle,
+    },
+    
+    scaleIn: {
+        initial: { opacity: 0, scale: 0.96 },
+        animate: { opacity: 1, scale: 1 },
+        exit: { opacity: 0, scale: 1.04 },
+        transition: SPRING.smooth,
+    },
+    
+    slideInRight: {
+        initial: { opacity: 0, x: -20 },
+        animate: { opacity: 1, x: 0 },
+        exit: { opacity: 0, x: 20 },
+        transition: SPRING.smooth,
+    },
+} as const;
+
+/* ============================================
+   LOADING STATES (Premium Skeletons)
+   ============================================ */
+export const LOADING = {
+    skeleton: {
+        animate: {
+            backgroundPosition: ["200% 0", "-200% 0"],
+        },
+        transition: {
+            duration: 1.5,
+            ease: "easeInOut",
+            repeat: Infinity,
+        },
+    },
+    
+    spinner: {
+        animate: { rotate: 360 },
+        transition: {
+            duration: 0.8,
+            ease: "linear",
+            repeat: Infinity,
+        },
+    },
+    
+    pulse: {
+        animate: { opacity: [1, 0.5, 1] },
+        transition: {
+            duration: 2,
+            ease: "easeInOut",
+            repeat: Infinity,
+        },
+    },
+} as const;
+
+/* ============================================
+   FOCUS MANAGEMENT (Accessibility)
+   ============================================ */
+export const FOCUS = {
+    ring: {
+        boxShadow: "0 0 0 3px var(--color-ring), 0 0 0 1px var(--color-background)",
+        borderRadius: "0.5rem",
+        transition: "box-shadow 0.2s ease-out",
+    },
+    
+    ringInset: {
+        boxShadow: "inset 0 0 0 2px var(--color-ring)",
+        transition: "box-shadow 0.2s ease-out",
+    },
+    
+    glow: {
+        boxShadow: "0 0 0 3px var(--color-ring), 0 0 20px rgba(0, 122, 255, 0.3)",
+        transition: "box-shadow 0.2s ease-out",
+    },
+} as const;
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS (Apple-Style)
+   ============================================ */
 export const BREAKPOINTS = {
-    sm: 640,
-    md: 768,
-    lg: 1024,
-    xl: 1280,
-    '2xl': 1536,
+    sm: 640,   // Mobile landscape
+    md: 768,   // Tablet portrait
+    lg: 1024,  // Tablet landscape / Small desktop
+    xl: 1280,  // Desktop
+    xxl: 1536, // Large desktop
 } as const;
 
-/**
- * Z-Index Scale
- */
+/* ============================================
+   Z-INDEX SCALE (Layering System)
+   ============================================ */
 export const Z_INDEX = {
+    background: -10,
     base: 0,
-    dropdown: 10,
-    sticky: 20,
-    fixed: 30,
-    modalBackdrop: 40,
-    modal: 50,
-    popover: 60,
-    tooltip: 70,
+    surface: 10,
+    overlay: 20,
+    dropdown: 30,
+    modal: 40,
+    toast: 50,
+    tooltip: 60,
+} as const;
+
+/* ============================================
+   TIMING FUNCTIONS (Easing Curves)
+   ============================================ */
+export const EASING = {
+    // Apple's standard easing
+    standard: "cubic-bezier(0.4, 0, 0.2, 1)",
+    
+    // Accelerated (entering)
+    accelerate: "cubic-bezier(0.4, 0, 1, 1)",
+    
+    // Decelerated (exiting)
+    decelerate: "cubic-bezier(0, 0, 0.2, 1)",
+    
+    // Sharp (quick transitions)
+    sharp: "cubic-bezier(0.4, 0, 0.6, 1)",
+    
+    // Bounce (playful)
+    bounce: "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
 } as const;

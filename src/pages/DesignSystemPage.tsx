@@ -12,74 +12,27 @@ import { AppBackground } from "./design/background";
 import { Topbar, Navbar, Drawer, DrawerHeader, MobileBottomNav, SearchBar } from "./design/navigation";
 import { LoadingState } from "./design/states";
 import { COURSES } from "./design/data";
+import { useThemeSync } from "../hooks/useThemeSync";
 import type { Page, CourseKey, Course } from "./design/types";
+
+type SidebarMode = 'expanded' | 'mini';
 
 // Lazy load pages for code splitting
 const DashboardPage = lazy(() => import("./design/pages").then(m => ({ default: m.DashboardPage })));
 const LibraryPage = lazy(() => import("./design/pages").then(m => ({ default: m.LibraryPage })));
 const ActivityPage = lazy(() => import("./design/pages").then(m => ({ default: m.ActivityPage })));
 const CoursePage = lazy(() => import("./design/pages").then(m => ({ default: m.CoursePage })));
-
-type SidebarMode = 'expanded' | 'compact' | 'mini';
+const ReadingPage = lazy(() => import("./design/pages").then(m => ({ default: m.ReadingPage })));
 
 export default function AgoraPremiumTemplate() {
     const [page, setPage] = useState<Page>("dashboard");
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [dark, setDark] = useState(false);
     const [activeCourseKey, setActiveCourseKey] = useState<CourseKey>("macro");
     const [sidebarMode, setSidebarMode] = useState<SidebarMode>('expanded');
-    const [searchOpen, setSearchOpen] = useState(false);
+    const [readingMode, setReadingMode] = useState<"dark" | "paper">("dark");
 
-    // Apply dark class to document root
-    useState(() => {
-        if (dark) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    });
-
-    // Keyboard shortcuts
-    useState(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            // ⌘K or Ctrl+K to open search
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                e.preventDefault();
-                setSearchOpen(true);
-            }
-            // Escape to close search or drawer
-            if (e.key === 'Escape') {
-                if (searchOpen) setSearchOpen(false);
-                if (drawerOpen) setDrawerOpen(false);
-            }
-        };
-
-        document.addEventListener('keydown', handleKeyDown);
-        return () => document.removeEventListener('keydown', handleKeyDown);
-    });
-
-    // Update dark class when dark state changes
-    const toggleDark = (value: boolean) => {
-        setDark(value);
-        if (value) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    };
-
-    // Keyboard shortcuts
-    useState(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            // Escape to close drawer
-            if (e.key === 'Escape') {
-                setDrawerOpen(false);
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    });
+    // Force dark mode permanently
+    useThemeSync(true);
 
     const title = useMemo(() => {
         if (page === "dashboard") return "Accueil";
@@ -95,81 +48,142 @@ export default function AgoraPremiumTemplate() {
 
     return (
         <div className="min-h-screen">
-            <AppBackground dark={dark} />
+            <AppBackground />
 
-            {/* Desktop layout */}
-            <div className="hidden lg:flex h-screen">
-                {/* Sidebar */}
-                <aside 
-                    className={cx(
-                        "shrink-0 border-r border-[var(--color-border)] bg-[var(--color-surface-raised)] shadow-[inset_-1px_0_0_rgba(0,0,0,0.05)] dark:shadow-[inset_-1px_0_0_rgba(255,255,255,0.05)] transition-all duration-300",
-                        sidebarMode === 'mini' ? "w-[72px]" : sidebarMode === 'compact' ? "w-[200px]" : "w-[280px]"
-                    )}
-                >
-                    <div className="h-full overflow-auto">
-                        <Navbar
-                            page={page}
-                            setPage={setPage}
-                            activeCourseKey={activeCourseKey}
-                            courses={COURSES}
-                            onOpenCourse={(k) => {
-                                setActiveCourseKey(k);
-                                setPage("course");
-                            }}
-                            sidebarMode={sidebarMode}
-                            onCycleSidebarMode={() => {
-                                setSidebarMode(prev => 
-                                    prev === 'expanded' ? 'compact' : 
-                                    prev === 'compact' ? 'mini' : 'expanded'
-                                );
-                            }}
-                        />
-                    </div>
-                </aside>
+            {/* Desktop layout - FLOATING GLASS PANELS */}
+            <div className="hidden lg:block h-screen overflow-hidden">
+                <div className="h-full p-4">
+                    <div className="mx-auto max-w-[1480px] h-full">
+                        <div className="grid grid-cols-[auto_1fr] gap-4 h-full">
+                            {/* Floating Sidebar Panel */}
+                            <aside 
+                                className={cx(
+                                    "shrink-0 overflow-hidden",
+                                    sidebarMode === 'mini' ? "w-[88px]" : "w-[296px]"
+                                )}
+                                style={{ 
+                                    borderRadius: "var(--radius-panel)",
+                                    transition: "width 0.35s cubic-bezier(0.4, 0, 0.2, 1)"
+                                }}
+                            >
+                                <div className="relative h-full border border-[var(--glass-border)] bg-[var(--glass-panel)] backdrop-blur-2xl backdrop-saturate-150 dark:backdrop-brightness-110 shadow-[var(--shadow-lg)]">
+                                    {/* Glass highlight (Apple signature) */}
+                                    <div
+                                        aria-hidden
+                                        className="pointer-events-none absolute inset-0 opacity-70 [mask-image:linear-gradient(to_bottom,black,transparent_55%)]"
+                                        style={{ background: "var(--glass-highlight)" }}
+                                    />
+                                    <div className="relative h-full">
+                                        <Navbar
+                                            page={page}
+                                            setPage={setPage}
+                                            activeCourseKey={activeCourseKey}
+                                            courses={COURSES}
+                                            onOpenCourse={(k) => {
+                                                setActiveCourseKey(k);
+                                                setPage("course");
+                                            }}
+                                            sidebarMode={sidebarMode}
+                                            onCycleSidebarMode={() => {
+                                                setSidebarMode(prev => prev === 'expanded' ? 'mini' : 'expanded');
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </aside>
 
-                {/* Main content area */}
-                <div className="flex-1 flex flex-col min-w-0">
-                    {/* Topbar */}
-                    <Topbar 
-                        title={title} 
-                        onOpenSidebar={() => setDrawerOpen(true)} 
-                        dark={dark} 
-                        setDark={toggleDark}
-                    />
-
-                    {/* Content */}
-                    <main className="flex-1 overflow-auto bg-[var(--color-surface-base)]">
-                        <div className="mx-auto max-w-[960px] px-6 py-10 lg:px-10">
-                            <Suspense fallback={<LoadingState message="Chargement..." />}>
-                                <AnimatePresence mode="wait">
-                                    <motion.div
-                                        key={page}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -10 }}
-                                        transition={{ duration: 0.2 }}
+                            {/* Floating Main Panel */}
+                            <div className="flex flex-col min-w-0 h-full overflow-hidden" style={{ borderRadius: "var(--radius-panel)" }}>
+                                {/* Floating Topbar */}
+                                <div className="shrink-0">
+                                    <div 
+                                        className="relative h-16 border border-[var(--glass-border)] bg-[var(--glass-panel-strong)] backdrop-blur-2xl backdrop-saturate-150 dark:backdrop-brightness-110 shadow-[var(--shadow-lg)]"
+                                        style={{ borderRadius: "var(--radius-panel)" }}
                                     >
-                                        {page === "dashboard" && (
-                                            <DashboardPage
-                                                onOpenCourse={() => {
-                                                    setPage("course");
-                                                }}
+                                        {/* Glass highlight */}
+                                        <div
+                                            aria-hidden
+                                            className="pointer-events-none absolute inset-0 opacity-70 [mask-image:linear-gradient(to_bottom,black,transparent_55%)]"
+                                            style={{ background: "var(--glass-highlight)" }}
+                                        />
+                                        <div className="relative h-full">
+                                            <Topbar 
+                                                title={title} 
+                                                onOpenSidebar={() => setDrawerOpen(true)}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Content Panel - Becomes Paper Canvas in reading mode */}
+                                <main className="flex-1 overflow-hidden mt-4">
+                                    <div 
+                                        id="reading-scroll-container"
+                                        className="relative h-full overflow-auto border shadow-[var(--shadow-lg)] transition-all duration-300"
+                                        style={{ 
+                                            borderRadius: "var(--radius-panel)",
+                                            background: (page === "reading" && readingMode === "paper") ? "var(--paper-bg)" : "var(--glass-panel)",
+                                            borderColor: (page === "reading" && readingMode === "paper") ? "var(--paper-border)" : "var(--glass-border)",
+                                            backdropFilter: (page === "reading" && readingMode === "paper") ? "none" : "blur(32px) saturate(150%)",
+                                            boxShadow: (page === "reading" && readingMode === "paper") ? "var(--paper-shadow)" : "var(--shadow-lg)"
+                                        }}
+                                    >
+                                        {/* Glass highlight (only in dark mode) */}
+                                        {!(page === "reading" && readingMode === "paper") && (
+                                            <div
+                                                aria-hidden
+                                                className="pointer-events-none absolute inset-0 opacity-70 [mask-image:linear-gradient(to_bottom,black,transparent_55%)]"
+                                                style={{ background: "var(--glass-highlight)" }}
                                             />
                                         )}
-                                        {page === "library" && (
-                                            <LibraryPage
-                                                onOpenCourse={() => {
-                                                    setPage("course");
-                                                }}
-                                            />
-                                        )}
-                                        {page === "activity" && <ActivityPage />}
-                                        {page === "course" && <CoursePage course={activeCourse} />}
-                                    </motion.div>
-                                </AnimatePresence>
-                            </Suspense>
+                                        <div className="relative mx-auto max-w-[960px] px-6 py-10 lg:px-10">
+                                            <Suspense fallback={<LoadingState message="Chargement..." />}>
+                                                <AnimatePresence mode="wait">
+                                                    <motion.div
+                                                        key={page}
+                                                        initial={{ opacity: 0, y: 10 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        exit={{ opacity: 0, y: -10 }}
+                                                        transition={{ duration: 0.2 }}
+                                                    >
+                                                        {page === "dashboard" && (
+                                                            <DashboardPage
+                                                                onOpenCourse={() => {
+                                                                    setPage("course");
+                                                                }}
+                                                            />
+                                                        )}
+                                                        {page === "library" && (
+                                                            <LibraryPage
+                                                                onOpenCourse={() => {
+                                                                    setPage("course");
+                                                                }}
+                                                            />
+                                                        )}
+                                                        {page === "activity" && <ActivityPage />}
+                                                        {page === "course" && (
+                                                            <CoursePage 
+                                                                course={activeCourse}
+                                                                onOpenContent={() => setPage("reading")}
+                                                            />
+                                                        )}
+                                                        {page === "reading" && (
+                                                            <ReadingPage
+                                                                course={activeCourse}
+                                                                readingMode={readingMode}
+                                                                onToggleReading={() => setReadingMode(prev => prev === "dark" ? "paper" : "dark")}
+                                                                onBack={() => setPage("course")}
+                                                            />
+                                                        )}
+                                                    </motion.div>
+                                                </AnimatePresence>
+                                            </Suspense>
+                                        </div>
+                                    </div>
+                                </main>
+                            </div>
                         </div>
-                    </main>
+                    </div>
                 </div>
             </div>
 
@@ -177,9 +191,7 @@ export default function AgoraPremiumTemplate() {
             <div className="hidden md:block lg:hidden">
                 <Topbar 
                     title={title} 
-                    onOpenSidebar={() => setDrawerOpen(true)} 
-                    dark={dark} 
-                    setDark={toggleDark}
+                    onOpenSidebar={() => setDrawerOpen(true)}
                 />
                 
                 <main className="pb-16 bg-[var(--color-surface-base)]">
@@ -212,7 +224,12 @@ export default function AgoraPremiumTemplate() {
                                         />
                                     )}
                                     {page === "activity" && <ActivityPage />}
-                                    {page === "course" && <CoursePage course={activeCourse} />}
+                                    {page === "course" && (
+                                        <CoursePage 
+                                            course={activeCourse}
+                                            onOpenContent={() => setPage("reading")}
+                                        />
+                                    )}
                                 </motion.div>
                             </AnimatePresence>
                         </Suspense>
@@ -245,9 +262,7 @@ export default function AgoraPremiumTemplate() {
 
                 <Topbar 
                     title={title} 
-                    onOpenSidebar={() => setDrawerOpen(true)} 
-                    dark={dark} 
-                    setDark={toggleDark}
+                    onOpenSidebar={() => setDrawerOpen(true)}
                 />
 
                 <main className="py-6 pb-24 bg-[var(--color-surface-base)] px-4">
@@ -279,7 +294,12 @@ export default function AgoraPremiumTemplate() {
                                     />
                                 )}
                                 {page === "activity" && <ActivityPage />}
-                                {page === "course" && <CoursePage course={activeCourse} />}
+                                {page === "course" && (
+                                    <CoursePage 
+                                        course={activeCourse}
+                                        onOpenContent={() => setPage("reading")}
+                                    />
+                                )}
                             </motion.div>
                         </AnimatePresence>
                     </Suspense>

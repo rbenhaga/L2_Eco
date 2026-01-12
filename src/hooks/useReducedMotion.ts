@@ -1,20 +1,20 @@
 /**
- * Hook to detect reduced motion preference and low-end devices
- * Automatically disables complex animations for better performance
+ * Agora Premium - Reduced Motion Hook
+ * Performance-aware animations with accessibility support
  */
 
 import { useState, useEffect } from 'react';
 
-export function useReducedMotion() {
+// Check if user prefers reduced motion
+export function useReducedMotion(): boolean {
     const [shouldReduceMotion, setShouldReduceMotion] = useState(false);
 
     useEffect(() => {
-        // Check user preference
         const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
         setShouldReduceMotion(mediaQuery.matches);
 
-        const handleChange = (e: MediaQueryListEvent) => {
-            setShouldReduceMotion(e.matches);
+        const handleChange = (event: MediaQueryListEvent) => {
+            setShouldReduceMotion(event.matches);
         };
 
         mediaQuery.addEventListener('change', handleChange);
@@ -24,22 +24,56 @@ export function useReducedMotion() {
     return shouldReduceMotion;
 }
 
+// Performance mode hook - detects low-end devices
 export function usePerformanceMode() {
     const [isLowEnd, setIsLowEnd] = useState(false);
-    const reducedMotion = useReducedMotion();
+    const shouldReduceMotion = useReducedMotion();
 
     useEffect(() => {
-        // Detect low-end devices
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        const hasLowMemory = (navigator as any).deviceMemory && (navigator as any).deviceMemory < 4;
-        const hasSlowConnection = (navigator as any).connection?.effectiveType === 'slow-2g' || 
-                                   (navigator as any).connection?.effectiveType === '2g';
+        // Check for low-end device indicators
+        const checkPerformance = () => {
+            // Check memory (if available)
+            const memory = (navigator as any).deviceMemory;
+            const isLowMemory = memory && memory <= 4;
 
-        setIsLowEnd(isMobile && (hasLowMemory || hasSlowConnection));
+            // Check connection (if available)
+            const connection = (navigator as any).connection;
+            const isSlowConnection = connection && 
+                (connection.effectiveType === 'slow-2g' || 
+                 connection.effectiveType === '2g' ||
+                 connection.effectiveType === '3g');
+
+            // Check hardware concurrency
+            const isLowConcurrency = navigator.hardwareConcurrency <= 2;
+
+            setIsLowEnd(isLowMemory || isSlowConnection || isLowConcurrency);
+        };
+
+        checkPerformance();
     }, []);
 
     return {
-        shouldReduceMotion: reducedMotion || isLowEnd,
-        isLowEnd,
+        shouldReduceMotion: shouldReduceMotion || isLowEnd,
+        isLowEndDevice: isLowEnd,
+        shouldUseSimpleAnimations: shouldReduceMotion || isLowEnd,
+    };
+}
+
+// Animation config based on performance
+export function getAnimationConfig(forceSimple = false) {
+    const { shouldReduceMotion } = usePerformanceMode();
+    
+    if (shouldReduceMotion || forceSimple) {
+        return {
+            duration: 0.1,
+            ease: 'linear',
+            reduce: true,
+        };
+    }
+
+    return {
+        duration: 0.3,
+        ease: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        reduce: false,
     };
 }

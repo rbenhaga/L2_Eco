@@ -2,7 +2,7 @@
  * Agora Premium - Types
  */
 
-export type CourseKey = "macro" | "micro" | "stats" | "socio";
+export type CourseKey = "macro" | "micro" | "stats" | "socio" | "maths";
 
 export type Course = {
     key: CourseKey;
@@ -24,7 +24,7 @@ export type UpdateItem = {
     locked?: boolean;
 };
 
-export type Page = "dashboard" | "library" | "activity" | "course";
+export type Page = "dashboard" | "library" | "activity" | "course" | "reading";
 
 export type ResourceType = "Cours" | "TD" | "QCM" | "Annales" | "Fiches";
 

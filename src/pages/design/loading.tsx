@@ -5,7 +5,7 @@
 
 import { motion } from "framer-motion";
 import { cx } from "./helpers";
-import { SPRING } from "./animations";
+import { SPRING_CONFIGS } from "./animations";
 
 /* ============================================
    SKELETON COMPONENTS
@@ -60,7 +60,7 @@ export function SkeletonCourseCard({ className }: { className?: string }) {
             )}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={SPRING.smooth}
+            transition={SPRING_CONFIGS.smooth}
         >
             <div className="flex items-start gap-3">
                 <SkeletonCircle size={40} />
@@ -117,7 +117,7 @@ export function SpinnerOverlay({ message }: { message?: string }) {
                 className="flex flex-col items-center gap-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-8 shadow-[var(--shadow-xl)]"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={SPRING.smooth}
+                transition={SPRING_CONFIGS.smooth}
             >
                 <Spinner size="lg" />
                 {message && (
@@ -158,7 +158,7 @@ export function ProgressBar({
                     className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-strong)] shadow-[0_0_8px_var(--color-accent)]"
                     initial={{ width: 0 }}
                     animate={{ width: `${percentage}%` }}
-                    transition={SPRING.smooth}
+                    transition={SPRING_CONFIGS.smooth}
                 />
             </div>
         </div>

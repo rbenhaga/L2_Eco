@@ -1,14 +1,29 @@
-export { Math, FormulaBox } from './Math';
+// Organized component exports
+export * from './content';
+export * from './course';
+export * from './auth';
+export * from './layout';
+export * from './common';
+
+// Course components
 export { Section } from './Section';
 export { Callout } from './Callout';
-export { Graph } from './Graph';
-export { ChapterNav } from './ChapterNav';
 export { PageHeader } from './PageHeader';
-export { Table, TableRow, TableCell } from './Table';
-export { ScrollToTop } from './ScrollToTop';
-export { Exercise, ExerciseGroup } from './Exercise';
-export { MethodBox, Step, DomainMethod, LinearityMethod } from './MethodBox';
-export { ConceptCard, AuthorCard } from './ConceptCard';
-export { ViewToggle, QuickSummary } from './ViewToggle';
+export { ChapterNav } from './ChapterNav';
+
+// UI components
+export { ThemeToggle } from './ThemeToggle';
+export { Background } from './ui/Background';
 export { SolutionBox } from './ui/SolutionBox';
+
+// Content protection
+export { ContentProtection } from './ContentProtection';
+export { PaywallModal } from './PaywallModal';
+
+// Math & Tables
+export { Math, FormulaBox } from './Math';
+export { Table, TableRow, TableCell } from './Table';
+
+// Author Card (for socio)
+export { AuthorCard } from './content/AuthorCard';
 

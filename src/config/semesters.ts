@@ -3,7 +3,7 @@
  * Centralized configuration for all semesters and their subjects
  */
 
-import { TrendingUp, PieChart, BarChart3, Users, Calculator } from 'lucide-react';
+import { TrendingUp, PieChart, BarChart3, Users, Calculator, Briefcase } from 'lucide-react';
 import type { ComponentType } from 'react';
 
 export interface SubjectConfig {
@@ -77,6 +77,15 @@ const subjectDefinitions: Record<string, Omit<SubjectConfig, 'basePath'>> = {
         color: { primary: '#6366f1', light: '#e0e7ff', dark: '#3730a3' },
         available: false,
     },
+    management: {
+        id: 'management',
+        name: 'Management des organisations',
+        shortName: 'Management',
+        description: 'Théories et pratiques du management',
+        icon: Briefcase,
+        color: { primary: '#8b5cf6', light: '#ede9fe', dark: '#5b21b6' },
+        available: true,
+    },
 };
 
 // Helper to create subject config with base path
@@ -91,34 +100,36 @@ function createSubject(id: string, semesterId: string): SubjectConfig {
 
 // Semester configurations
 export const semesters: Record<string, SemesterConfig> = {
-    s2: {
-        id: 's2',
-        name: 'Semestre 2',
-        shortName: 'S2',
-        subtitle: 'L2 Économie · Partiel 2024-2025',
-        year: '2024-2025',
-        subjects: [
-            createSubject('macro', 's2'),
-            createSubject('micro', 's2'),
-            createSubject('stats', 's2'),
-            createSubject('socio', 's2'),
-        ],
-    },
     s3: {
         id: 's3',
         name: 'Semestre 3',
         shortName: 'S3',
-        subtitle: 'L2 Économie · À venir',
+        subtitle: 'L2 Économie · Partiel 2024-2025',
         year: '2024-2025',
         subjects: [
-            // Ready for S3 subjects - add them here
-            // createSubject('macro', 's3'),
+            createSubject('macro', 's3'),
+            createSubject('micro', 's3'),
+            createSubject('stats', 's3'),
+            createSubject('socio', 's3'),
+        ],
+    },
+    s4: {
+        id: 's4',
+        name: 'Semestre 4',
+        shortName: 'S4',
+        subtitle: 'L2 Économie · 2025-2026',
+        year: '2025-2026',
+        subjects: [
+            createSubject('macro', 's4'),
+            createSubject('micro', 's4'),
+            createSubject('stats', 's4'),
+            createSubject('management', 's4'),
         ],
     },
 };
 
 // Export default semester (current)
-export const currentSemester = semesters.s2;
+export const currentSemester = semesters.s3;
 
 // Get all available semesters
 export function getAvailableSemesters(): SemesterConfig[] {

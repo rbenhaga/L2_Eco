@@ -1,15 +1,6 @@
 /**
  * Centralized SolutionBox Component
- * 
- * Replaces all inline solution/answer boxes across modules
- * with a single, consistent, dark-mode-ready component.
- * 
- * Variants:
- * - success (green) - Correct answers, solutions
- * - error (red) - Incorrect answers, warnings
- * - info (blue) - Additional information, formulas
- * - warning (amber) - Important notes, pitfalls
- * - neutral (slate) - General content boxes
+ * Light-first design (study-grade)
  */
 
 import { CheckCircle, XCircle, Info, AlertTriangle, Lightbulb } from 'lucide-react';
@@ -27,37 +18,37 @@ interface SolutionBoxProps {
 
 const variantConfig = {
     success: {
-        bg: 'bg-green-50 dark:bg-green-950/30',
-        border: 'border-green-200 dark:border-green-500/30',
-        text: 'text-green-800 dark:text-green-400',
+        bg: 'bg-green-50',
+        border: 'border-green-200',
+        text: 'text-green-800',
         iconBg: 'bg-green-500',
         icon: CheckCircle,
     },
     error: {
-        bg: 'bg-red-50 dark:bg-red-950/30',
-        border: 'border-red-200 dark:border-red-500/30',
-        text: 'text-red-800 dark:text-red-400',
+        bg: 'bg-red-50',
+        border: 'border-red-200',
+        text: 'text-red-800',
         iconBg: 'bg-red-500',
         icon: XCircle,
     },
     info: {
-        bg: 'bg-blue-50 dark:bg-blue-950/30',
-        border: 'border-blue-200 dark:border-blue-500/30',
-        text: 'text-blue-800 dark:text-blue-400',
+        bg: 'bg-blue-50',
+        border: 'border-blue-200',
+        text: 'text-blue-800',
         iconBg: 'bg-blue-500',
         icon: Info,
     },
     warning: {
-        bg: 'bg-amber-50 dark:bg-amber-950/30',
-        border: 'border-amber-200 dark:border-amber-500/30',
-        text: 'text-amber-800 dark:text-amber-400',
+        bg: 'bg-amber-50',
+        border: 'border-amber-200',
+        text: 'text-amber-800',
         iconBg: 'bg-amber-500',
         icon: AlertTriangle,
     },
     neutral: {
-        bg: 'bg-slate-50 dark:bg-slate-900/60',
-        border: 'border-slate-200 dark:border-white/10',
-        text: 'text-slate-800 dark:text-slate-200',
+        bg: 'bg-slate-50',
+        border: 'border-slate-200',
+        text: 'text-slate-800',
         iconBg: 'bg-slate-500',
         icon: Lightbulb,
     },
@@ -76,11 +67,11 @@ export function SolutionBox({
     return (
         <div
             className={`
-        p-4 rounded-lg border
-        ${config.bg}
-        ${config.border}
-        ${className}
-      `}
+                p-4 rounded-lg border
+                ${config.bg}
+                ${config.border}
+                ${className}
+            `}
         >
             {(title || icon) && (
                 <div className="flex items-start gap-3 mb-3">
@@ -99,7 +90,7 @@ export function SolutionBox({
                 </div>
             )}
 
-            <div className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+            <div className="text-slate-700 text-sm leading-relaxed">
                 {children}
             </div>
         </div>

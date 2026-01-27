@@ -40,25 +40,25 @@ export function AnswerOption({
         if (!isRevealed) {
             if (isSelected) {
                 // Return generic active class, but color is handled via style
-                return 'bg-indigo-50 dark:bg-white/10 border-transparent ring-1 ring-indigo-200 dark:ring-white/20';
+                return 'bg-indigo-50 border-transparent ring-1 ring-indigo-200';
             }
-            return 'border-slate-200 dark:border-white/5 bg-white dark:bg-slate-900/40 hover:bg-slate-50 dark:hover:bg-white/5 hover:border-slate-300 dark:hover:border-white/10 active:scale-[0.99]';
+            return 'border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 active:scale-[0.99]';
         }
 
         // Revealed state
         if (isSelected) {
             if (isCorrect) {
-                return 'border-emerald-500/50 bg-emerald-50 dark:bg-emerald-500/10 ring-1 ring-emerald-500/20';
+                return 'border-emerald-500/50 bg-emerald-50 ring-1 ring-emerald-500/20';
             }
-            return 'border-rose-500/50 bg-rose-50 dark:bg-rose-500/10 ring-1 ring-rose-500/20';
+            return 'border-rose-500/50 bg-rose-50 ring-1 ring-rose-500/20';
         }
 
         // Not selected but revealed - show correct answer
         if (isCorrect) {
-            return 'border-emerald-500/50 bg-emerald-50 dark:bg-emerald-500/10 ring-1 ring-emerald-500/20 opacity-80';
+            return 'border-emerald-500/50 bg-emerald-50 ring-1 ring-emerald-500/20 opacity-80';
         }
 
-        return 'border-slate-200 dark:border-white/5 bg-white dark:bg-slate-900/40 opacity-40';
+        return 'border-slate-200 bg-white opacity-40';
     };
 
     const getLabelStyles = () => {
@@ -66,7 +66,7 @@ export function AnswerOption({
             if (isSelected) {
                 return 'text-white shadow-lg';
             }
-            return 'bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-400 border border-slate-200 dark:border-white/5';
+            return 'bg-slate-100 text-slate-700 border border-slate-200';
         }
 
         if (isSelected) {
@@ -80,7 +80,7 @@ export function AnswerOption({
             return 'bg-emerald-500 text-white shadow-lg';
         }
 
-        return 'bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-500 border border-slate-200 dark:border-white/5';
+        return 'bg-slate-100 text-slate-500 border border-slate-200';
     };
 
     return (
@@ -133,7 +133,7 @@ export function AnswerOption({
             </span>
 
             {/* Option content */}
-            <span className={`flex-1 text-base leading-relaxed pt-1.5 transition-colors ${isSelected || isRevealed ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>
+            <span className={`flex-1 text-base leading-relaxed pt-1.5 transition-colors ${isSelected || isRevealed ? 'text-slate-900' : 'text-slate-700'}`}>
                 {content}
             </span>
         </button>

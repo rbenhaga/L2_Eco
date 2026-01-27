@@ -2,93 +2,78 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Background } from '../../../components/ui/Background';
 import { ContentProtection } from '../../../components/ContentProtection';
-import { TeaserView } from '../../../components/TeaserView';
 import { PaywallModal } from '../../../components/PaywallModal';
 import { useAuth } from '../../../context/AuthContext';
-import { isFreeContent, getContentTitle } from '../../../utils/contentAccess';
-import type { SubjectConfig } from '../../../config/semesters';
-import type { NavGroup } from '../components/CourseNavigation';
-
-interface CourseLayoutProps {
-    subject: SubjectConfig;
-    navGroups: NavGroup[];
-    progressColor?: string;
-    footerText?: string;
-}
 
 /**
- * CourseLayout - Two-step premium content protection:
+ * CourseLayout - Simplified layout for course content
  * 
- * 1. First visit: PaywallModal appears over blurred content
- * 2. After closing modal: TeaserView shows (partial content + upsell banner)
- * 3. Full content only accessible with premium subscription
+ * Navigation is now handled by AppLayout's two-tier sidebar system.
+ * This layout only handles content protection and paywall logic.
+ * 
+ * Note: subject, navGroups, and progressColor are kept for backwards compatibility
+ * but are no longer used since CourseNavigation was removed.
  */
-export function CourseLayout({ footerText }: CourseLayoutProps) {
+export function CourseLayout() {
     const { hasAccess, loading } = useAuth();
     const location = useLocation();
-    const [showModal, setShowModal] = useState(true); // Modal starts open
-    const [hasSeenModal, setHasSeenModal] = useState(false);
+    const [showPaywall, setShowPaywall] = useState(false);
 
-    // Use centralized content access rules
-    const isFreePage = isFreeContent(location.pathname);
+    // Define which pages are free (for demo: Chapter 1 is free)
+    const isFreePage = location.pathname.includes('/chapitre-1') ||
+        location.pathname.split('/').filter(Boolean).length <= 2; // Home page detection
+
+    // Check if user needs premium access
     const needsPremium = !isFreePage;
     const hasPremium = hasAccess('premium');
 
-    // Reset modal state when navigating to a new page
     useEffect(() => {
+        // Don't evaluate paywall while auth is loading
+        if (loading) return;
+
+        // Show paywall if user tries to access premium content without subscription
         if (needsPremium && !hasPremium) {
-            setShowModal(true);
-            setHasSeenModal(false);
+            setShowPaywall(true);
+        } else {
+            setShowPaywall(false);
         }
-    }, [location.pathname, needsPremium, hasPremium]);
+    }, [needsPremium, hasPremium, location.pathname, loading]);
 
-    // Get content title for modal/teaser
-    const contentTitle = getContentTitle(location.pathname);
-
-    // Handle modal close - switch to teaser view
-    const handleModalClose = () => {
-        setShowModal(false);
-        setHasSeenModal(true);
+    const getCurrentPageTitle = () => {
+        const parts = location.pathname.split('/');
+        const lastPart = parts[parts.length - 1];
+        if (lastPart.includes('chapitre')) {
+            return 'ce chapitre';
+        }
+        return 'ce contenu';
     };
-
-    // Determine what to show
-    const showPaywall = needsPremium && !hasPremium && !loading && showModal && !hasSeenModal;
-    const showTeaser = needsPremium && !hasPremium && !loading && !showModal;
 
     return (
         <ContentProtection>
-            <div className="min-h-screen text-slate-900 dark:text-slate-50 font-sans">
+            <div className="min-h-screen text-slate-900 font-sans">
                 <Background />
 
-                <main className="relative z-10 py-8 px-8 lg:px-12 max-w-7xl">
+                {/* Main content - full width with generous padding */}
+                <main className="relative z-10 py-8 px-8 lg:px-12 max-w-7xl mx-auto">
+                    {/* Show paywall modal if user doesn't have access */}
                     {showPaywall ? (
                         <>
-                            {/* Blurred content preview behind modal */}
-                            <div className="filter blur-sm pointer-events-none select-none opacity-60">
+                            {/* Blurred content preview */}
+                            <div className="filter blur-sm pointer-events-none select-none">
                                 <Outlet />
                             </div>
 
-                            {/* PaywallModal overlay */}
+                            {/* Paywall modal */}
                             <PaywallModal
-                                isOpen={true}
-                                onClose={handleModalClose}
-                                contentTitle={contentTitle}
+                                isOpen={showPaywall}
+                                onClose={() => setShowPaywall(false)}
+                                contentTitle={getCurrentPageTitle()}
                             />
                         </>
-                    ) : showTeaser ? (
-                        /* After modal close: show teaser view with upsell */
-                        <TeaserView contentTitle={contentTitle}>
-                            <Outlet />
-                        </TeaserView>
                     ) : (
-                        /* Premium users or free content: full access */
                         <Outlet />
                     )}
                 </main>
-
-                <footer className="relative z-10 py-8 text-center text-slate-500 dark:text-slate-400 text-xs border-t border-slate-200 dark:border-white/5 bg-white/40 dark:bg-slate-950/40 backdrop-blur-md">
-                    <p>{footerText || "L2 Économie"}</p>
-                </footer>
             </div>
         </ContentProtection>
     );

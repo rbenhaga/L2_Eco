@@ -58,8 +58,8 @@ function DropdownMenu({ group, isActive, activeColor }: { group: NavGroup; isAct
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={`px-3 py-1.5 text-sm rounded-full transition-all flex items-center gap-1.5 ${isActive
-                    ? 'bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white shadow-sm ring-1 ring-slate-200 dark:ring-white/10'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
+                    ? 'bg-slate-100 text-slate-900 shadow-sm ring-1 ring-slate-200'
+                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
                     }`}
             >
                 <group.icon size={14} />
@@ -68,14 +68,14 @@ function DropdownMenu({ group, isActive, activeColor }: { group: NavGroup; isAct
             </button>
 
             {isOpen && (
-                <div className="absolute top-full right-0 mt-2 py-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-xl shadow-2xl border border-slate-200 dark:border-white/10 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute top-full right-0 mt-2 py-2 bg-white/90 backdrop-blur-xl rounded-xl shadow-2xl border border-slate-200 min-w-[200px] z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                     {group.items.map((item) => (
                         <Link
                             key={item.path}
                             to={item.path}
                             className={`flex items-center gap-3 px-4 py-2.5 text-sm no-underline transition-colors ${location.pathname === item.path
-                                ? 'text-slate-900 dark:text-white font-medium'
-                                : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-slate-700 dark:hover:text-slate-200'
+                                ? 'text-slate-900 font-medium'
+                                : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
                                 }`}
                             style={location.pathname === item.path ? { backgroundColor: `${activeColor}20`, color: activeColor } : {}}
                             onClick={() => setIsOpen(false)}
@@ -145,14 +145,14 @@ export function CourseNavigation({ subject, navGroups, progressColor }: CourseNa
         group.items.some(item => location.pathname === item.path);
 
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-[#191919]/80 backdrop-blur-xl border-b border-neutral-200 dark:border-white/5 supports-backdrop-filter:bg-white/60 dark:supports-backdrop-filter:bg-[#191919]/60">
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-neutral-200 supports-backdrop-filter:bg-white/60">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <Link to="/" className="w-10 h-10 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/5 rounded-full transition-colors">
+                    <Link to="/" className="w-10 h-10 flex items-center justify-center text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 rounded-full transition-colors">
                         <Home size={20} />
                     </Link>
-                    <div className="h-6 w-px bg-neutral-200 dark:bg-white/10 hidden sm:block" />
-                    <Link to={subject.basePath} className="flex items-center gap-3 text-neutral-900 dark:text-white no-underline group">
+                    <div className="h-6 w-px bg-neutral-200 hidden sm:block" />
+                    <Link to={subject.basePath} className="flex items-center gap-3 text-neutral-900 no-underline group">
                         <div
                             className="w-9 h-9 text-white rounded-xl flex items-center justify-center shadow-lg transition-transform group-hover:scale-105"
                             style={{ backgroundColor: subject.color.primary }}
@@ -172,7 +172,7 @@ export function CourseNavigation({ subject, navGroups, progressColor }: CourseNa
                             activeColor={color}
                         />
                     ))}
-                    <div className="w-px h-6 bg-slate-200 dark:bg-white/10 mx-2" />
+                    <div className="w-px h-6 bg-slate-200 mx-2" />
                     <ThemeToggle />
                 </div>
 
@@ -181,7 +181,7 @@ export function CourseNavigation({ subject, navGroups, progressColor }: CourseNa
                     <button
                         type="button"
                         onClick={() => setMobileMenuOpen(prev => !prev)}
-                        className="w-10 h-10 flex items-center justify-center text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 rounded-full transition-colors border border-transparent hover:border-slate-200 dark:hover:border-white/10"
+                        className="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors border border-transparent hover:border-slate-200"
                         aria-label="Menu"
                         aria-expanded={mobileMenuOpen}
                     >
@@ -191,7 +191,7 @@ export function CourseNavigation({ subject, navGroups, progressColor }: CourseNa
             </div>
 
             {/* Progress Bar */}
-            <div className="h-[2px] bg-slate-100 dark:bg-white/5 w-full">
+            <div className="h-[2px] bg-slate-100 w-full">
                 <div
                     className="h-full transition-all ease-out duration-100 shadow-[0_0_10px_rgba(0,0,0,0.5)]"
                     style={{ width: `${progress}%`, backgroundColor: color, boxShadow: `0 0 10px ${color}` }}

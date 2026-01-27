@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { initializeApp } from 'firebase/app';
+import { getAnalytics, isSupported } from 'firebase/analytics';
 import {
     getAuth,
     signInWithPopup,
@@ -13,6 +14,13 @@ import firebaseConfig from '../config/firebase.config';
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
+
+// Initialize Analytics (only in browser and if supported)
+isSupported().then((supported) => {
+    if (supported) {
+        getAnalytics(app);
+    }
+});
 
 // User interface with subscription info
 export interface User {

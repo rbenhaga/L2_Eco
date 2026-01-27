@@ -3,6 +3,7 @@ import {
     PieChart,
     BarChart3,
     Users,
+    Briefcase,
     type LucideIcon
 } from 'lucide-react';
 
@@ -11,7 +12,7 @@ import {
  * Centralized module metadata for consistent styling across the app
  */
 
-export type ModuleId = 'macro' | 'micro' | 'stats' | 'socio';
+export type ModuleId = 'macro' | 'micro' | 'stats' | 'socio' | 'management';
 
 export interface ModuleConfig {
     id: ModuleId;
@@ -49,6 +50,13 @@ export const MODULE_CONFIG: Record<ModuleId, ModuleConfig> = {
         icon: Users,
         iconBgLight: 'bg-violet-50 dark:bg-violet-500/10',
         text: 'text-violet-600 dark:text-violet-400'
+    },
+    management: {
+        id: 'management',
+        name: 'Management',
+        icon: Briefcase,
+        iconBgLight: 'bg-purple-50 dark:bg-purple-500/10',
+        text: 'text-purple-600 dark:text-purple-400'
     }
 } as const;
 

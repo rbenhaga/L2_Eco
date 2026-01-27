@@ -1,0 +1,12 @@
+export { StatsHome } from './Home';
+export { Chapter1 } from './Chapter1';
+export { Chapter2 } from './Chapter2';
+export { Chapter3 } from './Chapter3';
+export { Chapter4 } from './Chapter4';
+export { Chapter5 } from './Chapter5';
+// TD & QCM now integrated in ModuleHub
+export { Revision } from './Revision';
+export { Demonstrations } from './Demonstrations';
+export { Annales } from './Annales';
+export { CorrectionAnnales } from './CorrectionAnnales';
+export { RevisionIntensive } from './RevisionIntensive';

@@ -82,7 +82,7 @@ function getColorHex(colorName) {
 }
 
 // Process modules
-const base = './src/modules/s2';
+const base = './src/modules/s3';
 const modules = ['micro', 'stats', 'socio'];
 
 modules.forEach(mod => {

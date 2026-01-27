@@ -18,8 +18,8 @@ export function ExplanationBox({ isCorrect, explanation, className = '' }: Expla
             className={`
         p-4 sm:p-5 rounded-xl border-2
         ${isCorrect
-                    ? 'bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-500/30'
-                    : 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-500/30'
+                    ? 'bg-green-50 border-green-200'
+                    : 'bg-red-50 border-red-200'
                 }
         ${className}
       `}
@@ -37,13 +37,13 @@ export function ExplanationBox({ isCorrect, explanation, className = '' }: Expla
                 </div>
 
                 <div className="flex-1 min-w-0">
-                    <p className={`font-semibold ${isCorrect ? 'text-green-800 dark:text-green-400' : 'text-red-800 dark:text-red-400'}`}>
+                    <p className={`font-semibold ${isCorrect ? 'text-green-800' : 'text-red-800'}`}>
                         {isCorrect ? 'Bonne réponse !' : 'Mauvaise réponse'}
                     </p>
 
                     <div className="mt-2 flex items-start gap-2">
-                        <Lightbulb size={16} className="text-amber-500 dark:text-amber-400 shrink-0 mt-0.5" />
-                        <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+                        <Lightbulb size={16} className="text-amber-500 shrink-0 mt-0.5" />
+                        <p className="text-slate-700 text-sm leading-relaxed">
                             <RenderWithMath text={explanation} />
                         </p>
                     </div>

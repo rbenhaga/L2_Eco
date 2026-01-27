@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Check, ArrowLeft, Loader2, Sparkles, Zap } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { Background } from '../components/ui/Background';
+import { BackgroundBlobs } from '../components/layout/BackgroundBlobs';
 import { createCheckoutSession, createCustomerPortalSession } from '../services/api';
 
 export function SubscriptionPage() {
@@ -67,8 +67,8 @@ export function SubscriptionPage() {
     const currentTier = user?.subscriptionTier || 'free';
 
     return (
-        <div className="min-h-screen relative overflow-hidden bg-linear-to-br from-slate-50 via-indigo-50/30 to-violet-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-            <Background />
+        <div className="min-h-screen relative overflow-hidden" data-theme="light">
+            <BackgroundBlobs />
 
             <div className="relative z-10 min-h-screen px-6 py-12">
                 {/* Back button */}

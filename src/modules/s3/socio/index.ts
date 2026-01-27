@@ -1,0 +1,14 @@
+export { SocioLayout } from './SocioLayout';
+export { default as SocioHome } from './pages/SocioHome';
+export { default as SocioChapter1 } from './pages/Chapter1';
+export { default as SocioChapter2 } from './pages/Chapter2';
+export { default as SocioChapter3 } from './pages/Chapter3';
+export { default as SocioChapter4 } from './pages/Chapter4';
+export { default as SocioChapter5 } from './pages/Chapter5';
+export { default as SocioChapter6 } from './pages/Chapter6';
+export { default as SocioChapter7 } from './pages/Chapter7';
+export { default as SocioChapter8 } from './pages/Chapter8';
+export { default as SocioChapter9 } from './pages/Chapter9';
+export { default as SocioChapter10 } from './pages/Chapter10';
+export { default as SocioRevisionIntensive } from './pages/RevisionIntensive';
+export { default as SocioMethodologie } from './pages/Methodologie';

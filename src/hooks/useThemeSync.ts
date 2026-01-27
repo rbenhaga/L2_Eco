@@ -1,18 +1,19 @@
 import { useEffect } from "react";
 
 /**
- * Forces dark mode permanently
- * App is dark-only, with Paper Canvas for reading courses
+ * Forces light mode permanently
+ * App is light-first (study-grade design)
  */
-export function useThemeSync(forceDark: boolean = true) {
+export function useThemeSync(forceLight: boolean = true) {
   useEffect(() => {
-    if (!forceDark) return;
+    if (!forceLight) return;
     
     const root = document.documentElement;
     
-    // Force dark mode
-    root.classList.add("dark");
-    root.dataset.theme = "dark";
-    root.style.colorScheme = "dark";
-  }, [forceDark]);
+    // Force light mode
+    root.classList.remove("dark");
+    root.classList.add("light");
+    root.dataset.theme = "light";
+    root.style.colorScheme = "light";
+  }, [forceLight]);
 }

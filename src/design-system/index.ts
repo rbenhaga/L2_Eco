@@ -1,10 +1,7 @@
 /**
  * Design System
- * Centralized exports for design tokens and components
+ * Centralized exports for components
  */
-
-// Tokens
-export * from './tokens';
 
 // Components
 export * from './components';

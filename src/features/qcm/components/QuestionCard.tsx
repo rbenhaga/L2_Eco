@@ -27,16 +27,16 @@ export function QuestionCard({
     chapterTitle,
 }: QuestionCardProps) {
     return (
-        <div className="bg-white/60 dark:bg-slate-900/40 backdrop-blur-md rounded-3xl border border-slate-200 dark:border-white/10 overflow-hidden shadow-2xl relative transition-colors duration-300">
-            <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-slate-400/20 dark:via-white/10 to-transparent opacity-50" />
+        <div className="bg-white/60 backdrop-blur-md rounded-3xl border border-slate-200 overflow-hidden shadow-2xl relative transition-colors duration-300">
+            <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-slate-400/20 to-transparent opacity-50" />
 
             {/* Header */}
-            <div className="px-6 py-5 sm:px-8 sm:py-6 border-b border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/2">
+            <div className="px-6 py-5 sm:px-8 sm:py-6 border-b border-slate-200 bg-slate-50/50">
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div className="flex items-center gap-4">
-                        <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                            Question <span className="text-slate-900 dark:text-white font-bold text-base">{questionNumber}</span>
-                            <span className="text-slate-400 dark:text-slate-600"> / {totalQuestions}</span>
+                        <span className="text-sm font-medium text-slate-500">
+                            Question <span className="text-slate-900 font-bold text-base">{questionNumber}</span>
+                            <span className="text-slate-400"> / {totalQuestions}</span>
                         </span>
                         {difficulty && (
                             <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${difficultyStyles[difficulty].color}`}>
@@ -45,7 +45,7 @@ export function QuestionCard({
                         )}
                     </div>
                     {chapterTitle && (
-                        <span className="text-xs font-medium text-slate-500 truncate max-w-[150px] sm:max-w-none bg-slate-200/50 dark:bg-white/5 px-2 py-1 rounded-lg">
+                        <span className="text-xs font-medium text-slate-500 truncate max-w-[150px] sm:max-w-none bg-slate-200/50 px-2 py-1 rounded-lg">
                             {chapterTitle}
                         </span>
                     )}
@@ -54,7 +54,7 @@ export function QuestionCard({
 
             {/* Question */}
             <div className="px-6 py-6 sm:px-8 sm:py-8">
-                <div className="text-slate-900 dark:text-white text-lg sm:text-xl leading-relaxed font-medium transition-colors duration-300">
+                <div className="text-slate-900 text-lg sm:text-xl leading-relaxed font-medium transition-colors duration-300">
                     <RenderWithMath text={question} />
                 </div>
             </div>

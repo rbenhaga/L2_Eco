@@ -14,7 +14,7 @@ interface ThemeProviderState {
 }
 
 const initialState: ThemeProviderState = {
-    theme: "system",
+    theme: "light",
     setTheme: () => null,
 };
 
@@ -22,35 +22,38 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
     children,
-    defaultTheme = "system",
-    storageKey = "vite-ui-theme",
+    defaultTheme: _defaultTheme = "light",
+    storageKey: _storageKey = "vite-ui-theme",
 }: ThemeProviderProps) {
     const [theme, setTheme] = useState<Theme>(() => {
-        const stored = localStorage.getItem(storageKey) as Theme;
-        return stored || defaultTheme;
+        // For now, always return light - app is light-first
+        // Dark mode support can be added later
+        return "light";
     });
+    
+    // Suppress unused variable warnings (will be used when dark mode is implemented)
+    void _defaultTheme;
+    void _storageKey;
+
+    // Suppress unused setTheme warning (theme is read-only for now)
+    void setTheme;
 
     useEffect(() => {
         const root = window.document.documentElement;
-        root.classList.remove("light", "dark");
-
-        if (theme === "system") {
-            const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-                .matches
-                ? "dark"
-                : "light";
-            root.classList.add(systemTheme);
-            return;
-        }
-
-        root.classList.add(theme);
+        
+        // Always force light mode for now (study-grade design)
+        root.classList.remove("dark");
+        root.classList.add("light");
+        root.dataset.theme = "light";
+        root.style.colorScheme = "light";
     }, [theme]);
 
     const value = {
         theme,
-        setTheme: (newTheme: Theme) => {
-            localStorage.setItem(storageKey, newTheme);
-            setTheme(newTheme);
+        setTheme: (_newTheme: Theme) => {
+            // For now, ignore theme changes - app is light-only
+            // localStorage.setItem(storageKey, _newTheme);
+            // setTheme(_newTheme);
         },
     };
 

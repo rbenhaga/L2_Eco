@@ -24,7 +24,7 @@ export default function FAQPage() {
   }, []);
 
   return (
-    <div className="min-h-screen antialiased relative" data-theme="light">
+    <div className="min-h-screen antialiased relative" data-theme="light" style={{ background: 'var(--color-bg-base)' }}>
       <BackgroundBlobs />
       <div className="relative" style={{ zIndex: 1 }}>
         <Header />
@@ -36,13 +36,13 @@ export default function FAQPage() {
               animate={{ opacity: 1, y: 0 }}
               className="text-center mb-12"
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-full mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ background: 'var(--color-accent)' }}>
                 <HelpCircle className="w-8 h-8 text-white" />
               </div>
-              <h1 className="text-3xl sm:text-4xl font-semibold text-slate-900 mb-4">
+              <h1 className="text-3xl sm:text-4xl font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>
                 Foire aux Questions
               </h1>
-              <p className="text-lg text-slate-600">
+              <p className="text-lg" style={{ color: 'var(--color-text-secondary)' }}>
                 Trouvez rapidement des réponses à vos questions
               </p>
             </motion.div>
@@ -60,20 +60,29 @@ export default function FAQPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.05 * index }}
-                  className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-black/5 overflow-hidden"
+                  style={{
+                    background: 'var(--color-bg-raised)',
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid var(--color-border-default)',
+                    boxShadow: 'var(--shadow-sm)'
+                  }}
+                  className="rounded-xl overflow-hidden"
                 >
                   <button
                     onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                    className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-slate-50 transition-colors"
+                    className="w-full px-6 py-4 flex items-center justify-between text-left transition-colors"
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-bg-overlay)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   >
-                    <span className="font-medium text-slate-900 pr-4">{faq.q}</span>
-                    <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform shrink-0 ${openIndex === index ? 'rotate-180' : ''}`} />
+                    <span className="font-medium pr-4" style={{ color: 'var(--color-text-primary)' }}>{faq.q}</span>
+                    <ChevronDown className={`w-5 h-5 transition-transform shrink-0 ${openIndex === index ? 'rotate-180' : ''}`} style={{ color: 'var(--color-text-muted)' }} />
                   </button>
                   {openIndex === index && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
-                      className="px-6 pb-4 text-slate-600"
+                      className="px-6 pb-4"
+                      style={{ color: 'var(--color-text-secondary)' }}
                     >
                       {faq.a}
                     </motion.div>
@@ -87,13 +96,17 @@ export default function FAQPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="mt-12 bg-indigo-600 rounded-2xl p-8 text-center text-white"
+              className="mt-12 rounded-2xl p-8 text-center text-white"
+              style={{ background: 'var(--color-accent)' }}
             >
               <h3 className="text-xl font-semibold mb-2">Vous n'avez pas trouvé votre réponse ?</h3>
               <p className="mb-6 opacity-90">Notre équipe est là pour vous aider</p>
               <a
                 href="/contact"
-                className="inline-block px-6 py-3 bg-white text-indigo-600 font-semibold rounded-xl hover:bg-slate-100 transition-colors"
+                className="inline-block px-6 py-3 bg-white font-semibold rounded-xl transition-colors"
+                style={{ color: 'var(--color-accent)' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-bg-overlay)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'white'}
               >
                 Nous contacter
               </a>

@@ -1,6 +1,6 @@
 import { type ReactNode, type ButtonHTMLAttributes } from 'react';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'success' | 'error';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'success' | 'error' | 'accent';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -13,48 +13,74 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
 }
 
+/**
+ * Button variants using CSS custom properties (Design Contract v3)
+ * - No hardcoded Tailwind colors
+ * - Uses --shadow-* tokens
+ * - 8px spacing grid
+ */
 const variantStyles: Record<ButtonVariant, string> = {
     primary: `
-    bg-gray-900 text-white 
-    hover:bg-gray-800 
-    active:bg-gray-950 active:scale-[0.98]
-    shadow-lg shadow-gray-900/20
-  `,
+        bg-[rgb(var(--text))] text-[rgb(var(--surface-1))]
+        hover:bg-[rgb(var(--text)/0.85)] hover:-translate-y-px
+        active:scale-[0.98] active:translate-y-0
+        shadow-[var(--shadow-2)]
+        hover:shadow-[var(--shadow-3)]
+    `,
     secondary: `
-    bg-white text-gray-900 
-    border border-gray-200
-    hover:bg-gray-50 hover:border-gray-300
-    active:bg-gray-100 active:scale-[0.98]
-    shadow-sm
-  `,
+        bg-[rgb(var(--surface-1))] text-[rgb(var(--text))]
+        border border-[rgb(var(--border))]
+        hover:bg-[rgb(var(--surface-2))] hover:border-[rgb(var(--border-strong))] hover:-translate-y-px
+        active:scale-[0.98] active:translate-y-0
+        shadow-[var(--shadow-1)]
+    `,
     ghost: `
-    bg-transparent text-gray-600
-    hover:bg-gray-100 hover:text-gray-900
-    active:bg-gray-200 active:scale-[0.98]
-  `,
+        bg-transparent text-[rgb(var(--text-secondary))]
+        hover:bg-[rgb(var(--surface-2))] hover:text-[rgb(var(--text))]
+        active:bg-[rgb(var(--surface-3))] active:scale-[0.98]
+    `,
     success: `
-    bg-green-600 text-white
-    hover:bg-green-700
-    active:bg-green-800 active:scale-[0.98]
-    shadow-lg shadow-green-600/20
-  `,
+        bg-[var(--color-success)] text-white
+        hover:brightness-110 hover:-translate-y-px
+        active:brightness-90 active:scale-[0.98]
+        shadow-[0_4px_14px_rgb(var(--color-success)/0.25)]
+    `,
     error: `
-    bg-red-600 text-white
-    hover:bg-red-700
-    active:bg-red-800 active:scale-[0.98]
-    shadow-lg shadow-red-600/20
-  `,
+        bg-[var(--color-destructive)] text-white
+        hover:brightness-110 hover:-translate-y-px
+        active:brightness-90 active:scale-[0.98]
+        shadow-[0_4px_14px_rgb(var(--color-destructive)/0.25)]
+    `,
+    accent: `
+        bg-[rgb(var(--accent))] text-white
+        hover:bg-[rgb(var(--accent-hover))] hover:-translate-y-px
+        active:scale-[0.98] active:translate-y-0
+        shadow-[0_4px_14px_rgb(var(--accent)/0.3)]
+        hover:shadow-[0_8px_20px_rgb(var(--accent)/0.35)]
+    `,
 };
 
+/**
+ * Size styles using 8px grid spacing
+ * - sm: 8px vertical, compact
+ * - md: 12px vertical, standard (default)
+ * - lg: 16px vertical, prominent
+ */
 const sizeStyles: Record<ButtonSize, string> = {
-    sm: 'px-3 py-1.5 text-sm gap-1.5 rounded-lg',
-    md: 'px-4 py-2.5 text-sm gap-2 rounded-xl',
-    lg: 'px-6 py-3.5 text-base gap-2.5 rounded-xl',
+    sm: 'px-[var(--space-3)] py-[var(--space-2)] text-sm gap-[var(--space-2)] rounded-[var(--radius-sm)]',
+    md: 'px-[var(--space-4)] py-[var(--space-3)] text-sm gap-[var(--space-2)] rounded-[var(--radius-md)]',
+    lg: 'px-[var(--space-6)] py-[var(--space-4)] text-base gap-[var(--space-3)] rounded-[var(--radius-md)]',
 };
 
 /**
  * Premium Button component with variants, sizes, and loading state
- * Mobile-first with touch-friendly sizing (min 44px touch target)
+ *
+ * Design Contract v3 compliant:
+ * - Uses CSS custom properties (no hardcoded colors)
+ * - 8px spacing grid
+ * - Tokens for shadows and radius
+ * - Touch-friendly (min 44px)
+ * - Accessible focus states
  */
 export function Button({
     variant = 'primary',
@@ -73,17 +99,17 @@ export function Button({
     return (
         <button
             className={`
-        inline-flex items-center justify-center
-        font-medium
-        transition-all duration-200 ease-out
-        focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500
-        disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100
-        min-h-[44px]
-        ${variantStyles[variant]}
-        ${sizeStyles[size]}
-        ${fullWidth ? 'w-full' : ''}
-        ${className}
-      `}
+                inline-flex items-center justify-center
+                font-medium
+                transition-all duration-[var(--duration-normal)] ease-[var(--ease-default)]
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[rgb(var(--ring))]
+                disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 disabled:shadow-none
+                min-h-[var(--touch-target,44px)]
+                ${variantStyles[variant]}
+                ${sizeStyles[size]}
+                ${fullWidth ? 'w-full' : ''}
+                ${className}
+            `}
             disabled={isDisabled}
             {...props}
         >
@@ -93,6 +119,7 @@ export function Button({
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                 >
                     <circle
                         className="opacity-25"

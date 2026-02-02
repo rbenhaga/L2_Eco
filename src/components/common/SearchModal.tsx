@@ -154,31 +154,31 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         transition={{ duration: 0.2 }}
                         className="fixed top-[15%] left-1/2 -translate-x-1/2 w-full max-w-2xl z-50 px-4"
                     >
-                        <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+                        <div className="bg-white rounded-2xl shadow-2xl border border-[rgb(var(--border))] overflow-hidden">
                             {/* Search Input */}
-                            <div className="flex items-center gap-3 px-4 py-4 border-b border-slate-200">
-                                <Search className="w-5 h-5 text-slate-400" />
+                            <div className="flex items-center gap-3 px-4 py-4 border-b border-[rgb(var(--border))]">
+                                <Search className="w-5 h-5 text-[rgb(var(--text-muted))]" />
                                 <input
                                     type="text"
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}
                                     onKeyDown={handleKeyDown}
                                     placeholder="Rechercher un cours, chapitre, QCM..."
-                                    className="flex-1 bg-transparent text-slate-900 placeholder-slate-400 outline-none text-base"
+                                    className="flex-1 bg-transparent text-[rgb(var(--text))] placeholder-slate-400 outline-none text-base"
                                     autoFocus
                                 />
                                 <button
                                     onClick={onClose}
-                                    className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+                                    className="p-1.5 rounded-lg hover:bg-[rgb(var(--surface-2))] transition-colors"
                                 >
-                                    <X className="w-4 h-4 text-slate-400" />
+                                    <X className="w-4 h-4 text-[rgb(var(--text-muted))]" />
                                 </button>
                             </div>
 
                             {/* Results */}
                             <div className="max-h-[400px] overflow-y-auto py-2">
                                 {results.length === 0 ? (
-                                    <div className="px-4 py-8 text-center text-slate-500">
+                                    <div className="px-4 py-8 text-center text-[rgb(var(--text-muted))]">
                                         Aucun résultat pour "{query}"
                                     </div>
                                 ) : (
@@ -195,29 +195,29 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                                     className={`
                                                         w-full flex items-center gap-3 px-4 py-3 text-left transition-colors
                                                         ${isSelected
-                                                            ? 'bg-slate-100'
-                                                            : 'hover:bg-slate-50'
+                                                            ? 'bg-[rgb(var(--surface-2))]'
+                                                            : 'hover:bg-[rgb(var(--surface-2))]'
                                                         }
                                                     `}
                                                 >
-                                                    <div className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 ${subjectColors[item.subject]}`}>
+                                                    <div className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-[rgb(var(--surface-2))] ${subjectColors[item.subject]}`}>
                                                         <Icon size={16} />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex items-center gap-2">
-                                                            <span className="font-medium text-slate-900 truncate">
+                                                            <span className="font-medium text-[rgb(var(--text))] truncate">
                                                                 {item.title}
                                                             </span>
-                                                            <span className={`text-xs font-medium px-1.5 py-0.5 rounded ${subjectColors[item.subject]} bg-slate-100`}>
+                                                            <span className={`text-xs font-medium px-1.5 py-0.5 rounded ${subjectColors[item.subject]} bg-[rgb(var(--surface-2))]`}>
                                                                 {subjectLabels[item.subject]}
                                                             </span>
                                                         </div>
-                                                        <p className="text-sm text-slate-500 truncate">
+                                                        <p className="text-sm text-[rgb(var(--text-muted))] truncate">
                                                             {item.description}
                                                         </p>
                                                     </div>
                                                     {isSelected && (
-                                                        <ArrowRight className="w-4 h-4 text-slate-400 shrink-0" />
+                                                        <ArrowRight className="w-4 h-4 text-[rgb(var(--text-muted))] shrink-0" />
                                                     )}
                                                 </button>
                                             );
@@ -227,18 +227,18 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             </div>
 
                             {/* Footer */}
-                            <div className="px-4 py-3 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+                            <div className="px-4 py-3 border-t border-[rgb(var(--border))] flex items-center justify-between text-xs text-[rgb(var(--text-muted))]">
                                 <div className="flex items-center gap-4">
                                     <span className="flex items-center gap-1">
-                                        <kbd className="px-1.5 py-0.5 bg-slate-100 rounded">↑↓</kbd>
+                                        <kbd className="px-1.5 py-0.5 bg-[rgb(var(--surface-2))] rounded">↑↓</kbd>
                                         naviguer
                                     </span>
                                     <span className="flex items-center gap-1">
-                                        <kbd className="px-1.5 py-0.5 bg-slate-100 rounded">↵</kbd>
+                                        <kbd className="px-1.5 py-0.5 bg-[rgb(var(--surface-2))] rounded">↵</kbd>
                                         ouvrir
                                     </span>
                                     <span className="flex items-center gap-1">
-                                        <kbd className="px-1.5 py-0.5 bg-slate-100 rounded">esc</kbd>
+                                        <kbd className="px-1.5 py-0.5 bg-[rgb(var(--surface-2))] rounded">esc</kbd>
                                         fermer
                                     </span>
                                 </div>

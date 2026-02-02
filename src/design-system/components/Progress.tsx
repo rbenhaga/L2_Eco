@@ -16,15 +16,19 @@ const sizeStyles = {
 };
 
 const variantStyles = {
-    default: 'bg-blue-500',
-    success: 'bg-green-500',
-    error: 'bg-red-500',
-    gradient: 'bg-linear-to-r from-blue-500 via-purple-500 to-pink-500',
+    default: 'bg-[rgb(var(--accent))]',
+    success: 'bg-[var(--color-success)]',
+    error: 'bg-[var(--color-destructive)]',
+    gradient: 'bg-gradient-to-r from-[rgb(var(--accent))] via-[var(--color-micro)] to-[var(--color-stats)]',
 };
 
 /**
  * Progress bar component with smooth animations
- * Great for QCM progress, reading progress, etc.
+ * 
+ * Design Contract v3 compliant:
+ * - Uses CSS custom properties
+ * - Token-based colors
+ * - Smooth animations with proper duration
  */
 export function Progress({
     value,
@@ -41,17 +45,17 @@ export function Progress({
     return (
         <div className={`w-full ${className}`}>
             {showLabel && (
-                <div className="flex justify-between items-center mb-1.5">
-                    <span className="text-sm font-medium text-gray-600">Progression</span>
-                    <span className="text-sm font-semibold text-gray-900">{Math.round(percentage)}%</span>
+                <div className="flex justify-between items-center mb-[var(--space-2)]">
+                    <span className="text-sm font-medium text-[rgb(var(--text-secondary))]">Progression</span>
+                    <span className="text-sm font-semibold text-[rgb(var(--text))]">{Math.round(percentage)}%</span>
                 </div>
             )}
-            <div className={`w-full bg-gray-100 rounded-full overflow-hidden ${sizeStyles[size]}`}>
+            <div className={`w-full bg-[rgb(var(--surface-2))] rounded-full overflow-hidden ${sizeStyles[size]}`}>
                 <div
                     className={`
             ${sizeStyles[size]} rounded-full
             ${!color ? variantStyles[variant] : ''}
-            ${animated ? 'transition-all duration-500 ease-out' : ''}
+            ${animated ? 'transition-all duration-[var(--duration-slow)] ease-[var(--ease-default)]' : ''}
           `}
                     style={{
                         width: `${percentage}%`,
@@ -78,13 +82,18 @@ interface CircularProgressProps {
 }
 
 const circularVariantColors = {
-    default: '#3b82f6',
-    success: '#22c55e',
-    error: '#ef4444',
+    default: 'rgb(var(--accent))',
+    success: 'var(--color-success)',
+    error: 'var(--color-destructive)',
 };
 
 /**
  * Circular progress indicator - perfect for score displays
+ * 
+ * Design Contract v3 compliant:
+ * - Uses CSS custom properties
+ * - Token-based colors
+ * - Smooth animations
  */
 export function CircularProgress({
     value,
@@ -109,7 +118,7 @@ export function CircularProgress({
                     cy={size / 2}
                     r={radius}
                     fill="none"
-                    stroke="#e5e7eb"
+                    stroke="rgb(var(--surface-2))"
                     strokeWidth={strokeWidth}
                 />
                 {/* Progress circle */}
@@ -123,12 +132,12 @@ export function CircularProgress({
                     strokeLinecap="round"
                     strokeDasharray={circumference}
                     strokeDashoffset={offset}
-                    className="transition-all duration-700 ease-out"
+                    className="transition-all duration-[var(--duration-slower)] ease-[var(--ease-default)]"
                 />
             </svg>
             {showLabel && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-lg font-bold text-gray-900">
+                    <span className="text-lg font-bold text-[rgb(var(--text))]">
                         {Math.round(percentage)}%
                     </span>
                 </div>

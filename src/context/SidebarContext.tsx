@@ -4,12 +4,15 @@ interface SidebarContextType {
     isPinned: boolean;
     isVisible: boolean;
     isHovered: boolean;
-    isMinimized: boolean; // ← NOUVEAU: mode icônes-only
+    isMinimized: boolean;
+    isMobileOpen: boolean; // ← Mobile drawer state
     setIsPinned: (pinned: boolean) => void;
     setIsHovered: (hovered: boolean) => void;
-    setIsMinimized: (minimized: boolean) => void; // ← NOUVEAU
+    setIsMinimized: (minimized: boolean) => void;
+    setIsMobileOpen: (open: boolean) => void; // ← Mobile drawer setter
     togglePin: () => void;
-    toggleMinimize: () => void; // ← NOUVEAU
+    toggleMinimize: () => void;
+    toggleMobile: () => void; // ← Mobile drawer toggle
 }
 
 const SidebarContext = createContext<SidebarContextType | null>(null);
@@ -25,6 +28,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
     });
     const [isHovered, setIsHovered] = useState(false);
     const [isVisible, setIsVisible] = useState(isPinned);
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
 
     // Persist pin state
     useEffect(() => {
@@ -45,9 +49,31 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
         }
     }, [isHovered, isPinned]);
 
+    // Close mobile drawer on route change or resize
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setIsMobileOpen(false);
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Prevent body scroll when mobile drawer is open
+    useEffect(() => {
+        if (isMobileOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isMobileOpen]);
+
     const setIsPinned = useCallback((pinned: boolean) => {
         setIsPinnedState(pinned);
-        // Si on détache, fermer immédiatement la sidebar
         if (!pinned) {
             setIsVisible(false);
         }
@@ -65,17 +91,24 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
         setIsMinimized(!isMinimized);
     }, [isMinimized, setIsMinimized]);
 
+    const toggleMobile = useCallback(() => {
+        setIsMobileOpen(prev => !prev);
+    }, []);
+
     return (
         <SidebarContext.Provider value={{
             isPinned,
             isVisible,
             isHovered,
             isMinimized,
+            isMobileOpen,
             setIsPinned,
             setIsHovered,
             setIsMinimized,
+            setIsMobileOpen,
             togglePin,
             toggleMinimize,
+            toggleMobile,
         }}>
             {children}
         </SidebarContext.Provider>

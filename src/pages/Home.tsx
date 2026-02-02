@@ -1,10 +1,10 @@
 import { ArrowRight, FileText, BookOpen, Brain, Calendar, BarChart3, PieChart, Users, Zap, BookText, Check, TrendingUp } from "lucide-react";
 import { Header } from "../components/layout/Header";
 import { Footer } from "../components/layout/Footer";
-import { BackgroundBlobs } from "../components/layout/BackgroundBlobs";
 import { motion, useReducedMotion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { getModuleTheme } from "../design-system/tokens";
 
 // ============================================
 // MOTION CONFIG
@@ -38,42 +38,159 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen antialiased relative" data-theme="light">
-      <BackgroundBlobs />
+    <div className="min-h-screen antialiased relative" style={{ background: "var(--color-bg-base)" }} data-theme="light">
+      {/* Clean background - NO glows */}
+      <div className="fixed inset-0 -z-10">
+        {/* Simple gradient bleuté calme */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, var(--color-bg-base) 0%, var(--color-bg-overlay) 100%)" }} />
 
-      {/* Content wrapper - above blobs */}
+        {/* Grain texture subtil */}
+        <div className="absolute inset-0 opacity-[0.015]" style={{
+          backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
+          backgroundRepeat: 'repeat',
+          backgroundSize: '180px 180px'
+        }} />
+      </div>
+
+      {/* Content wrapper */}
       <div className="relative" style={{ zIndex: 1 }}>
 
         <Header />
 
-        {/* HERO - 2 columns layout */}
-        <section className="pt-12 pb-16 sm:pt-20 sm:pb-24">
+        {/* ═══════════════════════════════════════════════════════════
+            HERO — Premium, Impactant, Mémorable
+            ═══════════════════════════════════════════════════════════ */}
+        <section className="relative pt-16 pb-24 sm:pt-24 sm:pb-32 overflow-hidden">
+          {/* Clean gradient background */}
+          <div className="absolute inset-0 -z-10">
+            {/* Base gradient - using token colors */}
+            <div className="absolute inset-0" style={{
+              background: "linear-gradient(180deg, var(--color-bg-base) 0%, var(--color-bg-overlay) 100%)"
+            }} />
+
+            {/* Subtle animated glow orbs */}
+            <motion.div
+              className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full"
+              style={{
+                background: "radial-gradient(circle, var(--color-accent-subtle) 0%, transparent 70%)",
+                filter: "blur(80px)",
+                opacity: 0.6
+              }}
+              animate={{
+                x: [0, 30, 0],
+                y: [0, -20, 0],
+                scale: [1, 1.1, 1]
+              }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            <motion.div
+              className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full"
+              style={{
+                background: "radial-gradient(circle, var(--color-micro-subtle, rgba(139, 92, 246, 0.08)) 0%, transparent 70%)",
+                filter: "blur(80px)",
+                opacity: 0.5
+              }}
+              animate={{
+                x: [0, -25, 0],
+                y: [0, 25, 0],
+                scale: [1, 1.15, 1]
+              }}
+              transition={{
+                duration: 12,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2
+              }}
+            />
+          </div>
+
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               {/* Left: Text & CTA */}
               <motion.div {...motionProps} variants={fadeUp} transition={{ duration: 0.6 }}>
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium rounded-full" style={{ background: "rgb(var(--accent) / 0.08)", color: "rgb(var(--accent))" }}>
+                {/* Badge with pulse */}
+                <motion.span
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full relative"
+                  style={{
+                    background: "var(--color-accent-subtle)",
+                    color: "var(--color-accent)",
+                    border: "1px solid var(--color-border-default)"
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: "var(--color-accent)" }} />
+                    <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: "var(--color-accent)" }} />
+                  </span>
                   L2 Économie — 2025-2026
-                </span>
+                </motion.span>
 
-                <h1 className="mt-6 sm:mt-8 text-[clamp(2.25rem,6vw,4rem)] font-semibold tracking-[-0.02em] leading-[1.1]">
-                  Tous tes cours,<br />
-                  <span className="text-gradient-hero">au même endroit.</span>
+                {/* Hero title */}
+                <h1 className="mt-8 font-extrabold leading-[1.05] tracking-[-0.03em]" style={{
+                  fontSize: "clamp(2.75rem, 6vw, 4.25rem)",
+                }}>
+                  <span style={{ color: "var(--color-text-primary)" }}>Tous tes cours,</span>
+                  <br />
+                  <span
+                    className="bg-clip-text text-transparent"
+                    style={{
+                      backgroundImage: "linear-gradient(135deg, var(--color-accent) 0%, var(--color-micro) 100%)",
+                      WebkitBackgroundClip: "text",
+                    }}
+                  >
+                    au même endroit.
+                  </span>
                 </h1>
 
-                <p className="mt-5 sm:mt-6 text-base sm:text-lg leading-relaxed" style={{ color: "rgb(var(--text-secondary))" }}>
-                  Cours complets, fiches de synthèse, QCM d'entraînement et annales corrigées pour toutes les matières de L2 Économie.
+                <p className="mt-6 text-lg leading-relaxed max-w-xl" style={{ color: "var(--color-text-secondary)" }}>
+                  Cours complets, fiches de synthèse, QCM d'entraînement et annales corrigées —
+                  <span className="font-semibold" style={{ color: "var(--color-accent)" }}>tout ce qu'il te faut</span> pour réussir ta L2.
                 </p>
 
-                <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4">
-                  <button
+                {/* CTA with micro-interaction */}
+                <div className="mt-10 flex flex-wrap items-center gap-4">
+                  <motion.button
                     type="button"
                     onClick={handleExploreCourses}
-                    className="btn-primary h-12 sm:h-14 px-8 sm:px-10 rounded-xl text-sm sm:text-base font-semibold inline-flex items-center gap-2 sm:gap-2.5 transition-transform active:scale-[0.98]"
+                    className="group h-14 px-8 rounded-2xl font-semibold inline-flex items-center gap-3 relative overflow-hidden"
+                    style={{
+                      background: "var(--color-accent)",
+                      color: "var(--color-accent-foreground)",
+                      boxShadow: "var(--shadow-md)"
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    Explorer les cours
-                    <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </button>
+                    <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    <span className="relative">Explorer les cours</span>
+                    <ArrowRight className="h-5 w-5 relative transition-transform duration-200 group-hover:translate-x-1" />
+                  </motion.button>
+
+                  {/* Secondary CTA */}
+                  <motion.button
+                    type="button"
+                    onClick={() => navigate('/pricing')}
+                    className="h-14 px-6 rounded-2xl font-medium inline-flex items-center gap-2 transition-all"
+                    style={{
+                      color: "var(--color-text-secondary)",
+                      border: "1px solid var(--color-border-default)",
+                      background: "var(--color-bg-raised)"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "var(--color-bg-overlay)";
+                      e.currentTarget.style.borderColor = "var(--color-border-strong)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "var(--color-bg-raised)";
+                      e.currentTarget.style.borderColor = "var(--color-border-default)";
+                    }}
+                  >
+                    Voir les tarifs
+                  </motion.button>
                 </div>
               </motion.div>
 
@@ -84,45 +201,75 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="lg:justify-self-end w-full max-w-md"
               >
-                <div className="p-6 sm:p-8 rounded-2xl bg-white shadow-3 border border-slate-100">
-                  <div className="flex items-center gap-2 mb-6">
-                    <div className="h-8 w-8 rounded-lg flex items-center justify-center" style={{ background: "rgb(var(--accent) / 0.1)", color: "rgb(var(--accent))" }}>
-                      <BarChart3 className="h-4 w-4" />
+                <motion.div
+                  className="p-8 rounded-3xl relative overflow-hidden"
+                  style={{
+                    background: "var(--color-bg-raised)",
+                    border: "1px solid var(--color-border-default)",
+                    boxShadow: "var(--shadow-lg)"
+                  }}
+                  whileHover={{ boxShadow: "var(--shadow-xl)" }}
+                >
+                  {/* Decorative accent glow */}
+                  <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full" style={{
+                    background: "radial-gradient(circle, var(--color-accent-subtle) 0%, transparent 70%)"
+                  }} />
+
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="h-10 w-10 rounded-xl flex items-center justify-center"
+                        style={{ background: "var(--color-accent)" }}
+                      >
+                        <BarChart3 className="h-5 w-5" style={{ color: "var(--color-accent-foreground)" }} />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-bold" style={{ color: "var(--color-text-primary)" }}>
+                          Contenu disponible
+                        </h3>
+                        <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>Mis à jour en continu</p>
+                      </div>
                     </div>
-                    <h3 className="text-sm font-semibold uppercase tracking-wider" style={{ color: "rgb(var(--text-muted))" }}>
-                      Contenu disponible
-                    </h3>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <StatCardPremium value="8" label="Matières" moduleId="macro" icon={<BookOpen className="h-4 w-4" />} />
+                      <StatCardPremium value="40+" label="Chapitres" moduleId="micro" icon={<FileText className="h-4 w-4" />} />
+                      <StatCardPremium value="200+" label="Fiches" moduleId="stats" icon={<Brain className="h-4 w-4" />} />
+                      <StatCardPremium value="500+" label="QCM" moduleId="socio" icon={<Zap className="h-4 w-4" />} />
+                    </div>
+
+                    <div className="mt-6 pt-5 flex items-center justify-between" style={{ borderTop: "1px solid var(--color-border-default)" }}>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-3.5 w-3.5" style={{ color: "var(--color-text-muted)" }} />
+                        <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>Janvier 2026</p>
+                      </div>
+                      <span className="text-xs font-medium px-2 py-1 rounded-full" style={{
+                        background: "var(--color-success-subtle)",
+                        color: "var(--color-success)"
+                      }}>
+                        ✓ À jour
+                      </span>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <StatCard value="8" label="Matières" />
-                    <StatCard value="40+" label="Chapitres" />
-                    <StatCard value="200+" label="Fiches" />
-                    <StatCard value="500+" label="QCM" />
-                  </div>
-                  <div className="mt-6 pt-5 border-t border-slate-100 flex items-center gap-2">
-                    <Calendar className="h-3.5 w-3.5" style={{ color: "rgb(var(--text-muted))" }} />
-                    <p className="text-xs" style={{ color: "rgb(var(--text-muted))" }}>
-                      Mis à jour · Janvier 2026
-                    </p>
-                  </div>
-                </div>
+                </motion.div>
               </motion.div>
             </div>
           </div>
         </section>
 
-        {/* RESSOURCES + FONCTIONNALITÉS - 2 columns layout with section banding */}
-        <section className="pt-16 pb-20 sm:pt-20 sm:pb-28 section-band">
+        {/* RESSOURCES + FONCTIONNALITÉS */}
+        <section className="py-20 sm:py-28" style={{ background: "var(--color-bg-overlay)" }}>
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
 
               {/* Left: Ressources */}
               <motion.div {...motionProps} variants={fadeUp}>
-                <div className="mb-8 sm:mb-10">
-                  <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2 sm:mb-3 text-accent">
+                <div className="mb-10">
+                  <p className="text-sm font-bold uppercase tracking-[0.15em] mb-3" style={{ color: "var(--color-accent)" }}>
                     Ressources
                   </p>
-                  <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-semibold tracking-[-0.02em]">Ce que tu trouveras</h2>
+                  <h2 className="text-3xl font-semibold tracking-[-0.02em]" style={{ color: "var(--color-text-primary)" }}>
+                    Ce que tu trouveras
+                  </h2>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -151,11 +298,13 @@ export default function Home() {
 
               {/* Right: Fonctionnalités */}
               <motion.div {...motionProps} variants={fadeUp} transition={{ delay: 0.1 }}>
-                <div className="mb-8 sm:mb-10">
-                  <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2 sm:mb-3 text-accent">
+                <div className="mb-10">
+                  <p className="text-sm font-bold uppercase tracking-[0.15em] mb-3" style={{ color: "var(--color-accent)" }}>
                     Fonctionnalités
                   </p>
-                  <h2 className="text-[clamp(1.5rem,4vw,2.25rem)] font-semibold tracking-[-0.02em]">Comment tu apprends</h2>
+                  <h2 className="text-3xl font-semibold tracking-[-0.02em]" style={{ color: "var(--color-text-primary)" }}>
+                    Comment tu apprends
+                  </h2>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -186,117 +335,167 @@ export default function Home() {
           </div>
         </section>
 
-        {/* PROGRAMME - Institutional, clean table style */}
-        <section id="programme" className="py-16 sm:py-24 scroll-mt-20">
+        {/* ═══════════════════════════════════════════════════════════
+            PROGRAMME — Premium Semester Cards
+            ═══════════════════════════════════════════════════════════ */}
+        <section id="programme" className="py-24 sm:py-32 scroll-mt-20 relative">
+          {/* Background accent */}
+          <div className="absolute inset-0 -z-10">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full opacity-30"
+              style={{ background: "radial-gradient(ellipse, var(--color-accent-subtle) 0%, transparent 70%)" }}
+            />
+          </div>
+
           <div className="mx-auto max-w-5xl px-4 sm:px-6">
             {/* Title */}
-            <motion.div className="text-center mb-12 sm:mb-16" {...motionProps} variants={fadeUp}>
-              <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-3 sm:mb-4 text-accent">
-                Programme
-              </p>
-              <h2 className="text-[clamp(1.75rem,5vw,3rem)] font-semibold tracking-[-0.02em]">Licence 2</h2>
-              <p className="mt-3 sm:mt-4 text-base sm:text-lg text-muted">
-                2 semestres · 8 matières
+            <motion.div className="text-center mb-16" {...motionProps} variants={fadeUp}>
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-full mb-4"
+                style={{
+                  background: "var(--color-accent-subtle)",
+                  color: "var(--color-accent)"
+                }}
+              >
+                Programme complet
+              </span>
+              <h2 className="text-4xl font-bold tracking-[-0.02em]" style={{ color: "var(--color-text-primary)" }}>
+                Licence 2 Économie
+              </h2>
+              <p className="mt-4 text-lg" style={{ color: "var(--color-text-secondary)" }}>
+                2 semestres · 8 matières · <span className="font-semibold" style={{ color: "var(--color-accent)" }}>+500 ressources</span>
               </p>
             </motion.div>
 
             {/* Semester Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Semestre 3 */}
               <motion.div {...motionProps} variants={fadeUp}>
-                <div className="rounded-2xl bg-s1 shadow-2 p-6 sm:p-8">
-                  <h3 className="text-base font-semibold mb-6 pb-4 border-b border-hairline">
-                    Semestre 3
-                  </h3>
-                  <div className="space-y-1">
-                    <a href="#" className="group flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-150 hover:bg-s2 hover:translate-x-1">
-                      <PieChart className="h-4 w-4 shrink-0 text-purple-500" />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-semibold">Microéconomie</h4>
-                        <p className="text-xs mt-0.5 text-muted">Consommateur, producteur, équilibre</p>
-                      </div>
-                      <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-60 group-hover:translate-x-0 transition-all duration-150 shrink-0 text-accent" />
-                    </a>
-                    <a href="#" className="group flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-150 hover:bg-s2 hover:translate-x-1">
-                      <TrendingUp className="h-4 w-4 shrink-0 text-blue-500" />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-semibold">Macroéconomie</h4>
-                        <p className="text-xs mt-0.5 text-muted">IS-LM, WS-PS, politiques</p>
-                      </div>
-                      <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-60 group-hover:translate-x-0 transition-all duration-150 shrink-0 text-accent" />
-                    </a>
-                    <a href="#" className="group flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-150 hover:bg-s2 hover:translate-x-1">
-                      <BarChart3 className="h-4 w-4 shrink-0 text-green-500" />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-semibold">Statistiques</h4>
-                        <p className="text-xs mt-0.5 text-muted">Probabilités, variables aléatoires</p>
-                      </div>
-                      <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-60 group-hover:translate-x-0 transition-all duration-150 shrink-0 text-accent" />
-                    </a>
-                    <a href="#" className="group flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-150 hover:bg-s2 hover:translate-x-1">
-                      <Users className="h-4 w-4 shrink-0 text-orange-500" />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-semibold">Sociologie</h4>
-                        <p className="text-xs mt-0.5 text-muted">Concepts et théories</p>
-                      </div>
-                      <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-60 group-hover:translate-x-0 transition-all duration-150 shrink-0 text-accent" />
-                    </a>
+                <div className="rounded-2xl p-8 relative overflow-hidden"
+                  style={{
+                    background: "var(--color-bg-raised)",
+                    backdropFilter: "blur(20px)",
+                    border: "1px solid var(--color-border-default)",
+                    boxShadow: "var(--shadow-md)"
+                  }}
+                >
+                  {/* Semester badge */}
+                  <div className="flex items-center gap-3 mb-6 pb-4" style={{ borderBottom: "1px solid var(--color-border-soft)" }}>
+                    <div className="h-10 w-10 rounded-xl flex items-center justify-center"
+                      style={{ background: `linear-gradient(135deg, var(--color-accent) 0%, ${getModuleTheme('micro').color} 100%)` }}
+                    >
+                      <span className="font-bold text-sm" style={{ color: "#FFFFFF" }}>S3</span>
+                    </div>
+                    <div>
+                      <h3 className="font-bold" style={{ color: "var(--color-text-primary)" }}>Semestre 3</h3>
+                      <p className="text-xs" style={{ color: "var(--color-text-secondary)" }}>Octobre — Janvier</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <ModuleLink
+                      href="/micro"
+                      icon={<PieChart className="h-4 w-4" />}
+                      title="Microéconomie"
+                      description="Consommateur, producteur, équilibre"
+                      moduleId="micro"
+                    />
+                    <ModuleLink
+                      href="/macro"
+                      icon={<TrendingUp className="h-4 w-4" />}
+                      title="Macroéconomie"
+                      description="IS-LM, WS-PS, politiques"
+                      moduleId="macro"
+                    />
+                    <ModuleLink
+                      href="/stats"
+                      icon={<BarChart3 className="h-4 w-4" />}
+                      title="Statistiques"
+                      description="Probabilités, variables aléatoires"
+                      moduleId="stats"
+                    />
+                    <ModuleLink
+                      href="/socio"
+                      icon={<Users className="h-4 w-4" />}
+                      title="Sociologie"
+                      description="Concepts et théories"
+                      moduleId="socio"
+                    />
                   </div>
                 </div>
               </motion.div>
 
               {/* Semestre 4 */}
               <motion.div {...motionProps} variants={fadeUp} transition={{ delay: 0.1 }}>
-                <div className="rounded-2xl bg-s1 shadow-2 p-6 sm:p-8">
-                  <h3 className="text-base font-semibold mb-6 pb-4 border-b border-hairline">
-                    Semestre 4
-                  </h3>
-                  <div className="space-y-1">
-                    <a href="#" className="group flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-150 hover:bg-s2 hover:translate-x-1">
-                      <PieChart className="h-4 w-4 shrink-0 text-purple-500" />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-semibold">Microéconomie</h4>
-                        <p className="text-xs mt-0.5 text-muted">Marchés imparfaits, bien-être</p>
-                      </div>
-                      <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-60 group-hover:translate-x-0 transition-all duration-150 shrink-0 text-accent" />
-                    </a>
-                    <a href="#" className="group flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-150 hover:bg-s2 hover:translate-x-1">
-                      <TrendingUp className="h-4 w-4 shrink-0 text-blue-500" />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-semibold">Macroéconomie</h4>
-                        <p className="text-xs mt-0.5 text-muted">Équilibre général, conjoncture</p>
-                      </div>
-                      <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-60 group-hover:translate-x-0 transition-all duration-150 shrink-0 text-accent" />
-                    </a>
-                    <a href="#" className="group flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-150 hover:bg-s2 hover:translate-x-1">
-                      <BarChart3 className="h-4 w-4 shrink-0 text-green-500" />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-semibold">Statistiques</h4>
-                        <p className="text-xs mt-0.5 text-muted">Tests, intervalles de confiance</p>
-                      </div>
-                      <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-60 group-hover:translate-x-0 transition-all duration-150 shrink-0 text-accent" />
-                    </a>
-                    <a href="#" className="group flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-150 hover:bg-s2 hover:translate-x-1">
-                      <Users className="h-4 w-4 shrink-0 text-orange-500" />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-semibold">Management des organisations</h4>
-                        <p className="text-xs mt-0.5 text-muted">Organisations et stratégies</p>
-                      </div>
-                      <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-60 group-hover:translate-x-0 transition-all duration-150 shrink-0 text-accent" />
-                    </a>
+                <div className="rounded-2xl p-8 relative overflow-hidden"
+                  style={{
+                    background: "var(--color-bg-raised)",
+                    backdropFilter: "blur(20px)",
+                    border: "1px solid var(--color-border-default)",
+                    boxShadow: "var(--shadow-md)"
+                  }}
+                >
+                  {/* Semester badge */}
+                  <div className="flex items-center gap-3 mb-6 pb-4" style={{ borderBottom: "1px solid var(--color-border-soft)" }}>
+                    <div className="h-10 w-10 rounded-xl flex items-center justify-center"
+                      style={{ background: `linear-gradient(135deg, ${getModuleTheme('micro').color} 0%, ${getModuleTheme('socio').color} 100%)` }}
+                    >
+                      <span className="font-bold text-sm" style={{ color: "#FFFFFF" }}>S4</span>
+                    </div>
+                    <div>
+                      <h3 className="font-bold" style={{ color: "var(--color-text-primary)" }}>Semestre 4</h3>
+                      <p className="text-xs" style={{ color: "var(--color-text-secondary)" }}>Février — Mai</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <ModuleLink
+                      href="/micro"
+                      icon={<PieChart className="h-4 w-4" />}
+                      title="Microéconomie"
+                      description="Marchés imparfaits, bien-être"
+                      moduleId="micro"
+                    />
+                    <ModuleLink
+                      href="/macro"
+                      icon={<TrendingUp className="h-4 w-4" />}
+                      title="Macroéconomie"
+                      description="Équilibre général, conjoncture"
+                      moduleId="macro"
+                    />
+                    <ModuleLink
+                      href="/stats"
+                      icon={<BarChart3 className="h-4 w-4" />}
+                      title="Statistiques"
+                      description="Tests, intervalles de confiance"
+                      moduleId="stats"
+                    />
+                    <ModuleLink
+                      href="/management"
+                      icon={<Users className="h-4 w-4" />}
+                      title="Management"
+                      description="Organisations et stratégies"
+                      moduleId="management"
+                    />
                   </div>
                 </div>
               </motion.div>
             </div>
 
-            {/* Coming soon notice */}
-            <motion.p
-              className="text-center mt-12 sm:mt-20 text-xs sm:text-sm text-muted"
+            {/* Coming soon chip */}
+            <motion.div
+              className="text-center mt-12"
               {...motionProps}
               variants={fadeUp}
             >
-              L1 et L3 bientôt disponibles
-            </motion.p>
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm"
+                style={{
+                  background: "var(--color-bg-overlay)",
+                  color: "var(--color-text-secondary)"
+                }}
+              >
+                <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--color-warning)" }} />
+                L1 et L3 bientôt disponibles
+              </span>
+            </motion.div>
           </div>
         </section>
 
@@ -310,27 +509,47 @@ export default function Home() {
 
 
 // ============================================
-// STAT CARD (for dashboard)
+// STAT CARD PREMIUM (coloré, avec icône)
 // ============================================
-function StatCard({ value, label, icon }: { value: string; label: string; icon?: React.ReactNode }) {
+function StatCardPremium({ value, label, moduleId, icon }: {
+  value: string;
+  label: string;
+  moduleId: 'macro' | 'micro' | 'stats' | 'socio' | 'management';
+  icon: React.ReactNode;
+}) {
+  const theme = getModuleTheme(moduleId);
+  
   return (
-    <div className="p-4 rounded-xl transition-colors duration-150 group" style={{ background: "rgb(var(--surface-2))" }}>
+    <motion.div
+      className="group p-4 rounded-xl transition-all duration-200 cursor-default"
+      style={{
+        background: theme.subtle,
+        border: `1px solid ${theme.light}`
+      }}
+      whileHover={{
+        scale: 1.02,
+        boxShadow: `0 4px 20px ${theme.light}`
+      }}
+    >
       <div className="flex items-start justify-between mb-2">
-        <div className="text-2xl font-semibold" style={{ color: "rgb(var(--text))" }}>{value}</div>
-        {icon && (
-          <div className="opacity-40 group-hover:opacity-60 transition-opacity" style={{ color: "rgb(var(--accent))" }}>
-            {icon}
-          </div>
-        )}
+        <div className="text-2xl font-bold" style={{ color: "var(--color-text-primary)" }}>{value}</div>
+        <div
+          className="h-7 w-7 rounded-lg flex items-center justify-center transition-all duration-200 group-hover:scale-110"
+          style={{
+            background: theme.light,
+            color: theme.color
+          }}
+        >
+          {icon}
+        </div>
       </div>
-      <div className="text-xs font-medium" style={{ color: "rgb(var(--text-muted))" }}>{label}</div>
-    </div>
+      <div className="text-xs font-semibold" style={{ color: "var(--color-text-secondary)" }}>{label}</div>
+    </motion.div>
   );
 }
 
-
 // ============================================
-// RESOURCE CARD - Premium style (no dot)
+// RESOURCE CARD — Premium avec dégradé subtil
 // ============================================
 function ResourceCard({ icon, title, description }: {
   icon: React.ReactNode;
@@ -338,37 +557,147 @@ function ResourceCard({ icon, title, description }: {
   description: string;
 }) {
   return (
-    <div className="group flex flex-col p-6 rounded-2xl bg-s1 border-l-2 border-accent/15 shadow-2 hover:translate-x-0.5 transition-all duration-150">
-      <div className="h-14 w-14 rounded-xl flex items-center justify-center mb-4 bg-s2 text-secondary">
-        {icon}
+    <motion.div
+      className="group flex flex-col p-6 rounded-2xl relative overflow-hidden"
+      style={{
+        background: "var(--color-bg-raised)",
+        border: "1px solid var(--color-border-default)",
+        boxShadow: "var(--shadow-sm)"
+      }}
+      whileHover={{
+        y: -4,
+        boxShadow: "var(--shadow-lg)"
+      }}
+    >
+      {/* Subtle gradient overlay on hover */}
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          background: "linear-gradient(135deg, var(--color-accent-subtle) 0%, transparent 50%)"
+        }}
+      />
+
+      <div className="relative">
+        <div className="h-12 w-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-200 group-hover:scale-105"
+          style={{
+            background: "var(--color-accent-subtle)",
+            color: "var(--color-accent)"
+          }}
+        >
+          {icon}
+        </div>
+        <h3 className="text-base font-semibold mb-2 transition-colors duration-200" style={{ color: "var(--color-text-primary)" }}>
+          {title}
+        </h3>
+        <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+          {description}
+        </p>
       </div>
-      <h3 className="text-base font-semibold mb-2">{title}</h3>
-      <p className="text-sm leading-relaxed text-muted">
-        {description}
-      </p>
-    </div>
+    </motion.div>
   );
 }
 
 // ============================================
-// FEATURE CARD - Premium with accent dot
+// FEATURE CARD — Differenciée avec accent fort
 // ============================================
 function FeatureCard({ icon, title, description }: {
   icon: React.ReactNode;
   title: string;
   description: string;
 }) {
+  const microTheme = getModuleTheme('micro');
+  
   return (
-    <div className="group flex flex-col p-6 rounded-2xl bg-s1 border-l-2 border-accent/15 shadow-2 hover:translate-x-0.5 transition-all duration-150">
-      <div className="h-14 w-14 rounded-xl flex items-center justify-center mb-4 bg-s2 text-secondary relative">
-        {icon}
-        {/* Accent dot for features */}
-        <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-accent" />
+    <motion.div
+      className="group flex flex-col p-6 rounded-2xl relative overflow-hidden"
+      style={{
+        background: "var(--color-bg-raised)",
+        border: `1px solid ${microTheme.light}`,
+        boxShadow: "var(--shadow-sm)"
+      }}
+      whileHover={{
+        y: -4,
+        boxShadow: `0 12px 32px ${microTheme.subtle}`
+      }}
+    >
+      {/* Accent glow on hover */}
+      <div
+        className="absolute -top-10 -right-10 w-20 h-20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          background: "radial-gradient(circle, var(--color-accent-subtle) 0%, transparent 70%)"
+        }}
+      />
+
+      <div className="relative">
+        <div className="h-12 w-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-200 group-hover:scale-110 group-hover:rotate-3"
+          style={{
+            background: `linear-gradient(135deg, var(--color-accent) 0%, ${microTheme.color} 100%)`,
+            color: "#FFFFFF",
+            boxShadow: `0 4px 12px ${microTheme.subtle}`
+          }}
+        >
+          {icon}
+        </div>
+        <h3 className="text-base font-semibold mb-2 transition-colors duration-200" style={{ color: "var(--color-text-primary)" }}>
+          {title}
+        </h3>
+        <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+          {description}
+        </p>
+
+        {/* Subtle arrow indicator */}
+        <div className="mt-4 flex items-center gap-1 text-xs font-medium opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-[-4px] group-hover:translate-x-0" style={{ color: "var(--color-accent)" }}>
+          <span>En savoir plus</span>
+          <ArrowRight className="h-3 w-3" />
+        </div>
       </div>
-      <h3 className="text-base font-semibold mb-2">{title}</h3>
-      <p className="text-sm leading-relaxed text-muted">
-        {description}
-      </p>
-    </div>
+    </motion.div>
+  );
+}
+
+// ============================================
+// MODULE LINK — Pour la section Programme
+// ============================================
+function ModuleLink({ href, icon, title, description, moduleId }: {
+  href: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  moduleId: 'macro' | 'micro' | 'stats' | 'socio' | 'management';
+}) {
+  const theme = getModuleTheme(moduleId);
+  
+  return (
+    <motion.a
+      href={href}
+      className="group flex items-center gap-3 py-3 px-3 rounded-xl transition-all duration-200"
+      style={{
+        background: "transparent"
+      }}
+      whileHover={{
+        backgroundColor: theme.subtle,
+        x: 4
+      }}
+    >
+      <div
+        className="h-9 w-9 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 group-hover:scale-110"
+        style={{
+          background: theme.light,
+          color: theme.color
+        }}
+      >
+        {icon}
+      </div>
+      <div className="flex-1 min-w-0">
+        <h4 className="text-sm font-semibold transition-colors duration-200" style={{ color: "var(--color-text-primary)" }}>
+          {title}
+        </h4>
+        <p className="text-xs mt-0.5" style={{ color: "var(--color-text-muted)" }}>{description}</p>
+      </div>
+      <ArrowRight
+        className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 shrink-0"
+        style={{ color: theme.color }}
+      />
+    </motion.a>
   );
 }

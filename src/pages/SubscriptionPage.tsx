@@ -74,7 +74,7 @@ export function SubscriptionPage() {
                 {/* Back button */}
                 <button
                     onClick={() => navigate(-1)}
-                    className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-colors"
+                    className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-xl text-sm font-medium text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))] hover:bg-[rgb(var(--surface-1)/0.6)] dark:hover:bg-[rgb(var(--surface-3)/0.6)] transition-colors"
                 >
                     <ArrowLeft size={16} />
                     Retour
@@ -101,7 +101,7 @@ export function SubscriptionPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="text-4xl font-bold text-slate-900 dark:text-slate-50 mb-4"
+                            className="text-4xl font-bold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))] mb-4"
                         >
                             Passez à Premium
                         </motion.h1>
@@ -109,7 +109,7 @@ export function SubscriptionPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
-                            className="text-lg text-slate-600 dark:text-slate-400"
+                            className="text-lg text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]"
                         >
                             Débloquez tous les cours et maximisez vos révisions
                         </motion.p>
@@ -122,15 +122,15 @@ export function SubscriptionPage() {
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="relative p-8 rounded-3xl border-2 border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/40 backdrop-blur-md"
+                            className="relative p-8 rounded-3xl border-2 border-[rgb(var(--border))] dark:border-[rgb(var(--border-strong))] bg-white/60 dark:bg-[rgb(var(--text))]/40 backdrop-blur-md"
                         >
                             <div className="mb-6">
-                                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-2">
+                                <h3 className="text-xl font-bold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))] mb-2">
                                     Gratuit
                                 </h3>
-                                <p className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+                                <p className="text-3xl font-bold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))]">
                                     0€
-                                    <span className="text-base font-normal text-slate-600 dark:text-slate-400">/mois</span>
+                                    <span className="text-base font-normal text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">/mois</span>
                                 </p>
                             </div>
 
@@ -140,16 +140,16 @@ export function SubscriptionPage() {
                                     '1 QCM d\'entraînement',
                                     'Contenu limité',
                                 ].map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300">
-                                        <Check size={18} className="text-slate-400 shrink-0 mt-0.5" />
+                                    <li key={i} className="flex items-start gap-3 text-sm text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">
+                                        <Check size={18} className="text-[rgb(var(--text-muted))] shrink-0 mt-0.5" />
                                         <span>{feature}</span>
                                     </li>
                                 ))}
                             </ul>
 
                             {currentTier === 'free' && (
-                                <div className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-center">
-                                    <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                                <div className="px-4 py-2 rounded-xl bg-[rgb(var(--surface-2))] dark:bg-[rgb(var(--text))] text-center">
+                                    <span className="text-sm font-medium text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">
                                         Formule actuelle
                                     </span>
                                 </div>
@@ -170,14 +170,14 @@ export function SubscriptionPage() {
 
                             <div className="mb-6">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">
+                                    <h3 className="text-xl font-bold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))]">
                                         Premium
                                     </h3>
                                     <Zap size={20} className="text-indigo-600 dark:text-indigo-400" />
                                 </div>
-                                <p className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+                                <p className="text-3xl font-bold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))]">
                                     9€
-                                    <span className="text-base font-normal text-slate-600 dark:text-slate-400">/mois</span>
+                                    <span className="text-base font-normal text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">/mois</span>
                                 </p>
                             </div>
 
@@ -190,7 +190,7 @@ export function SubscriptionPage() {
                                     'Support prioritaire',
                                     'Contenu protégé et sécurisé',
                                 ].map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300">
+                                    <li key={i} className="flex items-start gap-3 text-sm text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">
                                         <Check size={18} className="text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
                                         <span className="font-medium">{feature}</span>
                                     </li>
@@ -201,7 +201,7 @@ export function SubscriptionPage() {
                                 onClick={() => currentTier === 'premium' ? handleManageSubscription() : handleUpgrade('premium')}
                                 disabled={isProcessing}
                                 className={`w-full py-3.5 px-6 rounded-xl font-semibold text-white transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed ${currentTier === 'premium'
-                                    ? 'bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600'
+                                    ? 'bg-[rgb(var(--text))] hover:bg-[rgb(var(--text)/0.9)] dark:bg-[rgb(var(--surface-3))] dark:hover:bg-[rgb(var(--surface-3))]'
                                     : 'bg-linear-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700'
                                     }`}
                             >
@@ -217,7 +217,7 @@ export function SubscriptionPage() {
                                 )}
                             </button>
 
-                            <p className="mt-4 text-center text-xs text-slate-500 dark:text-slate-400">
+                            <p className="mt-4 text-center text-xs text-[rgb(var(--surface-1))]0 dark:text-[rgb(var(--text-muted))]">
                                 Essai gratuit de 7 jours • Sans engagement
                             </p>
                         </motion.div>
@@ -228,15 +228,15 @@ export function SubscriptionPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
-                        className="p-6 rounded-2xl bg-white/60 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10"
+                        className="p-6 rounded-2xl bg-white/60 dark:bg-[rgb(var(--text))]/40 backdrop-blur-md border border-[rgb(var(--border))] dark:border-white/10"
                     >
-                        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 mb-4">
+                        <h3 className="text-lg font-semibold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))] mb-4">
                             Note : Paiement Stripe
                         </h3>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
+                        <p className="text-sm text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))] mb-2">
                             L'intégration Stripe sera configurée prochainement. Pour le moment, ceci est une démo fonctionnelle.
                         </p>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                        <p className="text-sm text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">
                             Le système de paywall et de protection du contenu est pleinement opérationnel et prêt pour la production.
                         </p>
                     </motion.div>

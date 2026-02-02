@@ -1,24 +1,8 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Zap, BookOpen, ArrowRight, Mail, Bell } from 'lucide-react';
+import { Shield, Zap, BookOpen, ArrowRight, Mail, Bell, GraduationCap } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useRef } from 'react';
-
-// Logo component (same as Home.tsx)
-function Logo({ className = "h-10 w-10" }: { className?: string }) {
-    return (
-        <svg className={className} viewBox="0 0 24 24" fill="none">
-            <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" fill="url(#logo-grad)" />
-            <path d="M22 10v6" stroke="url(#logo-grad)" strokeWidth="2" strokeLinecap="round" />
-            <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" stroke="url(#logo-grad)" strokeWidth="2" strokeLinecap="round" />
-            <defs>
-                <linearGradient id="logo-grad" x1="2" y1="5" x2="22" y2="19" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#1D4ED8" /><stop offset="1" stopColor="#6366F1" />
-                </linearGradient>
-            </defs>
-        </svg>
-    );
-}
 
 const APP_NAME = "Οἰκονομία";
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
@@ -38,10 +22,8 @@ export function LoginPage() {
     });
     const hasCheckedOnboarding = useRef(false);
 
-    // Get the page user was trying to access (default to /macro instead of /)
     const from = (location.state as { from?: Location })?.from?.pathname || '/macro';
 
-    // Check if user needs onboarding after auth
     useEffect(() => {
         if (user && !hasCheckedOnboarding.current) {
             hasCheckedOnboarding.current = true;
@@ -53,41 +35,35 @@ export function LoginPage() {
         if (!user) return;
 
         setCheckingOnboarding(true);
-        
-        // First check localStorage for faster UX
+
         const localOnboarding = localStorage.getItem(`${ONBOARDING_STORAGE_KEY}_${user.uid}`);
         if (localOnboarding === 'true') {
-            // User already completed onboarding locally, redirect immediately
             navigate(from, { replace: true });
             return;
         }
 
         try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
-            
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
+
             const response = await fetch(`${API_URL}/api/user/${user.uid}/onboarding`, {
                 signal: controller.signal
             });
             clearTimeout(timeoutId);
-            
+
             if (response.ok) {
                 const data = await response.json();
                 if (data.completed) {
-                    // Mark as completed locally for future
                     localStorage.setItem(`${ONBOARDING_STORAGE_KEY}_${user.uid}`, 'true');
                     navigate(from, { replace: true });
                 } else {
                     setShowOnboarding(true);
                 }
             } else {
-                // API error - show onboarding to be safe
                 setShowOnboarding(true);
             }
         } catch (err) {
             console.error('Failed to check onboarding:', err);
-            // On network error or timeout, skip onboarding and redirect
-            // Better UX than blocking the user
             navigate(from, { replace: true });
         } finally {
             setCheckingOnboarding(false);
@@ -100,10 +76,8 @@ export function LoginPage() {
 
         try {
             await signInWithGoogle();
-            // useEffect will handle onboarding check
         } catch (err: unknown) {
             console.error('Login error:', err);
-            // More specific error messages
             const errorCode = (err as { code?: string })?.code;
             if (errorCode === 'auth/popup-closed-by-user') {
                 setError('Connexion annulée. Réessayez quand vous êtes prêt.');
@@ -123,56 +97,57 @@ export function LoginPage() {
 
         setIsLoading(true);
         try {
-            // Save preferences to backend (fire and forget with timeout)
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 3000);
-            
+
             await Promise.all([
                 fetch(`${API_URL}/api/user/${user.uid}/preferences`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(preferences),
                     signal: controller.signal
-                }).catch(() => {}), // Ignore errors
-                
+                }).catch(() => { }),
+
                 fetch(`${API_URL}/api/user/${user.uid}/onboarding`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ completed: true }),
                     signal: controller.signal
-                }).catch(() => {}) // Ignore errors
+                }).catch(() => { })
             ]);
-            
+
             clearTimeout(timeoutId);
         } catch (err) {
             console.error('Failed to save preferences:', err);
         } finally {
-            // Always mark as completed locally and redirect
             localStorage.setItem(`${ONBOARDING_STORAGE_KEY}_${user.uid}`, 'true');
             navigate(from, { replace: true });
         }
     };
 
-    // Show loading state while checking onboarding
+    // Loading state
     if (checkingOnboarding) {
         return (
-            <div className="min-h-screen flex items-center justify-center" style={{ background: "#FAFBFE" }}>
+            <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--color-bg-base)' }}>
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-10 w-10 border-2 border-blue-600 border-t-transparent mx-auto mb-4" />
-                    <p className="text-sm text-slate-600">Préparation de votre espace...</p>
+                    <div
+                        className="animate-spin rounded-full h-10 w-10 border-2 border-t-transparent mx-auto mb-4"
+                        style={{ borderColor: 'var(--color-accent)', borderTopColor: 'transparent' }}
+                    />
+                    <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>Préparation de votre espace...</p>
                 </div>
             </div>
         );
     }
 
+    // Onboarding flow
     if (showOnboarding && user) {
         return (
-            <div className="min-h-screen antialiased relative" data-theme="light" style={{ background: "#FAFBFE" }}>
-                {/* Background */}
+            <div className="min-h-screen antialiased relative" data-theme="light" style={{ background: 'var(--color-bg-base)' }}>
                 <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
                     <div
-                        className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] -translate-y-1/3"
-                        style={{ background: "radial-gradient(ellipse, rgba(29, 78, 216, 0.08) 0%, transparent 70%)" }}
+                        className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] -translate-y-1/3 opacity-50"
+                        style={{ background: 'radial-gradient(ellipse, var(--color-accent-subtle), transparent 70%)' }}
                     />
                 </div>
 
@@ -182,61 +157,96 @@ export function LoginPage() {
                         animate={{ opacity: 1, scale: 1 }}
                         className="w-full max-w-lg"
                     >
-                        <div className="p-8 sm:p-10 rounded-2xl bg-white shadow-lg border border-slate-200">
-                            {/* Header - No icon */}
+                        <div
+                            className="p-8 sm:p-10 rounded-2xl"
+                            style={{
+                                background: 'var(--color-bg-raised)',
+                                boxShadow: 'var(--shadow-lg)',
+                                border: '1px solid var(--color-border-default)'
+                            }}
+                        >
                             <div className="text-center mb-8">
-                                <h2 className="text-2xl font-semibold text-slate-900 mb-2">
+                                <h2 className="text-2xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
                                     Bienvenue sur {APP_NAME} !
                                 </h2>
-                                <p className="text-sm text-slate-600">
+                                <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                                     Personnalisez vos notifications pour une expérience optimale
                                 </p>
                             </div>
 
-                            {/* Preferences - Subtle hover */}
                             <div className="space-y-3 mb-8">
-                                <label className="flex items-start gap-4 p-4 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all cursor-pointer">
+                                <label
+                                    className="flex items-start gap-4 p-4 rounded-xl transition-all cursor-pointer"
+                                    style={{
+                                        border: '1px solid var(--color-border-default)',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.borderColor = 'var(--color-accent)';
+                                        e.currentTarget.style.background = 'var(--color-bg-overlay)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.borderColor = 'var(--color-border-default)';
+                                        e.currentTarget.style.background = 'transparent';
+                                    }}
+                                >
                                     <input
                                         type="checkbox"
                                         checked={preferences.newContent}
                                         onChange={(e) => setPreferences({ ...preferences, newContent: e.target.checked })}
-                                        className="mt-0.5 h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
+                                        className="mt-0.5 h-5 w-5 rounded cursor-pointer accent-[var(--color-accent)]"
+                                        style={{ accentColor: 'var(--color-accent)' }}
                                     />
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-1">
-                                            <Mail className="h-4 w-4 text-slate-600" />
-                                            <span className="font-semibold text-slate-900">Nouveaux contenus</span>
+                                            <Mail className="h-4 w-4" style={{ color: 'var(--color-text-secondary)' }} />
+                                            <span className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>Nouveaux contenus</span>
                                         </div>
-                                        <p className="text-sm text-slate-600">
+                                        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                                             Recevez un email lorsque de nouveaux cours, fiches ou QCM sont ajoutés
                                         </p>
                                     </div>
                                 </label>
 
-                                <label className="flex items-start gap-4 p-4 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-slate-50 transition-all cursor-pointer">
+                                <label
+                                    className="flex items-start gap-4 p-4 rounded-xl transition-all cursor-pointer"
+                                    style={{
+                                        border: '1px solid var(--color-border-default)',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.borderColor = 'var(--color-accent)';
+                                        e.currentTarget.style.background = 'var(--color-bg-overlay)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.borderColor = 'var(--color-border-default)';
+                                        e.currentTarget.style.background = 'transparent';
+                                    }}
+                                >
                                     <input
                                         type="checkbox"
                                         checked={preferences.spacedRepetition}
                                         onChange={(e) => setPreferences({ ...preferences, spacedRepetition: e.target.checked })}
-                                        className="mt-0.5 h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
+                                        className="mt-0.5 h-5 w-5 rounded cursor-pointer"
+                                        style={{ accentColor: 'var(--color-accent)' }}
                                     />
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-1">
-                                            <Bell className="h-4 w-4 text-slate-600" />
-                                            <span className="font-semibold text-slate-900">Rappels de révision</span>
+                                            <Bell className="h-4 w-4" style={{ color: 'var(--color-text-secondary)' }} />
+                                            <span className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>Rappels de révision</span>
                                         </div>
-                                        <p className="text-sm text-slate-600">
+                                        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                                             Notifications intelligentes basées sur la répétition espacée pour maximiser la mémorisation
                                         </p>
                                     </div>
                                 </label>
                             </div>
 
-                            {/* CTA - Subtle hover */}
                             <button
                                 onClick={handleCompleteOnboarding}
                                 disabled={isLoading}
-                                className="w-full h-12 sm:h-14 rounded-xl font-semibold bg-linear-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                className="w-full h-12 sm:h-14 rounded-xl font-semibold text-white transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                style={{ background: 'var(--color-accent)' }}
+                                onMouseEnter={(e) => !isLoading && (e.currentTarget.style.filter = 'brightness(1.1)')}
+                                onMouseLeave={(e) => (e.currentTarget.style.filter = 'brightness(1)')}
                             >
                                 {isLoading ? (
                                     <>
@@ -248,7 +258,7 @@ export function LoginPage() {
                                 )}
                             </button>
 
-                            <p className="mt-4 text-center text-xs text-slate-500">
+                            <p className="mt-4 text-center text-xs" style={{ color: 'var(--color-text-muted)' }}>
                                 Vous pourrez modifier ces préférences à tout moment dans les paramètres
                             </p>
                         </div>
@@ -258,17 +268,16 @@ export function LoginPage() {
         );
     }
 
+    // Main login view
     return (
-        <div className="min-h-screen antialiased relative" data-theme="light" style={{ background: "#FAFBFE" }}>
-            {/* Background */}
+        <div className="min-h-screen antialiased relative" data-theme="light" style={{ background: 'var(--color-bg-base)' }}>
             <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
                 <div
-                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] -translate-y-1/3"
-                    style={{ background: "radial-gradient(ellipse, rgba(29, 78, 216, 0.08) 0%, transparent 70%)" }}
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] -translate-y-1/3 opacity-50"
+                    style={{ background: 'radial-gradient(ellipse, var(--color-accent-subtle), transparent 70%)' }}
                 />
             </div>
 
-            {/* Content */}
             <div className="relative min-h-screen flex items-center justify-center px-4 sm:px-6" style={{ zIndex: 1 }}>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -284,11 +293,19 @@ export function LoginPage() {
                             transition={{ duration: 0.4 }}
                             className="inline-flex flex-col items-center"
                         >
-                            <Logo className="h-14 w-14 sm:h-16 sm:w-16 mb-4" />
-                            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2 bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                            <GraduationCap className="h-14 w-14 sm:h-16 sm:w-16 mb-4" style={{ color: 'var(--color-accent)' }} />
+                            <h1
+                                className="text-3xl sm:text-4xl font-bold tracking-tight mb-2"
+                                style={{
+                                    background: 'linear-gradient(to right, var(--color-accent), var(--color-micro))',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    backgroundClip: 'text'
+                                }}
+                            >
                                 {APP_NAME}
                             </h1>
-                            <p className="text-sm sm:text-base text-slate-600">
+                            <p className="text-sm sm:text-base" style={{ color: 'var(--color-text-secondary)' }}>
                                 Plateforme de révision · L2 Économie
                             </p>
                         </motion.div>
@@ -299,44 +316,45 @@ export function LoginPage() {
                         initial={{ opacity: 0, scale: 0.98 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.1, duration: 0.5 }}
-                        className="p-8 sm:p-10 rounded-2xl bg-white shadow-lg border border-slate-200"
+                        className="p-8 sm:p-10 rounded-2xl"
+                        style={{
+                            background: 'var(--color-bg-raised)',
+                            boxShadow: 'var(--shadow-lg)',
+                            border: '1px solid var(--color-border-default)'
+                        }}
                     >
-                        <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-center text-slate-900">
+                        <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-center" style={{ color: 'var(--color-text-primary)' }}>
                             Connexion requise
                         </h2>
-                        <p className="text-sm text-slate-600 text-center mb-8">
+                        <p className="text-sm text-center mb-8" style={{ color: 'var(--color-text-secondary)' }}>
                             Accédez à tous vos cours et ressources
                         </p>
 
-                        {/* Features list - Subtle hover */}
+                        {/* Features list */}
                         <div className="space-y-3 mb-8">
-                            <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
-                                <div className="shrink-0 h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center mt-0.5">
-                                    <BookOpen className="h-5 w-5 text-blue-600" />
+                            {[
+                                { icon: BookOpen, title: "Accès complet", desc: "Cours, fiches, QCM et annales pour toutes les matières", color: 'var(--color-accent)' },
+                                { icon: Zap, title: "Progression sauvegardée", desc: "Synchronisée en temps réel sur tous vos appareils", color: 'var(--color-micro)' },
+                                { icon: Shield, title: "100% sécurisé", desc: "Authentification Google · Aucun mot de passe requis", color: 'var(--color-stats)' },
+                            ].map(({ icon: Icon, title, desc, color }) => (
+                                <div
+                                    key={title}
+                                    className="flex items-start gap-3 p-3 rounded-lg transition-colors"
+                                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-bg-overlay)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                >
+                                    <div
+                                        className="shrink-0 h-10 w-10 rounded-xl flex items-center justify-center mt-0.5"
+                                        style={{ background: `color-mix(in srgb, ${color} 10%, transparent)` }}
+                                    >
+                                        <Icon className="h-5 w-5" style={{ color }} />
+                                    </div>
+                                    <div className="flex-1 pt-1.5">
+                                        <p className="font-semibold text-sm mb-0.5" style={{ color: 'var(--color-text-primary)' }}>{title}</p>
+                                        <p className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>{desc}</p>
+                                    </div>
                                 </div>
-                                <div className="flex-1 pt-1.5">
-                                    <p className="font-semibold text-slate-900 text-sm mb-0.5">Accès complet</p>
-                                    <p className="text-xs text-slate-600">Cours, fiches, QCM et annales pour toutes les matières</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
-                                <div className="shrink-0 h-10 w-10 rounded-xl bg-indigo-50 flex items-center justify-center mt-0.5">
-                                    <Zap className="h-5 w-5 text-indigo-600" />
-                                </div>
-                                <div className="flex-1 pt-1.5">
-                                    <p className="font-semibold text-slate-900 text-sm mb-0.5">Progression sauvegardée</p>
-                                    <p className="text-xs text-slate-600">Synchronisée en temps réel sur tous vos appareils</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
-                                <div className="shrink-0 h-10 w-10 rounded-xl bg-violet-50 flex items-center justify-center mt-0.5">
-                                    <Shield className="h-5 w-5 text-violet-600" />
-                                </div>
-                                <div className="flex-1 pt-1.5">
-                                    <p className="font-semibold text-slate-900 text-sm mb-0.5">100% sécurisé</p>
-                                    <p className="text-xs text-slate-600">Authentification Google · Aucun mot de passe requis</p>
-                                </div>
-                            </div>
+                            ))}
                         </div>
 
                         {/* Error message */}
@@ -344,21 +362,41 @@ export function LoginPage() {
                             <motion.div
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200"
+                                className="mb-6 p-4 rounded-xl"
+                                style={{
+                                    background: 'color-mix(in srgb, var(--color-error) 10%, transparent)',
+                                    border: '1px solid color-mix(in srgb, var(--color-error) 30%, transparent)'
+                                }}
                             >
-                                <p className="text-sm font-medium text-red-700">{error}</p>
+                                <p className="text-sm font-medium" style={{ color: 'var(--color-error)' }}>{error}</p>
                             </motion.div>
                         )}
 
-                        {/* Google Sign In Button - Subtle hover */}
+                        {/* Google Sign In Button */}
                         <button
                             onClick={handleGoogleSignIn}
                             disabled={isLoading}
-                            className="w-full flex items-center justify-center gap-3 h-12 sm:h-14 px-6 rounded-xl font-semibold transition-all duration-200 bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-300 hover:border-blue-400 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full flex items-center justify-center gap-3 h-12 sm:h-14 px-6 rounded-xl font-semibold transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                            style={{
+                                background: 'var(--color-bg-raised)',
+                                color: 'var(--color-text-primary)',
+                                border: '2px solid var(--color-border-default)'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.borderColor = 'var(--color-accent)';
+                                e.currentTarget.style.background = 'var(--color-bg-overlay)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.borderColor = 'var(--color-border-default)';
+                                e.currentTarget.style.background = 'var(--color-bg-raised)';
+                            }}
                         >
                             {isLoading ? (
                                 <>
-                                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent" />
+                                    <div
+                                        className="animate-spin rounded-full h-5 w-5 border-2 border-t-transparent"
+                                        style={{ borderColor: 'var(--color-accent)', borderTopColor: 'transparent' }}
+                                    />
                                     <span>Connexion en cours...</span>
                                 </>
                             ) : (
@@ -374,8 +412,11 @@ export function LoginPage() {
                             )}
                         </button>
 
-                        <p className="mt-6 text-center text-xs text-slate-500">
-                            En vous connectant, vous acceptez nos <button className="underline hover:text-blue-600">conditions d'utilisation</button>
+                        <p className="mt-6 text-center text-xs" style={{ color: 'var(--color-text-muted)' }}>
+                            En vous connectant, vous acceptez nos{' '}
+                            <button className="underline transition-colors" style={{ color: 'var(--color-accent)' }}>
+                                conditions d'utilisation
+                            </button>
                         </p>
                     </motion.div>
 
@@ -388,7 +429,10 @@ export function LoginPage() {
                     >
                         <button
                             onClick={() => navigate('/')}
-                            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors group"
+                            className="inline-flex items-center gap-2 text-sm font-medium transition-colors group"
+                            style={{ color: 'var(--color-text-secondary)' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent)'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-text-secondary)'}
                         >
                             <ArrowRight className="h-4 w-4 rotate-180 group-hover:-translate-x-1 transition-transform" />
                             Retour à l'accueil

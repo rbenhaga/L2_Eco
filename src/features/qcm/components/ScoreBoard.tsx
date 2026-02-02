@@ -20,7 +20,7 @@ interface ScoreBoardProps {
 export function ScoreBoard({
     result,
     chapters,
-    subjectColor = '#3b82f6',
+    subjectColor = 'var(--color-accent)',
     backLink,
     onRestart,
 }: ScoreBoardProps) {
@@ -36,11 +36,18 @@ export function ScoreBoard({
     return (
         <div className="max-w-md mx-auto">
             {/* Main Score Card */}
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-lg overflow-hidden">
+            <div
+                className="rounded-2xl overflow-hidden"
+                style={{
+                    background: 'var(--color-bg-raised)',
+                    boxShadow: 'var(--shadow-lg)',
+                    border: '1px solid var(--color-border-default)'
+                }}
+            >
                 {/* Header */}
                 <div
                     className="py-8 px-6 text-center"
-                    style={{ background: `linear-gradient(135deg, ${subjectColor}10, ${subjectColor}05)` }}
+                    style={{ background: `color-mix(in srgb, ${subjectColor} 10%, transparent)` }}
                 >
                     <div className="flex justify-center mb-4">
                         <CircularProgress
@@ -58,27 +65,36 @@ export function ScoreBoard({
                 {/* Stats */}
                 <div className="p-6 space-y-4">
                     <div className="grid grid-cols-3 gap-4">
-                        <div className="text-center p-3 bg-gray-50 rounded-xl">
-                            <Target size={20} className="mx-auto mb-1 text-gray-400" />
-                            <p className="text-2xl font-bold text-gray-900">{result.correctAnswers}</p>
-                            <p className="text-xs text-gray-500">Correct</p>
+                        <div
+                            className="text-center p-3 rounded-xl"
+                            style={{ background: 'var(--color-bg-overlay)' }}
+                        >
+                            <Target size={20} className="mx-auto mb-1" style={{ color: 'var(--color-text-muted)' }} />
+                            <p className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>{result.correctAnswers}</p>
+                            <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Correct</p>
                         </div>
-                        <div className="text-center p-3 bg-gray-50 rounded-xl">
-                            <TrendingUp size={20} className="mx-auto mb-1 text-gray-400" />
-                            <p className="text-2xl font-bold text-gray-900">{result.totalQuestions}</p>
-                            <p className="text-xs text-gray-500">Total</p>
+                        <div
+                            className="text-center p-3 rounded-xl"
+                            style={{ background: 'var(--color-bg-overlay)' }}
+                        >
+                            <TrendingUp size={20} className="mx-auto mb-1" style={{ color: 'var(--color-text-muted)' }} />
+                            <p className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>{result.totalQuestions}</p>
+                            <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Total</p>
                         </div>
-                        <div className="text-center p-3 bg-gray-50 rounded-xl">
-                            <Clock size={20} className="mx-auto mb-1 text-gray-400" />
-                            <p className="text-2xl font-bold text-gray-900">{formatTime(result.timeSpent)}</p>
-                            <p className="text-xs text-gray-500">Temps</p>
+                        <div
+                            className="text-center p-3 rounded-xl"
+                            style={{ background: 'var(--color-bg-overlay)' }}
+                        >
+                            <Clock size={20} className="mx-auto mb-1" style={{ color: 'var(--color-text-muted)' }} />
+                            <p className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>{formatTime(result.timeSpent)}</p>
+                            <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Temps</p>
                         </div>
                     </div>
 
                     {/* Chapter breakdown if available */}
                     {Object.keys(result.byChapter).length > 1 && (
-                        <div className="pt-4 border-t border-gray-100">
-                            <h3 className="text-sm font-semibold text-gray-700 mb-3">Par chapitre</h3>
+                        <div className="pt-4 border-t" style={{ borderColor: 'var(--color-border-default)' }}>
+                            <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--color-text-secondary)' }}>Par chapitre</h3>
                             <div className="space-y-2">
                                 {Object.entries(result.byChapter).map(([chapterId, stats]) => {
                                     const chapter = chapters.find(c => c.id === chapterId);
@@ -86,18 +102,27 @@ export function ScoreBoard({
 
                                     return (
                                         <div key={chapterId} className="flex items-center justify-between text-sm">
-                                            <span className="text-gray-600 truncate max-w-[60%]">
+                                            <span className="truncate max-w-[60%]" style={{ color: 'var(--color-text-secondary)' }}>
                                                 {chapter?.title || chapterId}
                                             </span>
                                             <div className="flex items-center gap-2">
-                                                <div className="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                                <div
+                                                    className="w-24 h-2 rounded-full overflow-hidden"
+                                                    style={{ background: 'var(--color-bg-overlay)' }}
+                                                >
                                                     <div
-                                                        className={`h-full rounded-full transition-all ${chapterScore >= 60 ? 'bg-green-500' : chapterScore >= 40 ? 'bg-amber-500' : 'bg-red-500'
-                                                            }`}
-                                                        style={{ width: `${chapterScore}%` }}
+                                                        className="h-full rounded-full transition-all"
+                                                        style={{
+                                                            width: `${chapterScore}%`,
+                                                            background: chapterScore >= 60
+                                                                ? 'var(--color-success)'
+                                                                : chapterScore >= 40
+                                                                    ? 'var(--color-warning)'
+                                                                    : 'var(--color-error)'
+                                                        }}
                                                     />
                                                 </div>
-                                                <span className="font-medium text-gray-900 w-12 text-right">
+                                                <span className="font-medium w-12 text-right" style={{ color: 'var(--color-text-primary)' }}>
                                                     {stats.correct}/{stats.total}
                                                 </span>
                                             </div>
@@ -113,7 +138,13 @@ export function ScoreBoard({
                 <div className="p-6 pt-0 flex gap-3">
                     <button
                         onClick={onRestart}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-colors"
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 font-medium rounded-xl transition-colors"
+                        style={{
+                            background: 'var(--color-bg-overlay)',
+                            color: 'var(--color-text-secondary)'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-bg-raised)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'var(--color-bg-overlay)'}
                     >
                         <RotateCcw size={18} />
                         <span>Recommencer</span>
@@ -122,7 +153,10 @@ export function ScoreBoard({
                     {backLink && (
                         <Link
                             to={backLink}
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-xl transition-colors no-underline"
+                            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-white font-medium rounded-xl transition-all no-underline"
+                            style={{ background: 'var(--color-text-primary)' }}
+                            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                         >
                             <span>Continuer</span>
                             <ArrowRight size={18} />

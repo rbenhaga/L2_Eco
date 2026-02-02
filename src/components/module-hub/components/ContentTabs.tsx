@@ -26,7 +26,7 @@ export function ContentTabs({
 }: ContentTabsProps) {
     return (
         <div className="mb-8">
-            <div className="flex items-center gap-2 p-1.5 rounded-xl" style={{ background: "var(--color-bg-overlay)", border: `1px solid var(--color-border-soft)` }} role="tablist">
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-[var(--color-bg-overlay)] border border-[var(--color-border-soft)]" role="tablist">
                 <Tab label="Cours" count={coursCount} active={activeTab === 'cours'} onClick={() => onTabChange('cours')} themeColor={themeColor} />
                 <Tab label="TD" count={tdCount} active={activeTab === 'td'} onClick={() => onTabChange('td')} themeColor={themeColor} />
                 <Tab label="QCM" count={qcmCount} active={activeTab === 'qcm'} onClick={() => onTabChange('qcm')} themeColor={themeColor} />
@@ -43,7 +43,7 @@ function Tab({ label, count, active, onClick, themeColor }: { label: string; cou
             onClick={onClick} 
             role="tab" 
             aria-selected={active}
-            className="flex-1 px-4 py-2.5 rounded-lg font-medium text-sm inline-flex items-center justify-center gap-2 transition-all duration-200"
+            className="flex-1 px-4 py-2 rounded-lg font-medium text-sm inline-flex items-center justify-center gap-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-raised)]"
             style={{ 
                 background: active ? 'var(--color-bg-raised)' : 'transparent', 
                 color: active ? 'var(--color-text-primary)' : 'var(--color-text-muted)',
@@ -52,7 +52,7 @@ function Tab({ label, count, active, onClick, themeColor }: { label: string; cou
             }}
         >
             <span>{label}</span>
-            <span className="px-1.5 py-0.5 rounded text-xs font-semibold" style={{ 
+            <span className="px-2 py-2 rounded text-xs font-semibold" style={{ 
                 background: active ? `${themeColor}15` : 'var(--color-bg-overlay)', 
                 color: active ? themeColor : 'var(--color-text-muted)'
             }}>

@@ -1,9 +1,9 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Background } from '../../../components/ui/Background';
-import { ContentProtection } from '../../../components/ContentProtection';
 import { PaywallModal } from '../../../components/PaywallModal';
 import { useAuth } from '../../../context/AuthContext';
+import { isFreeContent } from '../../../utils/contentAccess';
 
 /**
  * CourseLayout - Simplified layout for course content
@@ -17,11 +17,11 @@ import { useAuth } from '../../../context/AuthContext';
 export function CourseLayout() {
     const { hasAccess, loading } = useAuth();
     const location = useLocation();
+    const navigate = useNavigate();
     const [showPaywall, setShowPaywall] = useState(false);
 
-    // Define which pages are free (for demo: Chapter 1 is free)
-    const isFreePage = location.pathname.includes('/chapitre-1') ||
-        location.pathname.split('/').filter(Boolean).length <= 2; // Home page detection
+    // Strict free-tier access rules
+    const isFreePage = isFreeContent(location.pathname);
 
     // Check if user needs premium access
     const needsPremium = !isFreePage;
@@ -48,33 +48,51 @@ export function CourseLayout() {
         return 'ce contenu';
     };
 
+    const getFallbackPath = () => {
+        const parts = location.pathname.split('/').filter(Boolean);
+        if (parts.length >= 2) {
+            const maybeSemester = parts[0]?.toLowerCase();
+            if (maybeSemester === 's3' || maybeSemester === 's4') {
+                return `/${parts[0]}/${parts[1]}`;
+            }
+            return `/${parts[0]}`;
+        }
+        return '/';
+    };
+
     return (
-        <ContentProtection>
-            <div className="min-h-screen text-slate-900 font-sans">
-                <Background />
+        <div className="min-h-screen font-sans" style={{ color: 'var(--color-text-primary)' }}>
+            <Background />
 
-                {/* Main content - full width with generous padding */}
-                <main className="relative z-10 py-8 px-8 lg:px-12 max-w-7xl mx-auto">
-                    {/* Show paywall modal if user doesn't have access */}
-                    {showPaywall ? (
-                        <>
-                            {/* Blurred content preview */}
-                            <div className="filter blur-sm pointer-events-none select-none">
-                                <Outlet />
+            {/* Main content - full width, no horizontal padding (handled by pages) */}
+            <main className="relative z-10">
+                {/* Never render premium content for free users */}
+                {showPaywall ? (
+                    <>
+                        <div className="min-h-[60vh] flex items-center justify-center px-6 text-center">
+                            <div>
+                                <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
+                                    Contenu Premium
+                                </h2>
+                                <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                                    {'Passe au Premium pour d\u00e9bloquer ce chapitre.'}
+                                </p>
                             </div>
+                        </div>
 
-                            {/* Paywall modal */}
-                            <PaywallModal
-                                isOpen={showPaywall}
-                                onClose={() => setShowPaywall(false)}
-                                contentTitle={getCurrentPageTitle()}
-                            />
-                        </>
-                    ) : (
-                        <Outlet />
-                    )}
-                </main>
-            </div>
-        </ContentProtection>
+                        <PaywallModal
+                            isOpen={showPaywall}
+                            onClose={() => {
+                                setShowPaywall(false);
+                                navigate(getFallbackPath(), { replace: true });
+                            }}
+                            contentTitle={getCurrentPageTitle()}
+                        />
+                    </>
+                ) : (
+                    <Outlet />
+                )}
+            </main>
+        </div>
     );
 }

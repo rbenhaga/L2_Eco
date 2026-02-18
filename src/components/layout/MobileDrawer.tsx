@@ -51,7 +51,7 @@ export function MobileDrawer({ isOpen, onClose, currentModule, currentSemester =
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-50"
-            style={{ background: 'rgba(15, 23, 42, 0.4)' }}
+            style={{ background: 'color-mix(in srgb, var(--color-text-primary) 40%, transparent)' }}
             onClick={onClose}
           />
 
@@ -131,7 +131,7 @@ export function MobileDrawer({ isOpen, onClose, currentModule, currentSemester =
                       className="py-3 px-4 rounded-xl text-sm font-semibold transition-all"
                       style={{
                         background: selectedSemester === id ? 'var(--color-accent)' : 'var(--color-bg-overlay)',
-                        color: selectedSemester === id ? 'white' : 'var(--color-text-secondary)',
+                        color: selectedSemester === id ? 'var(--color-accent-foreground)' : 'var(--color-text-secondary)',
                         border: selectedSemester === id ? 'none' : '1px solid var(--color-border-default)',
                       }}
                     >
@@ -262,11 +262,11 @@ export function MobileNavButton({ onClick }: MobileNavButtonProps) {
   return (
     <button
       onClick={onClick}
-      className="fixed bottom-6 right-6 z-40 lg:hidden w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all active:scale-95"
+      className="fixed bottom-6 right-6 z-40 lg:hidden w-14 h-14 rounded-full flex items-center justify-center transition-all active:scale-95"
       style={{
         background: 'var(--color-accent)',
-        color: 'white',
-        boxShadow: '0 8px 24px rgba(79, 70, 229, 0.3)',
+        color: 'var(--color-accent-foreground)',
+        boxShadow: '0 8px 24px color-mix(in srgb, var(--color-accent) 30%, transparent)',
       }}
       aria-label="Ouvrir le menu"
     >

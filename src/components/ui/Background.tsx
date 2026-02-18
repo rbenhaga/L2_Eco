@@ -6,14 +6,14 @@ export function Background() {
             className="fixed inset-0 -z-10 overflow-hidden transition-none" 
             style={{ 
                 willChange: 'background-color',
-                background: 'radial-gradient(ellipse at 50% 0%, #F8FAFC 0%, #FDFCFA 50%, #FBF9F7 100%)'
+                background: 'radial-gradient(ellipse at 50% 0%, var(--color-bg-raised) 0%, color-mix(in srgb, var(--color-bg-raised) 95%, var(--color-bg-base)) 50%, color-mix(in srgb, var(--color-bg-base) 96%, var(--color-bg-overlay)) 100%)'
             }}
         >
             {/* Subtle top glow for depth */}
             <div 
                 className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] opacity-30 pointer-events-none"
                 style={{
-                    background: 'radial-gradient(ellipse at center, rgba(99, 102, 241, 0.08), transparent 70%)',
+                    background: 'radial-gradient(ellipse at center, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 70%)',
                     filter: 'blur(60px)'
                 }}
             />

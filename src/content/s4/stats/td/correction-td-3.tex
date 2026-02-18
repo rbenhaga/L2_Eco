@@ -1,0 +1,1033 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+
+\geometry{margin=2.2cm}
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{TD 4 -- Estimation Ponctuelle}}
+\fancyhead[R]{\textbf{Correction}}
+\fancyfoot[C]{\thepage}
+
+\titleformat{\section}{\Large\bfseries}{Exercice \thesection~:~}{0em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection)~}{0em}{}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{V}}
+\newcommand{\that}{\hat{\theta}}
+\newcommand{\mhat}{\hat{m}}
+\newcommand{\shat}{\hat{\sigma}}
+\newcommand{\imark}{\underset{\text{\tiny i.i.d.}}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\textbf{TD 4 : ESTIMATION PONCTUELLE}}\\[0.3cm]
+{\large Correction d\'etaill\'ee}
+\end{center}
+
+\vspace{0.3cm}
+
+%=============================================================================
+% RAPPELS GAMMA
+%=============================================================================
+
+\begin{tcolorbox}[title={\textbf{Rappels sur la fonction Gamma (pr\'erequis du cours, Chapitre 3)}}, colback=gray!5, colframe=black, fonttitle=\bfseries\large]
+
+\textbf{D\'efinition.} La fonction Gamma est d\'efinie pour tout $\alpha > 0$ par~:
+$$\Gamma(\alpha) = \int_0^{+\infty} u^{\alpha - 1}\,e^{-u}\,du.$$
+
+\textbf{Propri\'et\'es fondamentales~:}
+\begin{enumerate}[nosep]
+\item \textbf{Relation de r\'ecurrence~:} $\Gamma(\alpha + 1) = \alpha\,\Gamma(\alpha)$ pour tout $\alpha > 0$.
+\item \textbf{Lien avec la factorielle~:} Pour tout $n \in \mathbb{N}^*$, $\Gamma(n) = (n-1)!$
+\item \textbf{Valeurs utiles~:}
+$$\Gamma(1) = 0! = 1,\quad \Gamma(2) = 1! = 1,\quad \Gamma(3) = 2! = 2,\quad \Gamma(4) = 3! = 6,\quad \Gamma(5) = 4! = 24.$$
+\end{enumerate}
+
+\textbf{Utilisation dans ce TD.} Pour calculer les moments $\E(X^p)$ d'une variable al\'eatoire $X$ de densit\'e $f(x;\theta)$, on effectue un \textbf{changement de variable} qui ram\`ene l'int\'egrale \`a la forme $\int_0^{+\infty} u^{\alpha-1}\,e^{-u}\,du = \Gamma(\alpha)$. La technique g\'en\'erale est la suivante~:
+
+\begin{enumerate}[nosep]
+\item On pose un changement de variable $u = \varphi(x)/\theta$ (ou similaire) pour faire appara\^itre $e^{-u}$.
+\item On exprime $x$, $dx$, et la puissance de $x$ en fonction de $u$.
+\item On identifie $\int_0^{+\infty} u^{\alpha-1}\,e^{-u}\,du = \Gamma(\alpha)$.
+\item On conclut avec les valeurs de $\Gamma(\alpha)$.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\vspace{0.5cm}
+
+%=============================================================================
+\section{Densit\'e $f(x;\theta) = \dfrac{4}{\theta}\,x^3\,e^{-x^4/\theta}$}
+%=============================================================================
+
+Soit $(x_1, \ldots, x_n)$ un \'echantillon al\'eatoire de taille $n$ provenant d'une variable al\'eatoire $X$ de densit\'e~:
+$$f(x;\theta) = \frac{4}{\theta}\,x^3\,e^{-\frac{x^4}{\theta}}, \quad x > 0,\;\theta > 0.$$
+
+%-------------------------------------------------------------
+\subsection{D\'eterminer un estimateur de $\theta$ par la m\'ethode du maximum de vraisemblance}
+%-------------------------------------------------------------
+
+L'EMV de $\theta$, seul param\`etre de la loi de $X$ \`a estimer, est bas\'e sur le principe suivant~: on cherche $\that$ de sorte \`a maximiser la fonction de vraisemblance, c'est-\`a-dire l'estimateur qui rend la probabilit\'e d'apparition de l'\'echantillon observ\'e \emph{a posteriori} maximale. La fonction de vraisemblance se construit par le produit des densit\'es de probabilit\'es~:
+$$L(x_1, \ldots, x_n;\theta) = f(x_1) \times \cdots \times f(x_n) = \prod_{i=1}^{n} \frac{4}{\theta}\,x_i^3\,e^{-\frac{x_i^4}{\theta}}.$$
+
+La fonction $\ln$ \'etant une fonction monotone strictement croissante et continue, maximiser $L$ revient \`a maximiser $\ln L$~: le maximum ne change pas d'abscisse. La fonction de Log-vraisemblance est~:
+\begin{align*}
+\ln L(x_1, \ldots, x_n;\theta) &= \sum_{i=1}^{n}\left[\ln 4 - \ln\theta + 3\ln x_i - \frac{x_i^4}{\theta}\right]\\[4pt]
+&= n\ln 4 - n\ln\theta + 3\sum_{i=1}^{n}\ln x_i - \frac{1}{\theta}\sum_{i=1}^{n}x_i^4.
+\end{align*}
+
+On applique la condition de premier ordre~:
+$$\frac{\partial \ln L(x_1,\ldots,x_n;\theta)}{\partial \that} = 0.$$
+
+On a~:
+$$\frac{\partial \ln L(\cdot)}{\partial \that} = -\frac{n}{\that} + \frac{\displaystyle\sum_{i=1}^{n}x_i^4}{\that^2} = 0.$$
+
+D'o\`u~:
+$$\frac{\displaystyle\sum_{i=1}^{n}x_i^4}{\that^2} = \frac{n}{\that} \quad\Longrightarrow\quad \sum_{i=1}^{n}x_i^4 = n\that.$$
+
+La solution existe, donc l'estimateur s'\'ecrit~:
+
+$$\boxed{\that(x_1,\ldots,x_n) = \frac{\displaystyle\sum_{i=1}^{n}x_i^4}{n} = \overline{x^4}.}$$
+
+On admet que les conditions de second ordre sont v\'erifi\'ees (d\'eriv\'ee seconde n\'egative), nous sommes bien en pr\'esence d'un maximum. Ainsi, l'estimateur relatif \`a $\theta$ sur l'\'echantillon th\'eorique s'\'ecrit~:
+$$\that(X_1,\ldots,X_n) = \frac{\displaystyle\sum_{i=1}^{n}X_i^4}{n} = \overline{X^4}.$$
+
+%-------------------------------------------------------------
+\subsection{D\'emontrer que l'estimateur est sans biais, convergent, efficace et exhaustif}
+%-------------------------------------------------------------
+
+On consid\`ere un \'echantillon th\'eorique al\'eatoire de taille $n$, $(X_1, \ldots, X_n)$, associ\'e \`a la densit\'e de probabilit\'e $f(x;\theta)$. Nous travaillons d\'esormais avec $(X_1,\ldots,X_n)$ et non plus avec $(x_1,\ldots,x_n)$ de mani\`ere \`a montrer que les propri\'et\'es de l'estimateur $\that(X_1,\ldots,X_n)$ sont valables quel que soit l'\'echantillon.
+
+\medskip
+
+\noindent\textbf{Hypoth\`ese~:} Les $X_i$ sont suppos\'es ind\'ependants et identiquement distribu\'es (i.i.d.). Cela implique que pour tout $i = 1, \ldots, n$ ; $X_i \equiv X$ donc~:
+$$\E(X_i) = \E(X),\quad \Var(X_i) = \Var(X),$$
+et $X_i$ et $X_j$ sont ind\'ependantes pour tout $i \neq j$.
+
+\bigskip
+
+%--- SANS BIAIS ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur sans biais (ESB).}
+
+\medskip
+
+L'estimateur $\that$ est sans biais si son esp\'erance est \'egale \`a sa vraie valeur, c'est-\`a-dire si~:
+$$\E[\that(X_1,\ldots,X_n)] = \theta.$$
+
+On a~:
+$$\E[\that(X_1,\ldots,X_n)] = \E\left[\frac{1}{n}\sum_{i=1}^{n}X_i^4\right] = \frac{1}{n}\sum_{i=1}^{n}\E(X_i^4) \imark{=} \frac{1}{n}\cdot n\,\E(X^4) = \E(X^4).$$
+
+\noindent\underline{Calcul de $\E(X^4)$ par changement de variable~:}
+
+On pose $u = \dfrac{x^4}{\theta}$, d'o\`u $x^4 = \theta u$, $x = (\theta u)^{1/4} = \theta^{1/4}\,u^{1/4}$, et $dx = \dfrac{\theta^{1/4}}{4}\,u^{-3/4}\,du$. Bornes~: $x = 0 \Rightarrow u = 0$ et $x \to +\infty \Rightarrow u \to +\infty$.
+
+\begin{align*}
+\E(X^4) &= \int_0^{+\infty} x^4 \cdot \frac{4}{\theta}\,x^3\,e^{-\frac{x^4}{\theta}}\,dx = \frac{4}{\theta}\int_0^{+\infty} x^7\,e^{-\frac{x^4}{\theta}}\,dx.
+\end{align*}
+
+Avec le changement de variable~: $x^7 = \theta^{7/4}\,u^{7/4}$, $dx = \dfrac{\theta^{1/4}}{4}\,u^{-3/4}\,du$, $e^{-x^4/\theta} = e^{-u}$~:
+\begin{align*}
+\E(X^4) &= \frac{4}{\theta}\cdot\frac{\theta^{7/4+1/4}}{4}\int_0^{+\infty} u^{7/4-3/4}\,e^{-u}\,du = \theta\int_0^{+\infty} u^{2-1}\,e^{-u}\,du = \theta\,\Gamma(2) = \theta\cdot 1! = \theta.
+\end{align*}
+
+$$\boxed{\E(X^4) = \theta.}$$
+
+On conclut~:
+$$\E[\that(X_1,\ldots,X_n)] = \E(X^4) = \theta.$$
+
+Donc $\E[\that(X_1,\ldots,X_n)] = \theta$, autrement dit, $\that(X_1,\ldots,X_n)$ est un ESB.
+
+\medskip
+
+\noindent\textit{Interpr\'etation~:} en prenant plusieurs \'echantillons et en calculant autant de fois $\that(X_1,\ldots,X_n)$, la moyenne de ces estimations donne le \og vrai \fg{} param\`etre $\theta$ (celui qui serait estim\'e sur l'ensemble de la population).
+
+\bigskip
+
+%--- CONVERGENT ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur convergent.}
+
+\medskip
+
+$\that(X_1,\ldots,X_n)$ est un estimateur convergent s'il converge en limite de probabilit\'e vers sa vraie valeur~:
+$$\forall\,\varepsilon > 0,\quad \lim_{n\to\infty} P\big(|\that - \theta| > \varepsilon\big) = 0.$$
+
+Comme $\that$ est un ESB, montrer qu'il est convergent revient \`a montrer que lorsque la taille de l'\'echantillon augmente, la variance de l'estimateur tend vers 0, soit~:
+$$\lim_{n\to\infty} \Var\big(\that(X_1,\ldots,X_n)\big) = 0.$$
+
+On a~:
+$$\Var[\that(X_1,\ldots,X_n)] = \Var\left[\frac{1}{n}\sum_{i=1}^{n}X_i^4\right] = \frac{1}{n^2}\sum_{i=1}^{n}\Var(X_i^4) \imark{=} \frac{1}{n^2}\cdot n\,\Var(X^4) = \frac{\Var(X^4)}{n}.$$
+
+\noindent\underline{Calcul de $\Var(X^4)$~:} on a besoin de $\E(X^8)$.
+
+Avec le m\^eme changement de variable $u = x^4/\theta$~: $x^{11} = \theta^{11/4}\,u^{11/4}$~:
+\begin{align*}
+\E(X^8) &= \frac{4}{\theta}\int_0^{+\infty} x^{11}\,e^{-\frac{x^4}{\theta}}\,dx = \frac{4}{\theta}\cdot\frac{\theta^{11/4+1/4}}{4}\int_0^{+\infty} u^{11/4-3/4}\,e^{-u}\,du = \theta^2\int_0^{+\infty} u^{3-1}\,e^{-u}\,du = \theta^2\,\Gamma(3) = 2\theta^2.
+\end{align*}
+
+$$\Var(X^4) = \E(X^8) - \big[\E(X^4)\big]^2 = 2\theta^2 - \theta^2 = \theta^2.$$
+
+D'o\`u~:
+$$\Var[\that(X_1,\ldots,X_n)] = \frac{\theta^2}{n}.$$
+
+On a bien~:
+$$\lim_{n\to\infty}\frac{\theta^2}{n} = 0.$$
+
+En d\'efinitive, $\that(X_1,\ldots,X_n)$ est un estimateur convergent. De plus, comme il est sans biais, on dit qu'il est \textbf{absolument convergent}.
+
+\bigskip
+
+%--- EFFICACE ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur efficace.}
+
+\medskip
+
+$\that(X_1,\ldots,X_n)$ est efficace s'il est un estimateur sans biais poss\'edant une variance minimale. L'in\'egalit\'e de Fr\'echet-Rao-Cram\'er-Darmois (FRCD) indique que tout estimateur sans biais v\'erifie~:
+$$\Var(\that) \geq \frac{1}{I(\theta)},$$
+avec $I(\theta)$ la quantit\'e d'information de Fisher~:
+$$I(\theta) = -\E\left[\frac{\partial^2 \ln L(\cdot)}{\partial \theta^2}\right].$$
+
+La variance de l'estimateur est minimale si celle-ci est \'egale \`a la borne inf\'erieure de l'in\'egalit\'e de FRCD, i.e.~:
+$$\Var(\that) = \frac{1}{I(\theta)}.$$
+
+D\'emontrons cette \'egalit\'e. Nous avons d\'ej\`a trouv\'e~: $\Var\big(\that\big) = \dfrac{\theta^2}{n}$.
+
+La d\'eriv\'ee seconde de la log-vraisemblance est~:
+$$\frac{\partial^2 \ln L(\cdot)}{\partial \theta^2} = \frac{n}{\theta^2} - \frac{2\displaystyle\sum_{i=1}^{n}X_i^4}{\theta^3}.$$
+
+D'o\`u~:
+\begin{align*}
+I(\theta) &= -\E\left[\frac{n}{\theta^2} - \frac{2\displaystyle\sum_{i=1}^{n}X_i^4}{\theta^3}\right] = -\frac{n}{\theta^2} + \frac{2}{\theta^3}\sum_{i=1}^{n}\E(X_i^4) \imark{=} -\frac{n}{\theta^2} + \frac{2}{\theta^3}\cdot n\theta = \frac{n}{\theta^2}.
+\end{align*}
+
+En rassemblant~:
+$$\Var\big(\that(X_1,\ldots,X_n)\big) = \frac{\theta^2}{n} = \frac{1}{I(\theta)}.$$
+
+Ainsi, l'estimateur $\that(X_1,\ldots,X_n)$ est \textbf{efficace}, car sa variance atteint la borne inf\'erieure de l'in\'egalit\'e de FRCD.
+
+\bigskip
+
+%--- EXHAUSTIF ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur exhaustif.}
+
+\medskip
+
+$\that(X_1,\ldots,X_n)$ est exhaustif s'il synth\'etise ou r\'esume la totalit\'e de l'information relative au param\`etre de la loi de probabilit\'e disponible sur l'\'echantillon. On d\'ecompose dans un premier temps la densit\'e individuelle~:
+$$\exp[\ln f(x_i;\theta)] = \exp\big[\alpha(x_i)\,A(\theta) + \beta(x_i) + B(\theta) + C\big].$$
+
+On a~:
+\begin{align*}
+\ln f(x_i;\theta) &= \ln 4 - \ln\theta + 3\ln x_i - \frac{x_i^4}{\theta}\\[4pt]
+&= x_i^4\cdot\left(-\frac{1}{\theta}\right) + 3\ln x_i + (-\ln\theta) + \ln 4.
+\end{align*}
+
+Par identification~:
+$$\alpha(x_i) = x_i^4 \;;\quad A(\theta) = -\frac{1}{\theta} \;;\quad \beta(x_i) = 3\ln x_i \;;\quad B(\theta) = -\ln\theta \;;\quad C = \ln 4.$$
+
+Dans un second temps, \`a partir de cette d\'ecomposition, on cherche la famille des estimateurs exhaustifs, qui s'\'ecrit~:
+$$\theta^* = c \times \frac{1}{n}\sum_{i=1}^{n}\alpha(X_i) = c\times\frac{1}{n}\sum_{i=1}^{n}X_i^4 = c\,\overline{X^4},$$
+avec $c$ un r\'eel \`a d\'eterminer. Or notre EMV est $\that = \overline{X^4}$. En posant $c = 1$, on a $\that = \theta^*$. L'estimateur $\that(X_1,\ldots,X_n)$ appartient donc \`a la famille des estimateurs exhaustifs~: il est \textbf{exhaustif}.
+
+\bigskip
+
+\noindent\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+\textbf{Conclusion~:} L'estimateur $\that(X_1,\ldots,X_n) = \dfrac{\displaystyle\sum_{i=1}^{n}X_i^4}{n} = \overline{X^4}$ est un estimateur \textbf{sans biais}, \textbf{absolument convergent}, \textbf{efficace} et \textbf{exhaustif}.}}
+
+\newpage
+
+%=============================================================================
+\section{Densit\'e $f(x;\theta) = \dfrac{x^2}{2\theta^3}\,e^{-x/\theta}$}
+%=============================================================================
+
+Soit $(x_1,\ldots,x_n)$ un \'echantillon al\'eatoire de taille $n$ provenant d'une variable al\'eatoire $X$ de densit\'e~:
+$$f(x;\theta) = \frac{x^2}{2\theta^3}\,e^{-\frac{x}{\theta}}, \quad x \geq 0,\;\theta > 0.$$
+
+%-------------------------------------------------------------
+\subsection{D\'eterminer l'estimateur du maximum de vraisemblance du param\`etre $\theta$}
+%-------------------------------------------------------------
+
+L'EMV de $\theta$, seul param\`etre de la loi de $X$ \`a estimer, est bas\'e sur le principe suivant~: on cherche $\that$ de sorte \`a maximiser la fonction de vraisemblance, c'est-\`a-dire l'estimateur qui rend la probabilit\'e d'apparition de l'\'echantillon observ\'e \emph{a posteriori} maximale. La fonction de vraisemblance se construit par le produit des densit\'es de probabilit\'es~:
+$$L(x_1,\ldots,x_n;\theta) = f(x_1)\times\cdots\times f(x_n) = \prod_{i=1}^{n}\frac{x_i^2}{2\theta^3}\,e^{-\frac{x_i}{\theta}}.$$
+
+La fonction $\ln$ \'etant une fonction monotone strictement croissante et continue, maximiser $L$ revient \`a maximiser $\ln L$~: le maximum ne change pas d'abscisse. La fonction de Log-vraisemblance est~:
+\begin{align*}
+\ln L(x_1,\ldots,x_n;\theta) &= \sum_{i=1}^{n}\left[2\ln x_i - \ln 2 - 3\ln\theta - \frac{x_i}{\theta}\right]\\[4pt]
+&= 2\sum_{i=1}^{n}\ln x_i - n\ln 2 - 3n\ln\theta - \frac{1}{\theta}\sum_{i=1}^{n}x_i.
+\end{align*}
+
+On applique la condition de premier ordre~:
+$$\frac{\partial \ln L(\cdot)}{\partial \that} = -\frac{3n}{\that} + \frac{\displaystyle\sum_{i=1}^{n}x_i}{\that^2} = 0.$$
+
+D'o\`u~:
+$$\frac{\displaystyle\sum_{i=1}^{n}x_i}{\that^2} = \frac{3n}{\that} \quad\Longrightarrow\quad \sum_{i=1}^{n}x_i = 3n\that.$$
+
+La solution existe, donc l'estimateur s'\'ecrit~:
+$$\boxed{\that(x_1,\ldots,x_n) = \frac{\displaystyle\sum_{i=1}^{n}x_i}{3n} = \frac{\bar{x}}{3}.}$$
+
+On admet que les conditions de second ordre sont v\'erifi\'ees (d\'eriv\'ee seconde n\'egative), nous sommes bien en pr\'esence d'un maximum. Ainsi, l'estimateur relatif \`a $\theta$ sur l'\'echantillon th\'eorique s'\'ecrit~:
+$$\that(X_1,\ldots,X_n) = \frac{\displaystyle\sum_{i=1}^{n}X_i}{3n} = \frac{\bar{X}}{3}.$$
+
+%-------------------------------------------------------------
+\subsection{Montrer que cet estimateur est sans biais, convergent, efficace et exhaustif}
+%-------------------------------------------------------------
+
+On consid\`ere un \'echantillon th\'eorique al\'eatoire de taille $n$, $(X_1,\ldots,X_n)$, associ\'e \`a la densit\'e de probabilit\'e $f(x;\theta)$. Nous travaillons d\'esormais avec $(X_1,\ldots,X_n)$ et non plus avec $(x_1,\ldots,x_n)$ de mani\`ere \`a montrer que les propri\'et\'es de l'estimateur $\that(X_1,\ldots,X_n)$ sont valables quel que soit l'\'echantillon.
+
+\medskip
+
+\noindent\textbf{Hypoth\`ese~:} Les $X_i$ sont suppos\'es ind\'ependants et identiquement distribu\'es (i.i.d.). Cela implique que pour tout $i = 1,\ldots,n$ ; $X_i \equiv X$ donc~:
+$$\E(X_i) = \E(X),\quad \Var(X_i) = \Var(X),$$
+et $X_i$ et $X_j$ sont ind\'ependantes pour tout $i \neq j$.
+
+\bigskip
+
+%--- SANS BIAIS ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur sans biais (ESB).}
+
+\medskip
+
+L'estimateur $\that$ est sans biais si son esp\'erance est \'egale \`a sa vraie valeur, c'est-\`a-dire si~:
+$$\E[\that(X_1,\ldots,X_n)] = \theta.$$
+
+On a~:
+$$\E[\that(X_1,\ldots,X_n)] = \E\left[\frac{1}{3n}\sum_{i=1}^{n}X_i\right] = \frac{1}{3n}\sum_{i=1}^{n}\E(X_i) \imark{=} \frac{1}{3n}\cdot n\,\E(X) = \frac{\E(X)}{3}.$$
+
+\noindent\underline{Calcul de $\E(X)$ par changement de variable~:}
+
+On pose $u = \dfrac{x}{\theta}$, d'o\`u $x = \theta u$, $dx = \theta\,du$, $e^{-x/\theta} = e^{-u}$. Bornes~: $x=0 \Rightarrow u=0$ et $x\to+\infty \Rightarrow u\to+\infty$.
+
+\begin{align*}
+\E(X) &= \int_0^{+\infty} x\cdot\frac{x^2}{2\theta^3}\,e^{-\frac{x}{\theta}}\,dx = \frac{1}{2\theta^3}\int_0^{+\infty}x^3\,e^{-\frac{x}{\theta}}\,dx\\[6pt]
+&= \frac{1}{2\theta^3}\int_0^{+\infty}\theta^3\,u^3\cdot e^{-u}\cdot\theta\,du = \frac{\theta}{2}\int_0^{+\infty}u^{4-1}\,e^{-u}\,du = \frac{\theta}{2}\,\Gamma(4) = \frac{\theta}{2}\cdot 3! = 3\theta.
+\end{align*}
+
+$$\boxed{\E(X) = 3\theta.}$$
+
+On conclut~:
+$$\E[\that(X_1,\ldots,X_n)] = \frac{\E(X)}{3} = \frac{3\theta}{3} = \theta.$$
+
+Donc $\E[\that(X_1,\ldots,X_n)] = \theta$, autrement dit, $\that(X_1,\ldots,X_n)$ est un ESB.
+
+\bigskip
+
+%--- CONVERGENT ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur convergent.}
+
+\medskip
+
+$\that(X_1,\ldots,X_n)$ est un estimateur convergent s'il converge en limite de probabilit\'e vers sa vraie valeur~:
+$$\forall\,\varepsilon > 0,\quad \lim_{n\to\infty} P\big(|\that - \theta| > \varepsilon\big) = 0.$$
+
+Comme $\that$ est un ESB, montrer qu'il est convergent revient \`a montrer que lorsque la taille de l'\'echantillon augmente, la variance de l'estimateur tend vers 0, soit~:
+$$\lim_{n\to\infty} \Var\big(\that(X_1,\ldots,X_n)\big) = 0.$$
+
+On a~:
+$$\Var[\that(X_1,\ldots,X_n)] = \Var\left[\frac{1}{3n}\sum_{i=1}^{n}X_i\right] = \frac{1}{9n^2}\sum_{i=1}^{n}\Var(X_i) \imark{=} \frac{1}{9n^2}\cdot n\,\Var(X) = \frac{\Var(X)}{9n}.$$
+
+\noindent\underline{Calcul de $\Var(X)$~:} on a besoin de $\E(X^2)$.
+
+Avec le m\^eme changement de variable $u = x/\theta$~: $x^4 = \theta^4 u^4$~:
+\begin{align*}
+\E(X^2) &= \frac{1}{2\theta^3}\int_0^{+\infty}x^4\,e^{-\frac{x}{\theta}}\,dx = \frac{1}{2\theta^3}\cdot\theta^5\int_0^{+\infty}u^4\,e^{-u}\,du = \frac{\theta^2}{2}\,\Gamma(5) = \frac{\theta^2}{2}\cdot 4! = 12\theta^2.
+\end{align*}
+
+$$\Var(X) = \E(X^2) - \big[\E(X)\big]^2 = 12\theta^2 - (3\theta)^2 = 3\theta^2.$$
+
+D'o\`u~:
+$$\Var[\that(X_1,\ldots,X_n)] = \frac{3\theta^2}{9n} = \frac{\theta^2}{3n}.$$
+
+On a bien $\displaystyle\lim_{n\to\infty}\frac{\theta^2}{3n} = 0$. L'estimateur est convergent. Comme il est sans biais, il est \textbf{absolument convergent}.
+
+\bigskip
+
+%--- EFFICACE ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur efficace.}
+
+\medskip
+
+$\that(X_1,\ldots,X_n)$ est efficace s'il est un estimateur sans biais poss\'edant une variance minimale. L'in\'egalit\'e de Fr\'echet-Rao-Cram\'er-Darmois (FRCD) indique que tout estimateur sans biais v\'erifie~:
+$$\Var(\that) \geq \frac{1}{I(\theta)}, \qquad\text{avec}\quad I(\theta) = -\E\left[\frac{\partial^2 \ln L(\cdot)}{\partial \theta^2}\right].$$
+
+D\'emontrons que $\Var(\that) = \dfrac{1}{I(\theta)}$. Nous avons d\'ej\`a trouv\'e~: $\Var\big(\that\big) = \dfrac{\theta^2}{3n}$.
+
+La d\'eriv\'ee seconde de la log-vraisemblance est~:
+$$\frac{\partial^2 \ln L(\cdot)}{\partial \theta^2} = \frac{3n}{\theta^2} - \frac{2\displaystyle\sum_{i=1}^{n}X_i}{\theta^3}.$$
+
+\begin{align*}
+I(\theta) &= -\E\left[\frac{3n}{\theta^2} - \frac{2\displaystyle\sum_{i=1}^{n}X_i}{\theta^3}\right] = -\frac{3n}{\theta^2} + \frac{2}{\theta^3}\sum_{i=1}^{n}\E(X_i) \imark{=} -\frac{3n}{\theta^2} + \frac{2}{\theta^3}\cdot n\cdot 3\theta = \frac{3n}{\theta^2}.
+\end{align*}
+
+En rassemblant~:
+$$\Var\big(\that(X_1,\ldots,X_n)\big) = \frac{\theta^2}{3n} = \frac{1}{I(\theta)}.$$
+
+Ainsi, l'estimateur $\that(X_1,\ldots,X_n)$ est \textbf{efficace}, car sa variance atteint la borne inf\'erieure de l'in\'egalit\'e de FRCD.
+
+\bigskip
+
+%--- EXHAUSTIF ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur exhaustif.}
+
+\medskip
+
+Un estimateur est exhaustif (suffisant) s'il synth\'etise ou r\'esume la totalit\'e de l'information relative au param\`etre de la loi de probabilit\'e disponible sur l'\'echantillon. On d\'ecompose dans un premier temps la densit\'e individuelle~:
+$$\exp[\ln f(x_i;\theta)] = \exp\big[\alpha(x_i)\,A(\theta) + \beta(x_i) + B(\theta) + C\big].$$
+
+On a~:
+\begin{align*}
+\ln f(x_i;\theta) &= 2\ln x_i - \ln 2 - 3\ln\theta - \frac{x_i}{\theta}\\[4pt]
+&= x_i\cdot\left(-\frac{1}{\theta}\right) + 2\ln x_i + (-3\ln\theta) + (-\ln 2).
+\end{align*}
+
+Par identification~:
+$$\alpha(x_i) = x_i \;;\quad A(\theta) = -\frac{1}{\theta} \;;\quad \beta(x_i) = 2\ln x_i \;;\quad B(\theta) = -3\ln\theta \;;\quad C = -\ln 2.$$
+
+Dans un second temps, \`a partir de cette d\'ecomposition, on cherche la famille des estimateurs exhaustifs, qui s'\'ecrit~:
+$$\theta^* = c \times \frac{1}{n}\sum_{i=1}^{n}\alpha(X_i) = c\times\frac{1}{n}\sum_{i=1}^{n}X_i = c\,\bar{X},$$
+avec $c$ un r\'eel \`a d\'eterminer. Or notre EMV est $\that = \bar{X}/3$. En posant $c = 1/3$, on a $\that = \theta^*$. L'estimateur $\that(X_1,\ldots,X_n)$ appartient donc \`a la famille des estimateurs exhaustifs~: il est \textbf{exhaustif}.
+
+\bigskip
+
+\noindent\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+\textbf{Conclusion~:} L'estimateur $\that(X_1,\ldots,X_n) = \dfrac{\bar{X}}{3}$ est un estimateur \textbf{sans biais}, \textbf{absolument convergent}, \textbf{efficace} et \textbf{exhaustif}.}}
+
+\newpage
+
+%=============================================================================
+\section{Loi Gamma -- Densit\'e $f(x;\theta) = \dfrac{1}{\Gamma(k)}\left(\dfrac{k}{\theta}\right)^k x^{k-1}\,e^{-\frac{k}{\theta}x}$}
+%=============================================================================
+
+Soit $(x_1,\ldots,x_n)$ un \'echantillon al\'eatoire de taille $n$ provenant d'une variable al\'eatoire $X$ de densit\'e~:
+$$f(x;\theta) = \frac{1}{\Gamma(k)}\left(\frac{k}{\theta}\right)^k x^{k-1}\,e^{-\frac{k}{\theta}x}, \quad x \geq 0,\;k > 0,\;\theta > 0.$$
+
+On consid\`ere $k$ comme un param\`etre connu. Le seul param\`etre \`a estimer est $\theta$.
+
+%-------------------------------------------------------------
+\subsection{D\'eterminer par la m\'ethode du maximum de vraisemblance un estimateur $\that$ de $\theta$}
+%-------------------------------------------------------------
+
+L'EMV de $\theta$, seul param\`etre de la loi de $X$ \`a estimer, est bas\'e sur le principe suivant~: on cherche $\that$ de sorte \`a maximiser la fonction de vraisemblance, c'est-\`a-dire l'estimateur qui rend la probabilit\'e d'apparition de l'\'echantillon observ\'e \emph{a posteriori} maximale. La fonction de vraisemblance se construit par le produit des densit\'es de probabilit\'es~:
+$$L(x_1,\ldots,x_n;\theta) = \prod_{i=1}^{n}\frac{1}{\Gamma(k)}\left(\frac{k}{\theta}\right)^k x_i^{k-1}\,e^{-\frac{k}{\theta}x_i}.$$
+
+La fonction $\ln$ \'etant une fonction monotone strictement croissante et continue, maximiser $L$ revient \`a maximiser $\ln L$~: le maximum ne change pas d'abscisse. La fonction de Log-vraisemblance est~:
+\begin{align*}
+\ln L(x_1,\ldots,x_n;\theta) &= -n\ln\Gamma(k) + nk\ln k - nk\ln\theta + (k-1)\sum_{i=1}^{n}\ln x_i - \frac{k}{\theta}\sum_{i=1}^{n}x_i.
+\end{align*}
+
+On applique la condition de premier ordre~:
+$$\frac{\partial \ln L(\cdot)}{\partial \that} = -\frac{nk}{\that} + \frac{k\displaystyle\sum_{i=1}^{n}x_i}{\that^2} = 0 \quad\Longrightarrow\quad \sum_{i=1}^{n}x_i = n\that.$$
+
+La solution existe, donc l'estimateur s'\'ecrit~:
+$$\boxed{\that(x_1,\ldots,x_n) = \frac{\displaystyle\sum_{i=1}^{n}x_i}{n} = \bar{x}.}$$
+
+On admet que les conditions de second ordre sont v\'erifi\'ees (d\'eriv\'ee seconde n\'egative), nous sommes bien en pr\'esence d'un maximum. Sur l'\'echantillon th\'eorique~:
+$$\that(X_1,\ldots,X_n) = \frac{\displaystyle\sum_{i=1}^{n}X_i}{n} = \bar{X}.$$
+
+%-------------------------------------------------------------
+\subsection{D\'emontrer que l'estimateur est sans biais, convergent, efficace et exhaustif}
+%-------------------------------------------------------------
+
+On consid\`ere un \'echantillon th\'eorique al\'eatoire de taille $n$, $(X_1,\ldots,X_n)$, associ\'e \`a la densit\'e de probabilit\'e $f(x;\theta)$. Nous travaillons d\'esormais avec $(X_1,\ldots,X_n)$ et non plus avec $(x_1,\ldots,x_n)$ de mani\`ere \`a montrer que les propri\'et\'es de l'estimateur $\that(X_1,\ldots,X_n)$ sont valables quel que soit l'\'echantillon.
+
+\medskip
+
+\noindent\textbf{Hypoth\`ese~:} Les $X_i$ sont suppos\'es ind\'ependants et identiquement distribu\'es (i.i.d.). Cela implique que pour tout $i = 1,\ldots,n$ ; $X_i \equiv X$ donc~:
+$$\E(X_i) = \E(X),\quad \Var(X_i) = \Var(X),$$
+et $X_i$ et $X_j$ sont ind\'ependantes pour tout $i \neq j$.
+
+On rappelle les propri\'et\'es de la fonction Gamma~: $\Gamma(\alpha+1) = \alpha\,\Gamma(\alpha)$, d'o\`u $\dfrac{\Gamma(k+1)}{\Gamma(k)} = k$ et $\dfrac{\Gamma(k+2)}{\Gamma(k)} = k(k+1)$.
+
+\bigskip
+
+%--- SANS BIAIS ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur sans biais (ESB).}
+
+\medskip
+
+L'estimateur $\that$ est sans biais si son esp\'erance est \'egale \`a sa vraie valeur, c'est-\`a-dire si~:
+$$\E[\that(X_1,\ldots,X_n)] = \theta.$$
+
+On a~:
+$$\E[\that(X_1,\ldots,X_n)] = \E\left[\frac{1}{n}\sum_{i=1}^{n}X_i\right] = \frac{1}{n}\sum_{i=1}^{n}\E(X_i) \imark{=} \frac{1}{n}\cdot n\,\E(X) = \E(X).$$
+
+\noindent\underline{Calcul de $\E(X)$ par changement de variable~:}
+
+On pose $u = \dfrac{k}{\theta}\,x$, d'o\`u $x = \dfrac{\theta\,u}{k}$, $dx = \dfrac{\theta}{k}\,du$, $e^{-kx/\theta} = e^{-u}$. Bornes~: $x=0\Rightarrow u=0$ et $x\to+\infty\Rightarrow u\to+\infty$.
+
+\begin{align*}
+\E(X) &= \frac{1}{\Gamma(k)}\left(\frac{k}{\theta}\right)^k\int_0^{+\infty}x^k\,e^{-\frac{k}{\theta}x}\,dx = \frac{1}{\Gamma(k)}\left(\frac{k}{\theta}\right)^k \cdot \left(\frac{\theta}{k}\right)^{k+1}\int_0^{+\infty}u^{(k+1)-1}\,e^{-u}\,du\\[6pt]
+&= \frac{1}{\Gamma(k)}\cdot\frac{\theta}{k}\cdot\Gamma(k+1) = \frac{\theta}{k}\cdot\frac{k\,\Gamma(k)}{\Gamma(k)} = \theta.
+\end{align*}
+
+$$\boxed{\E(X) = \theta.}$$
+
+On conclut~: $\E[\that(X_1,\ldots,X_n)] = \E(X) = \theta$. Donc $\that(X_1,\ldots,X_n)$ est un ESB.
+
+\bigskip
+
+%--- CONVERGENT ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur convergent.}
+
+\medskip
+
+$\that(X_1,\ldots,X_n)$ est un estimateur convergent s'il converge en limite de probabilit\'e vers sa vraie valeur~:
+$$\forall\,\varepsilon > 0,\quad \lim_{n\to\infty} P\big(|\that - \theta| > \varepsilon\big) = 0.$$
+
+Comme $\that$ est un ESB, montrer qu'il est convergent revient \`a montrer que lorsque la taille de l'\'echantillon augmente, la variance de l'estimateur tend vers 0, soit~:
+$$\lim_{n\to\infty} \Var\big(\that(X_1,\ldots,X_n)\big) = 0.$$
+
+On a~:
+$$\Var[\that(X_1,\ldots,X_n)] = \Var\left[\frac{1}{n}\sum_{i=1}^{n}X_i\right] = \frac{1}{n^2}\sum_{i=1}^{n}\Var(X_i) \imark{=} \frac{1}{n^2}\cdot n\,\Var(X) = \frac{\Var(X)}{n}.$$
+
+\noindent\underline{Calcul de $\Var(X)$~:} on a besoin de $\E(X^2)$.
+
+Avec le m\^eme changement de variable $u = kx/\theta$~:
+\begin{align*}
+\E(X^2) &= \frac{1}{\Gamma(k)}\left(\frac{k}{\theta}\right)^k \cdot \left(\frac{\theta}{k}\right)^{k+2}\,\Gamma(k+2) = \frac{\theta^2}{k^2}\cdot\frac{k(k+1)\,\Gamma(k)}{\Gamma(k)} = \frac{\theta^2(k+1)}{k}.
+\end{align*}
+
+$$\Var(X) = \E(X^2) - \big[\E(X)\big]^2 = \frac{\theta^2(k+1)}{k} - \theta^2 = \frac{\theta^2}{k}.$$
+
+D'o\`u~:
+$$\Var[\that(X_1,\ldots,X_n)] = \frac{\theta^2}{kn}.$$
+
+On a bien $\displaystyle\lim_{n\to\infty}\frac{\theta^2}{kn} = 0$. L'estimateur est convergent. Comme il est sans biais, il est \textbf{absolument convergent}.
+
+\bigskip
+
+%--- EFFICACE ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur efficace.}
+
+\medskip
+
+$\that(X_1,\ldots,X_n)$ est efficace s'il est un estimateur sans biais poss\'edant une variance minimale. L'in\'egalit\'e de FRCD indique que tout estimateur sans biais v\'erifie~:
+$$\Var(\that) \geq \frac{1}{I(\theta)}, \qquad\text{avec}\quad I(\theta) = -\E\left[\frac{\partial^2 \ln L(\cdot)}{\partial \theta^2}\right].$$
+
+D\'emontrons que $\Var(\that) = \dfrac{1}{I(\theta)}$. Nous avons d\'ej\`a trouv\'e~: $\Var\big(\that\big) = \dfrac{\theta^2}{kn}$.
+
+$$\frac{\partial^2 \ln L(\cdot)}{\partial \theta^2} = \frac{nk}{\theta^2} - \frac{2k\displaystyle\sum_{i=1}^{n}X_i}{\theta^3}.$$
+\begin{align*}
+I(\theta) &= -\E\left[\frac{nk}{\theta^2} - \frac{2k\displaystyle\sum_{i=1}^{n}X_i}{\theta^3}\right] = -\frac{nk}{\theta^2} + \frac{2k}{\theta^3}\sum_{i=1}^{n}\E(X_i) \imark{=} -\frac{nk}{\theta^2} + \frac{2k}{\theta^3}\cdot n\theta = \frac{nk}{\theta^2}.
+\end{align*}
+
+$$\Var\big(\that(X_1,\ldots,X_n)\big) = \frac{\theta^2}{kn} = \frac{1}{I(\theta)}.$$
+
+Ainsi, l'estimateur $\that(X_1,\ldots,X_n)$ est \textbf{efficace}.
+
+\bigskip
+
+%--- EXHAUSTIF ---
+\noindent$\bullet$ \textbf{$\that(X_1,\ldots,X_n)$ est un estimateur exhaustif.}
+
+\medskip
+
+Un estimateur est exhaustif (suffisant) s'il synth\'etise ou r\'esume la totalit\'e de l'information relative au param\`etre de la loi de probabilit\'e disponible sur l'\'echantillon. On d\'ecompose dans un premier temps la densit\'e individuelle~:
+$$\exp[\ln f(x_i;\theta)] = \exp\big[\alpha(x_i)\,A(\theta) + \beta(x_i) + B(\theta) + C\big].$$
+
+On a (en rappelant que $k$ est un param\`etre connu, donc $\Gamma(k)$, $k^k$ et $\ln k$ sont des constantes)~:
+\begin{align*}
+\ln f(x_i;\theta) &= -\ln\Gamma(k) + k\ln k - k\ln\theta + (k-1)\ln x_i - \frac{k}{\theta}\,x_i\\[4pt]
+&= x_i\cdot\left(-\frac{k}{\theta}\right) + (k-1)\ln x_i + (-k\ln\theta) + (-\ln\Gamma(k) + k\ln k).
+\end{align*}
+
+Par identification~:
+$$\alpha(x_i) = x_i \;;\quad A(\theta) = -\frac{k}{\theta} \;;\quad \beta(x_i) = (k-1)\ln x_i \;;\quad B(\theta) = -k\ln\theta \;;\quad C = -\ln\Gamma(k) + k\ln k.$$
+
+Dans un second temps, \`a partir de cette d\'ecomposition, on cherche la famille des estimateurs exhaustifs, qui s'\'ecrit~:
+$$\theta^* = c \times \frac{1}{n}\sum_{i=1}^{n}\alpha(X_i) = c\times\frac{1}{n}\sum_{i=1}^{n}X_i = c\,\bar{X},$$
+avec $c$ un r\'eel \`a d\'eterminer. Or notre EMV est $\that = \bar{X}$. En posant $c = 1$, on a $\that = \theta^*$. L'estimateur $\that(X_1,\ldots,X_n)$ appartient donc \`a la famille des estimateurs exhaustifs~: il est \textbf{exhaustif}.
+
+\bigskip
+
+\noindent\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+\textbf{Conclusion~:} L'estimateur $\that(X_1,\ldots,X_n) = \bar{X}$ est un estimateur \textbf{sans biais}, \textbf{absolument convergent}, \textbf{efficace} et \textbf{exhaustif}.}}
+
+\newpage
+
+%=============================================================================
+\section{Loi de Poisson -- Distributeur de billets}
+%=============================================================================
+
+Une \'etude est effectu\'ee dans un quartier peu bancaris\'e de la ville de Marseille afin d'analyser l'affluence des clients \`a un distributeur de billets entre 10h et 18h.
+
+\begin{center}
+\begin{tabular}{cc}
+\toprule
+\textbf{Nombre d'individus / 30 min} & \textbf{Effectifs observ\'es}\\
+\midrule
+0 & 19\\
+1 & 30\\
+2 & 34\\
+3 & 24\\
+4 & 12\\
+5 & 4\\
+6 et plus & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%-------------------------------------------------------------
+\subsection{Quelle loi proposez-vous pour la variable $X$ ? Justifier}
+%-------------------------------------------------------------
+
+\begin{itemize}[nosep]
+\item \'Epreuve al\'eatoire~: \og observer le nombre d'individus se pr\'esentant au distributeur de billets sur un intervalle de 30 minutes \fg.
+\item La variable al\'eatoire $X$~: \og nombre d'individus se pr\'esentant au distributeur de billets sur un intervalle de 30 minutes \fg.
+\end{itemize}
+
+On v\'erifie les hypoth\`eses d'un processus de Poisson~:
+\begin{itemize}[nosep]
+\item \textbf{H1 (Ind\'ependance)~:} le nombre d'individus arrivant entre $t$ et $t+h$ est ind\'ependant de ceux arrivant entre $t+h$ et $t+h+h'$~: les arriv\'ees au distributeur n'influencent pas les suivantes.
+\item \textbf{H2 (Stationnarit\'e / fr\'equence proportionnelle)~:} le nombre moyen d'arriv\'ees est proportionnel \`a la dur\'ee d'observation~: sur chaque tranche de 30 min, on suppose un flux moyen $\lambda$ constant.
+\item \textbf{H3 (N\'egligeabilit\'e)~:} sur un intervalle tr\`es court, la probabilit\'e d'observer 2 arriv\'ees ou plus simultan\'ement est n\'egligeable~: les individus arrivent un par un.
+\end{itemize}
+
+La variable al\'eatoire $X$ suit donc une \textbf{loi de Poisson} de param\`etre $\lambda > 0$~:
+$$X \sim \mathcal{P}(\lambda), \quad \text{avec} \quad P(X = k) = \frac{e^{-\lambda}\,\lambda^k}{k!}, \quad k \in \mathbb{N}.$$
+
+On rappelle que pour une loi de Poisson~: $\E(X) = \lambda$ et $\Var(X) = \lambda$.
+
+%-------------------------------------------------------------
+\subsection{D\'eterminer le(s) estimateur(s) du (ou des) param\`etre(s) de la loi de $X$}
+%-------------------------------------------------------------
+
+L'EMV de $\lambda$, seul param\`etre de la loi de $X$ \`a estimer, est bas\'e sur le principe suivant~: on cherche $\hat{\lambda}$ de sorte \`a maximiser la fonction de vraisemblance, c'est-\`a-dire l'estimateur qui rend la probabilit\'e d'apparition de l'\'echantillon observ\'e \emph{a posteriori} maximale. La fonction de vraisemblance se construit par le produit des probabilit\'es individuelles (cas discret)~:
+$$L(x_1,\ldots,x_n;\lambda) = P(X=x_1)\times\cdots\times P(X=x_n) = \prod_{i=1}^{n}\frac{e^{-\lambda}\,\lambda^{x_i}}{x_i!}.$$
+
+La fonction $\ln$ \'etant une fonction monotone strictement croissante et continue, maximiser $L$ revient \`a maximiser $\ln L$~: le maximum ne change pas d'abscisse. La fonction de Log-vraisemblance est~:
+\begin{align*}
+\ln L(x_1,\ldots,x_n;\lambda) &= \sum_{i=1}^{n}\Big[-\lambda + x_i\,\ln(\lambda) - \ln(x_i!)\Big]\\[4pt]
+&= -n\lambda + \left(\sum_{i=1}^{n}x_i\right)\ln(\lambda) - \sum_{i=1}^{n}\ln(x_i!).
+\end{align*}
+
+On applique la condition de premier ordre~:
+$$\frac{\partial \ln L(\cdot)}{\partial \hat{\lambda}} = -n + \frac{\displaystyle\sum_{i=1}^{n}x_i}{\hat{\lambda}} = 0.$$
+
+D'o\`u~:
+$$\boxed{\hat{\lambda}(x_1,\ldots,x_n) = \frac{\displaystyle\sum_{i=1}^{n}x_i}{n} = \bar{x}.}$$
+
+On admet que les conditions de second ordre sont v\'erifi\'ees (d\'eriv\'ee seconde n\'egative), nous sommes bien en pr\'esence d'un maximum. Sur l'\'echantillon th\'eorique~:
+$$\hat{\lambda}(X_1,\ldots,X_n) = \frac{\displaystyle\sum_{i=1}^{n}X_i}{n} = \bar{X}.$$
+
+%-------------------------------------------------------------
+\subsection{D\'emontrer les propri\'et\'es de cet estimateur}
+%-------------------------------------------------------------
+
+On consid\`ere un \'echantillon th\'eorique al\'eatoire de taille $n$, $(X_1,\ldots,X_n)$, associ\'e \`a la loi de probabilit\'e $P(X=k;\lambda)$. Nous travaillons d\'esormais avec $(X_1,\ldots,X_n)$ et non plus avec $(x_1,\ldots,x_n)$ de mani\`ere \`a montrer que les propri\'et\'es de l'estimateur $\hat{\lambda}(X_1,\ldots,X_n)$ sont valables quel que soit l'\'echantillon.
+
+\medskip
+
+\noindent\textbf{Hypoth\`ese~:} Les $X_i$ sont suppos\'es ind\'ependants et identiquement distribu\'es (i.i.d.) avec $X_i \equiv X \sim \mathcal{P}(\lambda)$. Cela implique~:
+$$\E(X_i) = \E(X) = \lambda \quad \text{et} \quad \Var(X_i) = \Var(X) = \lambda.$$
+
+\noindent\textit{Remarque~:} la loi de Poisson \'etant discr\`ete, les moments $\E(X) = \lambda$ et $\Var(X) = \lambda$ se d\'emontrent directement par s\'erie sans recours \`a la fonction Gamma (contrairement aux exercices 1, 2 et 3). On les rappelle comme r\'esultats connus du cours.
+
+\bigskip
+
+%--- SANS BIAIS ---
+\noindent$\bullet$ \textbf{$\hat{\lambda}(X_1,\ldots,X_n)$ est un estimateur sans biais (ESB).}
+
+\medskip
+
+L'estimateur $\hat{\lambda}$ est sans biais si son esp\'erance est \'egale \`a sa vraie valeur, c'est-\`a-dire si~:
+$$\E[\hat{\lambda}(X_1,\ldots,X_n)] = \lambda.$$
+
+On a~:
+$$\E[\hat{\lambda}(X_1,\ldots,X_n)] = \E\left[\frac{1}{n}\sum_{i=1}^{n}X_i\right] = \frac{1}{n}\sum_{i=1}^{n}\E(X_i) \imark{=} \frac{1}{n}\cdot n\,\E(X) = \lambda.$$
+
+Donc $\hat{\lambda}(X_1,\ldots,X_n)$ est un ESB.
+
+\bigskip
+
+%--- CONVERGENT ---
+\noindent$\bullet$ \textbf{$\hat{\lambda}(X_1,\ldots,X_n)$ est un estimateur convergent.}
+
+\medskip
+
+$\hat{\lambda}(X_1,\ldots,X_n)$ est un estimateur convergent s'il converge en limite de probabilit\'e vers sa vraie valeur~:
+$$\forall\,\varepsilon > 0,\quad \lim_{n\to\infty} P\big(|\hat{\lambda} - \lambda| > \varepsilon\big) = 0.$$
+
+Comme $\hat{\lambda}$ est un ESB, montrer qu'il est convergent revient \`a montrer que lorsque la taille de l'\'echantillon augmente, la variance de l'estimateur tend vers 0, soit~:
+$$\lim_{n\to\infty} \Var\big(\hat{\lambda}(X_1,\ldots,X_n)\big) = 0.$$
+
+On a~:
+$$\Var[\hat{\lambda}(X_1,\ldots,X_n)] = \frac{1}{n^2}\sum_{i=1}^{n}\Var(X_i) \imark{=} \frac{1}{n^2}\cdot n\,\Var(X) = \frac{\lambda}{n}.$$
+
+On a bien $\displaystyle\lim_{n\to\infty}\frac{\lambda}{n} = 0$. L'estimateur est convergent. Comme il est sans biais, il est \textbf{absolument convergent}.
+
+\bigskip
+
+%--- EFFICACE ---
+\noindent$\bullet$ \textbf{$\hat{\lambda}(X_1,\ldots,X_n)$ est un estimateur efficace.}
+
+\medskip
+
+$\hat{\lambda}(X_1,\ldots,X_n)$ est efficace s'il est un estimateur sans biais poss\'edant une variance minimale. L'in\'egalit\'e de FRCD indique que tout estimateur sans biais v\'erifie~:
+$$\Var(\hat{\lambda}) \geq \frac{1}{I(\lambda)}, \qquad\text{avec}\quad I(\lambda) = -\E\left[\frac{\partial^2 \ln L(\cdot)}{\partial \lambda^2}\right].$$
+
+D\'emontrons que $\Var(\hat{\lambda}) = \dfrac{1}{I(\lambda)}$. Nous avons d\'ej\`a trouv\'e~: $\Var\big(\hat{\lambda}\big) = \dfrac{\lambda}{n}$.
+
+\begin{align*}
+I(\lambda) &= -\E\left[-\frac{\displaystyle\sum_{i=1}^{n}X_i}{\lambda^2}\right] = \frac{1}{\lambda^2}\sum_{i=1}^{n}\E(X_i) \imark{=} \frac{n\lambda}{\lambda^2} = \frac{n}{\lambda}.
+\end{align*}
+
+$$\Var\big(\hat{\lambda}(X_1,\ldots,X_n)\big) = \frac{\lambda}{n} = \frac{1}{I(\lambda)}.$$
+
+Ainsi, l'estimateur $\hat{\lambda}(X_1,\ldots,X_n)$ est \textbf{efficace}.
+
+\bigskip
+
+%--- EXHAUSTIF ---
+\noindent$\bullet$ \textbf{$\hat{\lambda}(X_1,\ldots,X_n)$ est un estimateur exhaustif.}
+
+\medskip
+
+Un estimateur est exhaustif (suffisant) s'il synth\'etise ou r\'esume la totalit\'e de l'information relative au param\`etre de la loi de probabilit\'e disponible sur l'\'echantillon. On d\'ecompose dans un premier temps la probabilit\'e individuelle~:
+$$\exp[\ln P(X = x_i)] = \exp\big[\alpha(x_i)\,A(\lambda) + \beta(x_i) + B(\lambda) + C\big].$$
+
+On a~:
+\begin{align*}
+\ln P(X = x_i) &= -\lambda + x_i\,\ln(\lambda) - \ln(x_i!)\\[4pt]
+&= x_i\cdot\ln(\lambda) + \big(-\ln(x_i!)\big) + (-\lambda) + 0.
+\end{align*}
+
+Par identification~:
+$$\alpha(x_i) = x_i \;;\quad A(\lambda) = \ln(\lambda) \;;\quad \beta(x_i) = -\ln(x_i!) \;;\quad B(\lambda) = -\lambda \;;\quad C = 0.$$
+
+Dans un second temps, \`a partir de cette d\'ecomposition, on cherche la famille des estimateurs exhaustifs, qui s'\'ecrit~:
+$$\lambda^* = c \times \frac{1}{n}\sum_{i=1}^{n}\alpha(X_i) = c\times\frac{1}{n}\sum_{i=1}^{n}X_i = c\,\bar{X},$$
+avec $c$ un r\'eel \`a d\'eterminer. Or notre EMV est $\hat{\lambda} = \bar{X}$. En posant $c = 1$, on a $\hat{\lambda} = \lambda^*$. L'estimateur $\hat{\lambda}(X_1,\ldots,X_n)$ appartient donc \`a la famille des estimateurs exhaustifs~: il est \textbf{exhaustif}.
+
+\bigskip
+
+\noindent\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+\textbf{Conclusion~:} L'estimateur $\hat{\lambda}(X_1,\ldots,X_n) = \bar{X}$ est un estimateur \textbf{sans biais}, \textbf{absolument convergent}, \textbf{efficace} et \textbf{exhaustif}.}}
+
+\newpage
+
+%=============================================================================
+\section{Loi Normale -- Poids des pots de Nutella}
+%=============================================================================
+
+Le poids affich\'e sur les pots commercialis\'es est de 220~g. Un \'echantillon de 500 pots est \'etudi\'e.
+
+\begin{center}
+\begin{tabular}{cc}
+\toprule
+\textbf{Poids r\'eel (en g)} & \textbf{Nombre de pots}\\
+\midrule
+$[214\text{--}216[$ & 10\\
+$[216\text{--}218[$ & 75\\
+$[218\text{--}220[$ & 110\\
+$[220\text{--}222[$ & 200\\
+$[222\text{--}224[$ & 85\\
+$[224\text{--}226[$ & 20\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%-------------------------------------------------------------
+\subsection{Quelle est la loi suivie par la variable $Z$ \og poids r\'eel des pots \fg\,?}
+%-------------------------------------------------------------
+
+\begin{itemize}[nosep]
+\item \'Epreuve al\'eatoire~: \og prendre un pot au hasard dans la production de la machine \fg.
+\item La variable al\'eatoire $Z$~: \og poids r\'eel du pot (en grammes) \fg.
+\end{itemize}
+
+On observe que~:
+\begin{itemize}[nosep]
+\item \textbf{TCL (argument principal)~:} la variable est continue et r\'esulte de la somme de nombreux petits al\'eas ind\'ependants li\'es au processus de fabrication (dosage, temp\'erature, calibrage\ldots)~; par le th\'eor\`eme central limite, la somme tend vers une loi normale.
+\item \textbf{Sym\'etrie~:} la distribution des poids est approximativement sym\'etrique autour d'une valeur centrale ($\approx 220$~g).
+\item \textbf{Concentration~:} les valeurs sont concentr\'ees autour de la moyenne avec une dispersion mod\'er\'ee.
+\end{itemize}
+
+La variable al\'eatoire $Z$ suit donc une \textbf{loi normale} de param\`etres $m$ (moyenne) et $\sigma$ (\'ecart-type)~:
+$$Z \sim \mathcal{N}(m;\sigma), \quad \text{avec} \quad f(z) = \frac{1}{\sigma\sqrt{2\pi}}\exp\left(-\frac{1}{2}\left(\frac{z-m}{\sigma}\right)^2\right).$$
+
+On rappelle que~: $\E(Z) = m$ et $\Var(Z) = \sigma^2$.
+
+%-------------------------------------------------------------
+\subsection{D\'eterminer le(s) estimateur(s) du maximum de vraisemblance}
+%-------------------------------------------------------------
+
+Les EMV de $m$ et $\sigma$, seuls param\`etres de la loi de $Z$ \`a estimer, sont bas\'es sur le principe suivant~: on cherche $\mhat$ et $\shat$ de sorte \`a maximiser la fonction de vraisemblance, c'est-\`a-dire les estimateurs qui rendent la probabilit\'e d'apparition de l'\'echantillon observ\'e \emph{a posteriori} maximale. La fonction de vraisemblance est~:
+$$L(z_1,\ldots,z_n;m;\sigma) = \left(\frac{1}{\sigma\sqrt{2\pi}}\right)^n\exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(z_i - m)^2\right).$$
+
+La fonction $\ln$ \'etant une fonction monotone strictement croissante et continue, maximiser $L$ revient \`a maximiser $\ln L$~: le maximum ne change pas d'abscisse. La Log-vraisemblance est~:
+$$\ln L(z_1,\ldots,z_n;m;\sigma) = -n\ln\sigma - \frac{n}{2}\ln(2\pi) - \frac{1}{2\sigma^2}\sum_{i=1}^{n}(z_i - m)^2.$$
+
+\medskip
+
+\noindent\textbf{EMV de $m$~:}
+
+On applique la condition de premier ordre par rapport \`a $m$~:
+$$\frac{\partial \ln L(\cdot)}{\partial \mhat} = \frac{1}{\sigma^2}\sum_{i=1}^{n}(z_i - \mhat) = 0 \quad\Longrightarrow\quad \sum_{i=1}^{n}z_i - n\mhat = 0.$$
+
+$$\boxed{\mhat(z_1,\ldots,z_n) = \frac{\displaystyle\sum_{i=1}^{n}z_i}{n} = \bar{z}.}$$
+
+\noindent\textbf{EMV de $\sigma^2$~:}
+
+On applique la condition de premier ordre par rapport \`a $\sigma$~:
+$$\frac{\partial \ln L(\cdot)}{\partial \shat} = -\frac{n}{\shat} + \frac{1}{\shat^3}\sum_{i=1}^{n}(z_i - \mhat)^2 = 0 \quad\Longrightarrow\quad n\shat^2 = \sum_{i=1}^{n}(z_i - \mhat)^2.$$
+
+En rempla\c{c}ant $\mhat$ par $\bar{z}$~:
+$$\boxed{\shat^2(z_1,\ldots,z_n) = S^2 = \frac{1}{n}\sum_{i=1}^{n}(z_i - \bar{z})^2.}$$
+
+\textit{Remarque~:} Cet exercice illustre deux points importants~: (i) le maximum de vraisemblance peut permettre de trouver plus d'un EMV~; (ii) il est possible qu'un EMV ne remplisse pas la condition minimale \og sans biais \fg.
+
+\medskip
+
+Sur l'\'echantillon th\'eorique~:
+$$\mhat(Z_1,\ldots,Z_n) = \bar{Z}, \qquad \shat^2(Z_1,\ldots,Z_n) = S^2 = \frac{1}{n}\sum_{i=1}^{n}(Z_i - \bar{Z})^2.$$
+
+%-------------------------------------------------------------
+\subsection{D\'emontrez les propri\'et\'es des estimateurs}
+%-------------------------------------------------------------
+
+On consid\`ere un \'echantillon th\'eorique al\'eatoire de taille $n$, $(Z_1,\ldots,Z_n)$, associ\'e \`a la densit\'e de probabilit\'e $f(z;m,\sigma)$. Nous travaillons d\'esormais avec $(Z_1,\ldots,Z_n)$ et non plus avec $(z_1,\ldots,z_n)$ de mani\`ere \`a montrer que les propri\'et\'es des estimateurs sont valables quel que soit l'\'echantillon.
+
+\medskip
+
+\noindent\textbf{Hypoth\`ese~:} Les $Z_i$ sont suppos\'es ind\'ependants et identiquement distribu\'es (i.i.d.) avec $Z_i \equiv Z \sim \mathcal{N}(m;\sigma)$. Cela implique~:
+$$\E(Z_i) = \E(Z) = m \quad \text{et} \quad \Var(Z_i) = \Var(Z) = \sigma^2.$$
+
+\noindent\textit{Remarque~:} les moments de la loi normale sont des r\'esultats connus du cours ($\E(Z) = m$, $\Var(Z) = \sigma^2$). Le calcul direct par int\'egrale ne n\'ecessite pas la fonction Gamma ici (contrairement aux exercices 1, 2, 3) car la densit\'e gaussienne se traite par compl\'etion du carr\'e.
+
+\bigskip
+
+\noindent\underline{\textbf{Propri\'et\'es de $\mhat(Z_1,\ldots,Z_n) = \bar{Z}$~:}}
+
+\bigskip
+
+%--- SANS BIAIS ---
+\noindent$\bullet$ \textbf{$\mhat(Z_1,\ldots,Z_n)$ est un estimateur sans biais (ESB).}
+
+\medskip
+
+L'estimateur $\mhat$ est sans biais si son esp\'erance est \'egale \`a sa vraie valeur, c'est-\`a-dire si~:
+$$\E[\mhat(Z_1,\ldots,Z_n)] = m.$$
+
+On a~:
+$$\E[\mhat(Z_1,\ldots,Z_n)] = \E\left[\frac{1}{n}\sum_{i=1}^{n}Z_i\right] = \frac{1}{n}\sum_{i=1}^{n}\E(Z_i) \imark{=} \frac{1}{n}\cdot n\,\E(Z) = m.$$
+
+Donc $\mhat(Z_1,\ldots,Z_n)$ est un ESB.
+
+\bigskip
+
+%--- CONVERGENT ---
+\noindent$\bullet$ \textbf{$\mhat(Z_1,\ldots,Z_n)$ est un estimateur convergent.}
+
+\medskip
+
+$\mhat(Z_1,\ldots,Z_n)$ est un estimateur convergent s'il converge en limite de probabilit\'e vers sa vraie valeur~:
+$$\forall\,\varepsilon > 0,\quad \lim_{n\to\infty} P\big(|\mhat - m| > \varepsilon\big) = 0.$$
+
+Comme $\mhat$ est un ESB, montrer qu'il est convergent revient \`a montrer que lorsque la taille de l'\'echantillon augmente, la variance de l'estimateur tend vers 0, soit~:
+$$\lim_{n\to\infty} \Var\big(\mhat(Z_1,\ldots,Z_n)\big) = 0.$$
+
+On a~:
+$$\Var[\mhat(Z_1,\ldots,Z_n)] = \frac{1}{n^2}\sum_{i=1}^{n}\Var(Z_i) \imark{=} \frac{1}{n^2}\cdot n\,\Var(Z) = \frac{\sigma^2}{n}.$$
+
+On a bien $\displaystyle\lim_{n\to\infty}\frac{\sigma^2}{n} = 0$. L'estimateur est \textbf{absolument convergent} (sans biais et convergent).
+
+\bigskip
+
+%--- EFFICACE ---
+\noindent$\bullet$ \textbf{$\mhat(Z_1,\ldots,Z_n)$ est un estimateur efficace.}
+
+\medskip
+
+$\mhat(Z_1,\ldots,Z_n)$ est efficace s'il est un estimateur sans biais poss\'edant une variance minimale. L'in\'egalit\'e de FRCD indique que tout estimateur sans biais v\'erifie~:
+$$\Var(\mhat) \geq \frac{1}{I(m)}, \qquad\text{avec}\quad I(m) = -\E\left[\frac{\partial^2 \ln L(\cdot)}{\partial m^2}\right].$$
+
+D\'emontrons que $\Var(\mhat) = \dfrac{1}{I(m)}$. Nous avons d\'ej\`a trouv\'e~: $\Var\big(\mhat\big) = \dfrac{\sigma^2}{n}$.
+
+La d\'eriv\'ee seconde de la log-vraisemblance par rapport \`a $m$ est~:
+$$\frac{\partial^2 \ln L(\cdot)}{\partial m^2} = -\frac{n}{\sigma^2}.$$
+
+$$I(m) = -\E\left[-\frac{n}{\sigma^2}\right] = \frac{n}{\sigma^2}.$$
+
+$$\Var\big(\mhat(Z_1,\ldots,Z_n)\big) = \frac{\sigma^2}{n} = \frac{1}{I(m)}.$$
+
+Ainsi, l'estimateur $\mhat(Z_1,\ldots,Z_n)$ est \textbf{efficace}.
+
+\bigskip
+
+%--- EXHAUSTIF ---
+\noindent$\bullet$ \textbf{$\mhat(Z_1,\ldots,Z_n)$ est un estimateur exhaustif.}
+
+\medskip
+
+$\mhat(Z_1,\ldots,Z_n)$ est exhaustif s'il synth\'etise ou r\'esume la totalit\'e de l'information relative au param\`etre de la loi de probabilit\'e disponible sur l'\'echantillon. On d\'ecompose dans un premier temps la densit\'e individuelle (pour $\sigma$ fix\'e)~:
+$$\exp[\ln f(z_i;m)] = \exp\big[\alpha(z_i)\,A(m) + \beta(z_i) + B(m) + C\big].$$
+
+On a~:
+\begin{align*}
+\ln f(z_i;m) &= -\ln(\sigma\sqrt{2\pi}) - \frac{(z_i - m)^2}{2\sigma^2} = -\ln(\sigma\sqrt{2\pi}) - \frac{z_i^2}{2\sigma^2} + \frac{m\,z_i}{\sigma^2} - \frac{m^2}{2\sigma^2}\\[4pt]
+&= z_i\cdot\frac{m}{\sigma^2} + \left(-\frac{z_i^2}{2\sigma^2}\right) + \left(-\frac{m^2}{2\sigma^2}\right) + \big(-\ln(\sigma\sqrt{2\pi})\big).
+\end{align*}
+
+Par identification~:
+$$\alpha(z_i) = z_i \;;\quad A(m) = \frac{m}{\sigma^2} \;;\quad \beta(z_i) = -\frac{z_i^2}{2\sigma^2} \;;\quad B(m) = -\frac{m^2}{2\sigma^2} \;;\quad C = -\ln(\sigma\sqrt{2\pi}).$$
+
+Dans un second temps, \`a partir de cette d\'ecomposition, on cherche la famille des estimateurs exhaustifs, qui s'\'ecrit~:
+$$m^* = c \times \frac{1}{n}\sum_{i=1}^{n}\alpha(Z_i) = c\times\frac{1}{n}\sum_{i=1}^{n}Z_i = c\,\bar{Z},$$
+avec $c$ un r\'eel \`a d\'eterminer. Or notre EMV est $\mhat = \bar{Z}$. En posant $c = 1$, on a $\mhat = m^*$. L'estimateur $\mhat(Z_1,\ldots,Z_n)$ appartient donc \`a la famille des estimateurs exhaustifs~: il est \textbf{exhaustif}.
+
+\bigskip
+
+\noindent\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+\textbf{Conclusion sur $\mhat$~:} L'estimateur $\mhat(Z_1,\ldots,Z_n) = \bar{Z}$ est un estimateur \textbf{sans biais}, \textbf{absolument convergent}, \textbf{efficace} et \textbf{exhaustif}.}}
+
+\bigskip\bigskip
+
+\noindent\underline{\textbf{Propri\'et\'es de $\shat^2(Z_1,\ldots,Z_n) = S^2$~:}}
+
+\bigskip
+
+\noindent$\bullet$ \textbf{$\shat^2 = S^2$ est un estimateur biais\'e.}
+
+\medskip
+
+D\'emontrons que $\E(S^2) \neq \sigma^2$. Rappelons que~:
+$$S^2 = \frac{1}{n}\sum_{i=1}^{n}(Z_i - \bar{Z})^2.$$
+
+\medskip
+
+\noindent\underline{\'Etape 1~: D\'ecomposition alg\'ebrique de $\sum(Z_i - \bar{Z})^2$.}
+
+\medskip
+
+L'astuce consiste \`a introduire la vraie moyenne $m$ (inconnue) en ajoutant et soustrayant $m$~:
+$$(Z_i - \bar{Z}) = (Z_i - m) - (\bar{Z} - m).$$
+
+On \'el\`eve au carr\'e et on somme~:
+\begin{align*}
+\sum_{i=1}^{n}(Z_i - \bar{Z})^2 &= \sum_{i=1}^{n}\big[(Z_i - m) - (\bar{Z} - m)\big]^2\\[6pt]
+&= \sum_{i=1}^{n}\Big[(Z_i - m)^2 - 2(Z_i - m)(\bar{Z} - m) + (\bar{Z} - m)^2\Big]\\[6pt]
+&= \sum_{i=1}^{n}(Z_i - m)^2 - 2(\bar{Z} - m)\underbrace{\sum_{i=1}^{n}(Z_i - m)}_{= n(\bar{Z} - m)} + n(\bar{Z} - m)^2\\[6pt]
+&= \sum_{i=1}^{n}(Z_i - m)^2 - 2n(\bar{Z} - m)^2 + n(\bar{Z} - m)^2.
+\end{align*}
+
+D'o\`u la \textbf{d\'ecomposition fondamentale}~:
+$$\boxed{\sum_{i=1}^{n}(Z_i - \bar{Z})^2 = \sum_{i=1}^{n}(Z_i - m)^2 - n(\bar{Z} - m)^2.}$$
+
+\textit{Remarque~:} on a utilis\'e le fait que $\sum_{i=1}^{n}(Z_i - m) = \sum_{i=1}^{n}Z_i - nm = n\bar{Z} - nm = n(\bar{Z} - m)$.
+
+\medskip
+
+\noindent\underline{\'Etape 2~: Calcul de $\E\!\left[\sum(Z_i - m)^2\right]$.}
+
+\medskip
+
+Comme les $Z_i$ sont i.i.d. avec $\Var(Z_i) = \sigma^2$, on a $\E\!\left[(Z_i - m)^2\right] = \Var(Z_i) = \sigma^2$ pour tout $i$. Par lin\'earit\'e de l'esp\'erance~:
+$$\E\!\left[\sum_{i=1}^{n}(Z_i - m)^2\right] = \sum_{i=1}^{n}\E\!\left[(Z_i - m)^2\right] \imark{=} n\sigma^2.$$
+
+\medskip
+
+\noindent\underline{\'Etape 3~: Calcul de $\E\!\left[n(\bar{Z} - m)^2\right]$.}
+
+\medskip
+
+On reconna\^it que $(\bar{Z} - m)^2 = (\bar{Z} - \E(\bar{Z}))^2$ puisque $\E(\bar{Z}) = m$. Donc~:
+$$\E\!\left[(\bar{Z} - m)^2\right] = \Var(\bar{Z}) = \frac{\sigma^2}{n}.$$
+
+D'o\`u~: $\E\!\left[n(\bar{Z} - m)^2\right] = n \cdot \dfrac{\sigma^2}{n} = \sigma^2$.
+
+\medskip
+
+\noindent\underline{\'Etape 4~: Calcul de $\E(S^2)$.}
+
+\medskip
+
+En prenant l'esp\'erance de la d\'ecomposition fondamentale~:
+\begin{align*}
+\E\!\left[\sum_{i=1}^{n}(Z_i - \bar{Z})^2\right] &= \E\!\left[\sum_{i=1}^{n}(Z_i - m)^2\right] - \E\!\left[n(\bar{Z} - m)^2\right] = n\sigma^2 - \sigma^2 = (n-1)\sigma^2.
+\end{align*}
+
+Donc~:
+$$\E(S^2) = \E\!\left[\frac{1}{n}\sum_{i=1}^{n}(Z_i - \bar{Z})^2\right] = \frac{(n-1)\sigma^2}{n} = \sigma^2\cdot\frac{n-1}{n}.$$
+
+\medskip
+
+\noindent\underline{\'Etape 5~: Conclusion sur le biais.}
+
+\medskip
+
+$$\text{Biais}(S^2) = \E(S^2) - \sigma^2 = \sigma^2\cdot\frac{n-1}{n} - \sigma^2 = -\frac{\sigma^2}{n} \neq 0.$$
+
+L'estimateur $S^2$ \textbf{n'est pas sans biais}~: il sous-estime syst\'ematiquement la vraie variance $\sigma^2$.
+
+\bigskip
+
+\noindent\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+\textbf{Conclusion sur $\shat^2$~:} L'EMV $S^2 = \frac{1}{n}\sum(Z_i-\bar{Z})^2$ est \textbf{biais\'e}. Son biais vaut $-\sigma^2/n$~: il sous-estime syst\'ematiquement la vraie variance $\sigma^2$.}}
+
+%-------------------------------------------------------------
+\subsection{Application num\'erique}
+%-------------------------------------------------------------
+
+On utilise les centres de classes $z_j^*$ et les effectifs $n_j$~:
+
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+\textbf{Classe} & \textbf{Centre $z_j^*$} & \textbf{Effectif $n_j$} & $n_j \cdot z_j^*$\\
+\midrule
+$[214\text{--}216[$ & 215 & 10 & 2\,150\\
+$[216\text{--}218[$ & 217 & 75 & 16\,275\\
+$[218\text{--}220[$ & 219 & 110 & 24\,090\\
+$[220\text{--}222[$ & 221 & 200 & 44\,200\\
+$[222\text{--}224[$ & 223 & 85 & 18\,955\\
+$[224\text{--}226[$ & 225 & 20 & 4\,500\\
+\midrule
+\textbf{Total} & & $n = 500$ & $110\,170$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Estimation de $m$~:}
+$$\mhat = \bar{z} = \frac{\displaystyle\sum_{j=1}^{6}n_j\,z_j^*}{n} = \frac{110\,170}{500} = \boxed{220{,}34\text{ g}.}$$
+
+\medskip
+
+\noindent\textbf{Estimation de $\sigma^2$~:}
+
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+\textbf{Classe} & $z_j^*$ & $n_j$ & $(z_j^* - \bar{z})^2$ & $n_j(z_j^*-\bar{z})^2$\\
+\midrule
+$[214\text{--}216[$ & 215 & 10 & $(-5{,}34)^2 = 28{,}5156$ & 285{,}156\\
+$[216\text{--}218[$ & 217 & 75 & $(-3{,}34)^2 = 11{,}1556$ & 836{,}670\\
+$[218\text{--}220[$ & 219 & 110 & $(-1{,}34)^2 = 1{,}7956$ & 197{,}516\\
+$[220\text{--}222[$ & 221 & 200 & $(0{,}66)^2 = 0{,}4356$ & 87{,}120\\
+$[222\text{--}224[$ & 223 & 85 & $(2{,}66)^2 = 7{,}0756$ & 601{,}426\\
+$[224\text{--}226[$ & 225 & 20 & $(4{,}66)^2 = 21{,}7156$ & 434{,}312\\
+\midrule
+& & & \textbf{Total} & $2\,442{,}200$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+La variance empirique (EMV, biais\'ee) est~:
+$$\shat^2 = S^2 = \frac{1}{n}\sum_{j=1}^{6}n_j(z_j^* - \bar{z})^2 = \frac{2\,442{,}200}{500} = \boxed{4{,}8844\text{ g}^2.}$$
+
+L'\'ecart-type estim\'e est~:
+$$\shat = \sqrt{S^2} \approx \sqrt{4{,}8844} \approx \boxed{2{,}21\text{ g}.}$$
+
+\bigskip
+
+\noindent\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+\textbf{R\'ecapitulatif des estimations~:}\\[4pt]
+$\mhat = \bar{z} = 220{,}34$ g \quad;\quad $\shat^2 = S^2 = 4{,}88$ g$^2$ (biais\'ee) \quad;\quad $\shat \approx 2{,}21$ g.}}
+
+\end{document}

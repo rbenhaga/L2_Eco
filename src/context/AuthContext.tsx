@@ -14,6 +14,7 @@ import firebaseConfig from '../config/firebase.config';
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
+const OWNER_PREMIUM_EMAIL = 'rayanebenhaga@gmail.com';
 
 // Initialize Analytics (only in browser and if supported)
 isSupported().then((supported) => {
@@ -102,25 +103,33 @@ export function AuthProvider({ children }: AuthProviderProps) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             if (firebaseUser) {
+                const isOwnerPremium =
+                    (firebaseUser.email || '').toLowerCase() === OWNER_PREMIUM_EMAIL;
+
                 // Initialize with basic info and free tier
                 const basicUser: User = {
                     uid: firebaseUser.uid,
                     email: firebaseUser.email,
                     displayName: firebaseUser.displayName,
                     photoURL: firebaseUser.photoURL,
-                    subscriptionTier: 'free',
+                    subscriptionTier: isOwnerPremium ? 'premium' : 'free',
                     subscriptionExpiry: null,
                 };
                 setUser(basicUser);
 
                 // Fetch actual subscription from backend
                 try {
-                    const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/subscription/${firebaseUser.uid}`);
+                    const token = await firebaseUser.getIdToken();
+                    const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/subscription/${firebaseUser.uid}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
                     if (response.ok) {
                         const data = await response.json();
                         setUser(prev => prev ? ({
                             ...prev,
-                            subscriptionTier: data.tier,
+                            subscriptionTier: isOwnerPremium ? 'premium' : data.tier,
                             subscriptionExpiry: data.currentPeriodEnd ? new Date(data.currentPeriodEnd) : null,
                         }) : null);
                     }

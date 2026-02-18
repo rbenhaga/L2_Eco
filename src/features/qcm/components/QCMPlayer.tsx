@@ -1,12 +1,12 @@
 /**
  * QCMPlayer Component
  * Main orchestration component - the single entry point for all QCM instances
- * 
+ *
  * Usage:
  * ```tsx
  * import { QCMPlayer } from '@/features/qcm';
  * import qcmData from '../data/qcm.json';
- * 
+ *
  * function MyQCM() {
  *   return <QCMPlayer config={qcmData} />;
  * }
@@ -31,12 +31,14 @@ interface QCMPlayerProps {
     config: QCMConfig;
     subjectColor?: string;
     backLink?: string;
+    onQuizComplete?: (result: QuizResult) => void;
 }
 
 export function QCMPlayer({
     config,
-    subjectColor = '#3b82f6',
+    subjectColor = 'var(--color-info)',
     backLink,
+    onQuizComplete,
 }: QCMPlayerProps) {
     const [viewState, setViewState] = useState<ViewState>('selector');
     const [selectedChapterId, setSelectedChapterId] = useState<string | undefined>();
@@ -63,6 +65,7 @@ export function QCMPlayer({
         onComplete: (result) => {
             setQuizResult(result);
             setViewState('results');
+            onQuizComplete?.(result);
         },
     });
 
@@ -97,17 +100,21 @@ export function QCMPlayer({
                     {backLink && (
                         <Link
                             to={backLink}
-                            className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-6 no-underline text-sm transition-colors py-1 px-3 rounded-full bg-white/5 hover:bg-white/10"
+                            className="inline-flex items-center gap-2 mb-6 no-underline text-sm transition-colors py-1 px-3 rounded-full"
+                            style={{
+                                color: 'var(--color-text-muted)',
+                                background: 'color-mix(in srgb, var(--color-bg-raised) 5%, transparent)',
+                            }}
                         >
                             <ArrowLeft size={16} />
                             Retour au cours
                         </Link>
                     )}
-                    <h1 className="text-3xl sm:text-5xl font-bold text-white mb-4">
+                    <h1 className="text-3xl sm:text-5xl font-bold mb-4" style={{ color: 'var(--color-accent-foreground)' }}>
                         QCM <span style={{ color: subjectColor }}>{config.subject}</span>
                     </h1>
                     {config.description && (
-                        <p className="text-slate-400 text-lg max-w-2xl">{config.description}</p>
+                        <p className="text-lg max-w-2xl" style={{ color: 'var(--color-text-muted)' }}>{config.description}</p>
                     )}
                 </div>
 
@@ -127,7 +134,8 @@ export function QCMPlayer({
             <div className="max-w-3xl mx-auto px-4 py-8 pt-20 sm:pt-28">
                 <button
                     onClick={handleBackToSelector}
-                    className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-8 no-underline text-sm transition-colors"
+                    className="inline-flex items-center gap-2 mb-8 no-underline text-sm transition-colors"
+                    style={{ color: 'var(--color-text-muted)' }}
                 >
                     <Home size={16} />
                     Changer de chapitre
@@ -148,10 +156,11 @@ export function QCMPlayer({
     if (!currentQuestion) {
         return (
             <div className="max-w-3xl mx-auto px-4 py-8 pt-20 sm:pt-28 text-center">
-                <p className="text-slate-500">Aucune question disponible.</p>
+                <p style={{ color: 'var(--color-text-muted)' }}>Aucune question disponible.</p>
                 <button
                     onClick={handleBackToSelector}
-                    className="mt-4 text-white hover:underline"
+                    className="mt-4 hover:underline"
+                    style={{ color: 'var(--color-accent-foreground)' }}
                 >
                     Retour aux chapitres
                 </button>
@@ -162,18 +171,25 @@ export function QCMPlayer({
     return (
         <div className="max-w-3xl mx-auto px-4 py-8 pt-20 sm:pt-28 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Header with progress */}
-            <div className="mb-8 p-4 rounded-2xl bg-slate-900/40 backdrop-blur-md border border-white/5">
+            <div
+                className="mb-8 p-4 rounded-2xl backdrop-blur-md"
+                style={{
+                    background: 'color-mix(in srgb, var(--color-text-primary) 40%, transparent)',
+                    border: '1px solid color-mix(in srgb, var(--color-bg-raised) 5%, transparent)',
+                }}
+            >
                 <div className="flex items-center justify-between mb-4">
                     <button
                         onClick={handleBackToSelector}
-                        className="inline-flex items-center gap-2 text-slate-400 hover:text-white text-sm transition-colors"
+                        className="inline-flex items-center gap-2 text-sm transition-colors"
+                        style={{ color: 'var(--color-text-muted)' }}
                     >
                         <ArrowLeft size={16} />
                         <span className="hidden sm:inline">Chapitres</span>
                     </button>
 
-                    <div className="text-sm font-medium text-slate-400">
-                        Score: <span className="font-bold text-white ml-2 text-lg">{score}%</span>
+                    <div className="text-sm font-medium" style={{ color: 'var(--color-text-muted)' }}>
+                        Score: <span className="font-bold ml-2 text-lg" style={{ color: 'var(--color-accent-foreground)' }}>{score}%</span>
                     </div>
                 </div>
 
@@ -181,7 +197,7 @@ export function QCMPlayer({
                     value={progress}
                     size="sm"
                     variant="gradient"
-                    color={subjectColor} // Assuming Progress component accepts color style or prop
+                    color={subjectColor}
                 />
             </div>
 
@@ -203,7 +219,7 @@ export function QCMPlayer({
                         isRevealed={isAnswered}
                         disabled={isAnswered}
                         onSelect={selectAnswer}
-                        activeColor={subjectColor} // Pass color to option if needed
+                        activeColor={subjectColor}
                     />
                 ))}
             </QuestionCard>
@@ -225,21 +241,30 @@ export function QCMPlayer({
                     className={`
             flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold transition-all
             ${currentIndex === 0
-                            ? 'text-slate-600 cursor-not-allowed bg-white/5'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10 active:scale-[0.98] border border-white/5'
+                            ? 'cursor-not-allowed'
+                            : 'active:scale-[0.98]'
                         }
           `}
+                    style={currentIndex === 0
+                        ? { color: 'var(--color-text-muted)', background: 'color-mix(in srgb, var(--color-bg-raised) 5%, transparent)' }
+                        : { color: 'var(--color-text-secondary)', border: '1px solid color-mix(in srgb, var(--color-bg-raised) 5%, transparent)' }
+                    }
                 >
                     <ArrowLeft size={18} />
-                    <span className="hidden sm:inline">Précédent</span>
+                    <span className="hidden sm:inline">Precedent</span>
                 </button>
 
                 {isAnswered && (
                     <button
                         onClick={nextQuestion}
-                        className="flex items-center gap-2 px-8 py-3.5 bg-white text-slate-900 hover:bg-slate-200 font-bold rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-white/10"
+                        className="flex items-center gap-2 px-8 py-3.5 font-bold rounded-xl transition-all active:scale-[0.98]"
+                        style={{
+                            background: 'var(--color-bg-raised)',
+                            color: 'var(--color-text-primary)',
+                            boxShadow: 'var(--shadow-lg)',
+                        }}
                     >
-                        <span>{currentIndex + 1 >= questions.length ? 'Voir résultats' : 'Suivant'}</span>
+                        <span>{currentIndex + 1 >= questions.length ? 'Voir resultats' : 'Suivant'}</span>
                         <ArrowRight size={18} />
                     </button>
                 )}

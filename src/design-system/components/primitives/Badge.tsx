@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, CSSProperties } from 'react';
 import { LucideIcon } from 'lucide-react';
 
 export interface BadgeProps {
@@ -12,9 +12,34 @@ export interface BadgeProps {
 
 /**
  * Badge - Small status or category indicator
- * 
+ *
  * Used for chapter numbers, difficulty levels, content types, etc.
+ * Design Contract v3: No hardcoded Tailwind colors - uses CSS custom properties.
  */
+
+const variantStyles: Record<string, CSSProperties> = {
+    default: {
+        background: 'var(--color-bg-overlay)',
+        color: 'var(--color-text-secondary)',
+    },
+    success: {
+        background: 'var(--color-success-subtle)',
+        color: 'var(--color-success)',
+    },
+    warning: {
+        background: 'var(--color-warning-subtle)',
+        color: 'var(--color-warning)',
+    },
+    error: {
+        background: 'var(--color-error-subtle)',
+        color: 'var(--color-error)',
+    },
+    info: {
+        background: 'var(--color-info-subtle)',
+        color: 'var(--color-info)',
+    },
+};
+
 export function Badge({
     children,
     variant = 'default',
@@ -25,15 +50,6 @@ export function Badge({
 }: BadgeProps) {
 
     const baseClasses = 'inline-flex items-center gap-1.5 font-semibold rounded-full';
-
-    const variantClasses = {
-        default: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',
-        success: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
-        warning: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400',
-        error: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
-        info: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
-        subject: subjectColor || 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400'
-    };
 
     const sizeClasses = {
         sm: 'px-2 py-0.5 text-xs',
@@ -49,13 +65,25 @@ export function Badge({
 
     const combinedClasses = `
     ${baseClasses}
-    ${variantClasses[variant]}
     ${sizeClasses[size]}
     ${className}
   `.trim();
 
+    // Subject variant uses the provided subjectColor
+    const style: CSSProperties = variant === 'subject' && subjectColor
+        ? {
+            background: `color-mix(in srgb, ${subjectColor} 12%, transparent)`,
+            color: subjectColor,
+        }
+        : variant === 'subject'
+            ? {
+                background: 'var(--color-accent-subtle)',
+                color: 'var(--color-accent)',
+            }
+            : variantStyles[variant] || variantStyles.default;
+
     return (
-        <span className={combinedClasses}>
+        <span className={combinedClasses} style={style}>
             {Icon && <Icon size={iconSizes[size]} />}
             {children}
         </span>

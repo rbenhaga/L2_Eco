@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 interface ProtectedRouteProps {
@@ -6,27 +7,36 @@ interface ProtectedRouteProps {
 }
 
 /**
- * ProtectedRoute - Now just ensures AuthProvider is initialized
- * 
- * The site is accessible without login, but premium content is gated.
- * Content gating is handled by CourseLayout's paywall logic.
+ * ProtectedRoute - Requires authentication for protected app routes.
  */
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-    const { loading } = useAuth();
+    const { user, loading } = useAuth();
+    const location = useLocation();
 
     if (loading) {
         // Show loading spinner while checking auth status
         return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+            <div
+                className="min-h-screen flex items-center justify-center"
+                style={{ background: 'var(--color-canvas)' }}
+            >
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4" />
-                    <p className="text-slate-600">Chargement...</p>
+                    <div
+                        className="animate-spin rounded-full h-12 w-12 mx-auto mb-4"
+                        style={{
+                            border: '3px solid var(--color-border-default)',
+                            borderTopColor: 'var(--color-accent)',
+                        }}
+                    />
+                    <p style={{ color: 'var(--color-text-secondary)' }}>Chargement...</p>
                 </div>
             </div>
         );
     }
 
-    // Allow access for both authenticated and unauthenticated users
-    // Premium content gating is handled by CourseLayout
+    if (!user) {
+        return <Navigate to="/login" state={{ from: location }} replace />;
+    }
+
     return <>{children}</>;
 }

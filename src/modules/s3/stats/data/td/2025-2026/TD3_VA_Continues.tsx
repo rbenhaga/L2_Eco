@@ -36,14 +36,14 @@ export const TD3_2526: TDSheet = {
         <div className="space-y-3">
           <p><strong>1. Déterminer a:</strong></p>
           <M>{"\\int_{-e^{0.5}}^{-1} \\frac{a}{x} dx = a[\\ln|x|]_{-e^{0.5}}^{-1} = a(0 - 0.5) = 1"}</M>
-          <p className="text-emerald-700 font-semibold"><M>{"\\boxed{a = -2}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"\\boxed{a = -2}"}</M></p>
           
           <p><strong>2. Fonction de répartition:</strong></p>
           <M>{"F(x) = \\begin{cases} 0 & x < -e^{0.5} \\\\ 1 - 2\\ln|x| & -e^{0.5} \\leq x \\leq -1 \\\\ 1 & x > -1 \\end{cases}"}</M>
           
           <p><strong>3. E(X):</strong></p>
           <M>{"E(X) = \\int_{-e^{0.5}}^{-1} x \\cdot \\frac{-2}{x} dx = -2[x]_{-e^{0.5}}^{-1} = -2(-1 + e^{0.5})"}</M>
-          <p className="text-emerald-700 font-semibold"><M>{"E(X) = \\boxed{2 - 2\\sqrt{e} \\approx -1.297}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"E(X) = \\boxed{2 - 2\\sqrt{e} \\approx -1.297}"}</M></p>
           
           <p><strong>4. P(-1.5 ≤ X ≤ -1):</strong></p>
           <M>{"P(-1.5 \\leq X \\leq -1) = F(-1) - F(-1.5) = 1 - (1 - 2\\ln 1.5) = \\boxed{0.811}"}</M>
@@ -69,7 +69,7 @@ export const TD3_2526: TDSheet = {
         <div className="space-y-3">
           <p><strong>1. Déterminer b:</strong></p>
           <M>{"\\int_0^1 b\\sqrt{x} dx = b \\cdot \\frac{2}{3}[x^{3/2}]_0^1 = \\frac{2b}{3} = 1"}</M>
-          <p className="text-emerald-700 font-semibold"><M>{"\\boxed{b = \\frac{3}{2}}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"\\boxed{b = \\frac{3}{2}}"}</M></p>
           
           <p><strong>2. Fonction de répartition:</strong></p>
           <M>{"F(x) = \\begin{cases} 0 & x < 0 \\\\ x^{3/2} & 0 \\leq x \\leq 1 \\\\ 1 & x > 1 \\end{cases}"}</M>
@@ -142,7 +142,7 @@ export const TD3_2526: TDSheet = {
           <p>On reconnaît une forme Gamma <M>{"\\Gamma(\\alpha, \\beta)"}</M>:</p>
           <M>{"f(x) = \\frac{\\beta^\\alpha}{\\Gamma(\\alpha)} x^{\\alpha-1} e^{-\\beta x}"}</M>
           <p>Identification: β = 3p, α = 3p² + 1</p>
-          <p className="text-emerald-700 font-semibold"><M>{"\\boxed{p = 1}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"\\boxed{p = 1}"}</M></p>
           
           <p><strong>2. V(X):</strong></p>
           <p>Pour Γ(4, 3):</p>
@@ -166,7 +166,7 @@ export const TD3_2526: TDSheet = {
         <div className="space-y-3">
           <p><strong>Partie 1 - Déterminer k:</strong></p>
           <M>{"\\int_1^5 k\\left(\\frac{1}{x} + \\frac{1}{x^2}\\right) dx = k[\\ln x - \\frac{1}{x}]_1^5 = k(\\ln 5 + 0.8) = 1"}</M>
-          <p className="text-emerald-700 font-semibold"><M>{"k = \\frac{1}{\\ln 5 + 0.8} \\approx \\boxed{0.415}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"k = \\frac{1}{\\ln 5 + 0.8} \\approx \\boxed{0.415}"}</M></p>
           
           <p><strong>Partie 2 - E(X):</strong></p>
           <p>Posons u = x + m, donc x = u - m:</p>
@@ -193,7 +193,7 @@ export const TD3_2526: TDSheet = {
         <div className="space-y-3">
           <p><strong>1. Déterminer k:</strong></p>
           <M>{"\\int_0^{\\ln 2} ke^x dx = k[e^x]_0^{\\ln 2} = k(2 - 1) = 1"}</M>
-          <p className="text-emerald-700 font-semibold"><M>{"\\boxed{k = 1}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"\\boxed{k = 1}"}</M></p>
           
           <p><strong>2. V(X):</strong></p>
           <p>Par parties:</p>
@@ -222,11 +222,11 @@ export const TD3_2526: TDSheet = {
           <p><strong>1. Déterminer k:</strong></p>
           <p>On reconnaît une loi Gamma Γ(p, θ). La densité standard est:</p>
           <M>{"f(x) = \\frac{\\theta^p}{\\Gamma(p)} x^{p-1} e^{-\\theta x}"}</M>
-          <p className="text-emerald-700 font-semibold"><M>{"\\boxed{k = 1}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"\\boxed{k = 1}"}</M></p>
           
           <p><strong>2. E(X):</strong></p>
           <p>Pour une loi Γ(p, θ):</p>
-          <p className="text-emerald-700 font-semibold"><M>{"E(X) = \\boxed{\\frac{p}{\\theta}}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"E(X) = \\boxed{\\frac{p}{\\theta}}"}</M></p>
         </div>
       ),
     },

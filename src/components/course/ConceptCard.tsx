@@ -37,25 +37,25 @@ const subjectStyles: Record<SubjectColor, { border: string; bg: string; accent: 
         border: 'border-[color-mix(in_srgb,var(--color-macro)_20%,transparent)]',
         bg: 'bg-[color-mix(in_srgb,var(--color-macro)_5%,rgb(var(--surface-1)))]',
         accent: 'text-[var(--color-macro)]',
-        gradient: 'from-[var(--color-macro)] to-[color-mix(in_srgb,var(--color-macro)_80%,#6366f1)]',
+        gradient: 'from-[var(--color-macro)] to-[color-mix(in_srgb,var(--color-macro)_80%,var(--color-accent))]',
     },
     micro: {
         border: 'border-[color-mix(in_srgb,var(--color-micro)_20%,transparent)]',
         bg: 'bg-[color-mix(in_srgb,var(--color-micro)_5%,rgb(var(--surface-1)))]',
         accent: 'text-[var(--color-micro)]',
-        gradient: 'from-[var(--color-micro)] to-[color-mix(in_srgb,var(--color-micro)_80%,#8b5cf6)]',
+        gradient: 'from-[var(--color-micro)] to-[color-mix(in_srgb,var(--color-micro)_80%,var(--color-micro))]',
     },
     stats: {
         border: 'border-[color-mix(in_srgb,var(--color-stats)_20%,transparent)]',
         bg: 'bg-[color-mix(in_srgb,var(--color-stats)_5%,rgb(var(--surface-1)))]',
         accent: 'text-[var(--color-stats)]',
-        gradient: 'from-[var(--color-stats)] to-[color-mix(in_srgb,var(--color-stats)_80%,#06b6d4)]',
+        gradient: 'from-[var(--color-stats)] to-[color-mix(in_srgb,var(--color-stats)_80%,var(--color-stats))]',
     },
     socio: {
         border: 'border-[color-mix(in_srgb,var(--color-socio)_20%,transparent)]',
         bg: 'bg-[color-mix(in_srgb,var(--color-socio)_5%,rgb(var(--surface-1)))]',
         accent: 'text-[var(--color-socio)]',
-        gradient: 'from-[var(--color-socio)] to-[color-mix(in_srgb,var(--color-socio)_80%,#f43f5e)]',
+        gradient: 'from-[var(--color-socio)] to-[color-mix(in_srgb,var(--color-socio)_80%,var(--color-socio))]',
     },
 };
 
@@ -189,7 +189,7 @@ export function AuthorCard({
                                 rounded-[var(--radius-lg)]
                                 bg-gradient-to-br ${styles.gradient}
                                 flex items-center justify-center
-                                text-white font-bold text-lg sm:text-xl
+                                text-[var(--color-bg-raised)] font-bold text-lg sm:text-xl
                                 shadow-[var(--shadow-2)]
                             `}
                         >

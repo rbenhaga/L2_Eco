@@ -65,9 +65,9 @@ export const TD2_2526: TDSheet = {
       content: (
         <div>
           <p>Loi de X:</p>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">xi</th><th className="border border-slate-300 p-2">-4</th><th className="border border-slate-300 p-2">2</th><th className="border border-slate-300 p-2">3</th><th className="border border-slate-300 p-2">4</th><th className="border border-slate-300 p-2">6</th><th className="border border-slate-300 p-2">7</th><th className="border border-slate-300 p-2">10</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-2">pi</td><td className="border border-slate-300 p-2">0.1</td><td className="border border-slate-300 p-2">0.2</td><td className="border border-slate-300 p-2">0.2</td><td className="border border-slate-300 p-2">0.1</td><td className="border border-slate-300 p-2">0.05</td><td className="border border-slate-300 p-2">0.2</td><td className="border border-slate-300 p-2">k</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">xi</th><th className="border border-[var(--color-border-strong)] p-2">-4</th><th className="border border-[var(--color-border-strong)] p-2">2</th><th className="border border-[var(--color-border-strong)] p-2">3</th><th className="border border-[var(--color-border-strong)] p-2">4</th><th className="border border-[var(--color-border-strong)] p-2">6</th><th className="border border-[var(--color-border-strong)] p-2">7</th><th className="border border-[var(--color-border-strong)] p-2">10</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-2">pi</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td><td className="border border-[var(--color-border-strong)] p-2">0.2</td><td className="border border-[var(--color-border-strong)] p-2">0.2</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td><td className="border border-[var(--color-border-strong)] p-2">0.05</td><td className="border border-[var(--color-border-strong)] p-2">0.2</td><td className="border border-[var(--color-border-strong)] p-2">k</td></tr></tbody>
           </table>
           <ol className="list-decimal ml-6 mt-2">
             <li>Déterminer k</li>
@@ -114,7 +114,7 @@ export const TD2_2526: TDSheet = {
         <div className="space-y-3">
           <p><strong>1. E(X):</strong></p>
           <M>{"E(X) = 10(0.5) + 20(0.1) + (-15)(0.4) = 5 + 2 - 6 = \\boxed{1€}"}</M>
-          <p className="text-slate-700 italic">En moyenne, on gagne 1€ par partie.</p>
+          <p className="text-[var(--color-text-secondary)] italic">En moyenne, on gagne 1€ par partie.</p>
           
           <p><strong>2. E(Y):</strong></p>
           <M>{"E(Y) = 2(0.5) + 0(0.5) = \\boxed{1€}"}</M>
@@ -127,7 +127,7 @@ export const TD2_2526: TDSheet = {
           <p>Pour Y:</p>
           <M>{"V(Y) = 4(0.5) - 1 = 1 \\Rightarrow \\sigma_Y = \\boxed{1€}"}</M>
           
-          <p className="text-emerald-700 font-semibold">Les deux jeux ont la même espérance (1€), mais le jeu 1 est beaucoup plus risqué (σ = 13.38€) que le jeu 2 (σ = 1€).</p>
+          <p className="text-[var(--color-success)] font-semibold">Les deux jeux ont la même espérance (1€), mais le jeu 1 est beaucoup plus risqué (σ = 13.38€) que le jeu 2 (σ = 1€).</p>
         </div>
       ),
     },
@@ -151,11 +151,11 @@ export const TD2_2526: TDSheet = {
         <div className="space-y-3">
           <p><strong>1. Loi de X:</strong></p>
           
-          <div className="bg-blue-50 border-l-4 border-blue-400 p-3 mb-3">
-            <p className="font-semibold text-blue-800">Méthode rapide pour compter les effectifs :</p>
-            <p className="text-sm text-blue-700 mt-1">X = |dé1 - dé2| peut prendre les valeurs 0, 1, 2, 3, 4, 5</p>
-            <p className="text-sm text-blue-700">Pour chaque valeur k, on compte les couples (i,j) tels que |i-j| = k :</p>
-            <ul className="text-sm text-blue-700 ml-4 mt-1">
+          <div className="bg-[var(--color-info-subtle)] border-l-4 border-[var(--color-info)] p-3 mb-3">
+            <p className="font-semibold text-[var(--color-info)]">Méthode rapide pour compter les effectifs :</p>
+            <p className="text-sm text-[var(--color-info)] mt-1">X = |dé1 - dé2| peut prendre les valeurs 0, 1, 2, 3, 4, 5</p>
+            <p className="text-sm text-[var(--color-info)]">Pour chaque valeur k, on compte les couples (i,j) tels que |i-j| = k :</p>
+            <ul className="text-sm text-[var(--color-info)] ml-4 mt-1">
               <li><strong>X = 0 :</strong> diagonale (1,1), (2,2), ..., (6,6) → <strong>6 cas</strong></li>
               <li><strong>X = 1 :</strong> |i-j|=1 → couples adjacents (1,2), (2,1), (2,3), (3,2)... → <strong>2×5 = 10 cas</strong></li>
               <li><strong>X = 2 :</strong> |i-j|=2 → (1,3), (3,1), (2,4), (4,2)... → <strong>2×4 = 8 cas</strong></li>
@@ -163,15 +163,15 @@ export const TD2_2526: TDSheet = {
               <li><strong>X = 4 :</strong> |i-j|=4 → <strong>2×2 = 4 cas</strong></li>
               <li><strong>X = 5 :</strong> |i-j|=5 → (1,6), (6,1) → <strong>2×1 = 2 cas</strong></li>
             </ul>
-            <p className="text-sm text-blue-700 mt-2"><strong>Formule générale :</strong> Pour k ≥ 1, effectif = 2×(6-k). Pour k = 0, effectif = 6.</p>
-            <p className="text-sm text-blue-700">Vérification : 6 + 10 + 8 + 6 + 4 + 2 = 36 ✓</p>
+            <p className="text-sm text-[var(--color-info)] mt-2"><strong>Formule générale :</strong> Pour k ≥ 1, effectif = 2×(6-k). Pour k = 0, effectif = 6.</p>
+            <p className="text-sm text-[var(--color-info)]">Vérification : 6 + 10 + 8 + 6 + 4 + 2 = 36 ✓</p>
           </div>
           
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">X</th><th className="border border-slate-300 p-2">0</th><th className="border border-slate-300 p-2">1</th><th className="border border-slate-300 p-2">2</th><th className="border border-slate-300 p-2">3</th><th className="border border-slate-300 p-2">4</th><th className="border border-slate-300 p-2">5</th></tr></thead>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">X</th><th className="border border-[var(--color-border-strong)] p-2">0</th><th className="border border-[var(--color-border-strong)] p-2">1</th><th className="border border-[var(--color-border-strong)] p-2">2</th><th className="border border-[var(--color-border-strong)] p-2">3</th><th className="border border-[var(--color-border-strong)] p-2">4</th><th className="border border-[var(--color-border-strong)] p-2">5</th></tr></thead>
             <tbody>
-              <tr><td className="border border-slate-300 p-2">Effectif</td><td className="border border-slate-300 p-2">6</td><td className="border border-slate-300 p-2">10</td><td className="border border-slate-300 p-2">8</td><td className="border border-slate-300 p-2">6</td><td className="border border-slate-300 p-2">4</td><td className="border border-slate-300 p-2">2</td></tr>
-              <tr><td className="border border-slate-300 p-2">P(X=x)</td><td className="border border-slate-300 p-2">1/6</td><td className="border border-slate-300 p-2">5/18</td><td className="border border-slate-300 p-2">2/9</td><td className="border border-slate-300 p-2">1/6</td><td className="border border-slate-300 p-2">1/9</td><td className="border border-slate-300 p-2">1/18</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">Effectif</td><td className="border border-[var(--color-border-strong)] p-2">6</td><td className="border border-[var(--color-border-strong)] p-2">10</td><td className="border border-[var(--color-border-strong)] p-2">8</td><td className="border border-[var(--color-border-strong)] p-2">6</td><td className="border border-[var(--color-border-strong)] p-2">4</td><td className="border border-[var(--color-border-strong)] p-2">2</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">P(X=x)</td><td className="border border-[var(--color-border-strong)] p-2">1/6</td><td className="border border-[var(--color-border-strong)] p-2">5/18</td><td className="border border-[var(--color-border-strong)] p-2">2/9</td><td className="border border-[var(--color-border-strong)] p-2">1/6</td><td className="border border-[var(--color-border-strong)] p-2">1/9</td><td className="border border-[var(--color-border-strong)] p-2">1/18</td></tr>
             </tbody>
           </table>
           
@@ -181,9 +181,9 @@ export const TD2_2526: TDSheet = {
           <M>{"V(X) = \\frac{35}{6} - \\left(\\frac{35}{18}\\right)^2 = \\frac{665}{324} = \\boxed{2.052}"}</M>
           
           <p><strong>3. Mode et Médiane:</strong></p>
-          <p className="text-emerald-700">Mode: <M>{"\\boxed{x_{Mo} = 1}"}</M> (probabilité max = 10/36)</p>
+          <p className="text-[var(--color-success)]">Mode: <M>{"\\boxed{x_{Mo} = 1}"}</M> (probabilité max = 10/36)</p>
           <p>F(0) = 0.167, F(1) = 0.444, F(2) = 0.667 {'>'} 0.5</p>
-          <p className="text-emerald-700">Médiane: <M>{"\\boxed{Me = 2}"}</M></p>
+          <p className="text-[var(--color-success)]">Médiane: <M>{"\\boxed{Me = 2}"}</M></p>
         </div>
       ),
     },
@@ -195,9 +195,9 @@ export const TD2_2526: TDSheet = {
       content: (
         <div>
           <p>Loi de X (magnétoscopes vendus par jour):</p>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">xi</th><th className="border border-slate-300 p-2">0</th><th className="border border-slate-300 p-2">1</th><th className="border border-slate-300 p-2">2</th><th className="border border-slate-300 p-2">3</th><th className="border border-slate-300 p-2">4</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-2">pi</td><td className="border border-slate-300 p-2">0.1</td><td className="border border-slate-300 p-2">0.2</td><td className="border border-slate-300 p-2">0.3</td><td className="border border-slate-300 p-2">0.25</td><td className="border border-slate-300 p-2">0.15</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">xi</th><th className="border border-[var(--color-border-strong)] p-2">0</th><th className="border border-[var(--color-border-strong)] p-2">1</th><th className="border border-[var(--color-border-strong)] p-2">2</th><th className="border border-[var(--color-border-strong)] p-2">3</th><th className="border border-[var(--color-border-strong)] p-2">4</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-2">pi</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td><td className="border border-[var(--color-border-strong)] p-2">0.2</td><td className="border border-[var(--color-border-strong)] p-2">0.3</td><td className="border border-[var(--color-border-strong)] p-2">0.25</td><td className="border border-[var(--color-border-strong)] p-2">0.15</td></tr></tbody>
           </table>
           <ol className="list-decimal ml-6 mt-2">
             <li>P(X {'>'} 1)</li>
@@ -252,9 +252,9 @@ export const TD2_2526: TDSheet = {
       ),
       solution: (
         <div className="space-y-4">
-          <div className="bg-blue-50 border-l-4 border-blue-400 p-3 mb-3">
-            <p className="font-semibold text-blue-800">Rappels des formules clés :</p>
-            <ul className="text-sm text-blue-700 mt-1 space-y-1">
+          <div className="bg-[var(--color-info-subtle)] border-l-4 border-[var(--color-info)] p-3 mb-3">
+            <p className="font-semibold text-[var(--color-info)]">Rappels des formules clés :</p>
+            <ul className="text-sm text-[var(--color-info)] mt-1 space-y-1">
               <li><strong>Linéarité de E :</strong> E(aX + bY) = aE(X) + bE(Y) (toujours vraie)</li>
               <li><strong>Variance d'une somme :</strong> V(aX + bY) = a²V(X) + b²V(Y) + 2ab·Cov(X,Y)</li>
               <li><strong>Bilinéarité de Cov :</strong> Cov(aX + bY, Z) = a·Cov(X,Z) + b·Cov(Y,Z)</li>
@@ -263,15 +263,15 @@ export const TD2_2526: TDSheet = {
           </div>
 
           <p><strong>1. E(W + 4Z):</strong></p>
-          <p className="text-sm text-slate-700">L'espérance est toujours linéaire (indépendance ou non) :</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">L'espérance est toujours linéaire (indépendance ou non) :</p>
           <M>{"E(W) = E(2X - Y) = 2E(X) - E(Y) = 2(2) - 3 = 1"}</M>
           <M>{"E(W + 4Z) = E(W) + 4E(Z) = 1 + 4(-2) = \\boxed{-7}"}</M>
           
           <p><strong>2. V(W + 4Z):</strong></p>
-          <p className="text-sm text-slate-700">Formule générale : V(A + B) = V(A) + V(B) + 2Cov(A,B)</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">Formule générale : V(A + B) = V(A) + V(B) + 2Cov(A,B)</p>
           
           <p className="text-sm mt-2"><em>Étape 1 : Calculer V(W)</em></p>
-          <p className="text-sm text-slate-700">V(aX + bY) = a²V(X) + b²V(Y) + 2ab·Cov(X,Y)</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">V(aX + bY) = a²V(X) + b²V(Y) + 2ab·Cov(X,Y)</p>
           <M>{"V(W) = V(2X - Y) = 4V(X) + V(Y) + 2(2)(-1)Cov(X,Y)"}</M>
           <M>{"V(W) = 4(4) + 5 + (-4)(0) = 16 + 5 = 21"}</M>
           
@@ -284,18 +284,18 @@ export const TD2_2526: TDSheet = {
           <M>{"V(W + 4Z) = 21 + 16(8) + 8(-2) = 21 + 128 - 16 = \\boxed{133}"}</M>
           
           <p><strong>3. Cov(W, 2Y):</strong></p>
-          <p className="text-sm text-slate-700">Bilinéarité : Cov(aU, bV) = ab·Cov(U,V)</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">Bilinéarité : Cov(aU, bV) = ab·Cov(U,V)</p>
           <M>{"Cov(W, 2Y) = 2 \\cdot Cov(W, Y) = 2 \\cdot Cov(2X - Y, Y)"}</M>
-          <p className="text-sm text-slate-700">On développe Cov(2X - Y, Y) :</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">On développe Cov(2X - Y, Y) :</p>
           <M>{"Cov(2X - Y, Y) = 2Cov(X,Y) - Cov(Y,Y) = 2(0) - V(Y) = -5"}</M>
           <M>{"Cov(W, 2Y) = 2(-5) = \\boxed{-10}"}</M>
           
           <p><strong>4. r(W, Y):</strong></p>
-          <p className="text-sm text-slate-700">Coefficient de corrélation : r(A,B) = Cov(A,B) / (σ_A · σ_B)</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">Coefficient de corrélation : r(A,B) = Cov(A,B) / (σ_A · σ_B)</p>
           <M>{"Cov(W, Y) = 2Cov(X,Y) - V(Y) = 0 - 5 = -5"}</M>
           <M>{"\\sigma_W = \\sqrt{V(W)} = \\sqrt{21}, \\quad \\sigma_Y = \\sqrt{5}"}</M>
           <M>{"r(W, Y) = \\frac{-5}{\\sqrt{21} \\cdot \\sqrt{5}} = \\frac{-5}{\\sqrt{105}} = \\boxed{-0.488}"}</M>
-          <p className="text-sm text-slate-700 mt-1">r &lt; 0 : W et Y sont négativement corrélés (logique car W = 2X - Y contient -Y)</p>
+          <p className="text-sm text-[var(--color-text-secondary)] mt-1">r &lt; 0 : W et Y sont négativement corrélés (logique car W = 2X - Y contient -Y)</p>
         </div>
       ),
     },

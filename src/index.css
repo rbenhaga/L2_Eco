@@ -1,69 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 @import "tailwindcss";
 
 /* ============================================
-   PREMIUM DESIGN SYSTEM v2.0
+   EDITORIAL MINIMAL DESIGN SYSTEM
    
-   Philosophy: Apple/Notion/Linear grade
-   - Light-first (study-grade)
-   - 3-level depth system (not flat, not noisy)
-   - Borderless design (shadows > borders)
-   - Contrast-first (WCAG AA minimum)
+   Typography: Playfair Display (serif display) + Inter (sans body)
+   Palette: Pure white, soft gray, black text, red accent
+   Philosophy: Magazine editorial, clean, spacious
    ============================================ */
 
 /* ============================================
-   UNIFIED TOKEN SYSTEM v3 (Study-grade PREMIUM)
-   Format: HEX/RGBA only (no RGB triplets)
-   Namespace: --color-* for all colors
+   CORE DESIGN TOKENS
    ============================================ */
 :root {
-    /* Font */
-    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Typography */
+    --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-display: var(--font-serif);
 
     /* ══════════════════════════════════════════
-       COLORS - Unified format (hex/rgba)
+       LIGHT MODE — Editorial Clean
        ══════════════════════════════════════════ */
 
-    /* Background - Bleuté calme (study-grade) */
-    --color-bg-base: #F7F9FF;
-    --color-bg-raised: #FFFFFF;
-    --color-bg-overlay: #FAFBFF;
+    /* Canvas & Surfaces — Study-Grade Calm (Design Contract v4) */
+    --color-canvas: #F7F9FF;          /* Fond global, bleuté calme */
+    --color-surface: #FAFBFF;         /* Surface intermédiaire */
+    --color-panel: #F4F6FA;           /* Panels */
+    --color-card: #FFFFFF;            /* Cards blanches */
+    --color-overlay: #FFFFFF;         /* Overlays */
+    --color-paper: #F8FAFC;           /* Fond papier crème pour lecture */
 
-    /* Text - Contraste fort */
-    --color-text-primary: #0F172A;
-    --color-text-secondary: #475569;
-    --color-text-muted: #94A3B8;
+    /* Background compatibility */
+    --color-bg-base: #F7F9FF;         /* Fond bleuté calme */
+    --color-bg-raised: #FFFFFF;       /* Cards, header */
+    --color-bg-overlay: #FAFBFF;      /* Items internes */
+    --color-bg-paper: #F8FAFC;        /* Fond papier pour contenu de cours */
 
-    /* Borders - Subtiles mais visibles */
+    /* Text - WCAG AA Compliant (Design Contract) */
+    --color-text-primary: #0F172A;    /* slate-950, quasi-noir */
+    --color-text-secondary: #475569;  /* slate-600, lisible */
+    --color-text-muted: #94A3B8;      /* slate-400, hints only */
+    --color-text-tertiary: #64748B;   /* slate-500 */
+    --color-text-subtle: #CBD5E1;     /* slate-300, decorative */
+
+    /* Borders - Subtle (Design Contract) */
+    --color-border-subtle: rgba(15, 23, 42, 0.05);
     --color-border-default: rgba(15, 23, 42, 0.08);
-    --color-border-soft: rgba(15, 23, 42, 0.05);
     --color-border-strong: rgba(15, 23, 42, 0.12);
+    --color-border-accent: rgba(217, 0, 0, 0.20);
 
-    /* Accent - Indigo */
-    --color-accent: #4F46E5;
-    --color-accent-hover: #4338CA;
-    --color-accent-subtle: #EEF2FF;
+    /* Accent Colors — RED SIGNATURE */
+    --color-accent: #D90000;           /* Pure red - Bold & memorable */
+    --color-accent-hover: #B80000;     /* Darker red for hover states */
+    --color-accent-subtle: rgba(217, 0, 0, 0.08);  /* Light red background */
+    --color-accent-strong: #FF3333;    /* Bright red for emphasis */
+    --color-accent-foreground: #FFFFFF; /* White text on red */
 
-    /* Surfaces - 3 niveaux */
-    --color-surface-base: #F7F9FF;
-    --color-surface-raised: #FFFFFF;
-    --color-surface-overlay: #FAFBFF;
-    --color-surface-hover: rgba(79, 70, 229, 0.06);
+    /* Red Palette (Editorial Signature) */
+    --color-red-50: #FFF5F5;
+    --color-red-100: #FFE5E5;
+    --color-red-200: #FFCCCC;
+    --color-red-400: #FF6666;
+    --color-red-500: #FF3333;
+    --color-red-600: #D90000;
+    --color-red-700: #B80000;
+    --color-red-900: #8B0000;
+
+    /* Secondary accents - Gradients */
+    --color-blue-start: #00C6FB;
+    --color-blue-end: #005BEA;
+    --color-purple-start: #A855F7;
+    --color-purple-end: #6B21A8;
+
+    /* Primary CTA - Red (Editorial Bold) */
+    --color-primary: #D90000;
+    --color-primary-hover: #B80000;
+    --color-primary-gradient: linear-gradient(135deg, #D90000 0%, #B80000 100%);
+    --color-primary-foreground: #FFFFFF;
+
+    /* Surface interactions - More visible feedback */
+    --color-surface-hover: rgba(0, 0, 0, 0.04);
+    /* Visible hover state */
+    --color-surface-raised: var(--color-card);
 
     /* Semantic colors */
-    --color-success: #16A34A;
-    --color-success-subtle: rgba(34, 197, 94, 0.10);
-    --color-warning: #CA8A04;
-    --color-warning-subtle: rgba(234, 179, 8, 0.10);
-    --color-error: #DC2626;
-    --color-error-subtle: rgba(239, 68, 68, 0.10);
+    --color-success: #34C759;
+    --color-success-bg: rgba(52, 199, 89, 0.1);
+    --color-success-subtle: rgba(52, 199, 89, 0.1);
+    --color-warning: #FF9500;
+    --color-warning-subtle: rgba(255, 149, 0, 0.1);
+    --color-error: #FF3B30;
+    --color-error-subtle: rgba(255, 59, 48, 0.1);
+    --color-info: #007AFF;
+    --color-info-subtle: rgba(0, 122, 255, 0.1);
+
+    /* Radii - Design Contract v4 (4 valeurs MAX) */
+    --radius-sm: 8px;      /* inputs, small cards */
+    --radius-md: 12px;     /* cards, modals */
+    --radius-lg: 16px;     /* hero cards, header */
+    --radius-full: 9999px; /* pills, avatars */
 
     /* ══════════════════════════════════════════
-       SHADOWS - Keynote style
+       SHADOWS - Keynote Style (Design Contract v4)
+       Subtle top border + diffuse shadow
        ══════════════════════════════════════════ */
     --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
-    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.06);
-    --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.10), 0 4px 12px rgba(15, 23, 42, 0.08);
-    --shadow-xl: 0 16px 48px rgba(15, 23, 42, 0.12), 0 8px 24px rgba(15, 23, 42, 0.10);
+    --shadow-md: 0 1px 0 rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 1px 0 rgba(15, 23, 42, 0.06), 0 18px 60px rgba(15, 23, 42, 0.10);
+    --shadow-xl: 0 1px 0 rgba(15, 23, 42, 0.06), 0 24px 80px rgba(15, 23, 42, 0.12);
 
     /* ══════════════════════════════════════════
        LEGACY SUPPORT (for old components)
@@ -71,6 +115,79 @@
     --shadow-1: var(--shadow-sm);
     --shadow-2: var(--shadow-md);
     --shadow-3: var(--shadow-lg);
+
+    /* ══════════════════════════════════════════
+       ROSE ALIASES → Map to accent system
+       Used by ModuleHeroSection, ModuleStatsCards, ModuleTabBar
+       ══════════════════════════════════════════ */
+    --color-rose-50: var(--color-accent-subtle);
+    --color-rose-400: var(--color-accent);
+    --color-rose-500: var(--color-accent);
+    --color-rose-600: var(--color-accent);
+
+    /* ══════════════════════════════════════════
+       CALLOUT TYPE COLORS
+       Semantic colors for course callouts (Callout.tsx)
+       ══════════════════════════════════════════ */
+    /* Key / Important (indigo → accent) */
+    --callout-key-border: var(--color-accent);
+    --callout-key-bg: var(--color-accent-subtle);
+    --callout-key-icon-bg: rgba(217, 0, 0, 0.12);
+    --callout-key-text: var(--color-accent);
+
+    /* Example (amber → warning) */
+    --callout-example-border: var(--color-warning);
+    --callout-example-bg: var(--color-warning-subtle);
+    --callout-example-icon-bg: rgba(255, 149, 0, 0.12);
+    --callout-example-text: #B45309;
+
+    /* Warning (rose → error) */
+    --callout-warning-border: var(--color-error);
+    --callout-warning-bg: var(--color-error-subtle);
+    --callout-warning-icon-bg: rgba(255, 59, 48, 0.12);
+    --callout-warning-text: var(--color-error);
+
+    /* Method (emerald → success) */
+    --callout-method-border: var(--color-success);
+    --callout-method-bg: var(--color-success-subtle);
+    --callout-method-icon-bg: rgba(52, 199, 89, 0.12);
+    --callout-method-text: #15803D;
+
+    /* Info (blue → info) */
+    --callout-info-border: var(--color-info);
+    --callout-info-bg: var(--color-info-subtle);
+    --callout-info-icon-bg: rgba(0, 122, 255, 0.12);
+    --callout-info-text: var(--color-info);
+
+    /* Formula (violet → micro purple) */
+    --callout-formula-border: #8B5CF6;
+    --callout-formula-bg: rgba(139, 92, 246, 0.08);
+    --callout-formula-icon-bg: rgba(139, 92, 246, 0.12);
+    --callout-formula-text: #7C3AED;
+
+    /* Intuition (teal → stats cyan) */
+    --callout-intuition-border: var(--color-stats, #06B6D4);
+    --callout-intuition-bg: rgba(6, 182, 212, 0.08);
+    --callout-intuition-icon-bg: rgba(6, 182, 212, 0.12);
+    --callout-intuition-text: #0891B2;
+
+    /* Definition (slate → neutral) */
+    --callout-definition-border: var(--color-text-muted);
+    --callout-definition-bg: var(--color-bg-overlay);
+    --callout-definition-icon-bg: rgba(148, 163, 184, 0.12);
+    --callout-definition-text: var(--color-text-secondary);
+
+    /* Tip (sky → info lighter) */
+    --callout-tip-border: #0EA5E9;
+    --callout-tip-bg: rgba(14, 165, 233, 0.08);
+    --callout-tip-icon-bg: rgba(14, 165, 233, 0.12);
+    --callout-tip-text: #0284C7;
+
+    /* Correction (green → success) */
+    --callout-correction-border: var(--color-success);
+    --callout-correction-bg: var(--color-success-subtle);
+    --callout-correction-icon-bg: rgba(52, 199, 89, 0.12);
+    --callout-correction-text: #15803D;
 }
 
 /* Ensure light theme is applied */
@@ -78,6 +195,179 @@ html[data-theme="light"],
 html.light,
 [data-theme="light"] {
     color-scheme: light;
+}
+
+/* ══════════════════════════════════════════
+   DARK MODE — Study-Grade Premium
+   Noir profond avec teinte bleue, rouge accent
+   ══════════════════════════════════════════ */
+html.dark,
+html[data-theme="dark"],
+[data-theme="dark"] {
+    color-scheme: dark;
+
+    /* Canvas & Surfaces — Deep blacks with subtle hierarchy */
+    --color-canvas: #0A0C14;        /* Deepest black - main background */
+    --color-surface: #111420;       /* Slightly elevated */
+    --color-panel: #16161A;         /* Panel backgrounds */
+    --color-card: #18181B;          /* Card surfaces - most elevated */
+    --color-overlay: #1C1C1F;       /* Modal/overlay backgrounds */
+
+    /* Background aliases */
+    --color-bg-base: #0A0C14;       /* Noir profond avec teinte bleue */
+    --color-bg-raised: #18181B;     /* Cards */
+    --color-bg-overlay: #16161A;    /* Items internes */
+    --color-paper: #121826;         /* Fond lecture en dark mode */
+    --color-bg-paper: #121826;      /* Fond papier pour contenu de cours */
+
+    /* Text — WCAG AA Compliant on dark background */
+    --color-text-primary: #F5F5F5;  /* Near white, perfect readability */
+    --color-text-secondary: #B8B8B8; /* Strong contrast */
+    --color-text-muted: #8B8B8B;    /* AA compliant */
+    --color-text-tertiary: #A8A8A8; /* AA+ compliant */
+    --color-text-subtle: #656565;   /* Decorative only */
+
+    /* Borders — White-based for visibility on dark */
+    --color-border-subtle: rgba(255, 255, 255, 0.06);
+    --color-border-default: rgba(255, 255, 255, 0.10);
+    --color-border-strong: rgba(255, 255, 255, 0.18);
+    --color-border-accent: rgba(255, 69, 69, 0.30);
+
+    /* RED ACCENT — Brighter for dark mode */
+    --color-accent: #FF4545;        /* Brighter red for dark bg */
+    --color-accent-hover: #FF6B6B;  /* Lighter on hover */
+    --color-accent-subtle: rgba(255, 69, 69, 0.12);
+    --color-accent-strong: #FF8A8A;
+    --color-accent-foreground: #FFFFFF;
+
+    /* Primary CTA - Red for dark mode */
+    --color-primary: #FF4545;
+    --color-primary-hover: #FF6B6B;
+    --color-primary-gradient: linear-gradient(135deg, #FF4545 0%, #FF6B6B 100%);
+    --color-primary-foreground: #FFFFFF;
+
+    /* Surface interactions - White-based hover */
+    --color-surface-hover: rgba(255, 255, 255, 0.05);
+    --color-surface-raised: var(--color-card);
+
+    /* Semantic colors - Adjusted for dark mode */
+    --color-success: #4ADE80;
+    --color-success-subtle: rgba(74, 222, 128, 0.15);
+    --color-warning: #FBBF24;
+    --color-warning-subtle: rgba(251, 191, 36, 0.15);
+    --color-error: #FF5C5C;
+    --color-error-subtle: rgba(255, 92, 92, 0.15);
+    --color-info: #60A5FA;
+    --color-info-subtle: rgba(96, 165, 250, 0.15);
+
+    /* Shadows — Deeper blacks for dark mode depth (Keynote style) */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.40);
+    --shadow-md: 0 1px 0 rgba(255, 255, 255, 0.03), 0 8px 24px rgba(0, 0, 0, 0.50);
+    --shadow-lg: 0 1px 0 rgba(255, 255, 255, 0.03), 0 18px 60px rgba(0, 0, 0, 0.60);
+    --shadow-xl: 0 1px 0 rgba(255, 255, 255, 0.03), 0 24px 80px rgba(0, 0, 0, 0.70);
+
+    /* Legacy shadow support */
+    --shadow-1: var(--shadow-sm);
+    --shadow-2: var(--shadow-md);
+    --shadow-3: var(--shadow-lg);
+
+    /* Module theme colors - Enhanced for dark mode */
+    /* 🔵 MACRO - Brighter blues */
+    --color-macro: #60A5FA;
+    --color-macro-dark: #3B82F6;
+    --color-macro-light: rgba(96, 165, 250, 0.18);
+    --color-macro-subtle: rgba(96, 165, 250, 0.10);
+    --color-macro-gradient: linear-gradient(135deg, #60A5FA 0%, #818CF8 100%);
+    --shadow-macro: 0 8px 32px rgba(96, 165, 250, 0.35), 0 4px 16px rgba(96, 165, 250, 0.20);
+
+    /* 🟣 MICRO - Brighter purples */
+    --color-micro: #A78BFA;
+    --color-micro-dark: #8B5CF6;
+    --color-micro-light: rgba(167, 139, 250, 0.18);
+    --color-micro-subtle: rgba(167, 139, 250, 0.10);
+    --color-micro-gradient: linear-gradient(135deg, #A78BFA 0%, #F472B6 100%);
+    --shadow-micro: 0 8px 32px rgba(167, 139, 250, 0.35), 0 4px 16px rgba(167, 139, 250, 0.20);
+
+    /* 🩵 STATS - Brighter cyan */
+    --color-stats: #22D3EE;
+    --color-stats-dark: #06B6D4;
+    --color-stats-light: rgba(34, 211, 238, 0.18);
+    --color-stats-subtle: rgba(34, 211, 238, 0.10);
+    --color-stats-gradient: linear-gradient(135deg, #22D3EE 0%, #2DD4BF 100%);
+    --shadow-stats: 0 8px 32px rgba(34, 211, 238, 0.35), 0 4px 16px rgba(34, 211, 238, 0.20);
+
+    /* 🔴 SOCIO - Brighter rose */
+    --color-socio: #FB7185;
+    --color-socio-dark: #F43F5E;
+    --color-socio-light: rgba(251, 113, 133, 0.18);
+    --color-socio-subtle: rgba(251, 113, 133, 0.10);
+    --color-socio-gradient: linear-gradient(135deg, #FB7185 0%, #F472B6 100%);
+    --shadow-socio: 0 8px 32px rgba(251, 113, 133, 0.35), 0 4px 16px rgba(251, 113, 133, 0.20);
+
+    /* 🟠 MANAGEMENT - Brighter orange */
+    --color-management: #FB923C;
+    --color-management-dark: #F97316;
+    --color-management-light: rgba(251, 146, 60, 0.18);
+    --color-management-subtle: rgba(251, 146, 60, 0.10);
+    --color-management-gradient: linear-gradient(135deg, #FB923C 0%, #FBBF24 100%);
+    --shadow-management: 0 8px 32px rgba(251, 146, 60, 0.35), 0 4px 16px rgba(251, 146, 60, 0.20);
+
+    /* Rose aliases → accent (dark mode) */
+    --color-rose-50: var(--color-accent-subtle);
+    --color-rose-400: var(--color-accent);
+    --color-rose-500: var(--color-accent);
+    --color-rose-600: var(--color-accent);
+
+    /* Callout type colors (dark mode) */
+    --callout-key-border: var(--color-accent);
+    --callout-key-bg: var(--color-accent-subtle);
+    --callout-key-icon-bg: rgba(255, 69, 69, 0.15);
+    --callout-key-text: var(--color-accent);
+
+    --callout-example-border: var(--color-warning);
+    --callout-example-bg: var(--color-warning-subtle);
+    --callout-example-icon-bg: rgba(251, 191, 36, 0.15);
+    --callout-example-text: #FBBF24;
+
+    --callout-warning-border: var(--color-error);
+    --callout-warning-bg: var(--color-error-subtle);
+    --callout-warning-icon-bg: rgba(255, 92, 92, 0.15);
+    --callout-warning-text: var(--color-error);
+
+    --callout-method-border: var(--color-success);
+    --callout-method-bg: var(--color-success-subtle);
+    --callout-method-icon-bg: rgba(74, 222, 128, 0.15);
+    --callout-method-text: #4ADE80;
+
+    --callout-info-border: var(--color-info);
+    --callout-info-bg: var(--color-info-subtle);
+    --callout-info-icon-bg: rgba(96, 165, 250, 0.15);
+    --callout-info-text: var(--color-info);
+
+    --callout-formula-border: #A78BFA;
+    --callout-formula-bg: rgba(167, 139, 250, 0.12);
+    --callout-formula-icon-bg: rgba(167, 139, 250, 0.15);
+    --callout-formula-text: #A78BFA;
+
+    --callout-intuition-border: #22D3EE;
+    --callout-intuition-bg: rgba(34, 211, 238, 0.12);
+    --callout-intuition-icon-bg: rgba(34, 211, 238, 0.15);
+    --callout-intuition-text: #22D3EE;
+
+    --callout-definition-border: var(--color-text-muted);
+    --callout-definition-bg: var(--color-bg-overlay);
+    --callout-definition-icon-bg: rgba(139, 139, 139, 0.15);
+    --callout-definition-text: var(--color-text-secondary);
+
+    --callout-tip-border: #38BDF8;
+    --callout-tip-bg: rgba(56, 189, 248, 0.12);
+    --callout-tip-icon-bg: rgba(56, 189, 248, 0.15);
+    --callout-tip-text: #38BDF8;
+
+    --callout-correction-border: var(--color-success);
+    --callout-correction-bg: var(--color-success-subtle);
+    --callout-correction-icon-bg: rgba(74, 222, 128, 0.15);
+    --callout-correction-text: #4ADE80;
 }
 
 @theme {
@@ -88,7 +378,7 @@ html.light,
     --color-card-foreground: var(--color-text-primary);
     --color-muted: var(--color-bg-overlay);
     --color-muted-foreground: var(--color-text-secondary);
-    --color-accent-foreground: #FFFFFF;
+    /* Removed hardcoded accent-foreground - let it use default white for contrast on accent backgrounds */
     --color-accent-strong: var(--color-accent-hover);
 
     /* ============================================
@@ -268,8 +558,9 @@ html.light,
    BUTTON STATES (CSS-first)
    ============================================ */
 .btn-primary {
-    background: var(--color-text-primary);
+    background: var(--color-primary-gradient);
     color: var(--color-surface-raised);
+    border: 1px solid var(--color-primary-border);
     box-shadow: var(--shadow-md);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
@@ -372,6 +663,11 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color-scheme: light;
+    overscroll-behavior-y: none;
+}
+
+html.dark {
+    color-scheme: dark;
 }
 
 body {
@@ -380,45 +676,55 @@ body {
     min-height: 100vh;
     font-size: 15px;
     line-height: 1.6;
+    background-color: var(--color-canvas);
+    color: var(--color-text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overscroll-behavior-y: none;
 }
 
-/* Typography Scale (Apple-inspired) */
+/* Typography Scale — Outfit for Display/Headings */
 .text-display {
-    font-size: 3rem;
+    font-family: var(--font-display);
+    font-size: 3.5rem;
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1.05;
     letter-spacing: -0.03em;
 }
 
 .text-h1 {
-    font-size: 2rem;
+    font-family: var(--font-display);
+    font-size: 2.25rem;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.15;
     letter-spacing: -0.02em;
 }
 
 .text-h2 {
-    font-size: 1.5rem;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
     font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
 }
 
 .text-h3 {
-    font-size: 1.25rem;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+}
+
+.text-h4 {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
     font-weight: 600;
     line-height: 1.4;
     letter-spacing: -0.005em;
 }
 
-.text-h4 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: 0;
-}
-
 .text-body-lg {
+
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.6;
@@ -493,10 +799,11 @@ body {
 
 /* ============================================
    FOCUS STATES (Accessible + Premium)
+   Ensuring 3:1 contrast for interactive elements
    ============================================ */
 *:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px var(--color-surface-raised), 0 0 0 4px var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-canvas), 0 0 0 5px var(--color-accent);
     border-radius: 0.5rem;
     transition: box-shadow 0.15s ease-out;
 }
@@ -506,7 +813,7 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-    box-shadow: 0 0 0 2px var(--color-surface-raised), 0 0 0 4px var(--color-accent), 0 0 20px rgba(79, 70, 229, 0.15);
+    box-shadow: 0 0 0 3px var(--color-canvas), 0 0 0 5px var(--color-accent), 0 0 24px rgba(217, 0, 0, 0.2);
 }
 
 /* ============================================
@@ -598,6 +905,68 @@ select:focus-visible {
 
     100% {
         background-position: 200% 0;
+    }
+}
+
+/* ============================================
+   PREMIUM MICRO-INTERACTIONS
+   ============================================ */
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes floatUp {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes magneticHover {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(-4px) scale(1.01);
+    }
+}
+
+@keyframes numberTick {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(-8px);
+        opacity: 0;
+    }
+
+    51% {
+        transform: translateY(8px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
 
@@ -1337,12 +1706,12 @@ html.dark {
     --border-strong: 248 250 252 / 0.15;
     --border-hairline: 248 250 252 / 0.05;
 
-    /* ── Accent ── Plus saturé en dark */
-    --accent: 99 102 241;
-    /* #6366F1 - indigo-500 */
-    --accent-hover: 129 140 248;
-    /* #818CF8 - indigo-400 */
-    --accent-rgb: 99, 102, 241;
+    /* ── Accent ── Red for brand consistency (not indigo) */
+    --accent: 255 77 77;
+    /* #FF4D4D - Bright red for dark mode */
+    --accent-hover: 255 107 107;
+    /* #FF6B6B - Lighter red hover */
+    --accent-rgb: 255, 77, 77;
 
     /* ── Shadows ── Plus diffuses */
     --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -1356,6 +1725,8 @@ html.dark {
 
     /* ── Paper (Reading) ── */
     --paper-bg: #111420;
+    --color-paper: #111420;
+    --color-bg-paper: #111420;
     --paper-text: rgba(248, 250, 252, 0.92);
     --paper-secondary: rgba(203, 213, 225, 0.75);
     --paper-muted: rgba(148, 163, 184, 0.55);
@@ -1377,11 +1748,11 @@ html.dark {
     --color-muted: #181B2A;
     --color-muted-foreground: #CBD5E1;
 
-    /* Accent - Plus lumineux en dark */
-    --color-accent: #818CF8;
-    --color-accent-strong: #A5B4FC;
-    --color-accent-foreground: #0F172A;
-    --color-accent-subtle: rgba(129, 140, 248, 0.15);
+    /* Accent - Red for brand consistency */
+    --color-accent: #FF4D4D;
+    --color-accent-strong: #FF6B6B;
+    --color-accent-foreground: #FFFFFF;
+    --color-accent-subtle: rgba(255, 77, 77, 0.15);
 
     /* ── Module Colors (Plus saturés en dark) ── */
     --color-macro: #60A5FA;
@@ -1404,55 +1775,102 @@ html.dark {
     --color-management-light: rgba(251, 146, 60, 0.18);
     --color-management-glow: 0 0 50px rgba(251, 146, 60, 0.40);
 
-    /* Semantic - Dark */
+    /* ══════════════════════════════════════════
+       CRITICAL: Override ALL variables used by components
+       Must match exact names from :root
+       ══════════════════════════════════════════ */
+
+    /* Surface Ladder — Dark (MUST match :root names) */
+    --color-canvas: #0A0C14;
+    --color-panel: #111420;
+    --color-panel-border: rgba(248, 250, 252, 0.08);
+    --color-card: #141620;
+    --color-card-border: rgba(248, 250, 252, 0.10);
+    --color-card-hover: #181B2A;
+    --color-overlay: #181B2A;
+    --color-overlay-border: rgba(248, 250, 252, 0.12);
+
+    /* Background aliases — Dark */
+    --color-bg-base: #0A0C14;
+    --color-bg-raised: #141620;
+    --color-bg-overlay: #181B2A;
+
+    /* Text — Dark (MUST match :root names) */
+    --color-text-primary: #F8FAFC;
+    --color-text-secondary: #CBD5E1;
+    --color-text-muted: #94A3B8;
+    --color-text-subtle: #64748B;
+
+    /* Borders — Dark (MUST match :root names) */
+    --color-border-subtle: rgba(248, 250, 252, 0.06);
+    --color-border-default: rgba(248, 250, 252, 0.10);
+    --color-border-strong: rgba(248, 250, 252, 0.15);
+    --color-border-accent: rgba(255, 77, 77, 0.30);
+
+    /* Primary — Dark (inverted for dark mode) */
     --color-primary: #F8FAFC;
+    --color-primary-dark-a: rgba(248, 250, 252, 0.95);
+    --color-primary-dark-b: rgba(248, 250, 252, 0.85);
+    --color-primary-gradient: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    --color-primary-border: rgba(255, 255, 255, 0.15);
     --color-primary-foreground: #0F172A;
+
+    /* Accent — Dark (brighter for contrast) */
+    --color-accent: #818CF8;
+    --color-accent-hover: #A5B4FC;
+    --color-accent-subtle: rgba(129, 140, 248, 0.15);
+
+    /* Surface aliases — Dark */
+    --color-surface-base: #0A0C14;
+    --color-surface-raised: #141620;
+    --color-surface-overlay: #181B2A;
+    --color-surface-hover: rgba(129, 140, 248, 0.12);
+
+    /* Semantic — Dark */
+    --color-success: #4ADE80;
+    --color-success-subtle: rgba(74, 222, 128, 0.15);
+    --color-warning: #FBBF24;
+    --color-warning-subtle: rgba(251, 191, 36, 0.15);
+    --color-error: #F87171;
+    --color-error-subtle: rgba(248, 113, 113, 0.15);
+    --color-info: #60A5FA;
+    --color-info-subtle: rgba(96, 165, 250, 0.15);
+
     --color-secondary: #181B2A;
     --color-secondary-foreground: #F8FAFC;
+    --color-destructive: #F87171;
+    --color-destructive-foreground: #0F172A;
 
-    /* Borders - Dark */
+    /* Borders & Inputs — Dark */
     --color-border: rgba(248, 250, 252, 0.08);
-    --color-border-soft: rgba(248, 250, 252, 0.05);
     --color-input: rgba(248, 250, 252, 0.10);
     --color-ring: rgba(129, 140, 248, 0.5);
-
-    /* Text - Dark */
-    --color-text-base: rgba(248, 250, 252, 0.95);
-    --color-text-secondary: rgba(203, 213, 225, 0.85);
-    --color-text-muted: rgba(148, 163, 184, 0.70);
-    --color-text-subtle: rgba(100, 116, 139, 0.55);
-
-    /* Surfaces - Dark */
-    --color-surface-base: #0A0C14;
-    --color-surface-raised: #111420;
-    --color-surface-overlay: #181B2A;
-    --color-surface-hover: rgba(129, 140, 248, 0.10);
-    --color-surface-soft: #0F1119;
-
     --color-popover: #181B2A;
     --color-popover-foreground: #F8FAFC;
 
-    /* Shadows - Dark */
-    --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.25);
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.30);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.40);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.50);
-    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.60);
+    /* Shadows — Dark (deeper) */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.40);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.50);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.60);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.70);
+    --shadow-1: var(--shadow-sm);
+    --shadow-2: var(--shadow-md);
+    --shadow-3: var(--shadow-lg);
 
-    /* Subject shadows - Dark (plus colorés) */
-    --shadow-macro: 0 8px 32px rgba(96, 165, 250, 0.30), 0 4px 16px rgba(96, 165, 250, 0.20);
-    --shadow-micro: 0 8px 32px rgba(167, 139, 250, 0.30), 0 4px 16px rgba(167, 139, 250, 0.20);
-    --shadow-stats: 0 8px 32px rgba(34, 211, 238, 0.30), 0 4px 16px rgba(34, 211, 238, 0.20);
-    --shadow-socio: 0 8px 32px rgba(251, 113, 133, 0.30), 0 4px 16px rgba(251, 113, 133, 0.20);
-    --shadow-management: 0 8px 32px rgba(251, 146, 60, 0.30), 0 4px 16px rgba(251, 146, 60, 0.20);
+    /* Subject shadows — Dark (more vibrant) */
+    --shadow-macro: 0 8px 32px rgba(96, 165, 250, 0.35), 0 4px 16px rgba(96, 165, 250, 0.25);
+    --shadow-micro: 0 8px 32px rgba(167, 139, 250, 0.35), 0 4px 16px rgba(167, 139, 250, 0.25);
+    --shadow-stats: 0 8px 32px rgba(34, 211, 238, 0.35), 0 4px 16px rgba(34, 211, 238, 0.25);
+    --shadow-socio: 0 8px 32px rgba(251, 113, 133, 0.35), 0 4px 16px rgba(251, 113, 133, 0.25);
+    --shadow-management: 0 8px 32px rgba(251, 146, 60, 0.35), 0 4px 16px rgba(251, 146, 60, 0.25);
 
-    /* Glass - Dark */
-    --glass-panel: rgba(17, 20, 32, 0.80);
+    /* Glass — Dark */
+    --glass-panel: rgba(17, 20, 32, 0.85);
     --glass-panel-strong: rgba(17, 20, 32, 0.95);
     --glass-border: rgba(248, 250, 252, 0.08);
     --glass-highlight: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent 60%);
 
-    /* Background composition - Dark */
+    /* Background composition — Dark */
     --bg-base: linear-gradient(135deg, #0A0C14 0%, #0F1119 100%);
     --bg-glow-1: radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 50%);
     --bg-glow-2: radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
@@ -1494,4 +1912,72 @@ html.dark {
             rgba(255, 255, 255, 0.05) 0%,
             rgba(255, 255, 255, 0.10) 50%,
             rgba(255, 255, 255, 0.05) 100%);
+}
+
+/* Chapter content image skeleton */
+@keyframes chapter-image-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.prose-custom img.chapter-content-image {
+    display: block;
+    width: 100%;
+    min-height: 180px;
+    border-radius: 14px;
+    background: linear-gradient(90deg,
+            var(--color-bg-overlay) 25%,
+            var(--color-border-subtle) 45%,
+            var(--color-bg-overlay) 65%);
+    background-size: 220% 100%;
+    animation: chapter-image-shimmer 1.8s ease-in-out infinite;
+    opacity: 0.48;
+    filter: blur(0.8px);
+    transform: translateY(1px);
+    transition: opacity 170ms ease, filter 170ms ease, transform 170ms ease, background 170ms ease, min-height 170ms ease;
+}
+
+.prose-custom img.chapter-content-image.is-heavy {
+    transition: opacity 320ms ease, filter 320ms ease, transform 320ms ease, background 320ms ease, min-height 320ms ease;
+}
+
+.prose-custom img.chapter-content-image.is-loaded {
+    min-height: 0;
+    animation: none;
+    background: transparent;
+    opacity: 1;
+    filter: none;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .prose-custom img.chapter-content-image {
+        animation: none;
+    }
+}
+
+
+/* Global protection rules */
+*:not(textarea):not(textarea *) {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+textarea,
+textarea * {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+@media print {
+    html,
+    body {
+        display: none !important;
+        visibility: hidden !important;
+    }
 }

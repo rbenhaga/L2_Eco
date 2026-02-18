@@ -6,16 +6,50 @@ interface PageHeaderProps {
 
 export function PageHeader({ number, title, description }: PageHeaderProps) {
   return (
-    <header className="pt-20 sm:pt-28 md:pt-32 pb-8 sm:pb-12 md:pb-16 text-center px-4">
-      <p className="text-xs sm:text-sm font-medium text-slate-400 uppercase tracking-widest mb-2 sm:mb-4">
-        {number}
-      </p>
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900 mb-3 sm:mb-6">
+    <header className="pt-10 sm:pt-14 pb-8 sm:pb-10 text-center">
+      {/* Chapter number pill */}
+      <div className="flex justify-center mb-4">
+        <span
+          className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest"
+          style={{
+            background: 'var(--color-accent-subtle)',
+            color: 'var(--color-accent)',
+            border: '1px solid var(--color-border-accent)',
+          }}
+        >
+          {number}
+        </span>
+      </div>
+
+      {/* Title in serif */}
+      <h1
+        className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight mb-3"
+        style={{
+          color: 'var(--color-text-primary)',
+          fontFamily: 'var(--font-serif)',
+        }}
+      >
         {title}
       </h1>
-      <p className="text-base sm:text-lg md:text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+
+      {/* Description */}
+      <p
+        className="text-sm sm:text-base max-w-xl mx-auto leading-relaxed"
+        style={{ color: 'var(--color-text-secondary)' }}
+      >
         {description}
       </p>
+
+      {/* Separator line */}
+      <div
+        className="mt-8 mx-auto"
+        style={{
+          width: '60px',
+          height: '3px',
+          borderRadius: '2px',
+          background: 'var(--color-accent)',
+        }}
+      />
     </header>
   );
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PlayCircle, X } from 'lucide-react';
+import { PlayCircle, X, Video } from 'lucide-react';
 
 interface VideoPlayerProps {
     title: string;
@@ -41,91 +41,135 @@ export function VideoPlayer({
         return (
             <button
                 onClick={handlePlay}
-                className="flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 hover:shadow-md group w-full"
-                style={{ background: 'rgb(var(--surface-2))', borderColor: 'rgb(var(--border))' }}
+                className="flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 group w-full"
+                style={{
+                    background: 'var(--color-card)',
+                    borderColor: 'var(--color-border-default)',
+                    boxShadow: 'var(--shadow-sm)',
+                }}
             >
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgb(var(--accent) / 0.1)' }}>
-                    <PlayCircle className="h-5 w-5" style={{ color: 'rgb(var(--accent))' }} />
+                <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: 'var(--color-accent-subtle)' }}
+                >
+                    <PlayCircle className="h-5 w-5" style={{ color: 'var(--color-accent)' }} />
                 </div>
                 <div className="flex-1 text-left min-w-0">
                     <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium truncate" style={{ color: 'rgb(var(--text))' }}>{title}</span>
+                        <span className="text-sm font-medium truncate" style={{ color: 'var(--color-text-primary)' }}>{title}</span>
                         {badge && (
-                            <span className="px-1.5 py-0.5 rounded text-[10px] font-medium shrink-0" style={{ background: 'rgb(var(--accent) / 0.1)', color: 'rgb(var(--accent))' }}>{badge}</span>
+                            <span
+                                className="px-1.5 py-0.5 rounded-full text-[10px] font-medium shrink-0"
+                                style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}
+                            >
+                                {badge}
+                            </span>
                         )}
                     </div>
                 </div>
-                <span className="text-xs shrink-0" style={{ color: 'rgb(var(--text-muted))' }}>{duration}</span>
+                <span className="text-xs shrink-0" style={{ color: 'var(--color-text-muted)' }}>{duration}</span>
             </button>
         );
     }
 
-    // Full version (first time / not watched)
+    // Full version
     return (
-        <div>
-            <div className="flex items-center gap-2 mb-3">
-                <h3 className="text-sm font-semibold" style={{ color: 'rgb(var(--text))' }}>{title}</h3>
+        <div
+            className="rounded-2xl overflow-hidden"
+            style={{
+                background: 'var(--color-card)',
+                boxShadow: 'var(--shadow-md)',
+                border: '1px solid var(--color-border-subtle)',
+            }}
+        >
+            {/* Header */}
+            <div className="flex items-center gap-2 px-5 pt-4 pb-3">
+                <Video className="w-4 h-4" style={{ color: 'var(--color-accent)' }} />
+                <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>{title}</h3>
                 {badge && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ background: 'rgb(var(--accent) / 0.1)', color: 'rgb(var(--accent))' }}>{badge}</span>
+                    <span
+                        className="px-2 py-0.5 rounded-full text-[10px] font-medium"
+                        style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}
+                    >
+                        {badge}
+                    </span>
                 )}
             </div>
 
-            {!showVideo ? (
-                <button
-                    onClick={handlePlay}
-                    className="relative w-full aspect-video rounded-xl overflow-hidden group"
-                    style={{ background: thumbnailUrl ? undefined : 'linear-gradient(135deg, rgb(var(--accent) / 0.1), rgb(var(--accent) / 0.05))' }}
-                >
-                    {thumbnailUrl ? (
-                        <img src={thumbnailUrl} alt={title} className="absolute inset-0 w-full h-full object-cover" />
-                    ) : (
-                        <>
-                            {/* Placeholder pattern */}
-                            <div className="absolute inset-0 opacity-30" style={{
-                                backgroundImage: 'radial-gradient(circle at 2px 2px, rgb(var(--accent) / 0.3) 1px, transparent 0)',
-                                backgroundSize: '24px 24px'
-                            }} />
-                        </>
-                    )}
-
-                    {/* Play button */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-200 group-hover:scale-110" style={{ background: 'rgb(var(--accent))', boxShadow: '0 8px 32px rgb(var(--accent) / 0.4)' }}>
-                            <PlayCircle className="h-8 w-8 text-white fill-white" />
-                        </div>
-                    </div>
-
-                    {/* Duration badge */}
-                    <div className="absolute bottom-3 right-3 px-2 py-1 rounded-md text-xs font-medium" style={{ background: 'rgba(0,0,0,0.7)', color: 'white' }}>
-                        {duration}
-                    </div>
-                </button>
-            ) : (
-                <div className="relative w-full aspect-video rounded-xl overflow-hidden" style={{ background: 'rgb(var(--surface-2))' }}>
-                    {videoUrl ? (
-                        <>
-                            <iframe
-                                src={videoUrl}
-                                className="absolute inset-0 w-full h-full"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
+            {/* Video area */}
+            <div className="px-5 pb-5">
+                {!showVideo ? (
+                    <button
+                        onClick={handlePlay}
+                        className="relative w-full aspect-video rounded-xl overflow-hidden group"
+                        style={{
+                            background: thumbnailUrl
+                                ? undefined
+                                : 'linear-gradient(135deg, var(--color-accent-subtle), var(--color-bg-overlay))',
+                        }}
+                    >
+                        {thumbnailUrl ? (
+                            <img src={thumbnailUrl} alt={title} className="absolute inset-0 w-full h-full object-cover" />
+                        ) : (
+                            <div
+                                className="absolute inset-0 opacity-20"
+                                style={{
+                                    backgroundImage: `radial-gradient(circle at 2px 2px, var(--color-accent) 1px, transparent 0)`,
+                                    backgroundSize: '24px 24px',
+                                }}
                             />
-                            {/* Close/minimize button */}
-                            <button
-                                onClick={handleClose}
-                                className="absolute top-3 right-3 p-2 rounded-lg transition-colors z-10"
-                                style={{ background: 'rgba(0,0,0,0.7)' }}
-                            >
-                                <X className="h-4 w-4 text-white" />
-                            </button>
-                        </>
-                    ) : (
+                        )}
+
+                        {/* Play button */}
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <p className="text-sm" style={{ color: 'rgb(var(--text-muted))' }}>Vidéo bientôt disponible</p>
+                            <div
+                                className="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-200 group-hover:scale-110"
+                                style={{
+                                    background: 'var(--color-accent)',
+                                    boxShadow: '0 8px 32px color-mix(in srgb, var(--color-accent) 30%, transparent)',
+                                }}
+                            >
+                                <PlayCircle className="h-8 w-8 text-[var(--color-bg-raised)]" />
+                            </div>
                         </div>
-                    )}
-                </div>
-            )}
+
+                        {/* Duration badge */}
+                        <div
+                            className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg text-xs font-medium"
+                            style={{ background: 'color-mix(in srgb, var(--color-text-primary) 70%, transparent)', color: 'var(--color-bg-raised)' }}
+                        >
+                            {duration}
+                        </div>
+                    </button>
+                ) : (
+                    <div
+                        className="relative w-full aspect-video rounded-xl overflow-hidden"
+                        style={{ background: 'var(--color-bg-overlay)' }}
+                    >
+                        {videoUrl ? (
+                            <>
+                                <iframe
+                                    src={videoUrl}
+                                    className="absolute inset-0 w-full h-full"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                />
+                                <button
+                                    onClick={handleClose}
+                                    className="absolute top-3 right-3 p-2 rounded-lg transition-colors z-10"
+                                    style={{ background: 'color-mix(in srgb, var(--color-text-primary) 70%, transparent)' }}
+                                >
+                                    <X className="h-4 w-4 text-[var(--color-bg-raised)]" />
+                                </button>
+                            </>
+                        ) : (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Vidéo bientôt disponible</p>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

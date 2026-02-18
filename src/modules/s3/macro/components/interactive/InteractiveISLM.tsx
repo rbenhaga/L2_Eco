@@ -137,12 +137,12 @@ export function InteractiveISLM() {
   };
 
   const events = [
-    { id: 'G_up', label: '↑G (dépenses)', color: '#2563eb' },
-    { id: 'G_down', label: '↓G (austérité)', color: '#2563eb' },
-    { id: 'T_up', label: '↑T (impôts)', color: '#d97706' },
-    { id: 'M_up', label: '↑M (monnaie)', color: '#059669' },
-    { id: 'M_down', label: '↓M (restriction)', color: '#059669' },
-    { id: 'policy_mix', label: 'Policy Mix', color: '#7c3aed' },
+    { id: 'G_up', label: '↑G (dépenses)', color: 'var(--color-info)' },
+    { id: 'G_down', label: '↓G (austérité)', color: 'var(--color-info)' },
+    { id: 'T_up', label: '↑T (impôts)', color: 'var(--color-warning)' },
+    { id: 'M_up', label: '↑M (monnaie)', color: 'var(--color-success)' },
+    { id: 'M_down', label: '↓M (restriction)', color: 'var(--color-success)' },
+    { id: 'policy_mix', label: 'Policy Mix', color: 'var(--color-micro)' },
   ] as const;
 
   const getExplanation = () => {
@@ -268,16 +268,16 @@ export function InteractiveISLM() {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 my-8">
+    <div className="rounded-2xl p-6 my-8" style={{ background: 'var(--color-bg-raised)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-xl font-semibold">Modèle IS-LM</h3>
         <div className="flex items-center gap-2">
           {/* Toggle Mode - Désactivé pour production
-          <div className="flex bg-slate-100/80 rounded-lg p-1">
+          <div className="flex bg-[var(--color-bg-overlay)] rounded-lg p-1">
             <button
               onClick={() => setMode('theorique')}
               className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors ${
-                mode === 'theorique' ? 'bg-white shadow text-blue-600' : 'text-slate-700 hover:text-slate-900'
+                mode === 'theorique' ? 'bg-[var(--color-bg-raised)] shadow text-[var(--color-info)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
               }`}
             >
               <BookOpen size={14} /> Théorique
@@ -285,7 +285,7 @@ export function InteractiveISLM() {
             <button
               onClick={() => setMode('numerique')}
               className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors ${
-                mode === 'numerique' ? 'bg-white shadow text-emerald-600' : 'text-slate-700 hover:text-slate-900'
+                mode === 'numerique' ? 'bg-[var(--color-bg-raised)] shadow text-[var(--color-success)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
               }`}
             >
               <Calculator size={14} /> Numérique
@@ -293,18 +293,19 @@ export function InteractiveISLM() {
           </div>
           */}
           <button onClick={() => setShowLegend(!showLegend)}
-            className={`px-3 py-1.5 rounded-lg text-sm flex items-center gap-1.5 ${showLegend ? 'bg-blue-100 text-blue-600' : 'bg-slate-100/80 text-slate-700 hover:bg-slate-200'}`}>
+            className="px-3 py-1.5 rounded-lg text-sm flex items-center gap-1.5"
+            style={showLegend ? { background: 'var(--color-info-subtle)', color: 'var(--color-info)' } : { background: 'var(--color-bg-overlay)', color: 'var(--color-text-secondary)' }}>
             <Info size={16} /> {showLegend ? 'Masquer' : 'Variables'}
           </button>
         </div>
       </div>
-      <p className="text-sm text-slate-600 mb-4">
+      <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>
         Équilibre marché des biens (IS) et marché monétaire (LM)
       </p>
 
       {showLegend && (
-        <div className="mb-4 p-3 bg-blue-50 rounded-lg text-sm border border-blue-100">
-          <div className="grid grid-cols-4 gap-2 text-blue-800">
+        <div className="mb-4 p-3 rounded-lg text-sm" style={{ background: 'var(--color-info-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-info)' }}>
+          <div className="grid grid-cols-4 gap-2" style={{ color: 'var(--color-info)' }}>
             <span><strong>Y</strong> = Production</span>
             <span><strong>i</strong> = Taux d'intérêt</span>
             <span><strong>G</strong> = Dépenses pub.</span>
@@ -315,7 +316,7 @@ export function InteractiveISLM() {
             <span><strong>P</strong> = Prix</span>
           </div>
           {mode === 'numerique' && (
-            <div className="mt-3 pt-3 border-t border-blue-200 grid grid-cols-4 gap-2 text-emerald-700">
+            <div className="mt-3 pt-3 grid grid-cols-4 gap-2" style={{ borderTop: '1px solid var(--color-info)', color: 'var(--color-success)' }}>
               <span>c = {params.c}</span>
               <span>b = {params.b}</span>
               <span>k = {params.k}</span>
@@ -329,9 +330,8 @@ export function InteractiveISLM() {
       <div className="mb-4">
         <button
           onClick={() => setShowIntuition(!showIntuition)}
-          className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${
-            showIntuition ? 'bg-gray-900 text-white' : 'bg-slate-100/80 text-slate-700 hover:bg-slate-200'
-          }`}
+          className="px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
+          style={showIntuition ? { background: 'var(--color-text-primary)', color: 'var(--color-bg-raised)' } : { background: 'var(--color-bg-overlay)', color: 'var(--color-text-secondary)' }}
         >
           <Lightbulb size={16} /> {showIntuition ? 'Masquer' : 'Intuition'}
         </button>
@@ -340,20 +340,21 @@ export function InteractiveISLM() {
       {showIntuition && (
         <IntuitionPanel
           sections={[
-            { title: intuitionContent.IS.title, color: '#2563eb', steps: intuitionContent.IS.steps },
-            { title: intuitionContent.LM.title, color: '#059669', steps: intuitionContent.LM.steps },
+            { title: intuitionContent.IS.title, color: 'var(--color-info)', steps: intuitionContent.IS.steps },
+            { title: intuitionContent.LM.title, color: 'var(--color-success)', steps: intuitionContent.LM.steps },
           ]}
         />
       )}
 
       <div className="flex flex-wrap gap-2 mb-6">
         <button onClick={() => setEvent('none')}
-          className={`px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1 ${event === 'none' ? 'bg-gray-900 text-white' : 'bg-slate-100/80 hover:bg-slate-200'}`}>
+          className="px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1"
+          style={event === 'none' ? { background: 'var(--color-text-primary)', color: 'var(--color-bg-raised)' } : { background: 'var(--color-bg-overlay)' }}>
           <RotateCcw size={14} /> Reset
         </button>
         {events.map(e => (
           <button key={e.id} onClick={() => setEvent(e.id)}
-            style={{ backgroundColor: event === e.id ? e.color : `${e.color}15`, color: event === e.id ? 'white' : e.color }}
+            style={{ backgroundColor: event === e.id ? e.color : `color-mix(in srgb, ${e.color} 14%, transparent)`, color: event === e.id ? 'var(--color-bg-raised)' : e.color }}
             className="px-3 py-1.5 rounded-lg text-sm font-medium">
             {e.label}
           </button>
@@ -362,31 +363,31 @@ export function InteractiveISLM() {
 
       <div className="grid lg:grid-cols-5 gap-6">
         <div className="lg:col-span-3">
-          <svg viewBox={`0 0 ${W} ${H}`} className="w-full bg-slate-100/50 rounded-xl border border-gray-100">
+          <svg viewBox={`0 0 ${W} ${H}`} className="w-full rounded-xl" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
             {/* Grille */}
             {(mode === 'numerique' ? [0, 200, 400, 600, 800] : [0, 20, 40, 60, 80, 100]).map(v => (
-              <line key={`gx${v}`} x1={toX(v)} y1={margin.top} x2={toX(v)} y2={margin.top + h} stroke="#e5e7eb" />
+              <line key={`gx${v}`} x1={toX(v)} y1={margin.top} x2={toX(v)} y2={margin.top + h} stroke="var(--color-border-default)" />
             ))}
             {(mode === 'numerique' ? [0, 3, 6, 9, 12] : [0, 2, 4, 6, 8, 10]).map(v => (
-              <line key={`gy${v}`} x1={margin.left} y1={toY(v)} x2={margin.left + w} y2={toY(v)} stroke="#e5e7eb" />
+              <line key={`gy${v}`} x1={margin.left} y1={toY(v)} x2={margin.left + w} y2={toY(v)} stroke="var(--color-border-default)" />
             ))}
             
             {/* Axes */}
-            <line x1={margin.left} y1={margin.top + h} x2={margin.left + w} y2={margin.top + h} stroke="#1f2937" strokeWidth="2" />
-            <line x1={margin.left} y1={margin.top} x2={margin.left} y2={margin.top + h} stroke="#1f2937" strokeWidth="2" />
-            <polygon points={`${margin.left + w},${margin.top + h} ${margin.left + w - 8},${margin.top + h - 4} ${margin.left + w - 8},${margin.top + h + 4}`} fill="#1f2937" />
-            <polygon points={`${margin.left},${margin.top} ${margin.left - 4},${margin.top + 8} ${margin.left + 4},${margin.top + 8}`} fill="#1f2937" />
-            <text x={margin.left + w + 10} y={margin.top + h + 5} className="text-sm font-semibold fill-gray-700">Y</text>
-            <text x={margin.left - 8} y={margin.top - 8} className="text-sm font-semibold fill-gray-700">i (%)</text>
+            <line x1={margin.left} y1={margin.top + h} x2={margin.left + w} y2={margin.top + h} stroke="var(--color-text-secondary)" strokeWidth="2" />
+            <line x1={margin.left} y1={margin.top} x2={margin.left} y2={margin.top + h} stroke="var(--color-text-secondary)" strokeWidth="2" />
+            <polygon points={`${margin.left + w},${margin.top + h} ${margin.left + w - 8},${margin.top + h - 4} ${margin.left + w - 8},${margin.top + h + 4}`} fill="var(--color-text-secondary)" />
+            <polygon points={`${margin.left},${margin.top} ${margin.left - 4},${margin.top + 8} ${margin.left + 4},${margin.top + 8}`} fill="var(--color-text-secondary)" />
+            <text x={margin.left + w + 10} y={margin.top + h + 5} className="text-sm font-semibold fill-[var(--color-text-secondary)]">Y</text>
+            <text x={margin.left - 8} y={margin.top - 8} className="text-sm font-semibold fill-[var(--color-text-secondary)]">i (%)</text>
 
             {/* Graduations en mode numérique */}
             {mode === 'numerique' && (
               <>
                 {[0, 200, 400, 600, 800].map(v => (
-                  <text key={`lx${v}`} x={toX(v)} y={margin.top + h + 15} className="text-[10px] fill-gray-500" textAnchor="middle">{v}</text>
+                  <text key={`lx${v}`} x={toX(v)} y={margin.top + h + 15} className="text-[10px] fill-[var(--color-text-muted)]" textAnchor="middle">{v}</text>
                 ))}
                 {[0, 3, 6, 9, 12].map(v => (
-                  <text key={`ly${v}`} x={margin.left - 8} y={toY(v) + 4} className="text-[10px] fill-gray-500" textAnchor="end">{v}</text>
+                  <text key={`ly${v}`} x={margin.left - 8} y={toY(v) + 4} className="text-[10px] fill-[var(--color-text-muted)]" textAnchor="end">{v}</text>
                 ))}
               </>
             )}
@@ -396,80 +397,80 @@ export function InteractiveISLM() {
               <>
                 {isISMoving && (
                   <>
-                    <path d={mode === 'numerique' ? genIS(params.G0, params.T0) : genIS(0)} fill="none" stroke="#94a3b8" strokeWidth="2" strokeDasharray="6,4" />
-                    <text x={toX(mode === 'numerique' ? 150 : 15)} y={toY(mode === 'numerique' ? calcISNumeric(150, params.G0, params.T0) : calcISTheoretic(15, 0)) - 8} className="text-xs fill-gray-400" textAnchor="middle">IS</text>
+                    <path d={mode === 'numerique' ? genIS(params.G0, params.T0) : genIS(0)} fill="none" stroke="var(--color-text-muted)" strokeWidth="2" strokeDasharray="6,4" />
+                    <text x={toX(mode === 'numerique' ? 150 : 15)} y={toY(mode === 'numerique' ? calcISNumeric(150, params.G0, params.T0) : calcISTheoretic(15, 0)) - 8} className="text-xs fill-[var(--color-text-muted)]" textAnchor="middle">IS</text>
                   </>
                 )}
                 {isLMMoving && (
                   <>
-                    <path d={mode === 'numerique' ? genLM(params.M0) : genLM(0)} fill="none" stroke="#94a3b8" strokeWidth="2" strokeDasharray="6,4" />
-                    <text x={toX(mode === 'numerique' ? 600 : 85)} y={toY(mode === 'numerique' ? calcLMNumeric(600, params.M0) : calcLMTheoretic(85, 0)) - 8} className="text-xs fill-gray-400" textAnchor="middle">LM</text>
+                    <path d={mode === 'numerique' ? genLM(params.M0) : genLM(0)} fill="none" stroke="var(--color-text-muted)" strokeWidth="2" strokeDasharray="6,4" />
+                    <text x={toX(mode === 'numerique' ? 600 : 85)} y={toY(mode === 'numerique' ? calcLMNumeric(600, params.M0) : calcLMTheoretic(85, 0)) - 8} className="text-xs fill-[var(--color-text-muted)]" textAnchor="middle">LM</text>
                   </>
                 )}
-                <circle cx={toX(eq0.Y)} cy={toY(eq0.i)} r="7" fill="white" />
-                <circle cx={toX(eq0.Y)} cy={toY(eq0.i)} r="5" fill="#94a3b8" />
-                <text x={toX(eq0.Y)} y={toY(eq0.i) - 12} className="text-xs font-medium" textAnchor="middle" stroke="white" strokeWidth="3" paintOrder="stroke">E₀</text>
-                <text x={toX(eq0.Y)} y={toY(eq0.i) - 12} className="text-xs font-medium fill-gray-500" textAnchor="middle">E₀</text>
+                <circle cx={toX(eq0.Y)} cy={toY(eq0.i)} r="7" fill="var(--color-bg-raised)" />
+                <circle cx={toX(eq0.Y)} cy={toY(eq0.i)} r="5" fill="var(--color-text-muted)" />
+                <text x={toX(eq0.Y)} y={toY(eq0.i) - 12} className="text-xs font-medium" textAnchor="middle" stroke="var(--color-bg-raised)" strokeWidth="3" paintOrder="stroke">E₀</text>
+                <text x={toX(eq0.Y)} y={toY(eq0.i) - 12} className="text-xs font-medium fill-[var(--color-text-muted)]" textAnchor="middle">E₀</text>
               </>
             )}
 
             {/* IS (bleue) */}
-            <path d={mode === 'numerique' ? genIS(G, T) : genIS(isShift)} fill="none" stroke="#2563eb" strokeWidth="3" className="transition-all duration-500" />
-            <text x={toX(isLabelY)} y={toY(isLabelI) - 10} className="text-sm font-bold" textAnchor="middle" stroke="white" strokeWidth="4" paintOrder="stroke">
+            <path d={mode === 'numerique' ? genIS(G, T) : genIS(isShift)} fill="none" stroke="var(--color-info)" strokeWidth="3" className="transition-all duration-500" />
+            <text x={toX(isLabelY)} y={toY(isLabelI) - 10} className="text-sm font-bold" textAnchor="middle" stroke="var(--color-bg-raised)" strokeWidth="4" paintOrder="stroke">
               IS{isISMoving ? "'" : ''}
             </text>
-            <text x={toX(isLabelY)} y={toY(isLabelI) - 10} className="text-sm font-bold fill-blue-600" textAnchor="middle">
+            <text x={toX(isLabelY)} y={toY(isLabelI) - 10} className="text-sm font-bold fill-[var(--color-info)]" textAnchor="middle">
               IS{isISMoving ? "'" : ''}
             </text>
 
             {/* LM (verte) */}
-            <path d={mode === 'numerique' ? genLM(M) : genLM(lmShift)} fill="none" stroke="#059669" strokeWidth="3" className="transition-all duration-500" />
-            <text x={toX(lmLabelY)} y={toY(lmLabelI) - 10} className="text-sm font-bold" textAnchor="middle" stroke="white" strokeWidth="4" paintOrder="stroke">
+            <path d={mode === 'numerique' ? genLM(M) : genLM(lmShift)} fill="none" stroke="var(--color-success)" strokeWidth="3" className="transition-all duration-500" />
+            <text x={toX(lmLabelY)} y={toY(lmLabelI) - 10} className="text-sm font-bold" textAnchor="middle" stroke="var(--color-bg-raised)" strokeWidth="4" paintOrder="stroke">
               LM{isLMMoving ? "'" : ''}
             </text>
-            <text x={toX(lmLabelY)} y={toY(lmLabelI) - 10} className="text-sm font-bold fill-emerald-600" textAnchor="middle">
+            <text x={toX(lmLabelY)} y={toY(lmLabelI) - 10} className="text-sm font-bold fill-[var(--color-success)]" textAnchor="middle">
               LM{isLMMoving ? "'" : ''}
             </text>
 
             {/* Équilibre */}
-            <line x1={toX(eq1.Y)} y1={toY(eq1.i)} x2={toX(eq1.Y)} y2={margin.top + h} stroke="#dc2626" strokeWidth="1.5" strokeDasharray="5,3" className="transition-all duration-500" />
-            <line x1={margin.left} y1={toY(eq1.i)} x2={toX(eq1.Y)} y2={toY(eq1.i)} stroke="#dc2626" strokeWidth="1.5" strokeDasharray="5,3" className="transition-all duration-500" />
+            <line x1={toX(eq1.Y)} y1={toY(eq1.i)} x2={toX(eq1.Y)} y2={margin.top + h} stroke="var(--color-error)" strokeWidth="1.5" strokeDasharray="5,3" className="transition-all duration-500" />
+            <line x1={margin.left} y1={toY(eq1.i)} x2={toX(eq1.Y)} y2={toY(eq1.i)} stroke="var(--color-error)" strokeWidth="1.5" strokeDasharray="5,3" className="transition-all duration-500" />
             
             {/* Valeurs numériques sur les axes */}
             {mode === 'numerique' ? (
               <>
-                <text x={toX(eq1.Y)} y={margin.top + h + 28} className="text-xs font-bold fill-red-600" textAnchor="middle">Y*={eq1.Y.toFixed(0)}</text>
-                <text x={margin.left - 5} y={toY(eq1.i) + 4} className="text-xs font-bold fill-red-600" textAnchor="end">i*={eq1.i.toFixed(1)}%</text>
+                <text x={toX(eq1.Y)} y={margin.top + h + 28} className="text-xs font-bold fill-[var(--color-error)]" textAnchor="middle">Y*={eq1.Y.toFixed(0)}</text>
+                <text x={margin.left - 5} y={toY(eq1.i) + 4} className="text-xs font-bold fill-[var(--color-error)]" textAnchor="end">i*={eq1.i.toFixed(1)}%</text>
               </>
             ) : (
               <>
-                <text x={toX(eq1.Y)} y={margin.top + h + 15} className="text-xs font-medium fill-red-600" textAnchor="middle">Y*</text>
-                <text x={margin.left - 8} y={toY(eq1.i) + 4} className="text-xs font-medium fill-red-600" textAnchor="end">i*</text>
+                <text x={toX(eq1.Y)} y={margin.top + h + 15} className="text-xs font-medium fill-[var(--color-error)]" textAnchor="middle">Y*</text>
+                <text x={margin.left - 8} y={toY(eq1.i) + 4} className="text-xs font-medium fill-[var(--color-error)]" textAnchor="end">i*</text>
               </>
             )}
             
-            <circle cx={toX(eq1.Y)} cy={toY(eq1.i)} r="9" fill="white" className="transition-all duration-500" />
-            <circle cx={toX(eq1.Y)} cy={toY(eq1.i)} r="7" fill="#dc2626" className="transition-all duration-500" />
-            <text x={toX(eq1.Y) + 15} y={toY(eq1.i) + 4} className="text-sm font-bold" stroke="white" strokeWidth="3" paintOrder="stroke">{event === 'none' ? 'E*' : 'E₁'}</text>
-            <text x={toX(eq1.Y) + 15} y={toY(eq1.i) + 4} className="text-sm font-bold fill-red-600">{event === 'none' ? 'E*' : 'E₁'}</text>
+            <circle cx={toX(eq1.Y)} cy={toY(eq1.i)} r="9" fill="var(--color-bg-raised)" className="transition-all duration-500" />
+            <circle cx={toX(eq1.Y)} cy={toY(eq1.i)} r="7" fill="var(--color-error)" className="transition-all duration-500" />
+            <text x={toX(eq1.Y) + 15} y={toY(eq1.i) + 4} className="text-sm font-bold" stroke="var(--color-bg-raised)" strokeWidth="3" paintOrder="stroke">{event === 'none' ? 'E*' : 'E₁'}</text>
+            <text x={toX(eq1.Y) + 15} y={toY(eq1.i) + 4} className="text-sm font-bold fill-[var(--color-error)]">{event === 'none' ? 'E*' : 'E₁'}</text>
           </svg>
 
           {/* Encadré valeurs numériques */}
           {mode === 'numerique' && event !== 'none' && (
-            <div className="mt-4 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-              <p className="text-sm font-semibold text-emerald-800 mb-2">📊 Calcul numérique</p>
+            <div className="mt-4 p-3 rounded-lg" style={{ background: 'var(--color-success-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-success)' }}>
+              <p className="text-sm font-semibold mb-2" style={{ color: 'var(--color-success)' }}>📊 Calcul numérique</p>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-slate-700">Avant (E₀) :</p>
-                  <p className="font-mono text-emerald-700">Y₀ = {eq0.Y.toFixed(0)}, i₀ = {eq0.i.toFixed(2)}%</p>
+                  <p style={{ color: 'var(--color-text-secondary)' }}>Avant (E₀) :</p>
+                  <p className="font-mono" style={{ color: 'var(--color-success)' }}>Y₀ = {eq0.Y.toFixed(0)}, i₀ = {eq0.i.toFixed(2)}%</p>
                 </div>
                 <div>
-                  <p className="text-slate-700">Après (E₁) :</p>
-                  <p className="font-mono text-emerald-700">Y₁ = {eq1.Y.toFixed(0)}, i₁ = {eq1.i.toFixed(2)}%</p>
+                  <p style={{ color: 'var(--color-text-secondary)' }}>Après (E₁) :</p>
+                  <p className="font-mono" style={{ color: 'var(--color-success)' }}>Y₁ = {eq1.Y.toFixed(0)}, i₁ = {eq1.i.toFixed(2)}%</p>
                 </div>
               </div>
-              <div className="mt-2 pt-2 border-t border-emerald-200">
-                <p className="text-sm text-emerald-700">
+              <div className="mt-2 pt-2" style={{ borderTop: '1px solid var(--color-success)' }}>
+                <p className="text-sm" style={{ color: 'var(--color-success)' }}>
                   <strong>ΔY = {(eq1.Y - eq0.Y).toFixed(0)}</strong> ({((eq1.Y - eq0.Y) / eq0.Y * 100).toFixed(1)}%) | 
                   <strong> Δi = {(eq1.i - eq0.i).toFixed(2)}</strong> points
                 </p>
@@ -480,36 +481,36 @@ export function InteractiveISLM() {
 
         <div className="lg:col-span-2 space-y-4">
           {expl ? (
-            <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
-              <p className="font-semibold text-blue-900 mb-3">{expl.title}</p>
+            <div className="rounded-xl p-4" style={{ background: 'var(--color-info-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-info)' }}>
+              <p className="font-semibold mb-3" style={{ color: 'var(--color-text-primary)' }}>{expl.title}</p>
               <div className="space-y-3">
                 {expl.steps.map((s, i) => (
                   <div key={i} className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-blue-200 text-blue-800 text-xs flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                    <span className="w-5 h-5 rounded-full text-xs flex items-center justify-center shrink-0 mt-0.5" style={{ background: 'var(--color-info-subtle)', color: 'var(--color-info)' }}>{i + 1}</span>
                     <div>
                       <MathDisplay>{s.formula}</MathDisplay>
-                      <p className="text-sm text-blue-700 mt-1">{s.text}</p>
+                      <p className="text-sm mt-1" style={{ color: 'var(--color-info)' }}>{s.text}</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <p className="mt-4 pt-3 border-t border-blue-200 text-base font-bold text-blue-900">{expl.result}</p>
+              <p className="mt-4 pt-3 text-base font-bold" style={{ borderTop: '1px solid var(--color-info)', color: 'var(--color-text-primary)' }}>{expl.result}</p>
               {mode === 'numerique' && expl.numeric && (
-                <div className="mt-3 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                  <p className="text-sm text-emerald-800">{expl.numeric}</p>
+                <div className="mt-3 p-3 rounded-lg" style={{ background: 'var(--color-success-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-success)' }}>
+                  <p className="text-sm" style={{ color: 'var(--color-success)' }}>{expl.numeric}</p>
                 </div>
               )}
             </div>
           ) : (
-            <div className="bg-slate-100/50 rounded-xl p-4 border border-slate-200">
-              <p className="font-medium text-slate-800 mb-2">État initial</p>
-              <p className="text-sm text-slate-700 mb-3">Clique sur un événement pour voir les effets.</p>
+            <div className="rounded-xl p-4" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
+              <p className="font-medium mb-2" style={{ color: 'var(--color-text-primary)' }}>État initial</p>
+              <p className="text-sm mb-3" style={{ color: 'var(--color-text-secondary)' }}>Clique sur un événement pour voir les effets.</p>
               <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-blue-500 rounded" /><span><strong>IS</strong> : Marché des biens</span></div>
-                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-emerald-500 rounded" /><span><strong>LM</strong> : Marché monétaire</span></div>
+                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-[var(--color-info)] rounded" /><span><strong>IS</strong> : Marché des biens</span></div>
+                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-[var(--color-success-subtle)]0 rounded" /><span><strong>LM</strong> : Marché monétaire</span></div>
               </div>
               {mode === 'numerique' && (
-                <div className="mt-3 pt-3 border-t border-slate-200 text-sm text-slate-700">
+                <div className="mt-3 pt-3 text-sm" style={{ borderTop: '1px solid var(--color-border-default)', color: 'var(--color-text-secondary)' }}>
                   <p>Paramètres : G={params.G0}, T={params.T0}, M={params.M0}</p>
                   <p>Équilibre : Y*={eq0.Y.toFixed(0)}, i*={eq0.i.toFixed(2)}%</p>
                 </div>
@@ -518,21 +519,21 @@ export function InteractiveISLM() {
           )}
 
           <div className="space-y-3">
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 rounded-lg relative" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
               <Tooltip term="IS (marché des biens)" formula={"Y = C(Y-T) + I(i) + G"}>
                 La courbe IS représente l'équilibre sur le marché des biens. Elle est <strong>décroissante</strong> car : 
                 si i↑ → I↓ (l'investissement baisse) → Y↓. Chaque point de IS est un couple (Y,i) où offre = demande de biens.
               </Tooltip>
               <MathDisplay>{"Y = C(Y-T) + I(i) + G"}</MathDisplay>
             </div>
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 rounded-lg relative" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
               <Tooltip term="LM (marché monétaire)" formula={"\\frac{M}{P} = L(Y, i)"}>
                 La courbe LM représente l'équilibre sur le marché de la monnaie. Elle est <strong>croissante</strong> car : 
                 si Y↑ → demande de monnaie↑ → pour équilibrer, i↑. L(Y,i) est la demande de monnaie (croissante en Y, décroissante en i).
               </Tooltip>
               <MathDisplay>{"\\frac{M}{P} = L(Y, i)"}</MathDisplay>
             </div>
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 rounded-lg relative" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
               <Tooltip term="Effet d'éviction" formula={"G\\uparrow \\Rightarrow i\\uparrow \\Rightarrow I\\downarrow"}>
                 Quand l'État augmente ses dépenses (G↑), il emprunte sur le marché financier. Cela fait monter les taux d'intérêt (i↑). 
                 Les entreprises, face à des taux plus élevés, investissent moins (I↓). L'investissement privé est "évincé" par la dépense publique. 
@@ -540,7 +541,7 @@ export function InteractiveISLM() {
               </Tooltip>
               <MathDisplay>{"G\\uparrow \\Rightarrow i\\uparrow \\Rightarrow I\\downarrow"}</MathDisplay>
             </div>
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 rounded-lg relative" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
               <Tooltip term="Multiplicateur keynésien" formula={"k = \\frac{1}{1-c}"}>
                 Quand G augmente de 1€, Y augmente de plus de 1€. Pourquoi ? Les revenus supplémentaires génèrent de la consommation (C = c×Y), 
                 qui génère des revenus, etc. Si c = 0.8 (on consomme 80% du revenu), alors k = 1/(1-0.8) = 5. 
@@ -548,7 +549,7 @@ export function InteractiveISLM() {
               </Tooltip>
               <MathDisplay>{"k = \\frac{1}{1-c}"}</MathDisplay>
               {mode === 'numerique' && (
-                <p className="text-xs text-emerald-600 mt-2">Avec c = {params.c}, k = {(1 / (1 - params.c)).toFixed(1)}</p>
+                <p className="text-xs mt-2" style={{ color: 'var(--color-success)' }}>Avec c = {params.c}, k = {(1 / (1 - params.c)).toFixed(1)}</p>
               )}
             </div>
           </div>
@@ -557,3 +558,5 @@ export function InteractiveISLM() {
     </div>
   );
 }
+
+

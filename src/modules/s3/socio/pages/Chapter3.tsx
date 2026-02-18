@@ -16,13 +16,13 @@ export default function Chapter3() {
       />
 
       {/* Toggle version */}
-      <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-slate-100 rounded-xl w-full sm:w-fit">
+      <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-[var(--color-bg-overlay)] rounded-xl w-full sm:w-fit">
         <button
           onClick={() => setView('full')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
             view === 'full' 
-              ? 'bg-white text-slate-900 shadow-sm' 
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm' 
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
           }`}
         >
           <BookOpen className="w-4 h-4" />
@@ -33,8 +33,8 @@ export default function Chapter3() {
           onClick={() => setView('quick')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
             view === 'quick' 
-              ? 'bg-white text-slate-900 shadow-sm' 
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm' 
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
           }`}
         >
           <Zap className="w-4 h-4" />
@@ -46,14 +46,14 @@ export default function Chapter3() {
       {view === 'quick' && (
         <div className="space-y-5 sm:space-y-6">
           {/* Thèse centrale */}
-          <div className="p-5 sm:p-7 bg-linear-to-br from-indigo-50 via-violet-50/50 to-slate-50 rounded-2xl border border-indigo-100/80">
-            <h3 className="font-semibold text-slate-900 mb-4 sm:mb-5 flex items-center gap-2 text-base sm:text-lg">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          <div className="p-5 sm:p-7 bg-linear-to-br from-[var(--color-accent-subtle)] via-[var(--color-accent-subtle)] to-transparent rounded-2xl border border-[var(--color-accent)]">
+            <h3 className="font-semibold text-[var(--color-text-primary)] mb-4 sm:mb-5 flex items-center gap-2 text-base sm:text-lg">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-linear-to-br from-[var(--color-accent)] to-[var(--color-accent-hover)] flex items-center justify-center">
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-bg-raised)]" />
               </div>
               Thèse centrale du chapitre
             </h3>
-            <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+            <p className="text-[var(--color-text-secondary)] text-sm sm:text-base leading-relaxed">
               Deux approches fondatrices s'opposent : <strong>Durkheim</strong> (expliquer objectivement les faits sociaux, 
               holisme, déterminisme) vs <strong>Weber</strong> (comprendre le sens des actions, individualisme méthodologique).
               La querelle des méthodes oppose sciences de la nature et sciences de l'esprit.
@@ -61,31 +61,31 @@ export default function Chapter3() {
           </div>
 
           {/* Citations clés */}
-          <div className="p-4 sm:p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">💬</span> Citations clés pour la dissertation
             </h4>
             <div className="space-y-3">
-              <blockquote className="p-3 bg-linear-to-r from-sky-50 to-transparent rounded-xl border-l-3 border-sky-400 text-sm">
-                <p className="italic text-slate-700">"Nous expliquons la nature et nous comprenons la vie psychique"</p>
-                <p className="text-xs text-sky-600 mt-1 font-medium">— Dilthey (querelle des méthodes)</p>
+              <blockquote className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-info)] text-sm">
+                <p className="italic text-[var(--color-text-secondary)]">"Nous expliquons la nature et nous comprenons la vie psychique"</p>
+                <p className="text-xs text-[var(--color-info)] mt-1 font-medium">— Dilthey (querelle des méthodes)</p>
               </blockquote>
-              <blockquote className="p-3 bg-linear-to-r from-violet-50 to-transparent rounded-xl border-l-3 border-violet-400 text-sm">
-                <p className="italic text-slate-700">"Les faits sociaux sont des manières d'agir, de penser et de sentir, extérieures à l'homme"</p>
-                <p className="text-xs text-violet-600 mt-1 font-medium">— Durkheim</p>
+              <blockquote className="p-3 bg-linear-to-r from-[var(--color-accent-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-accent)] text-sm">
+                <p className="italic text-[var(--color-text-secondary)]">"Les faits sociaux sont des manières d'agir, de penser et de sentir, extérieures à l'homme"</p>
+                <p className="text-xs text-[var(--color-accent)] mt-1 font-medium">— Durkheim</p>
               </blockquote>
             </div>
           </div>
 
           {/* Opposition Durkheim vs Weber */}
-          <div className="p-4 sm:p-6 bg-linear-to-br from-rose-50/50 to-amber-50/30 border border-rose-100 rounded-2xl">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent border border-[var(--color-error)] rounded-2xl">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">⚔️</span> Opposition fondamentale : Durkheim vs Weber
             </h4>
             <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="p-3 bg-white/80 rounded-xl">
-                <p className="font-semibold text-violet-700 mb-2">Durkheim</p>
-                <ul className="text-xs text-slate-600 space-y-1">
+              <div className="p-3 bg-[var(--color-bg-raised)]/80 rounded-xl">
+                <p className="font-semibold text-[var(--color-accent)] mb-2">Durkheim</p>
+                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                   <li>• Logique <strong>explicative</strong></li>
                   <li>• Science du <strong>fait social</strong></li>
                   <li>• <strong>Holisme</strong> / Macrosociologie</li>
@@ -93,9 +93,9 @@ export default function Chapter3() {
                   <li>• Méthode <strong>quantitative</strong></li>
                 </ul>
               </div>
-              <div className="p-3 bg-white/80 rounded-xl">
-                <p className="font-semibold text-emerald-700 mb-2">Weber</p>
-                <ul className="text-xs text-slate-600 space-y-1">
+              <div className="p-3 bg-[var(--color-bg-raised)]/80 rounded-xl">
+                <p className="font-semibold text-[var(--color-success)] mb-2">Weber</p>
+                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                   <li>• Logique <strong>compréhensive</strong></li>
                   <li>• Science de l'<strong>action sociale</strong></li>
                   <li>• <strong>Individualisme</strong> méthodologique</li>
@@ -107,43 +107,43 @@ export default function Chapter3() {
           </div>
 
           {/* Concepts Durkheim */}
-          <div className="p-4 sm:p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">🎯</span> Durkheim : concepts à maîtriser
             </h4>
             <div className="space-y-3 text-sm">
-              <div className="p-3 sm:p-4 bg-linear-to-r from-violet-50 to-transparent rounded-xl border-l-3 border-violet-400">
-                <strong className="text-violet-700">Faits sociaux</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Manières d'agir/penser/sentir • <strong>Extérieurs</strong> à l'individu • <strong>Contraignants</strong> • Collectifs</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-accent-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-accent)]">
+                <strong className="text-[var(--color-accent)]">Faits sociaux</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Manières d'agir/penser/sentir • <strong>Extérieurs</strong> à l'individu • <strong>Contraignants</strong> • Collectifs</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-sky-50 to-transparent rounded-xl border-l-3 border-sky-400">
-                <strong className="text-sky-700">Le Suicide (4 types)</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1"><strong>Égoïste</strong> (intégration faible) • <strong>Altruiste</strong> (intégration forte) • <strong>Anomique</strong> (régulation faible) • <strong>Fataliste</strong> (régulation forte)</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-info)]">
+                <strong className="text-[var(--color-info)]">Le Suicide (4 types)</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1"><strong>Égoïste</strong> (intégration faible) • <strong>Altruiste</strong> (intégration forte) • <strong>Anomique</strong> (régulation faible) • <strong>Fataliste</strong> (régulation forte)</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-amber-50 to-transparent rounded-xl border-l-3 border-amber-400">
-                <strong className="text-amber-700">Division du travail</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1"><strong>Solidarité mécanique</strong> (sociétés traditionnelles, ressemblance) vs <strong>Solidarité organique</strong> (sociétés industrielles, complémentarité)</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-warning-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-warning)]">
+                <strong className="text-[var(--color-warning)]">Division du travail</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1"><strong>Solidarité mécanique</strong> (sociétés traditionnelles, ressemblance) vs <strong>Solidarité organique</strong> (sociétés industrielles, complémentarité)</p>
               </div>
             </div>
           </div>
 
           {/* Concepts Weber */}
-          <div className="p-4 sm:p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">🎯</span> Weber : concepts à maîtriser
             </h4>
             <div className="space-y-3 text-sm">
-              <div className="p-3 sm:p-4 bg-linear-to-r from-emerald-50 to-transparent rounded-xl border-l-3 border-emerald-400">
-                <strong className="text-emerald-700">Approche compréhensive</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Comprendre le <strong>sens</strong> que les individus donnent à leurs actions • Se mettre à la place de l'acteur</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-success-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-success)]">
+                <strong className="text-[var(--color-success)]">Approche compréhensive</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Comprendre le <strong>sens</strong> que les individus donnent à leurs actions • Se mettre à la place de l'acteur</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-rose-50 to-transparent rounded-xl border-l-3 border-rose-400">
-                <strong className="text-rose-700">Éthique protestante et capitalisme</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1"><strong>Prédestination</strong> • <strong>Beruf</strong> (vocation au travail) • <strong>Ascèse</strong> (pas de consommation ostentatoire) → Accumulation du capital</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-error)]">
+                <strong className="text-[var(--color-error)]">Éthique protestante et capitalisme</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1"><strong>Prédestination</strong> • <strong>Beruf</strong> (vocation au travail) • <strong>Ascèse</strong> (pas de consommation ostentatoire) → Accumulation du capital</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-indigo-50 to-transparent rounded-xl border-l-3 border-indigo-400">
-                <strong className="text-indigo-700">Idéaux-types</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Modèles abstraits pour comprendre la réalité • Ex : idéal-type du capitaliste, du protestant</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-accent-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-accent)]">
+                <strong className="text-[var(--color-accent)]">Idéaux-types</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Modèles abstraits pour comprendre la réalité • Ex : idéal-type du capitaliste, du protestant</p>
               </div>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function Chapter3() {
 
           <button
             onClick={() => setView('full')}
-            className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium transition-colors"
+            className="flex items-center gap-2 text-[var(--color-accent)] hover:text-[var(--color-accent)] text-sm font-medium transition-colors"
           >
             Voir le cours complet <ChevronRight className="w-4 h-4" />
           </button>
@@ -169,29 +169,29 @@ export default function Chapter3() {
       {view === 'full' && (
         <>
           <Section title="Introduction : La querelle des méthodes">
-            <p className="mb-4 text-slate-600">
+            <p className="mb-4 text-[var(--color-text-secondary)]">
               La querelle des méthodes prend naissance en <strong>Allemagne au XIXe siècle</strong>. Elle s'intéresse 
               à la méthodologie et à l'<strong>épistémologie</strong> (comment se construit la science).
             </p>
 
-            <blockquote className="text-base sm:text-lg italic text-slate-600 border-l-4 border-sky-300 pl-4 mb-6">
+            <blockquote className="text-base sm:text-lg italic text-[var(--color-text-secondary)] border-l-4 border-[var(--color-info)] pl-4 mb-6">
               "Nous expliquons la nature et nous comprenons la vie psychique"
-              <span className="block text-sm font-medium text-sky-600 mt-1">— Wilhelm Dilthey</span>
+              <span className="block text-sm font-medium text-[var(--color-info)] mt-1">— Wilhelm Dilthey</span>
             </blockquote>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-              <div className="p-4 bg-linear-to-br from-sky-50 to-blue-50/30 rounded-xl border border-sky-100">
-                <h5 className="font-semibold text-slate-900 text-sm mb-2">Sciences de la nature</h5>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="p-4 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-info)]">
+                <h5 className="font-semibold text-[var(--color-text-primary)] text-sm mb-2">Sciences de la nature</h5>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• Faits <strong>naturels</strong></li>
                   <li>• <strong>Déterminisme</strong></li>
                   <li>• On cherche à <strong>expliquer</strong></li>
                   <li>• Lois <strong>universelles</strong></li>
                 </ul>
               </div>
-              <div className="p-4 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
-                <h5 className="font-semibold text-slate-900 text-sm mb-2">Sciences de l'esprit</h5>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="p-4 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl border border-[var(--color-success)]">
+                <h5 className="font-semibold text-[var(--color-text-primary)] text-sm mb-2">Sciences de l'esprit</h5>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• Faits <strong>humains</strong></li>
                   <li>• <strong>Indétermination</strong> (être humain imprévisible)</li>
                   <li>• On cherche à <strong>comprendre</strong></li>
@@ -207,13 +207,13 @@ export default function Chapter3() {
               hideAvatar
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                <div className="p-3 bg-linear-to-r from-rose-50/50 to-transparent rounded-xl border border-rose-100">
-                  <p className="font-semibold text-slate-900 text-sm">École autrichienne</p>
-                  <p className="text-xs text-slate-600">Méthode <strong>différente</strong> pour chaque science</p>
+                <div className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)]">
+                  <p className="font-semibold text-[var(--color-text-primary)] text-sm">École autrichienne</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Méthode <strong>différente</strong> pour chaque science</p>
                 </div>
-                <div className="p-3 bg-linear-to-r from-emerald-50/50 to-transparent rounded-xl border border-emerald-100">
-                  <p className="font-semibold text-slate-900 text-sm">École historique allemande</p>
-                  <p className="text-xs text-slate-600">Méthode <strong>commune</strong> pour toutes les sciences</p>
+                <div className="p-3 bg-linear-to-r from-[var(--color-success-subtle)]/50 to-transparent rounded-xl border border-[var(--color-success)]">
+                  <p className="font-semibold text-[var(--color-text-primary)] text-sm">École historique allemande</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Méthode <strong>commune</strong> pour toutes les sciences</p>
                 </div>
               </div>
               <Callout type="key">
@@ -237,9 +237,9 @@ export default function Chapter3() {
                 laisser de côté convictions, préjugés, subjectivité, aspects moraux.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-violet-50/50 to-fuchsia-50/30 rounded-xl border border-violet-100 mb-4">
-                <p className="font-medium text-slate-900 text-sm mb-2">Les faits sociaux sont :</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-accent-subtle)]/50 to-transparent rounded-xl border border-[var(--color-accent)] mb-4">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Les faits sociaux sont :</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• Des manières d'<strong>agir, penser et sentir</strong></li>
                   <li>• <strong>Extérieurs</strong> aux individus (existent en dehors des consciences individuelles)</li>
                   <li>• <strong>Contraignants et coercitifs</strong> (normes, mœurs, sanctions)</li>
@@ -263,8 +263,8 @@ export default function Chapter3() {
                 Le sociologue cherche des <strong>régularités</strong> grâce aux <strong>statistiques</strong>. 
                 Ces dernières mettent en évidence des <strong>corrélations statistiques</strong> → <strong>corrélations sociologiques</strong>.
               </p>
-              <div className="p-3 bg-linear-to-r from-sky-50/50 to-transparent rounded-xl border border-sky-100">
-                <p className="text-xs sm:text-sm text-slate-600">
+              <div className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-info)]">
+                <p className="text-xs sm:text-sm text-[var(--color-text-secondary)]">
                   <strong>Conséquence majeure :</strong> Les faits sociaux <strong>déterminent</strong> l'individu = 
                   <strong> déterminisme social</strong>. Le monde social obéit à des lois. C'est une approche 
                   <strong> holiste / macrosociologique</strong> (on s'intéresse aux agrégats : familles, classes sociales...).
@@ -279,25 +279,25 @@ export default function Chapter3() {
               hideAvatar
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                <div className="p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                  <p className="font-semibold text-amber-700 text-sm mb-1">Solidarité mécanique</p>
-                  <p className="text-xs text-slate-600">Sociétés <strong>traditionnelles</strong> à faible division du travail</p>
-                  <p className="text-xs text-slate-500 mt-1">Lien social repose sur la <strong>ressemblance</strong> (même mode de vie)</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-warning)] text-sm mb-1">Solidarité mécanique</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Sociétés <strong>traditionnelles</strong> à faible division du travail</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-1">Lien social repose sur la <strong>ressemblance</strong> (même mode de vie)</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
-                  <p className="font-semibold text-emerald-700 text-sm mb-1">Solidarité organique</p>
-                  <p className="text-xs text-slate-600">Sociétés <strong>industrielles</strong> à forte division du travail</p>
-                  <p className="text-xs text-slate-500 mt-1">Lien social repose sur la <strong>complémentarité</strong> (comme un corps avec ses organes)</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl border border-[var(--color-success)]">
+                  <p className="font-semibold text-[var(--color-success)] text-sm mb-1">Solidarité organique</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Sociétés <strong>industrielles</strong> à forte division du travail</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-1">Lien social repose sur la <strong>complémentarité</strong> (comme un corps avec ses organes)</p>
                 </div>
               </div>
-              <p className="text-xs text-slate-500 italic">
+              <p className="text-xs text-[var(--color-text-muted)] italic">
                 La solidarité organique favorise l'individualisme mais crée aussi du lien social par l'interdépendance.
               </p>
             </AuthorCard>
           </Section>
 
           <Section title="II. Le Suicide : application de la méthode">
-            <p className="mb-5 text-slate-600">
+            <p className="mb-5 text-[var(--color-text-secondary)]">
               Durkheim applique sa méthode sur le suicide pour démontrer que même un acte apparemment 
               <strong> individuel</strong> a des <strong>causes sociales</strong>. Il utilise des statistiques européennes 
               et la méthode <strong>hypothético-déductive</strong>.
@@ -310,14 +310,14 @@ export default function Chapter3() {
               hideAvatar
             >
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3">
-                <div className="p-2 bg-rose-50/50 rounded-lg text-center border border-rose-100">
-                  <p className="text-xs text-slate-600">❌ Folie</p>
+                <div className="p-2 bg-[var(--color-error-subtle)] rounded-lg text-center border border-[var(--color-error)]">
+                  <p className="text-xs text-[var(--color-text-secondary)]">❌ Folie</p>
                 </div>
-                <div className="p-2 bg-rose-50/50 rounded-lg text-center border border-rose-100">
-                  <p className="text-xs text-slate-600">❌ Race / Hérédité</p>
+                <div className="p-2 bg-[var(--color-error-subtle)] rounded-lg text-center border border-[var(--color-error)]">
+                  <p className="text-xs text-[var(--color-text-secondary)]">❌ Race / Hérédité</p>
                 </div>
-                <div className="p-2 bg-rose-50/50 rounded-lg text-center border border-rose-100">
-                  <p className="text-xs text-slate-600">❌ Climat / Température</p>
+                <div className="p-2 bg-[var(--color-error-subtle)] rounded-lg text-center border border-[var(--color-error)]">
+                  <p className="text-xs text-[var(--color-text-secondary)]">❌ Climat / Température</p>
                 </div>
               </div>
               <Callout type="key">
@@ -332,35 +332,35 @@ export default function Chapter3() {
               color="rose"
               hideAvatar
             >
-              <p className="text-sm mb-4 font-medium text-slate-700">1. Selon le degré d'intégration sociale :</p>
+              <p className="text-sm mb-4 font-medium text-[var(--color-text-secondary)]">1. Selon le degré d'intégration sociale :</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
-                <div className="p-3 bg-linear-to-br from-sky-50 to-blue-50/30 rounded-xl border border-sky-100">
-                  <p className="font-semibold text-sky-700 text-sm">Suicide égoïste</p>
-                  <p className="text-xs text-slate-500 mb-1">Intégration <strong>faible</strong></p>
-                  <p className="text-xs text-slate-600">L'individu prime sur la société, repli sur soi</p>
-                  <p className="text-xs text-slate-500 italic mt-1">Ex : célibataires</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-info)]">
+                  <p className="font-semibold text-[var(--color-info)] text-sm">Suicide égoïste</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mb-1">Intégration <strong>faible</strong></p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">L'individu prime sur la société, repli sur soi</p>
+                  <p className="text-xs text-[var(--color-text-muted)] italic mt-1">Ex : célibataires</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-violet-50 to-fuchsia-50/30 rounded-xl border border-violet-100">
-                  <p className="font-semibold text-violet-700 text-sm">Suicide altruiste</p>
-                  <p className="text-xs text-slate-500 mb-1">Intégration <strong>forte</strong></p>
-                  <p className="text-xs text-slate-600">Le groupe prime sur l'individu</p>
-                  <p className="text-xs text-slate-500 italic mt-1">Ex : kamikazes</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)]">
+                  <p className="font-semibold text-[var(--color-accent)] text-sm">Suicide altruiste</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mb-1">Intégration <strong>forte</strong></p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Le groupe prime sur l'individu</p>
+                  <p className="text-xs text-[var(--color-text-muted)] italic mt-1">Ex : kamikazes</p>
                 </div>
               </div>
 
-              <p className="text-sm mb-4 font-medium text-slate-700">2. Selon le degré de régulation sociale :</p>
+              <p className="text-sm mb-4 font-medium text-[var(--color-text-secondary)]">2. Selon le degré de régulation sociale :</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                  <p className="font-semibold text-amber-700 text-sm">Suicide anomique</p>
-                  <p className="text-xs text-slate-500 mb-1">Régulation <strong>faible</strong></p>
-                  <p className="text-xs text-slate-600">Société en crise, désorientation</p>
-                  <p className="text-xs text-slate-500 italic mt-1">Ex : crise de 1929, passage autoritarisme → libéralisme</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-warning)] text-sm">Suicide anomique</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mb-1">Régulation <strong>faible</strong></p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Société en crise, désorientation</p>
+                  <p className="text-xs text-[var(--color-text-muted)] italic mt-1">Ex : crise de 1929, passage autoritarisme → libéralisme</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-slate-100 to-gray-50/30 rounded-xl border border-slate-200">
-                  <p className="font-semibold text-slate-700 text-sm">Suicide fataliste</p>
-                  <p className="text-xs text-slate-500 mb-1">Régulation <strong>forte</strong></p>
-                  <p className="text-xs text-slate-600">Passions trop réglementées, pas d'échappatoire</p>
-                  <p className="text-xs text-slate-500 italic mt-1">Ex : condamné à perpétuité, mariage forcé</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-border-default)]">
+                  <p className="font-semibold text-[var(--color-text-secondary)] text-sm">Suicide fataliste</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mb-1">Régulation <strong>forte</strong></p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Passions trop réglementées, pas d'échappatoire</p>
+                  <p className="text-xs text-[var(--color-text-muted)] italic mt-1">Ex : condamné à perpétuité, mariage forcé</p>
                 </div>
               </div>
             </AuthorCard>
@@ -385,9 +385,9 @@ export default function Chapter3() {
                 consiste à comprendre le <strong>sens</strong> que les individus donnent à leurs actions et comportements.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-emerald-50/50 to-teal-50/30 rounded-xl border border-emerald-100 mb-4">
-                <p className="font-medium text-slate-900 text-sm mb-2">Caractéristiques de l'approche :</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-success-subtle)]/50 to-transparent rounded-xl border border-[var(--color-success)] mb-4">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Caractéristiques de l'approche :</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• Le sociologue <strong>se met à la place</strong> des agents</li>
                   <li>• Comprend les <strong>raisons</strong> de l'action</li>
                   <li>• L'enjeu est l'<strong>action sociale</strong></li>
@@ -413,19 +413,19 @@ export default function Chapter3() {
                 religion protestante et capitalisme</strong>.
               </p>
 
-              <p className="text-sm font-medium text-slate-700 mb-3">Méthode des idéaux-types :</p>
+              <p className="text-sm font-medium text-[var(--color-text-secondary)] mb-3">Méthode des idéaux-types :</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                  <p className="font-semibold text-amber-700 text-sm mb-1">Idéal-type du capitaliste</p>
-                  <ul className="text-xs text-slate-600 space-y-1">
+                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-warning)] text-sm mb-1">Idéal-type du capitaliste</p>
+                  <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                     <li>• Ne poursuit pas que l'argent</li>
                     <li>• Comportement <strong>rationnel</strong></li>
                     <li>• Anticipations, prévisions, calculs</li>
                   </ul>
                 </div>
-                <div className="p-3 bg-linear-to-br from-violet-50 to-fuchsia-50/30 rounded-xl border border-violet-100">
-                  <p className="font-semibold text-violet-700 text-sm mb-1">Idéal-type du protestant</p>
-                  <ul className="text-xs text-slate-600 space-y-1">
+                <div className="p-3 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)]">
+                  <p className="font-semibold text-[var(--color-accent)] text-sm mb-1">Idéal-type du protestant</p>
+                  <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                     <li>• <strong>Prédestination</strong> (élu ou pas)</li>
                     <li>• <strong>Beruf</strong> : vocation au travail</li>
                     <li>• <strong>Ascèse</strong> : pas de luxe</li>
@@ -441,19 +441,19 @@ export default function Chapter3() {
               hideAvatar
             >
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 text-sm mb-4">
-                <div className="flex-1 p-3 bg-linear-to-br from-violet-50 to-fuchsia-50/30 rounded-xl text-center border border-violet-100">
-                  <p className="font-semibold text-slate-900 text-xs">Prédestination</p>
-                  <p className="text-xs text-slate-500">Chercher des signes d'élection</p>
+                <div className="flex-1 p-3 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl text-center border border-[var(--color-accent)]">
+                  <p className="font-semibold text-[var(--color-text-primary)] text-xs">Prédestination</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Chercher des signes d'élection</p>
                 </div>
-                <span className="text-slate-400 font-bold text-center hidden sm:block">→</span>
-                <div className="flex-1 p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl text-center border border-amber-100">
-                  <p className="font-semibold text-slate-900 text-xs">Beruf</p>
-                  <p className="text-xs text-slate-500">Investissement décuplé dans le travail</p>
+                <span className="text-[var(--color-text-muted)] font-bold text-center hidden sm:block">→</span>
+                <div className="flex-1 p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl text-center border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-text-primary)] text-xs">Beruf</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Investissement décuplé dans le travail</p>
                 </div>
-                <span className="text-slate-400 font-bold text-center hidden sm:block">→</span>
-                <div className="flex-1 p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl text-center border border-emerald-100">
-                  <p className="font-semibold text-slate-900 text-xs">Ascèse</p>
-                  <p className="text-xs text-slate-500">Salaire réinvesti, pas de luxe</p>
+                <span className="text-[var(--color-text-muted)] font-bold text-center hidden sm:block">→</span>
+                <div className="flex-1 p-3 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl text-center border border-[var(--color-success)]">
+                  <p className="font-semibold text-[var(--color-text-primary)] text-xs">Ascèse</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Salaire réinvesti, pas de luxe</p>
                 </div>
               </div>
 
@@ -468,37 +468,37 @@ export default function Chapter3() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse">
                 <thead>
-                  <tr className="bg-slate-100">
-                    <th className="p-3 text-left font-semibold text-slate-700 border border-slate-200"></th>
-                    <th className="p-3 text-left font-semibold text-violet-700 border border-slate-200">Durkheim</th>
-                    <th className="p-3 text-left font-semibold text-emerald-700 border border-slate-200">Weber</th>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <th className="p-3 text-left font-semibold text-[var(--color-text-secondary)] border border-[var(--color-border-default)]"></th>
+                    <th className="p-3 text-left font-semibold text-[var(--color-accent)] border border-[var(--color-border-default)]">Durkheim</th>
+                    <th className="p-3 text-left font-semibold text-[var(--color-success)] border border-[var(--color-border-default)]">Weber</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="p-3 border border-slate-200 font-medium">Objectif</td>
-                    <td className="p-3 border border-slate-200">Expliquer</td>
-                    <td className="p-3 border border-slate-200">Comprendre</td>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Objectif</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Expliquer</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Comprendre</td>
                   </tr>
-                  <tr className="bg-slate-50">
-                    <td className="p-3 border border-slate-200 font-medium">Objet</td>
-                    <td className="p-3 border border-slate-200">Fait social</td>
-                    <td className="p-3 border border-slate-200">Action sociale</td>
-                  </tr>
-                  <tr>
-                    <td className="p-3 border border-slate-200 font-medium">Approche</td>
-                    <td className="p-3 border border-slate-200">Holisme / Macro</td>
-                    <td className="p-3 border border-slate-200">Individualisme / Micro</td>
-                  </tr>
-                  <tr className="bg-slate-50">
-                    <td className="p-3 border border-slate-200 font-medium">Vision</td>
-                    <td className="p-3 border border-slate-200">Déterminisme</td>
-                    <td className="p-3 border border-slate-200">Autonomie</td>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Objet</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Fait social</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Action sociale</td>
                   </tr>
                   <tr>
-                    <td className="p-3 border border-slate-200 font-medium">Méthode</td>
-                    <td className="p-3 border border-slate-200">Statistiques</td>
-                    <td className="p-3 border border-slate-200">Idéaux-types</td>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Approche</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Holisme / Macro</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Individualisme / Micro</td>
+                  </tr>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Vision</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Déterminisme</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Autonomie</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Méthode</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Statistiques</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Idéaux-types</td>
                   </tr>
                 </tbody>
               </table>

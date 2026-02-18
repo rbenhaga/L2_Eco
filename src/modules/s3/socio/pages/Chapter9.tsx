@@ -16,13 +16,13 @@ export default function Chapter9() {
       />
 
       {/* Toggle version */}
-      <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-slate-100 rounded-xl w-full sm:w-fit">
+      <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-[var(--color-bg-overlay)] rounded-xl w-full sm:w-fit">
         <button
           onClick={() => setView('full')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
             view === 'full' 
-              ? 'bg-white text-slate-900 shadow-sm' 
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm' 
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
           }`}
         >
           <BookOpen className="w-4 h-4" />
@@ -33,8 +33,8 @@ export default function Chapter9() {
           onClick={() => setView('quick')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
             view === 'quick' 
-              ? 'bg-white text-slate-900 shadow-sm' 
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm' 
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
           }`}
         >
           <Zap className="w-4 h-4" />
@@ -46,14 +46,14 @@ export default function Chapter9() {
       {view === 'quick' && (
         <div className="space-y-5 sm:space-y-6">
           {/* Thèse centrale */}
-          <div className="p-5 sm:p-7 bg-linear-to-br from-indigo-50 via-violet-50/50 to-slate-50 rounded-2xl border border-indigo-100/80">
-            <h3 className="font-semibold text-slate-900 mb-4 sm:mb-5 flex items-center gap-2 text-base sm:text-lg">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          <div className="p-5 sm:p-7 bg-linear-to-br from-[var(--color-accent-subtle)] via-[var(--color-accent-subtle)] to-transparent rounded-2xl border border-[var(--color-accent)]">
+            <h3 className="font-semibold text-[var(--color-text-primary)] mb-4 sm:mb-5 flex items-center gap-2 text-base sm:text-lg">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-linear-to-br from-[var(--color-accent)] to-[var(--color-accent-hover)] flex items-center justify-center">
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-bg-raised)]" />
               </div>
               Thèse centrale du chapitre
             </h3>
-            <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+            <p className="text-[var(--color-text-secondary)] text-sm sm:text-base leading-relaxed">
               Le marché n'est pas qu'un mécanisme économique d'offre et demande. C'est une <strong>institution sociale</strong> 
               construite par la société. Son émergence dépend de facteurs <strong>culturels, politiques et relationnels</strong>. 
               Un marché ne peut être efficient que s'il est <strong>légitime</strong>.
@@ -61,23 +61,23 @@ export default function Chapter9() {
           </div>
 
           {/* Opposition économistes vs sociologues */}
-          <div className="p-4 sm:p-6 bg-linear-to-br from-rose-50/50 to-amber-50/30 border border-rose-100 rounded-2xl">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent border border-[var(--color-error)] rounded-2xl">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">⚔️</span> Opposition : Économistes vs Sociologues
             </h4>
             <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="p-3 bg-white/80 rounded-xl">
-                <p className="font-semibold text-amber-700 mb-2">Économistes (néoclassiques)</p>
-                <ul className="text-xs text-slate-600 space-y-1">
+              <div className="p-3 bg-[var(--color-bg-raised)]/80 rounded-xl">
+                <p className="font-semibold text-[var(--color-warning)] mb-2">Économistes (néoclassiques)</p>
+                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                   <li>• Marché = <strong>O/D</strong>, équilibre</li>
                   <li>• Acteurs <strong>a-sociaux</strong></li>
                   <li>• <strong>Autorégulation</strong> par les prix</li>
                   <li>• Comportement <strong>maximisateur</strong></li>
                 </ul>
               </div>
-              <div className="p-3 bg-white/80 rounded-xl">
-                <p className="font-semibold text-violet-700 mb-2">Sociologues</p>
-                <ul className="text-xs text-slate-600 space-y-1">
+              <div className="p-3 bg-[var(--color-bg-raised)]/80 rounded-xl">
+                <p className="font-semibold text-[var(--color-accent)] mb-2">Sociologues</p>
+                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                   <li>• Marché = <strong>institution sociale</strong></li>
                   <li>• <strong>Construit</strong> par la société</li>
                   <li>• Doit être <strong>légitime</strong></li>
@@ -88,30 +88,30 @@ export default function Chapter9() {
           </div>
 
           {/* Auteurs à maîtriser */}
-          <div className="p-4 sm:p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">🎯</span> Auteurs & concepts à maîtriser
             </h4>
             <div className="space-y-3 text-sm">
-              <div className="p-3 sm:p-4 bg-linear-to-r from-violet-50 to-transparent rounded-xl border-l-3 border-violet-400">
-                <strong className="text-violet-700">Foucault</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Marché = dispositif politique et social • Intérêts divergents des parties prenantes</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-accent-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-accent)]">
+                <strong className="text-[var(--color-accent)]">Foucault</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Marché = dispositif politique et social • Intérêts divergents des parties prenantes</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-sky-50 to-transparent rounded-xl border-l-3 border-sky-400">
-                <strong className="text-sky-700">Zelizer</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Marché assurance décès • Poids du contexte culturel et moral • Marché électricité (Edison)</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-info)]">
+                <strong className="text-[var(--color-info)]">Zelizer</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Marché assurance décès • Poids du contexte culturel et moral • Marché électricité (Edison)</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-rose-50 to-transparent rounded-xl border-l-3 border-rose-400">
-                <strong className="text-rose-700">Polanyi</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Vision pessimiste • Pouvoir destructeur • "Erreur économiste" • Encastrement</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-error)]">
+                <strong className="text-[var(--color-error)]">Polanyi</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Vision pessimiste • Pouvoir destructeur • "Erreur économiste" • Encastrement</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-emerald-50 to-transparent rounded-xl border-l-3 border-emerald-400">
-                <strong className="text-emerald-700">Titmuss</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Don du sang • Marché pas toujours la meilleure solution • Marchés tabous</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-success-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-success)]">
+                <strong className="text-[var(--color-success)]">Titmuss</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Don du sang • Marché pas toujours la meilleure solution • Marchés tabous</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-amber-50 to-transparent rounded-xl border-l-3 border-amber-400">
-                <strong className="text-amber-700">Bourdieu</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Marché du logement • O/D insuffisant • Habitus de classe moyenne</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-warning-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-warning)]">
+                <strong className="text-[var(--color-warning)]">Bourdieu</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Marché du logement • O/D insuffisant • Habitus de classe moyenne</p>
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function Chapter9() {
 
           <button
             onClick={() => setView('full')}
-            className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium transition-colors"
+            className="flex items-center gap-2 text-[var(--color-accent)] hover:text-[var(--color-accent)] text-sm font-medium transition-colors"
           >
             Voir le cours complet <ChevronRight className="w-4 h-4" />
           </button>
@@ -137,7 +137,7 @@ export default function Chapter9() {
       {view === 'full' && (
         <>
           <Section title="Introduction">
-            <p className="mb-4 text-slate-600">
+            <p className="mb-4 text-[var(--color-text-secondary)]">
               Cette problématique est très <strong>récente</strong>. Le marché a été longtemps gardé par les économistes 
               car les sociologues ne se sentaient pas <strong>légitimes</strong> pour intervenir sur cette institution 
               centrale de la science économique.
@@ -156,12 +156,12 @@ export default function Chapter9() {
               </p>
             </AuthorCard>
 
-            <div className="p-4 bg-linear-to-br from-amber-50/50 to-orange-50/30 rounded-xl border border-amber-100 mb-4">
-              <p className="font-medium text-amber-900 text-sm mb-2">Le marché pour les économistes</p>
-              <p className="text-sm text-slate-600 mb-3">
+            <div className="p-4 bg-linear-to-br from-[var(--color-warning-subtle)]/50 to-transparent rounded-xl border border-[var(--color-warning)] mb-4">
+              <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Le marché pour les économistes</p>
+              <p className="text-sm text-[var(--color-text-secondary)] mb-3">
                 Mode de coordination qui passe par des <strong>prix librement négociés</strong> entre offre et demande.
               </p>
-              <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                 <li>• Les prix déterminent les rapports entre les choses et les individus</li>
                 <li>• Échanges <strong>mutuellement avantageux</strong> pour les parties prenantes</li>
                 <li>• Résultats sociaux appréciables : <strong>équilibre, optimalité</strong></li>
@@ -169,13 +169,13 @@ export default function Chapter9() {
             </div>
 
             <div className="grid grid-cols-2 gap-3 mb-4">
-              <div className="p-3 bg-linear-to-br from-sky-50 to-blue-50/30 rounded-xl border border-sky-100 text-center">
-                <p className="font-semibold text-sky-700 text-sm">Micro social</p>
-                <p className="text-xs text-slate-600">Transactions dans un contexte et lieu précis</p>
+              <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-info)] text-center">
+                <p className="font-semibold text-[var(--color-info)] text-sm">Micro social</p>
+                <p className="text-xs text-[var(--color-text-secondary)]">Transactions dans un contexte et lieu précis</p>
               </div>
-              <div className="p-3 bg-linear-to-br from-violet-50 to-fuchsia-50/30 rounded-xl border border-violet-100 text-center">
-                <p className="font-semibold text-violet-700 text-sm">Macro social</p>
-                <p className="text-xs text-slate-600">Société de marché</p>
+              <div className="p-3 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)] text-center">
+                <p className="font-semibold text-[var(--color-accent)] text-sm">Macro social</p>
+                <p className="text-xs text-[var(--color-text-secondary)]">Société de marché</p>
               </div>
             </div>
           </Section>
@@ -194,15 +194,15 @@ export default function Chapter9() {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                  <p className="font-semibold text-amber-700 text-sm">Si OUI</p>
-                  <p className="text-xs text-slate-600">Pas de structure sociale → pas de sociologie</p>
-                  <p className="text-xs text-slate-500 mt-1">Vision des économistes</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-warning)] text-sm">Si OUI</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Pas de structure sociale → pas de sociologie</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-1">Vision des économistes</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
-                  <p className="font-semibold text-emerald-700 text-sm">Si NON ✓</p>
-                  <p className="text-xs text-slate-600">Le marché est une <strong>structure sociale</strong></p>
-                  <p className="text-xs text-slate-500 mt-1">Construit par la société</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl border border-[var(--color-success)]">
+                  <p className="font-semibold text-[var(--color-success)] text-sm">Si NON ✓</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Le marché est une <strong>structure sociale</strong></p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-1">Construit par la société</p>
                 </div>
               </div>
             </AuthorCard>
@@ -218,9 +218,9 @@ export default function Chapter9() {
                 il y en a aussi <strong>culturels, politiques et relationnels</strong>.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-sky-50/50 to-blue-50/30 rounded-xl border border-sky-100 mb-4">
-                <p className="font-medium text-sky-900 text-sm mb-2">Exemple 1 : Marché de l'assurance décès</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-info)] mb-4">
+                <p className="font-medium text-[var(--color-info)] text-sm mb-2">Exemple 1 : Marché de l'assurance décès</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• A pris beaucoup de temps à s'implanter aux <strong>USA</strong> (moins en Europe)</li>
                   <li>• Société américaine majoritairement <strong>conservatrice</strong></li>
                   <li>• Poids de la <strong>religion</strong> : sujet tabou (prix sur la vie)</li>
@@ -245,13 +245,13 @@ export default function Chapter9() {
               </p>
 
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-linear-to-br from-slate-50 to-gray-50/30 rounded-xl border border-slate-200">
-                  <p className="font-semibold text-slate-700 text-sm">Vision économiste</p>
-                  <p className="text-xs text-slate-600">Centrales = optimisation, moindres coûts, plus de personnes touchées</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-border-default)]">
+                  <p className="font-semibold text-[var(--color-text-secondary)] text-sm">Vision économiste</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Centrales = optimisation, moindres coûts, plus de personnes touchées</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                  <p className="font-semibold text-amber-700 text-sm">Réalité (Edison)</p>
-                  <p className="text-xs text-slate-600">Relations sociales et politiques pour imposer sa solution</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-warning)] text-sm">Réalité (Edison)</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Relations sociales et politiques pour imposer sa solution</p>
                 </div>
               </div>
 
@@ -273,9 +273,9 @@ export default function Chapter9() {
                 La sociologie remet en cause le fait que le marché était un sujet <strong>monopolisé</strong> par les économistes.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-amber-50/50 to-orange-50/30 rounded-xl border border-amber-100 mb-4">
-                <p className="font-medium text-amber-900 text-sm mb-2">Théorie néoclassique (critique)</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-warning-subtle)]/50 to-transparent rounded-xl border border-[var(--color-warning)] mb-4">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Théorie néoclassique (critique)</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• Marché = lieu de rencontre O/D avec recherche d'équilibre</li>
                   <li>• Marché <strong>autonome</strong>, autorégulation via les prix</li>
                   <li>• Acteurs <strong>a-sociaux</strong> (absence d'entente, de collusion)</li>
@@ -283,19 +283,19 @@ export default function Chapter9() {
                 </ul>
               </div>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-violet-50/50 to-fuchsia-50/30 rounded-xl border border-violet-100 mb-4">
-                <p className="font-medium text-violet-900 text-sm mb-2">Les sociologues insistent sur 2 éléments</p>
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-accent-subtle)]/50 to-transparent rounded-xl border border-[var(--color-accent)] mb-4">
+                <p className="font-medium text-[var(--color-accent)] text-sm mb-2">Les sociologues insistent sur 2 éléments</p>
                 <div className="space-y-3">
-                  <div className="p-2 bg-white/60 rounded-lg">
-                    <p className="font-semibold text-violet-700 text-xs">1. Institution sociale</p>
-                    <p className="text-xs text-slate-600">
+                  <div className="p-2 bg-[var(--color-bg-raised)]/60 rounded-lg">
+                    <p className="font-semibold text-[var(--color-accent)] text-xs">1. Institution sociale</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">
                       Ensemble de <strong>règles</strong> établies en vue de la satisfaction d'<strong>intérêts collectifs</strong>. 
                       Contraintes, régulations, caractère dynamique.
                     </p>
                   </div>
-                  <div className="p-2 bg-white/60 rounded-lg">
-                    <p className="font-semibold text-violet-700 text-xs">2. Légitimité</p>
-                    <p className="text-xs text-slate-600">
+                  <div className="p-2 bg-[var(--color-bg-raised)]/60 rounded-lg">
+                    <p className="font-semibold text-[var(--color-accent)] text-xs">2. Légitimité</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">
                       Le marché doit être <strong>socialement accepté</strong>. C'est l'<strong>équité</strong> qui permet 
                       la légitimité (pas seulement l'efficience).
                     </p>
@@ -322,9 +322,9 @@ export default function Chapter9() {
                 <strong> normes sociales et culturelles</strong> → notion d'<strong>encastrement</strong>.
               </Callout>
 
-              <div className="mt-4 p-3 bg-linear-to-r from-rose-50/50 to-transparent rounded-xl border border-rose-100">
-                <p className="font-medium text-slate-900 text-sm mb-2">Question centrale :</p>
-                <p className="text-xs sm:text-sm text-slate-600">
+              <div className="mt-4 p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)]">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Question centrale :</p>
+                <p className="text-xs sm:text-sm text-[var(--color-text-secondary)]">
                   Jusqu'à quel point le marché peut-il se libérer des réglementations sociales, politiques, culturelles 
                   sans que son fonctionnement ne soit lui-même <strong>compromis</strong> ?
                 </p>
@@ -344,9 +344,9 @@ export default function Chapter9() {
                 (Concurrence Pure et Parfaite) : agent rationnel, atomicité, etc.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-amber-50/50 to-orange-50/30 rounded-xl border border-amber-100 mb-4">
-                <p className="font-medium text-amber-900 text-sm mb-2">Critiques</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-2">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-warning-subtle)]/50 to-transparent rounded-xl border border-[var(--color-warning)] mb-4">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Critiques</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-2">
                   <li>• <strong>Irréalisme des hypothèses</strong> : toutes les conditions de CPP sont rarement réunies</li>
                   <li>• Depuis 30 ans : introduction de la concurrence imparfaite, incertitude, asymétrie d'information</li>
                   <li>• Le marché tend à <strong>dissoudre le lien social</strong> et favoriser l'individualisme</li>
@@ -371,12 +371,12 @@ export default function Chapter9() {
                 Exemple : pour la pauvreté, on substitue par des associations avec dons et bénévoles.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-emerald-50/50 to-teal-50/30 rounded-xl border border-emerald-100 mb-4">
-                <p className="font-medium text-emerald-900 text-sm mb-2">Exemple : le don du sang</p>
-                <p className="text-xs sm:text-sm text-slate-600 mb-2">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-success-subtle)]/50 to-transparent rounded-xl border border-[var(--color-success)] mb-4">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Exemple : le don du sang</p>
+                <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-2">
                   Le don et le volontariat sont <strong>plus efficaces</strong> que payer des gens pour obtenir du sang.
                 </p>
-                <ul className="text-xs text-slate-600 space-y-1">
+                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                   <li>• Risque de <strong>sélection adverse</strong> : populations pauvres, donneurs de mauvaise qualité</li>
                   <li>• Mettre un prix sur le vital va contre les valeurs de <strong>solidarité</strong></li>
                   <li>• Perçu comme <strong>immoral</strong></li>
@@ -388,9 +388,9 @@ export default function Chapter9() {
                 mais des <strong>valeurs éthiques</strong>.
               </Callout>
 
-              <div className="mt-4 p-3 bg-linear-to-r from-slate-50 to-transparent rounded-xl border border-slate-200">
-                <p className="font-medium text-slate-900 text-sm mb-2">Formes d'interactions extra-économiques :</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="mt-4 p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-border-default)]">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Formes d'interactions extra-économiques :</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• <strong>Règles sociales</strong> en complément du marché (solidarité, réciprocité)</li>
                   <li>• <strong>Règles politiques</strong> pour suppléer le marché (intervention État, institutions)</li>
                 </ul>
@@ -399,7 +399,7 @@ export default function Chapter9() {
           </Section>
 
           <Section title="IV. L'analyse sociologique des marchés">
-            <p className="mb-4 text-slate-600">
+            <p className="mb-4 text-[var(--color-text-secondary)]">
               Comment passer du niveau <strong>individuel</strong> au niveau <strong>structurel</strong> (macro) ? 
               Comment passer des décisions des chefs d'entreprises au marché ?
             </p>
@@ -415,9 +415,9 @@ export default function Chapter9() {
                 Bourdieu étudie le <strong>marché du logement</strong> et le développement de la maison individuelle.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-violet-50/50 to-fuchsia-50/30 rounded-xl border border-violet-100 mb-4">
-                <p className="font-medium text-violet-900 text-sm mb-2">Thèse principale</p>
-                <p className="text-xs sm:text-sm text-slate-600">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-accent-subtle)]/50 to-transparent rounded-xl border border-[var(--color-accent)] mb-4">
+                <p className="font-medium text-[var(--color-accent)] text-sm mb-2">Thèse principale</p>
+                <p className="text-xs sm:text-sm text-[var(--color-text-secondary)]">
                   Les concepts économiques (<strong>O/D</strong>) sont <strong>insuffisants</strong> pour illustrer 
                   la complexité du marché. Il faut revenir au niveau individuel.
                 </p>
@@ -443,25 +443,25 @@ export default function Chapter9() {
                 Des biens produits dans la sphère domestique basculent dans la sphère marchande.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-teal-50/50 to-cyan-50/30 rounded-xl border border-teal-100 mb-4">
-                <p className="font-medium text-teal-900 text-sm mb-2">Basculement</p>
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-success)] mb-4">
+                <p className="font-medium text-[var(--color-success)] text-sm mb-2">Basculement</p>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="p-2 bg-white/60 rounded-lg text-center">
-                    <p className="font-semibold text-slate-700 text-xs">Avant</p>
-                    <p className="text-xs text-slate-600">Biens et services</p>
-                    <p className="text-xs text-slate-500">Valeur d'<strong>usage</strong></p>
+                  <div className="p-2 bg-[var(--color-bg-raised)]/60 rounded-lg text-center">
+                    <p className="font-semibold text-[var(--color-text-secondary)] text-xs">Avant</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Biens et services</p>
+                    <p className="text-xs text-[var(--color-text-muted)]">Valeur d'<strong>usage</strong></p>
                   </div>
-                  <div className="p-2 bg-white/60 rounded-lg text-center">
-                    <p className="font-semibold text-teal-700 text-xs">Après</p>
-                    <p className="text-xs text-slate-600">Marchandises</p>
-                    <p className="text-xs text-slate-500">Valeur d'<strong>échange</strong></p>
+                  <div className="p-2 bg-[var(--color-bg-raised)]/60 rounded-lg text-center">
+                    <p className="font-semibold text-[var(--color-success)] text-xs">Après</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Marchandises</p>
+                    <p className="text-xs text-[var(--color-text-muted)]">Valeur d'<strong>échange</strong></p>
                   </div>
                 </div>
               </div>
 
-              <div className="p-3 bg-linear-to-r from-slate-50 to-transparent rounded-xl border border-slate-200 mb-4">
-                <p className="font-medium text-slate-900 text-sm mb-2">Implications centrales :</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-border-default)] mb-4">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Implications centrales :</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• Ce qui entre ou non dans la sphère marchande est déterminé <strong>socialement</strong></li>
                   <li>• Déterminé par les <strong>rapports de pouvoir</strong>, les normes et valeurs</li>
                   <li>• Il existe d'autres formes d'échanges <strong>non marchands</strong> (secteur public, biens collectifs)</li>
@@ -479,37 +479,37 @@ export default function Chapter9() {
             <div className="overflow-x-auto mb-4">
               <table className="w-full text-sm border-collapse">
                 <thead>
-                  <tr className="bg-slate-100">
-                    <th className="p-3 text-left font-semibold text-slate-700 border border-slate-200">Auteur</th>
-                    <th className="p-3 text-left font-semibold text-slate-700 border border-slate-200">Apport</th>
-                    <th className="p-3 text-left font-semibold text-slate-700 border border-slate-200">Concept clé</th>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <th className="p-3 text-left font-semibold text-[var(--color-text-secondary)] border border-[var(--color-border-default)]">Auteur</th>
+                    <th className="p-3 text-left font-semibold text-[var(--color-text-secondary)] border border-[var(--color-border-default)]">Apport</th>
+                    <th className="p-3 text-left font-semibold text-[var(--color-text-secondary)] border border-[var(--color-border-default)]">Concept clé</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="p-3 border border-slate-200 font-medium text-violet-700">Foucault</td>
-                    <td className="p-3 border border-slate-200">Dispositif politique</td>
-                    <td className="p-3 border border-slate-200">Intérêts divergents</td>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium text-[var(--color-accent)]">Foucault</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Dispositif politique</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Intérêts divergents</td>
                   </tr>
-                  <tr className="bg-slate-50">
-                    <td className="p-3 border border-slate-200 font-medium text-sky-700">Zelizer</td>
-                    <td className="p-3 border border-slate-200">Émergence des marchés</td>
-                    <td className="p-3 border border-slate-200">Contexte culturel et moral</td>
-                  </tr>
-                  <tr>
-                    <td className="p-3 border border-slate-200 font-medium text-rose-700">Polanyi</td>
-                    <td className="p-3 border border-slate-200">Critique radicale</td>
-                    <td className="p-3 border border-slate-200">Encastrement, erreur économiste</td>
-                  </tr>
-                  <tr className="bg-slate-50">
-                    <td className="p-3 border border-slate-200 font-medium text-emerald-700">Titmuss</td>
-                    <td className="p-3 border border-slate-200">Limites du marché</td>
-                    <td className="p-3 border border-slate-200">Don du sang, marchés tabous</td>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium text-[var(--color-info)]">Zelizer</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Émergence des marchés</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Contexte culturel et moral</td>
                   </tr>
                   <tr>
-                    <td className="p-3 border border-slate-200 font-medium text-amber-700">Bourdieu</td>
-                    <td className="p-3 border border-slate-200">Marché du logement</td>
-                    <td className="p-3 border border-slate-200">Habitus, capitaux</td>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium text-[var(--color-error)]">Polanyi</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Critique radicale</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Encastrement, erreur économiste</td>
+                  </tr>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium text-[var(--color-success)]">Titmuss</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Limites du marché</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Don du sang, marchés tabous</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium text-[var(--color-warning)]">Bourdieu</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Marché du logement</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Habitus, capitaux</td>
                   </tr>
                 </tbody>
               </table>

@@ -42,7 +42,7 @@ export default function ContactPage() {
               className="text-center mb-12"
             >
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ background: 'var(--color-accent)' }}>
-                <Mail className="w-8 h-8 text-white" />
+                <Mail className="w-8 h-8" style={{ color: 'var(--color-accent-foreground)' }} />
               </div>
               <h1 className="text-3xl sm:text-4xl font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>
                 Contactez-nous
@@ -73,7 +73,7 @@ export default function ContactPage() {
                 {submitted ? (
                   <div className="text-center py-12">
                     <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'var(--color-success)' }}>
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-8 h-8" style={{ color: 'var(--color-accent-foreground)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
@@ -155,10 +155,8 @@ export default function ContactPage() {
                     </div>
                     <button
                       type="submit"
-                      className="w-full px-6 py-3 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
-                      style={{ background: 'var(--color-accent)' }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-accent-hover)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'var(--color-accent)'}
+                      className="w-full px-6 py-3 font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 btn-accent-hover"
+                      style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}
                     >
                       <Mail className="w-5 h-5" />
                       Envoyer
@@ -183,12 +181,10 @@ export default function ContactPage() {
                 >
                   <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>Contact rapide</h3>
                   <div className="space-y-4">
-                    <a 
-                      href="mailto:support@revp2.com" 
+                    <a
+                      href="mailto:support@revp2.com"
                       className="flex items-center gap-3 p-3 rounded-xl transition-colors"
                       style={{ background: 'var(--color-bg-overlay)' }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-bg-overlay)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'var(--color-bg-overlay)'}
                     >
                       <Mail className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
                       <div>

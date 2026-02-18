@@ -11,25 +11,25 @@ export function RevisionIntensive() {
 
       <Section type="key" title="Les 5 Formules Critiques">
         <div className="grid sm:grid-cols-2 gap-4 mb-4">
-          <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
-            <p className="font-semibold text-emerald-800 mb-2">1. Cobb-Douglas (α + β = 1)</p>
+          <div className="p-4 rounded-xl" style={{ background: 'var(--color-success-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-success)' }}>
+            <p className="font-semibold mb-2" style={{ color: 'var(--color-success)' }}>1. Cobb-Douglas (α + β = 1)</p>
             <Math>{"p_i x_i^* = \\alpha_i R"}</Math>
           </div>
-          <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
-            <p className="font-semibold text-emerald-800 mb-2">2. Condition optimale</p>
+          <div className="p-4 rounded-xl" style={{ background: 'var(--color-success-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-success)' }}>
+            <p className="font-semibold mb-2" style={{ color: 'var(--color-success)' }}>2. Condition optimale</p>
             <Math>{"\\frac{Um_{x_1}}{p_1} = \\frac{Um_{x_2}}{p_2}"}</Math>
           </div>
-          <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
-            <p className="font-semibold text-emerald-800 mb-2">3. Monopole</p>
+          <div className="p-4 rounded-xl" style={{ background: 'var(--color-success-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-success)' }}>
+            <p className="font-semibold mb-2" style={{ color: 'var(--color-success)' }}>3. Monopole</p>
             <Math>{"Rm = Cm"}</Math>
           </div>
-          <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
-            <p className="font-semibold text-emerald-800 mb-2">4. Indice de Lerner</p>
+          <div className="p-4 rounded-xl" style={{ background: 'var(--color-success-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-success)' }}>
+            <p className="font-semibold mb-2" style={{ color: 'var(--color-success)' }}>4. Indice de Lerner</p>
             <Math>{"L = \\frac{P-Cm}{P} = \\frac{1}{|\\varepsilon|}"}</Math>
           </div>
         </div>
-        <div className="p-4 bg-amber-50 rounded-xl border border-amber-200">
-          <p className="font-semibold text-amber-800 mb-2">5. Équation de Slutsky</p>
+        <div className="p-4 rounded-xl" style={{ background: 'var(--color-warning-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-warning)' }}>
+          <p className="font-semibold mb-2" style={{ color: 'var(--color-warning)' }}>5. Équation de Slutsky</p>
           <Math>{"\\frac{\\partial x_i}{\\partial p_j} = \\frac{\\partial h_i}{\\partial p_j} - \\frac{\\partial x_i}{\\partial R} x_j"}</Math>
         </div>
       </Section>
@@ -38,12 +38,12 @@ export function RevisionIntensive() {
         <FormulaBox label="Contrainte budgétaire" highlight>
           {"p_1 x_1 + p_2 x_2 = R"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Pente : <Math>{"-p_1/p_2"}</Math></p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>Pente : <Math>{"-p_1/p_2"}</Math></p>
 
         <FormulaBox label="TMS et Condition d'Optimalité" highlight>
           {"TMS_{1,2} = \\frac{Um_{x_1}}{Um_{x_2}} = \\frac{p_1}{p_2}"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Équivalent : <Math>{"\\frac{Um_{x_1}}{p_1} = \\frac{Um_{x_2}}{p_2}"}</Math></p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>Équivalent : <Math>{"\\frac{Um_{x_1}}{p_1} = \\frac{Um_{x_2}}{p_2}"}</Math></p>
 
         <FormulaBox label="Lagrangien">
           {"\\mathcal{L} = U(x_1, x_2) + \\lambda(R - p_1 x_1 - p_2 x_2)"}
@@ -70,7 +70,7 @@ export function RevisionIntensive() {
         <FormulaBox label="Contrainte temporelle" highlight>
           {"C + w\\ell = wT + R_0"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Pente : <Math>{"-w/p"}</Math> (coût d'opportunité du loisir)</p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>Pente : <Math>{"-w/p"}</Math> (coût d'opportunité du loisir)</p>
 
         <FormulaBox label="Condition d'optimalité">
           {"\\frac{Um_\\ell}{Um_C} = \\frac{w}{p}"}
@@ -81,7 +81,7 @@ export function RevisionIntensive() {
             <li><strong>Effet substitution</strong> : loisir plus cher → travail ↑</li>
             <li><strong>Effet revenu</strong> : plus riche → loisir ↑ (si bien normal)</li>
           </ul>
-          <p className="mt-2 text-amber-700">⚠️ Courbe backward-bending si effet revenu domine</p>
+          <p className="mt-2" style={{ color: 'var(--color-warning)' }}>⚠️ Courbe backward-bending si effet revenu domine</p>
         </Callout>
       </Section>
 
@@ -89,7 +89,7 @@ export function RevisionIntensive() {
         <FormulaBox label="Contrainte intertemporelle (valeur présente)" highlight>
           {"c_1 + \\frac{c_2}{1+r} = m_1 + \\frac{m_2}{1+r} = W"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Pente : <Math>{"-(1+r)"}</Math></p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>Pente : <Math>{"-(1+r)"}</Math></p>
 
         <FormulaBox label="Condition d'optimalité">
           {"\\frac{Um_{c_1}}{Um_{c_2}} = 1 + r"}
@@ -102,14 +102,14 @@ export function RevisionIntensive() {
         <FormulaBox label="Épargne">
           {"s = m_1 - c_1^*"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">s {'>'} 0 : épargnant | s {'<'} 0 : emprunteur</p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>s {'>'} 0 : épargnant | s {'<'} 0 : emprunteur</p>
       </Section>
 
       <Section type="formule" title="Surplus et Slutsky">
         <FormulaBox label="Surplus du consommateur">
           {"SC = \\int_0^{Q^*} P(q) dq - P^* Q^*"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Aire sous la courbe de demande moins dépense effective</p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>Aire sous la courbe de demande moins dépense effective</p>
 
         <FormulaBox label="Équation de Slutsky" highlight>
           {"\\frac{\\partial x_i}{\\partial p_j} = \\underbrace{\\frac{\\partial h_i}{\\partial p_j}}_{\\text{ES (-)}} - \\underbrace{\\frac{\\partial x_i}{\\partial R} \\cdot x_j}_{\\text{ER}}"}
@@ -141,7 +141,7 @@ export function RevisionIntensive() {
         <FormulaBox label="TMST et minimisation des coûts" highlight>
           {"TMST_{L,K} = \\frac{Pm_L}{Pm_K} = \\frac{w}{r}"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Équivalent : <Math>{"\\frac{Pm_L}{w} = \\frac{Pm_K}{r}"}</Math></p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>Équivalent : <Math>{"\\frac{Pm_L}{w} = \\frac{Pm_K}{r}"}</Math></p>
 
         <Callout type="insight" title="Rendements d'échelle (Cobb-Douglas)">
           <ul className="list-disc pl-4 space-y-1">
@@ -166,12 +166,12 @@ export function RevisionIntensive() {
         <FormulaBox label="Court terme" highlight>
           {"P = Cm(Q^*) \\quad \\text{si} \\quad P \\geq CVM"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Seuil de fermeture : P = min CVM</p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>Seuil de fermeture : P = min CVM</p>
 
         <FormulaBox label="Long terme" highlight>
           {"P = Cm(Q^*) = CM_{min} \\quad \\text{et} \\quad \\pi = 0"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Seuil de rentabilité : P = min CM</p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>Seuil de rentabilité : P = min CM</p>
 
         <FormulaBox label="Surplus du producteur">
           {"SP = \\int_0^{Q^*} [P^* - Cm(q)] dq"}
@@ -182,12 +182,12 @@ export function RevisionIntensive() {
         <FormulaBox label="Recette marginale du monopole" highlight>
           {"Rm = P\\left(1 + \\frac{1}{\\varepsilon}\\right)"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Demande linéaire P = a - bQ → Rm = a - 2bQ</p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>Demande linéaire P = a - bQ → Rm = a - 2bQ</p>
 
         <FormulaBox label="Équilibre du monopole" highlight>
           {"Rm = Cm"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Puis P* = P(Q*) avec P* {'>'} Cm</p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>Puis P* = P(Q*) avec P* {'>'} Cm</p>
 
         <FormulaBox label="Indice de Lerner" highlight>
           {"L = \\frac{P - Cm}{P} = \\frac{1}{|\\varepsilon|}"}
@@ -196,7 +196,7 @@ export function RevisionIntensive() {
         <FormulaBox label="Cournot - Équilibre de Nash">
           {"q_1^* = R_1(q_2^*) \\quad \\text{et} \\quad q_2^* = R_2(q_1^*)"}
         </FormulaBox>
-        <p className="text-sm text-slate-700 mb-2">Cas linéaire (P = a - b(q₁+q₂), Cm = c) :</p>
+        <p className="text-sm mb-2" style={{ color: 'var(--color-text-secondary)' }}>Cas linéaire (P = a - b(q₁+q₂), Cm = c) :</p>
         <FormulaBox label="Solution Cournot symétrique">
           {"q_1^* = q_2^* = \\frac{a-c}{3b} \\quad P^* = \\frac{a+2c}{3}"}
         </FormulaBox>
@@ -242,7 +242,7 @@ export function RevisionIntensive() {
             <TableCell>Nul</TableCell>
           </TableRow>
         </Table>
-        <p className="text-sm text-slate-600 mt-4">Relation : Q<sub>m</sub> {'<'} Q<sub>c</sub> {'<'} Q<sub>cpp</sub> et P<sub>m</sub> {'>'} P<sub>c</sub> {'>'} P<sub>cpp</sub></p>
+        <p className="text-sm mt-4" style={{ color: 'var(--color-text-secondary)' }}>Relation : Q<sub>m</sub> {'<'} Q<sub>c</sub> {'<'} Q<sub>cpp</sub> et P<sub>m</sub> {'>'} P<sub>c</sub> {'>'} P<sub>cpp</sub></p>
       </Section>
 
       <Section type="warning" title="Top 10 des Pièges d'Examen">

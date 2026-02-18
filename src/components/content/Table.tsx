@@ -12,7 +12,7 @@ export function Table({ headers, children }: TableProps) {
       style={{ 
         borderColor: 'rgb(var(--border))',
         background: 'rgb(var(--surface-1))',
-        boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)'
+        boxShadow: '0 1px 3px color-mix(in srgb, var(--color-text-primary) 4%, transparent)'
       }}
     >
       <div className="overflow-x-auto">

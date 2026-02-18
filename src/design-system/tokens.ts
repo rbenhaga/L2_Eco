@@ -16,9 +16,9 @@
 // ============================================
 
 export const surfaces = {
-  base: 'var(--color-bg-base)',           // #F7F9FF - Page background
-  raised: 'var(--color-bg-raised)',       // #FFFFFF - Cards, panels
-  overlay: 'var(--color-bg-overlay)',     // #FAFBFF - Dropdowns, modals
+  base: 'var(--color-bg-base)',           // page background token
+  raised: 'var(--color-bg-raised)',       // cards/panels token
+  overlay: 'var(--color-bg-overlay)',     // dropdown/modal token
 } as const;
 
 // ============================================
@@ -26,9 +26,9 @@ export const surfaces = {
 // ============================================
 
 export const text = {
-  primary: 'var(--color-text-primary)',     // #0F172A - Headings, body
-  secondary: 'var(--color-text-secondary)', // #475569 - Subtext
-  muted: 'var(--color-text-muted)',         // #94A3B8 - Hints, captions
+  primary: 'var(--color-text-primary)',     // heading/body text token
+  secondary: 'var(--color-text-secondary)', // secondary text token
+  muted: 'var(--color-text-muted)',         // muted text token
 } as const;
 
 // ============================================
@@ -36,9 +36,9 @@ export const text = {
 // ============================================
 
 export const accent = {
-  default: 'var(--color-accent)',           // #4F46E5 - Primary actions
-  hover: 'var(--color-accent-hover)',       // #4338CA - Hover state
-  subtle: 'var(--color-accent-subtle)',     // #EEF2FF - Backgrounds
+  default: 'var(--color-accent)',           // primary action token
+  hover: 'var(--color-accent-hover)',       // hover token
+  subtle: 'var(--color-accent-subtle)',     // subtle background token
 } as const;
 
 // ============================================
@@ -47,35 +47,35 @@ export const accent = {
 
 export const modules = {
   macro: {
-    color: 'var(--color-macro)',            // #2563EB - Blue
-    light: 'var(--color-macro-light)',      // rgba(37, 99, 235, 0.12)
-    subtle: 'var(--color-macro-subtle)',    // rgba(37, 99, 235, 0.06)
+    color: 'var(--color-macro)',            // module color token
+    light: 'var(--color-macro-light)',      // light variant token
+    subtle: 'var(--color-macro-subtle)',    // subtle variant token
     gradient: 'var(--color-macro-gradient)',
     glow: 'var(--color-macro-glow)',
   },
   micro: {
-    color: 'var(--color-micro)',            // #8B5CF6 - Violet
+    color: 'var(--color-micro)',            // module color token
     light: 'var(--color-micro-light)',
     subtle: 'var(--color-micro-subtle)',
     gradient: 'var(--color-micro-gradient)',
     glow: 'var(--color-micro-glow)',
   },
   stats: {
-    color: 'var(--color-stats)',            // #06B6D4 - Cyan
+    color: 'var(--color-stats)',            // module color token
     light: 'var(--color-stats-light)',
     subtle: 'var(--color-stats-subtle)',
     gradient: 'var(--color-stats-gradient)',
     glow: 'var(--color-stats-glow)',
   },
   socio: {
-    color: 'var(--color-socio)',            // #F43F5E - Rose
+    color: 'var(--color-socio)',            // module color token
     light: 'var(--color-socio-light)',
     subtle: 'var(--color-socio-subtle)',
     gradient: 'var(--color-socio-gradient)',
     glow: 'var(--color-socio-glow)',
   },
   management: {
-    color: 'var(--color-management)',       // #F97316 - Orange
+    color: 'var(--color-management)',       // module color token
     light: 'var(--color-management-light)',
     subtle: 'var(--color-management-subtle)',
     gradient: 'var(--color-management-gradient)',
@@ -88,13 +88,13 @@ export const modules = {
 // ============================================
 
 export const semantic = {
-  success: 'var(--color-success)',          // #16A34A
+  success: 'var(--color-success)',          // success token
   successSubtle: 'var(--color-success-subtle)',
-  warning: 'var(--color-warning)',          // #CA8A04
+  warning: 'var(--color-warning)',          // warning token
   warningSubtle: 'var(--color-warning-subtle)',
-  error: 'var(--color-error)',              // #DC2626
+  error: 'var(--color-error)',              // error token
   errorSubtle: 'var(--color-error-subtle)',
-  info: 'var(--color-info)',                // #3b82f6
+  info: 'var(--color-info)',                // info token
   infoSubtle: 'var(--color-info-subtle)',
 } as const;
 
@@ -103,9 +103,9 @@ export const semantic = {
 // ============================================
 
 export const borders = {
-  default: 'var(--color-border-default)',   // rgba(15, 23, 42, 0.08)
-  soft: 'var(--color-border-soft)',         // rgba(15, 23, 42, 0.05)
-  strong: 'var(--color-border-strong)',     // rgba(15, 23, 42, 0.12)
+  default: 'var(--color-border-default)',   // color-mix(in srgb, var(--color-text-primary) 8%, transparent)
+  soft: 'var(--color-border-soft)',         // soft border token
+  strong: 'var(--color-border-strong)',     // strong border token
 } as const;
 
 // ============================================

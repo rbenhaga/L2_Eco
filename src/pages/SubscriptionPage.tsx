@@ -1,247 +1,114 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Check, ArrowLeft, Loader2, Sparkles, Zap } from 'lucide-react';
+import { ArrowLeft, Loader2, Settings } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { BackgroundBlobs } from '../components/layout/BackgroundBlobs';
-import { createCheckoutSession, createCustomerPortalSession } from '../services/api';
+import { createCustomerPortalSession } from '../services/api';
 
 export function SubscriptionPage() {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
     const navigate = useNavigate();
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Check URL params for success/cancel
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('success') === 'true') {
-            // Payment successful! Refresh to update subscription
-            setTimeout(() => {
-                window.location.href = '/';
-            }, 2000);
-        }
-    }, []);
-
-    const handleUpgrade = async (_tier: 'premium') => {
+        if (loading) return;
         if (!user) {
-            setError('Vous devez être connecté pour vous abonner');
+            navigate('/login', { replace: true });
             return;
         }
-
-        setIsProcessing(true);
-        setError(null);
-
-        try {
-            // Create Stripe Checkout Session via backend and redirect
-            const { url } = await createCheckoutSession(user.uid);
-
-            if (url) {
-                // Redirect to Stripe Checkout page
-                window.location.href = url;
-            } else {
-                throw new Error('URL de paiement non reçue');
-            }
-
-        } catch (err) {
-            console.error('Upgrade error:', err);
-            setError(err instanceof Error ? err.message : 'Une erreur est survenue');
-            setIsProcessing(false);
+        if (user.subscriptionTier !== 'premium') {
+            navigate('/pricing', { replace: true });
         }
-    };
+    }, [loading, navigate, user]);
 
     const handleManageSubscription = async () => {
         if (!user) return;
 
         setIsProcessing(true);
+        setError(null);
+
         try {
             const { url } = await createCustomerPortalSession(user.uid);
             window.location.href = url;
         } catch (err) {
             console.error('Portal error:', err);
-            setError('Impossible d\'accéder au portail client');
+            setError("Impossible d'acceder au portail client");
             setIsProcessing(false);
         }
     };
 
-    const currentTier = user?.subscriptionTier || 'free';
+    if (loading || !user || user.subscriptionTier !== 'premium') {
+        return (
+            <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--color-bg-base)' }}>
+                <div className="flex items-center gap-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Chargement...
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="min-h-screen relative overflow-hidden" data-theme="light">
-            <BackgroundBlobs />
-
-            <div className="relative z-10 min-h-screen px-6 py-12">
-                {/* Back button */}
+        <div className="min-h-screen" style={{ background: 'var(--color-bg-base)' }}>
+            <div className="mx-auto max-w-2xl px-6 py-12">
                 <button
                     onClick={() => navigate(-1)}
-                    className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-xl text-sm font-medium text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))] hover:bg-[rgb(var(--surface-1)/0.6)] dark:hover:bg-[rgb(var(--surface-3)/0.6)] transition-colors"
+                    className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+                    style={{ color: 'var(--color-text-secondary)' }}
                 >
                     <ArrowLeft size={16} />
                     Retour
                 </button>
 
-                {/* Error message */}
-                {error && (
-                    <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
-                        {error}
+                <div
+                    className="rounded-2xl p-8"
+                    style={{
+                        background: 'var(--color-bg-raised)',
+                        border: '1px solid var(--color-border-default)',
+                        boxShadow: 'var(--shadow-sm)',
+                    }}
+                >
+                    <div className="flex items-center gap-3 mb-3" style={{ color: 'var(--color-text-primary)' }}>
+                        <Settings className="h-5 w-5" />
+                        <h1 className="text-2xl font-semibold">Gestion de l'abonnement</h1>
                     </div>
-                )}
+                    <p className="text-sm mb-6" style={{ color: 'var(--color-text-secondary)' }}>
+                        Accedez au portail Stripe pour gerer votre abonnement, vos moyens de paiement et vos factures.
+                    </p>
 
-                <div className="max-w-[896px] mx-auto">
-                    {/* Header */}
-                    <div className="text-center mb-12">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br from-indigo-500 to-violet-600 text-white mb-6"
+                    {error && (
+                        <div
+                            className="mb-4 rounded-lg px-3 py-2 text-sm"
+                            style={{
+                                background: 'var(--color-error-subtle)',
+                                color: 'var(--color-error)',
+                                border: '1px solid color-mix(in srgb, var(--color-error) 30%, transparent)',
+                            }}
                         >
-                            <Sparkles size={32} />
-                        </motion.div>
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                            className="text-4xl font-bold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))] mb-4"
-                        >
-                            Passez à Premium
-                        </motion.h1>
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                            className="text-lg text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]"
-                        >
-                            Débloquez tous les cours et maximisez vos révisions
-                        </motion.p>
-                    </div>
+                            {error}
+                        </div>
+                    )}
 
-                    {/* Pricing Cards */}
-                    <div className="grid md:grid-cols-2 gap-6 mb-12">
-                        {/* Free Tier */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.3 }}
-                            className="relative p-8 rounded-3xl border-2 border-[rgb(var(--border))] dark:border-[rgb(var(--border-strong))] bg-white/60 dark:bg-[rgb(var(--text))]/40 backdrop-blur-md"
-                        >
-                            <div className="mb-6">
-                                <h3 className="text-xl font-bold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))] mb-2">
-                                    Gratuit
-                                </h3>
-                                <p className="text-3xl font-bold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))]">
-                                    0€
-                                    <span className="text-base font-normal text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">/mois</span>
-                                </p>
-                            </div>
-
-                            <ul className="space-y-3 mb-6">
-                                {[
-                                    'Accès à 1-2 cours',
-                                    '1 QCM d\'entraînement',
-                                    'Contenu limité',
-                                ].map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-3 text-sm text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">
-                                        <Check size={18} className="text-[rgb(var(--text-muted))] shrink-0 mt-0.5" />
-                                        <span>{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            {currentTier === 'free' && (
-                                <div className="px-4 py-2 rounded-xl bg-[rgb(var(--surface-2))] dark:bg-[rgb(var(--text))] text-center">
-                                    <span className="text-sm font-medium text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">
-                                        Formule actuelle
-                                    </span>
-                                </div>
-                            )}
-                        </motion.div>
-
-                        {/* Premium Tier */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.4 }}
-                            className="relative p-8 rounded-3xl border-2 border-indigo-500/50 bg-linear-to-br from-white via-indigo-50/30 to-violet-50/20 dark:from-slate-900 dark:via-indigo-950/30 dark:to-violet-950/20 backdrop-blur-md shadow-xl"
-                        >
-                            {/* Popular badge */}
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-linear-to-r from-indigo-500 to-violet-600 text-white text-xs font-semibold">
-                                Le plus populaire
-                            </div>
-
-                            <div className="mb-6">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <h3 className="text-xl font-bold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))]">
-                                        Premium
-                                    </h3>
-                                    <Zap size={20} className="text-indigo-600 dark:text-indigo-400" />
-                                </div>
-                                <p className="text-3xl font-bold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))]">
-                                    9€
-                                    <span className="text-base font-normal text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">/mois</span>
-                                </p>
-                            </div>
-
-                            <ul className="space-y-3 mb-6">
-                                {[
-                                    'Accès illimité à tous les cours',
-                                    'QCM et exercices corrigés',
-                                    'Simulations d\'examen',
-                                    'Nouvelles fiches chaque semaine',
-                                    'Support prioritaire',
-                                    'Contenu protégé et sécurisé',
-                                ].map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-3 text-sm text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">
-                                        <Check size={18} className="text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
-                                        <span className="font-medium">{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <button
-                                onClick={() => currentTier === 'premium' ? handleManageSubscription() : handleUpgrade('premium')}
-                                disabled={isProcessing}
-                                className={`w-full py-3.5 px-6 rounded-xl font-semibold text-white transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed ${currentTier === 'premium'
-                                    ? 'bg-[rgb(var(--text))] hover:bg-[rgb(var(--text)/0.9)] dark:bg-[rgb(var(--surface-3))] dark:hover:bg-[rgb(var(--surface-3))]'
-                                    : 'bg-linear-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700'
-                                    }`}
-                            >
-                                {isProcessing ? (
-                                    <span className="flex items-center justify-center gap-2">
-                                        <Loader2 className="animate-spin h-5 w-5" />
-                                        Traitement...
-                                    </span>
-                                ) : currentTier === 'premium' ? (
-                                    'Gérer mon abonnement'
-                                ) : (
-                                    'Passer à Premium'
-                                )}
-                            </button>
-
-                            <p className="mt-4 text-center text-xs text-[rgb(var(--surface-1))]0 dark:text-[rgb(var(--text-muted))]">
-                                Essai gratuit de 7 jours • Sans engagement
-                            </p>
-                        </motion.div>
-                    </div>
-
-                    {/* FAQ/Trust Section */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 }}
-                        className="p-6 rounded-2xl bg-white/60 dark:bg-[rgb(var(--text))]/40 backdrop-blur-md border border-[rgb(var(--border))] dark:border-white/10"
+                    <button
+                        onClick={handleManageSubscription}
+                        disabled={isProcessing}
+                        className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold disabled:opacity-60"
+                        style={{
+                            background: 'var(--color-text-primary)',
+                            color: 'var(--color-canvas)',
+                        }}
                     >
-                        <h3 className="text-lg font-semibold text-[rgb(var(--text))] dark:text-[rgb(var(--surface-1))] mb-4">
-                            Note : Paiement Stripe
-                        </h3>
-                        <p className="text-sm text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))] mb-2">
-                            L'intégration Stripe sera configurée prochainement. Pour le moment, ceci est une démo fonctionnelle.
-                        </p>
-                        <p className="text-sm text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-muted))]">
-                            Le système de paywall et de protection du contenu est pleinement opérationnel et prêt pour la production.
-                        </p>
-                    </motion.div>
+                        {isProcessing ? (
+                            <>
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                Redirection...
+                            </>
+                        ) : (
+                            'Ouvrir le portail de gestion'
+                        )}
+                    </button>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }

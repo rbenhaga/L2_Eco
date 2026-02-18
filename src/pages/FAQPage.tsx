@@ -37,7 +37,7 @@ export default function FAQPage() {
               className="text-center mb-12"
             >
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ background: 'var(--color-accent)' }}>
-                <HelpCircle className="w-8 h-8 text-white" />
+                <HelpCircle className="w-8 h-8 text-[var(--color-bg-raised)]" />
               </div>
               <h1 className="text-3xl sm:text-4xl font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>
                 Foire aux Questions
@@ -96,17 +96,17 @@ export default function FAQPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="mt-12 rounded-2xl p-8 text-center text-white"
+              className="mt-12 rounded-2xl p-8 text-center text-[var(--color-bg-raised)]"
               style={{ background: 'var(--color-accent)' }}
             >
               <h3 className="text-xl font-semibold mb-2">Vous n'avez pas trouvé votre réponse ?</h3>
               <p className="mb-6 opacity-90">Notre équipe est là pour vous aider</p>
               <a
                 href="/contact"
-                className="inline-block px-6 py-3 bg-white font-semibold rounded-xl transition-colors"
+                className="inline-block px-6 py-3 bg-[var(--color-bg-raised)] font-semibold rounded-xl transition-colors"
                 style={{ color: 'var(--color-accent)' }}
                 onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-bg-overlay)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'white'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'var(--color-bg-raised)'}
               >
                 Nous contacter
               </a>

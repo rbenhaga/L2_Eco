@@ -1,10 +1,9 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Hook de protection légère du contenu premium
- * - Désactive copie/clic-droit UNIQUEMENT sur éléments protégés (pas global)
- * - N'affecte PAS les DevTools (F12 autorisé)
- * - Ajoute watermark visuel discret
+ * Global content protection:
+ * - Blocks copy/cut/paste/select/print outside textarea
+ * - Allows normal typing in forms, but clipboard only in textarea
  */
 export function useContentProtection(options?: { watermark?: string; enabled?: boolean }) {
     const containerRef = useRef<HTMLElement | null>(null);
@@ -13,40 +12,68 @@ export function useContentProtection(options?: { watermark?: string; enabled?: b
     useEffect(() => {
         if (!enabled) return;
 
+        const isTextareaTarget = (target: EventTarget | null): boolean => {
+            if (!(target instanceof Element)) return false;
+            return Boolean(target.closest('textarea'));
+        };
+
+        const shouldBlock = (target: EventTarget | null): boolean => !isTextareaTarget(target);
+
         const handleCopy = (e: ClipboardEvent) => {
-            const target = e.target as HTMLElement;
-            if (containerRef.current?.contains(target)) {
-                e.preventDefault();
-                // Message discret, pas d'alert()
-                console.info('📋 Copie désactivée sur contenu premium');
-            }
+            if (shouldBlock(e.target)) e.preventDefault();
+        };
+
+        const handleCut = (e: ClipboardEvent) => {
+            if (shouldBlock(e.target)) e.preventDefault();
+        };
+
+        const handlePaste = (e: ClipboardEvent) => {
+            if (shouldBlock(e.target)) e.preventDefault();
         };
 
         const handleContextMenu = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
-            if (containerRef.current?.contains(target)) {
-                e.preventDefault();
-            }
+            if (shouldBlock(e.target)) e.preventDefault();
+        };
+
+        const handleSelectStart = (e: Event) => {
+            if (shouldBlock(e.target)) e.preventDefault();
+        };
+
+        const handleDragStart = (e: DragEvent) => {
+            if (shouldBlock(e.target)) e.preventDefault();
         };
 
         const handleKeyDown = (e: KeyboardEvent) => {
-            const target = e.target as HTMLElement;
-            if (!containerRef.current?.contains(target)) return;
+            if (!shouldBlock(e.target)) return;
 
-            // Bloque uniquement Ctrl+C/X/P dans le contenu protégé
-            if ((e.ctrlKey || e.metaKey) && ['c', 'x', 'p'].includes(e.key.toLowerCase())) {
+            if ((e.ctrlKey || e.metaKey) && ['c', 'x', 'v', 'a', 'p', 's', 'u'].includes(e.key.toLowerCase())) {
                 e.preventDefault();
             }
         };
 
+        const handleBeforePrint = (e: Event) => {
+            e.preventDefault();
+            window.stop();
+        };
+
         document.addEventListener('copy', handleCopy);
+        document.addEventListener('cut', handleCut);
+        document.addEventListener('paste', handlePaste);
         document.addEventListener('contextmenu', handleContextMenu);
+        document.addEventListener('selectstart', handleSelectStart);
+        document.addEventListener('dragstart', handleDragStart);
         document.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('beforeprint', handleBeforePrint);
 
         return () => {
             document.removeEventListener('copy', handleCopy);
+            document.removeEventListener('cut', handleCut);
+            document.removeEventListener('paste', handlePaste);
             document.removeEventListener('contextmenu', handleContextMenu);
+            document.removeEventListener('selectstart', handleSelectStart);
+            document.removeEventListener('dragstart', handleDragStart);
             document.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('beforeprint', handleBeforePrint);
         };
     }, [enabled]);
 

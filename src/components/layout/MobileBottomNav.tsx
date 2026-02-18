@@ -50,7 +50,7 @@ export function MobileBottomNav() {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.15 }}
                             className="fixed inset-0 lg:hidden"
-                            style={{ background: 'rgba(0,0,0,0.3)', zIndex: 49 }}
+                            style={{ background: 'color-mix(in srgb, var(--color-text-primary) 30%, transparent)', zIndex: 49 }}
                             onClick={() => setIsMoreOpen(false)}
                         />
                         {/* Drawer */}
@@ -104,7 +104,7 @@ export function MobileBottomNav() {
                     borderColor: 'var(--color-border-default)',
                     zIndex: 50,
                     paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-                    boxShadow: '0 -1px 8px rgba(15, 23, 42, 0.06)',
+                    boxShadow: '0 -1px 8px color-mix(in srgb, var(--color-text-primary) 6%, transparent)',
                 }}
             >
                 <div className="flex items-stretch justify-around">

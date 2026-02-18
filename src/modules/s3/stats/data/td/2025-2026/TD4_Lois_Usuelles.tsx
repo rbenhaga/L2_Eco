@@ -39,32 +39,32 @@ export const TD4_2526: TDSheet = {
           <p><strong>1. Loi:</strong> <M>{"X \\sim \\mathcal{P}(\\lambda = 15)"}</M></p>
           
           <p><strong>📊 Table Poisson (λ=15):</strong></p>
-          <table className="border-collapse border border-slate-300 text-xs">
-            <thead><tr><th className="border border-slate-300 p-1">k</th><th className="border border-slate-300 p-1">9</th><th className="border border-slate-300 p-1">13</th><th className="border border-slate-300 p-1">14</th><th className="border border-slate-300 p-1">15</th><th className="border border-slate-300 p-1">19</th><th className="border border-slate-300 p-1">21</th></tr></thead>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-xs">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-1">k</th><th className="border border-[var(--color-border-strong)] p-1">9</th><th className="border border-[var(--color-border-strong)] p-1">13</th><th className="border border-[var(--color-border-strong)] p-1">14</th><th className="border border-[var(--color-border-strong)] p-1">15</th><th className="border border-[var(--color-border-strong)] p-1">19</th><th className="border border-[var(--color-border-strong)] p-1">21</th></tr></thead>
             <tbody>
-              <tr><td className="border border-slate-300 p-1">P(X=k)</td><td className="border border-slate-300 p-1">0.0324</td><td className="border border-slate-300 p-1">0.0956</td><td className="border border-slate-300 p-1">0.1024</td><td className="border border-slate-300 p-1">0.1024</td><td className="border border-slate-300 p-1">0.0557</td><td className="border border-slate-300 p-1">0.0299</td></tr>
-              <tr><td className="border border-slate-300 p-1">P(X≤k)</td><td className="border border-slate-300 p-1">0.0699</td><td className="border border-slate-300 p-1">0.3632</td><td className="border border-slate-300 p-1">0.4657</td><td className="border border-slate-300 p-1">0.5681</td><td className="border border-slate-300 p-1">0.8752</td><td className="border border-slate-300 p-1">0.9469</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">P(X=k)</td><td className="border border-[var(--color-border-strong)] p-1">0.0324</td><td className="border border-[var(--color-border-strong)] p-1">0.0956</td><td className="border border-[var(--color-border-strong)] p-1">0.1024</td><td className="border border-[var(--color-border-strong)] p-1">0.1024</td><td className="border border-[var(--color-border-strong)] p-1">0.0557</td><td className="border border-[var(--color-border-strong)] p-1">0.0299</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">P(X≤k)</td><td className="border border-[var(--color-border-strong)] p-1">0.0699</td><td className="border border-[var(--color-border-strong)] p-1">0.3632</td><td className="border border-[var(--color-border-strong)] p-1">0.4657</td><td className="border border-[var(--color-border-strong)] p-1">0.5681</td><td className="border border-[var(--color-border-strong)] p-1">0.8752</td><td className="border border-[var(--color-border-strong)] p-1">0.9469</td></tr>
             </tbody>
           </table>
           
           <p><strong>2. P(X = 15):</strong></p>
-          <p className="text-emerald-700 font-semibold"><M>{"P(X = 15) = \\boxed{0.1024}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"P(X = 15) = \\boxed{0.1024}"}</M></p>
           
           <p><strong>3. P(12 {'<'} X {'<'} 16):</strong></p>
           <M>{"P(12 < X < 16) = P(X=13) + P(X=14) + P(X=15) = 0.0956 + 0.1024 + 0.1024 = \\boxed{0.3004}"}</M>
           
           <p><strong>4. Trouver z:</strong></p>
           <M>{"P(X \\geq z) = 0.1248 \\Rightarrow P(X \\leq z-1) = 0.8752"}</M>
-          <p>📊 Table: P(X ≤ 19) = 0.8752 → <span className="text-emerald-700 font-semibold"><M>{"\\boxed{z = 20}"}</M></span></p>
+          <p>📊 Table: P(X ≤ 19) = 0.8752 → <span className="text-[var(--color-success)] font-semibold"><M>{"\\boxed{z = 20}"}</M></span></p>
           
           <p><strong>5. Vérification P(X {'>'} 14):</strong></p>
           <M>{"P(X > 14) = 1 - P(X \\leq 14) = 1 - 0.4657 = 0.5343"}</M>
-          <p className="text-red-600 font-semibold">⚠️ Le résultat de 73.24% est INCORRECT. Vraie valeur: 53.43%</p>
+          <p className="text-[var(--color-error)] font-semibold">⚠️ Le résultat de 73.24% est INCORRECT. Vraie valeur: 53.43%</p>
           
           <p><strong>6. Bienaymé-Tchebychev:</strong></p>
           <M>{"\\mu = 15, \\sigma = \\sqrt{15}, k = 6/\\sqrt{15} \\approx 1.55"}</M>
           <M>{"P(9 \\leq X \\leq 21) \\geq 1 - \\frac{1}{1.55^2} = \\boxed{0.583}"}</M>
-          <p className="text-slate-700">Valeur exacte: 0.9469 - 0.0374 = 0.9095</p>
+          <p className="text-[var(--color-text-secondary)]">Valeur exacte: 0.9469 - 0.0374 = 0.9095</p>
         </div>
       ),
     },
@@ -88,9 +88,9 @@ export const TD4_2526: TDSheet = {
           <p><strong>1. Loi:</strong> <M>{"X \\sim \\mathcal{H}(20, 7, 5)"}</M></p>
           <M>{"P(X = k) = \\frac{C_7^k \\cdot C_{13}^{5-k}}{C_{20}^5}, \\quad C_{20}^5 = 15504"}</M>
           
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">X</th><th className="border border-slate-300 p-2">0</th><th className="border border-slate-300 p-2">1</th><th className="border border-slate-300 p-2">2</th><th className="border border-slate-300 p-2">3</th><th className="border border-slate-300 p-2">4</th><th className="border border-slate-300 p-2">5</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-2">P(X=k)</td><td className="border border-slate-300 p-2">0.0830</td><td className="border border-slate-300 p-2">0.3228</td><td className="border border-slate-300 p-2">0.3874</td><td className="border border-slate-300 p-2">0.1761</td><td className="border border-slate-300 p-2">0.0293</td><td className="border border-slate-300 p-2">0.0014</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">X</th><th className="border border-[var(--color-border-strong)] p-2">0</th><th className="border border-[var(--color-border-strong)] p-2">1</th><th className="border border-[var(--color-border-strong)] p-2">2</th><th className="border border-[var(--color-border-strong)] p-2">3</th><th className="border border-[var(--color-border-strong)] p-2">4</th><th className="border border-[var(--color-border-strong)] p-2">5</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-2">P(X=k)</td><td className="border border-[var(--color-border-strong)] p-2">0.0830</td><td className="border border-[var(--color-border-strong)] p-2">0.3228</td><td className="border border-[var(--color-border-strong)] p-2">0.3874</td><td className="border border-[var(--color-border-strong)] p-2">0.1761</td><td className="border border-[var(--color-border-strong)] p-2">0.0293</td><td className="border border-[var(--color-border-strong)] p-2">0.0014</td></tr></tbody>
           </table>
           
           <p><strong>2. E(X), V(X), P(X=4):</strong></p>
@@ -123,19 +123,19 @@ export const TD4_2526: TDSheet = {
           <p><strong>2. Pour P(X ≥ 1) ≥ 0.99:</strong></p>
           <M>{"P(X \\geq 1) = 1 - (0.3)^n \\geq 0.99"}</M>
           <M>{"(0.3)^n \\leq 0.01 \\Rightarrow n \\geq \\frac{\\ln(0.01)}{\\ln(0.3)} = 3.82"}</M>
-          <p className="text-emerald-700 font-semibold"><M>{"\\boxed{n \\geq 4 \\text{ tirs}}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"\\boxed{n \\geq 4 \\text{ tirs}}"}</M></p>
           
           <p><strong>3. Pour P(X ≥ 2) ≥ 0.99:</strong></p>
           <M>{"P(X \\leq 1) = (0.3)^n + n(0.7)(0.3)^{n-1} \\leq 0.01"}</M>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">n</th><th className="border border-slate-300 p-2">P(X≤1)</th></tr></thead>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">n</th><th className="border border-[var(--color-border-strong)] p-2">P(X≤1)</th></tr></thead>
             <tbody>
-              <tr><td className="border border-slate-300 p-2">5</td><td className="border border-slate-300 p-2">0.0308</td></tr>
-              <tr><td className="border border-slate-300 p-2">6</td><td className="border border-slate-300 p-2">0.0109</td></tr>
-              <tr><td className="border border-slate-300 p-2 font-semibold">7</td><td className="border border-slate-300 p-2 text-emerald-600 font-semibold">0.0038</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">5</td><td className="border border-[var(--color-border-strong)] p-2">0.0308</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">6</td><td className="border border-[var(--color-border-strong)] p-2">0.0109</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2 font-semibold">7</td><td className="border border-[var(--color-border-strong)] p-2 text-[var(--color-success)] font-semibold">0.0038</td></tr>
             </tbody>
           </table>
-          <p className="text-emerald-700 font-semibold"><M>{"\\boxed{n \\geq 7 \\text{ tirs}}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"\\boxed{n \\geq 7 \\text{ tirs}}"}</M></p>
         </div>
       ),
     },
@@ -155,10 +155,10 @@ export const TD4_2526: TDSheet = {
       solution: (
         <div className="space-y-3">
           <p><strong>Partie 1: n = 20, X ~ B(20, 0.02)</strong></p>
-          <table className="border-collapse border border-slate-300 text-xs">
-            <thead><tr><th className="border border-slate-300 p-1">k</th><th className="border border-slate-300 p-1">0</th><th className="border border-slate-300 p-1">1</th><th className="border border-slate-300 p-1">2</th><th className="border border-slate-300 p-1">3</th></tr></thead>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-xs">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-1">k</th><th className="border border-[var(--color-border-strong)] p-1">0</th><th className="border border-[var(--color-border-strong)] p-1">1</th><th className="border border-[var(--color-border-strong)] p-1">2</th><th className="border border-[var(--color-border-strong)] p-1">3</th></tr></thead>
             <tbody>
-              <tr><td className="border border-slate-300 p-1">P(X≤k)</td><td className="border border-slate-300 p-1">0.6676</td><td className="border border-slate-300 p-1">0.9401</td><td className="border border-slate-300 p-1">0.9929</td><td className="border border-slate-300 p-1">0.9994</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">P(X≤k)</td><td className="border border-[var(--color-border-strong)] p-1">0.6676</td><td className="border border-[var(--color-border-strong)] p-1">0.9401</td><td className="border border-[var(--color-border-strong)] p-1">0.9929</td><td className="border border-[var(--color-border-strong)] p-1">0.9994</td></tr>
             </tbody>
           </table>
           <M>{"P(X \\leq 2) = \\boxed{0.9929}"}</M>
@@ -167,11 +167,11 @@ export const TD4_2526: TDSheet = {
           <M>{"g_X(u) = (0.02u + 0.98)^{20}"}</M>
           
           <p><strong>Partie 2: n = 250, X ~ P(5)</strong></p>
-          <table className="border-collapse border border-slate-300 text-xs">
-            <thead><tr><th className="border border-slate-300 p-1">k</th><th className="border border-slate-300 p-1">0</th><th className="border border-slate-300 p-1">3</th><th className="border border-slate-300 p-1">8</th><th className="border border-slate-300 p-1">10</th></tr></thead>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-xs">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-1">k</th><th className="border border-[var(--color-border-strong)] p-1">0</th><th className="border border-[var(--color-border-strong)] p-1">3</th><th className="border border-[var(--color-border-strong)] p-1">8</th><th className="border border-[var(--color-border-strong)] p-1">10</th></tr></thead>
             <tbody>
-              <tr><td className="border border-slate-300 p-1">P(X=k)</td><td className="border border-slate-300 p-1">0.0067</td><td className="border border-slate-300 p-1">0.1404</td><td className="border border-slate-300 p-1">0.0653</td><td className="border border-slate-300 p-1">0.0181</td></tr>
-              <tr><td className="border border-slate-300 p-1">P(X≤k)</td><td className="border border-slate-300 p-1">0.0067</td><td className="border border-slate-300 p-1">0.2650</td><td className="border border-slate-300 p-1">0.9319</td><td className="border border-slate-300 p-1">0.9863</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">P(X=k)</td><td className="border border-[var(--color-border-strong)] p-1">0.0067</td><td className="border border-[var(--color-border-strong)] p-1">0.1404</td><td className="border border-[var(--color-border-strong)] p-1">0.0653</td><td className="border border-[var(--color-border-strong)] p-1">0.0181</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">P(X≤k)</td><td className="border border-[var(--color-border-strong)] p-1">0.0067</td><td className="border border-[var(--color-border-strong)] p-1">0.2650</td><td className="border border-[var(--color-border-strong)] p-1">0.9319</td><td className="border border-[var(--color-border-strong)] p-1">0.9863</td></tr>
             </tbody>
           </table>
           <M>{"P(X = 0) = \\boxed{0.0067}, \\quad P(X = 3) = \\boxed{0.1404}"}</M>
@@ -188,9 +188,9 @@ export const TD4_2526: TDSheet = {
       content: (
         <div>
           <p>Loi de X (commandes par annonce):</p>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">Xi</th><th className="border border-slate-300 p-2">0</th><th className="border border-slate-300 p-2">1</th><th className="border border-slate-300 p-2">2</th><th className="border border-slate-300 p-2">3</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-2">pi</td><td className="border border-slate-300 p-2">0.2</td><td className="border border-slate-300 p-2">0.55</td><td className="border border-slate-300 p-2">0.15</td><td className="border border-slate-300 p-2">0.1</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">Xi</th><th className="border border-[var(--color-border-strong)] p-2">0</th><th className="border border-[var(--color-border-strong)] p-2">1</th><th className="border border-[var(--color-border-strong)] p-2">2</th><th className="border border-[var(--color-border-strong)] p-2">3</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-2">pi</td><td className="border border-[var(--color-border-strong)] p-2">0.2</td><td className="border border-[var(--color-border-strong)] p-2">0.55</td><td className="border border-[var(--color-border-strong)] p-2">0.15</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td></tr></tbody>
           </table>
           <ol className="list-decimal ml-6 mt-2">
             <li>V(X)</li>
@@ -211,9 +211,9 @@ export const TD4_2526: TDSheet = {
           <M>{"V(Y) = 30 \\times 0.7275 = \\boxed{21.825}"}</M>
           
           <p><strong>3. Z ~ B(20, 0.2):</strong></p>
-          <table className="border-collapse border border-slate-300 text-xs">
-            <thead><tr><th className="border border-slate-300 p-1">k</th><th className="border border-slate-300 p-1">3</th><th className="border border-slate-300 p-1">4</th><th className="border border-slate-300 p-1">5</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-1">P(Z=k)</td><td className="border border-slate-300 p-1">0.2054</td><td className="border border-slate-300 p-1">0.2182</td><td className="border border-slate-300 p-1">0.1746</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-xs">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-1">k</th><th className="border border-[var(--color-border-strong)] p-1">3</th><th className="border border-[var(--color-border-strong)] p-1">4</th><th className="border border-[var(--color-border-strong)] p-1">5</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-1">P(Z=k)</td><td className="border border-[var(--color-border-strong)] p-1">0.2054</td><td className="border border-[var(--color-border-strong)] p-1">0.2182</td><td className="border border-[var(--color-border-strong)] p-1">0.1746</td></tr></tbody>
           </table>
           <M>{"E(Z) = np = \\boxed{4}, \\quad V(Z) = npq = \\boxed{3.2}"}</M>
           <p>Mode: 3.2 ≤ x<sub>Mo</sub> ≤ 4.2 → <M>{"\\boxed{x_{Mo} = 4}"}</M></p>

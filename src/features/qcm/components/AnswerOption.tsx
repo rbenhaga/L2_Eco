@@ -27,7 +27,7 @@ export function AnswerOption({
     isRevealed,
     disabled,
     onSelect,
-    activeColor = '#3b82f6', // Default blue
+    activeColor = 'var(--color-info)', // Default blue
 }: AnswerOptionProps) {
     const handleClick = () => {
         if (!disabled) {
@@ -35,52 +35,99 @@ export function AnswerOption({
         }
     };
 
-    // Determine visual state
-    const getStateStyles = () => {
+    // Determine visual state styles (inline)
+    const getStateStyles = (): React.CSSProperties => {
         if (!isRevealed) {
             if (isSelected) {
-                // Return generic active class, but color is handled via style
-                return 'bg-indigo-50 border-transparent ring-1 ring-indigo-200';
+                return {
+                    borderColor: `${activeColor}80`,
+                    backgroundColor: `${activeColor}15`,
+                    boxShadow: `0 0 0 1px ${activeColor}40`,
+                };
             }
-            return 'border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 active:scale-[0.99]';
+            return {
+                borderColor: 'var(--color-border-default)',
+                background: 'var(--color-bg-raised)',
+            };
         }
 
         // Revealed state
         if (isSelected) {
             if (isCorrect) {
-                return 'border-emerald-500/50 bg-emerald-50 ring-1 ring-emerald-500/20';
+                return {
+                    borderColor: 'color-mix(in srgb, var(--color-success) 50%, transparent)',
+                    background: 'var(--color-success-subtle)',
+                    boxShadow: '0 0 0 1px color-mix(in srgb, var(--color-success) 20%, transparent)',
+                };
             }
-            return 'border-rose-500/50 bg-rose-50 ring-1 ring-rose-500/20';
+            return {
+                borderColor: 'color-mix(in srgb, var(--color-error) 50%, transparent)',
+                background: 'var(--color-error-subtle)',
+                boxShadow: '0 0 0 1px color-mix(in srgb, var(--color-error) 20%, transparent)',
+            };
         }
 
         // Not selected but revealed - show correct answer
         if (isCorrect) {
-            return 'border-emerald-500/50 bg-emerald-50 ring-1 ring-emerald-500/20 opacity-80';
+            return {
+                borderColor: 'color-mix(in srgb, var(--color-success) 50%, transparent)',
+                background: 'var(--color-success-subtle)',
+                boxShadow: '0 0 0 1px color-mix(in srgb, var(--color-success) 20%, transparent)',
+                opacity: 0.8,
+            };
         }
 
-        return 'border-slate-200 bg-white opacity-40';
+        return {
+            borderColor: 'var(--color-border-default)',
+            background: 'var(--color-bg-raised)',
+            opacity: 0.4,
+        };
     };
 
-    const getLabelStyles = () => {
+    const getLabelStyles = (): React.CSSProperties => {
         if (!isRevealed) {
             if (isSelected) {
-                return 'text-white shadow-lg';
+                return {
+                    backgroundColor: activeColor,
+                    color: 'var(--color-accent-foreground)',
+                    boxShadow: 'var(--shadow-lg)',
+                };
             }
-            return 'bg-slate-100 text-slate-700 border border-slate-200';
+            return {
+                background: 'var(--color-bg-overlay)',
+                color: 'var(--color-text-secondary)',
+                border: '1px solid var(--color-border-default)',
+            };
         }
 
         if (isSelected) {
             if (isCorrect) {
-                return 'bg-emerald-500 text-white shadow-lg';
+                return {
+                    background: 'var(--color-success)',
+                    color: 'var(--color-accent-foreground)',
+                    boxShadow: 'var(--shadow-lg)',
+                };
             }
-            return 'bg-rose-500 text-white shadow-lg';
+            return {
+                background: 'var(--color-error)',
+                color: 'var(--color-accent-foreground)',
+                boxShadow: 'var(--shadow-lg)',
+            };
         }
 
         if (isCorrect) {
-            return 'bg-emerald-500 text-white shadow-lg';
+            return {
+                background: 'var(--color-success)',
+                color: 'var(--color-accent-foreground)',
+                boxShadow: 'var(--shadow-lg)',
+            };
         }
 
-        return 'bg-slate-100 text-slate-500 border border-slate-200';
+        return {
+            background: 'var(--color-bg-overlay)',
+            color: 'var(--color-text-muted)',
+            border: '1px solid var(--color-border-default)',
+        };
     };
 
     return (
@@ -96,17 +143,10 @@ export function AnswerOption({
         transition-all duration-200 ease-out
         min-h-[64px]
         active:scale-[0.99]
-        ${getStateStyles()}
         ${disabled && !isRevealed ? 'cursor-not-allowed opacity-50' : ''}
         ${!disabled ? 'cursor-pointer' : ''}
       `}
-            style={
-                (!isRevealed && isSelected) ? {
-                    borderColor: `${activeColor}80`, // 50% opacity
-                    backgroundColor: `${activeColor}15`, // 10% opacity
-                    boxShadow: `0 0 0 1px ${activeColor}40` // ring
-                } : {}
-            }
+            style={getStateStyles()}
         >
             {/* Option label */}
             <span
@@ -117,11 +157,8 @@ export function AnswerOption({
           font-bold text-sm
           shrink-0
           transition-colors duration-200
-          ${getLabelStyles()}
         `}
-                style={
-                    (!isRevealed && isSelected) ? { backgroundColor: activeColor } : {}
-                }
+                style={getLabelStyles()}
             >
                 {isRevealed && isSelected ? (
                     isCorrect ? <Check size={20} /> : <X size={20} />
@@ -133,7 +170,10 @@ export function AnswerOption({
             </span>
 
             {/* Option content */}
-            <span className={`flex-1 text-base leading-relaxed pt-1.5 transition-colors ${isSelected || isRevealed ? 'text-slate-900' : 'text-slate-700'}`}>
+            <span
+                className="flex-1 text-base leading-relaxed pt-1.5 transition-colors"
+                style={{ color: isSelected || isRevealed ? 'var(--color-text-primary)' : 'var(--color-text-secondary)' }}
+            >
                 {content}
             </span>
         </button>

@@ -59,7 +59,7 @@ const stats: ModuleStats = {
 export function ManagementHome() {
     return (
         <ModuleHub
-            title="Management des organisations S4"
+            title="Management des organisations"
             description="Cours et TD de management - Semestre 4"
             icon={<Briefcase className="h-6 w-6" />}
             moduleId="management"

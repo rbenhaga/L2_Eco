@@ -59,7 +59,7 @@ export function ScoreBoard({
                     </div>
 
                     <div className="text-4xl mb-2">{emoji}</div>
-                    <h2 className={`text-xl font-bold ${color}`}>{message}</h2>
+                    <h2 className="text-xl font-bold" style={{ color }}>{message}</h2>
                 </div>
 
                 {/* Stats */}
@@ -143,8 +143,6 @@ export function ScoreBoard({
                             background: 'var(--color-bg-overlay)',
                             color: 'var(--color-text-secondary)'
                         }}
-                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-bg-raised)'}
-                        onMouseLeave={(e) => e.currentTarget.style.background = 'var(--color-bg-overlay)'}
                     >
                         <RotateCcw size={18} />
                         <span>Recommencer</span>
@@ -153,10 +151,12 @@ export function ScoreBoard({
                     {backLink && (
                         <Link
                             to={backLink}
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-white font-medium rounded-xl transition-all no-underline"
-                            style={{ background: 'var(--color-text-primary)' }}
-                            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-                            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 font-medium rounded-xl transition-all no-underline"
+                            style={{
+                                background: 'var(--color-primary-gradient)',
+                                color: 'var(--color-accent-foreground)',
+                                border: '1px solid var(--color-primary-border)',
+                            }}
                         >
                             <span>Continuer</span>
                             <ArrowRight size={18} />

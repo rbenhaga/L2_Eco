@@ -115,7 +115,7 @@ export function ErrorState({
                     rounded-[var(--radius-2xl)]
                     flex items-center justify-center
                     mb-[var(--space-6)]
-                    bg-[var(--color-error-subtle,rgba(239,68,68,0.1))]
+                    bg-[var(--color-error-subtle)]
                 "
             >
                 <IconComponent

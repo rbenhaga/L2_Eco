@@ -104,11 +104,11 @@ export function InteractiveWSPS() {
   };
 
   const events = [
-    { id: 'mu_up', label: '↑μ (marges)', color: '#d97706' },
-    { id: 'mu_down', label: '↓μ (concurrence)', color: '#d97706' },
-    { id: 'z_up', label: '↑z (alloc/syndicats)', color: '#7c3aed' },
-    { id: 'z_down', label: '↓z (flexibilité)', color: '#7c3aed' },
-    { id: 'productivity', label: '↑A (productivité)', color: '#059669' },
+    { id: 'mu_up', label: '↑μ (marges)', color: 'var(--color-warning)' },
+    { id: 'mu_down', label: '↓μ (concurrence)', color: 'var(--color-warning)' },
+    { id: 'z_up', label: '↑z (alloc/syndicats)', color: 'var(--color-micro)' },
+    { id: 'z_down', label: '↓z (flexibilité)', color: 'var(--color-micro)' },
+    { id: 'productivity', label: '↑A (productivité)', color: 'var(--color-success)' },
   ] as const;
 
   const currentUn = mode === 'numerique' ? un : unT;
@@ -226,35 +226,35 @@ export function InteractiveWSPS() {
   const wsLabelWPAdjusted = mode === 'numerique' ? calcWS(wsLabelUAdjusted, currentZ) : calcWST(wsLabelUAdjusted, currentZ);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 my-8">
+    <div className="bg-[var(--color-bg-raised)] rounded-2xl border border-[var(--color-border-default)] p-6 my-8">
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-xl font-semibold">Modèle WS-PS</h3>
         <div className="flex items-center gap-2">
           {/* Toggle Mode - Désactivé pour production
-          <div className="flex bg-slate-100/80 rounded-lg p-1">
+          <div className="flex bg-[var(--color-bg-overlay)] rounded-lg p-1">
             <button onClick={() => setMode('theorique')}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors ${mode === 'theorique' ? 'bg-white shadow text-purple-600' : 'text-slate-700 hover:text-slate-900'}`}>
+              className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors ${mode === 'theorique' ? 'bg-[var(--color-bg-raised)] shadow text-[var(--color-micro)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>
               <BookOpen size={14} /> Théorique
             </button>
             <button onClick={() => setMode('numerique')}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors ${mode === 'numerique' ? 'bg-white shadow text-emerald-600' : 'text-slate-700 hover:text-slate-900'}`}>
+              className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors ${mode === 'numerique' ? 'bg-[var(--color-bg-raised)] shadow text-[var(--color-success)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>
               <Calculator size={14} /> Numérique
             </button>
           </div>
           */}
           <button onClick={() => setShowLegend(!showLegend)}
-            className={`px-3 py-1.5 rounded-lg text-sm flex items-center gap-1.5 ${showLegend ? 'bg-purple-100 text-purple-600' : 'bg-slate-100/80 text-slate-700 hover:bg-slate-200'}`}>
+            className={`px-3 py-1.5 rounded-lg text-sm flex items-center gap-1.5 ${showLegend ? 'bg-[var(--color-micro-subtle)] text-[var(--color-micro)]' : 'bg-[var(--color-bg-overlay)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)]'}`}>
             <Info size={16} /> {showLegend ? 'Masquer' : 'Variables'}
           </button>
         </div>
       </div>
-      <p className="text-sm text-slate-600 mb-4">
+      <p className="text-sm text-[var(--color-text-secondary)] mb-4">
         Détermination du taux de chômage naturel
       </p>
 
       {showLegend && (
-        <div className="mb-4 p-3 bg-purple-50 rounded-lg text-sm border border-purple-100">
-          <div className="grid grid-cols-4 gap-2 text-purple-800">
+        <div className="mb-4 p-3 bg-[var(--color-micro-subtle)] rounded-lg text-sm border border-[var(--color-micro)]">
+          <div className="grid grid-cols-4 gap-2 text-[var(--color-micro)]">
             <span><strong>W/P</strong> = Salaire réel</span>
             <span><strong>u</strong> = Chômage (%)</span>
             <span><strong>uₙ</strong> = Chômage naturel</span>
@@ -265,7 +265,7 @@ export function InteractiveWSPS() {
             <span><strong>Pᵉ</strong> = Prix anticipé</span>
           </div>
           {mode === 'numerique' && (
-            <div className="mt-3 pt-3 border-t border-purple-200 grid grid-cols-4 gap-2 text-emerald-700">
+            <div className="mt-3 pt-3 border-t border-[var(--color-micro)] grid grid-cols-4 gap-2 text-[var(--color-success)]">
               <span>z₀ = {params.z0}</span>
               <span>μ₀ = {(params.mu0*100).toFixed(0)}%</span>
               <span>α = {params.alpha}</span>
@@ -278,7 +278,7 @@ export function InteractiveWSPS() {
       {/* Bouton Intuition */}
       <div className="mb-4">
         <button onClick={() => setShowIntuition(!showIntuition)}
-          className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${showIntuition ? 'bg-gray-900 text-white' : 'bg-slate-100/80 text-slate-700 hover:bg-slate-200'}`}>
+          className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${showIntuition ? 'bg-[var(--color-text-primary)] text-[var(--color-bg-raised)]' : 'bg-[var(--color-bg-overlay)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)]'}`}>
           <Lightbulb size={16} /> {showIntuition ? 'Masquer' : 'Intuition'}
         </button>
       </div>
@@ -286,20 +286,20 @@ export function InteractiveWSPS() {
       {showIntuition && (
         <IntuitionPanel
           sections={[
-            { title: intuitionContent.WS.title, color: '#7c3aed', steps: intuitionContent.WS.steps },
-            { title: intuitionContent.PS.title, color: '#d97706', steps: intuitionContent.PS.steps },
+            { title: intuitionContent.WS.title, color: 'var(--color-micro)', steps: intuitionContent.WS.steps },
+            { title: intuitionContent.PS.title, color: 'var(--color-warning)', steps: intuitionContent.PS.steps },
           ]}
         />
       )}
 
       <div className="flex flex-wrap gap-2 mb-6">
         <button onClick={() => setEvent('none')}
-          className={`px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1 ${event === 'none' ? 'bg-gray-900 text-white' : 'bg-slate-100/80 hover:bg-slate-200'}`}>
+          className={`px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1 ${event === 'none' ? 'bg-[var(--color-text-primary)] text-[var(--color-bg-raised)]' : 'bg-[var(--color-bg-overlay)] hover:bg-[var(--color-surface-hover)]'}`}>
           <RotateCcw size={14} /> Reset
         </button>
         {events.map(e => (
           <button key={e.id} onClick={() => setEvent(e.id)}
-            style={{ backgroundColor: event === e.id ? e.color : `${e.color}15`, color: event === e.id ? 'white' : e.color }}
+            style={{ backgroundColor: event === e.id ? e.color : `color-mix(in srgb, ${e.color} 14%, transparent)`, color: event === e.id ? 'var(--color-bg-raised)' : e.color }}
             className="px-3 py-1.5 rounded-lg text-sm font-medium">
             {e.label}
           </button>
@@ -308,31 +308,31 @@ export function InteractiveWSPS() {
 
       <div className="grid lg:grid-cols-5 gap-6">
         <div className="lg:col-span-3">
-          <svg viewBox={`0 0 ${W} ${H}`} className="w-full bg-slate-100/50 rounded-xl border border-gray-100">
+          <svg viewBox={`0 0 ${W} ${H}`} className="w-full bg-[var(--color-bg-overlay)] rounded-xl border border-[var(--color-border-default)]">
             {/* Grille */}
             {(mode === 'numerique' ? [0, 5, 10, 15, 20] : [0, 5, 10, 15, 20, 25]).map(v => (
-              <line key={`gx${v}`} x1={toX(v)} y1={margin.top} x2={toX(v)} y2={margin.top + h} stroke="#e5e7eb" />
+              <line key={`gx${v}`} x1={toX(v)} y1={margin.top} x2={toX(v)} y2={margin.top + h} stroke="var(--color-border-default)" />
             ))}
             {[0, 0.2, 0.4, 0.6, 0.8, 1.0].map(v => (
-              <line key={`gy${v}`} x1={margin.left} y1={toY(v)} x2={margin.left + w} y2={toY(v)} stroke="#e5e7eb" />
+              <line key={`gy${v}`} x1={margin.left} y1={toY(v)} x2={margin.left + w} y2={toY(v)} stroke="var(--color-border-default)" />
             ))}
             
             {/* Axes */}
-            <line x1={margin.left} y1={margin.top + h} x2={margin.left + w} y2={margin.top + h} stroke="#1f2937" strokeWidth="2" />
-            <line x1={margin.left} y1={margin.top} x2={margin.left} y2={margin.top + h} stroke="#1f2937" strokeWidth="2" />
-            <polygon points={`${margin.left + w},${margin.top + h} ${margin.left + w - 8},${margin.top + h - 4} ${margin.left + w - 8},${margin.top + h + 4}`} fill="#1f2937" />
-            <polygon points={`${margin.left},${margin.top} ${margin.left - 4},${margin.top + 8} ${margin.left + 4},${margin.top + 8}`} fill="#1f2937" />
-            <text x={margin.left + w - 5} y={margin.top + h + 28} className="text-sm font-semibold fill-gray-700" textAnchor="end">u (%)</text>
-            <text x={margin.left - 8} y={margin.top - 8} className="text-sm font-semibold fill-gray-700">W/P</text>
+            <line x1={margin.left} y1={margin.top + h} x2={margin.left + w} y2={margin.top + h} stroke="var(--color-text-secondary)" strokeWidth="2" />
+            <line x1={margin.left} y1={margin.top} x2={margin.left} y2={margin.top + h} stroke="var(--color-text-secondary)" strokeWidth="2" />
+            <polygon points={`${margin.left + w},${margin.top + h} ${margin.left + w - 8},${margin.top + h - 4} ${margin.left + w - 8},${margin.top + h + 4}`} fill="var(--color-text-secondary)" />
+            <polygon points={`${margin.left},${margin.top} ${margin.left - 4},${margin.top + 8} ${margin.left + 4},${margin.top + 8}`} fill="var(--color-text-secondary)" />
+            <text x={margin.left + w - 5} y={margin.top + h + 28} className="text-sm font-semibold fill-[var(--color-text-secondary)]" textAnchor="end">u (%)</text>
+            <text x={margin.left - 8} y={margin.top - 8} className="text-sm font-semibold fill-[var(--color-text-secondary)]">W/P</text>
 
             {/* Graduations en mode numérique */}
             {mode === 'numerique' && (
               <>
                 {[0, 5, 10, 15, 20].map(v => (
-                  <text key={`lx${v}`} x={toX(v)} y={margin.top + h + 15} className="text-[10px] fill-gray-500" textAnchor="middle">{v}%</text>
+                  <text key={`lx${v}`} x={toX(v)} y={margin.top + h + 15} className="text-[10px] fill-[var(--color-text-muted)]" textAnchor="middle">{v}%</text>
                 ))}
                 {[0.2, 0.4, 0.6, 0.8].map(v => (
-                  <text key={`ly${v}`} x={margin.left - 8} y={toY(v) + 4} className="text-[10px] fill-gray-500" textAnchor="end">{v.toFixed(1)}</text>
+                  <text key={`ly${v}`} x={margin.left - 8} y={toY(v) + 4} className="text-[10px] fill-[var(--color-text-muted)]" textAnchor="end">{v.toFixed(1)}</text>
                 ))}
               </>
             )}
@@ -342,78 +342,78 @@ export function InteractiveWSPS() {
               <>
                 {isWSMoving && (
                   <>
-                    <path d={genWS(currentZ0)} fill="none" stroke="#94a3b8" strokeWidth="2" strokeDasharray="6,4" />
-                    <text x={toX(3)} y={toY(mode === 'numerique' ? calcWS(3, currentZ0) : calcWST(3, currentZ0)) - 8} className="text-xs fill-gray-400" textAnchor="middle">WS</text>
+                    <path d={genWS(currentZ0)} fill="none" stroke="var(--color-text-muted)" strokeWidth="2" strokeDasharray="6,4" />
+                    <text x={toX(3)} y={toY(mode === 'numerique' ? calcWS(3, currentZ0) : calcWST(3, currentZ0)) - 8} className="text-xs fill-[var(--color-text-muted)]" textAnchor="middle">WS</text>
                   </>
                 )}
                 {isPSMoving && (
                   <>
-                    <line x1={margin.left} y1={toY(currentPS0)} x2={margin.left + w} y2={toY(currentPS0)} stroke="#94a3b8" strokeWidth="2" strokeDasharray="6,4" />
-                    <text x={margin.left + w - 24} y={toY(currentPS0) - 8} className="text-xs fill-gray-400" textAnchor="middle">PS</text>
+                    <line x1={margin.left} y1={toY(currentPS0)} x2={margin.left + w} y2={toY(currentPS0)} stroke="var(--color-text-muted)" strokeWidth="2" strokeDasharray="6,4" />
+                    <text x={margin.left + w - 24} y={toY(currentPS0) - 8} className="text-xs fill-[var(--color-text-muted)]" textAnchor="middle">PS</text>
                   </>
                 )}
-                <circle cx={toX(currentUn0)} cy={toY(currentPS0)} r="7" fill="white" />
-                <circle cx={toX(currentUn0)} cy={toY(currentPS0)} r="5" fill="#94a3b8" />
-                <text x={toX(currentUn0)} y={toY(currentPS0) - 12} className="text-xs font-medium" textAnchor="middle" stroke="white" strokeWidth="3" paintOrder="stroke">E₀</text>
-                <text x={toX(currentUn0)} y={toY(currentPS0) - 12} className="text-xs font-medium fill-gray-500" textAnchor="middle">E₀</text>
+                <circle cx={toX(currentUn0)} cy={toY(currentPS0)} r="7" fill="var(--color-bg-raised)" />
+                <circle cx={toX(currentUn0)} cy={toY(currentPS0)} r="5" fill="var(--color-text-muted)" />
+                <text x={toX(currentUn0)} y={toY(currentPS0) - 12} className="text-xs font-medium" textAnchor="middle" stroke="var(--color-bg-raised)" strokeWidth="3" paintOrder="stroke">E₀</text>
+                <text x={toX(currentUn0)} y={toY(currentPS0) - 12} className="text-xs font-medium fill-[var(--color-text-muted)]" textAnchor="middle">E₀</text>
               </>
             )}
 
             {/* WS (violette) */}
-            <path d={genWS(currentZ)} fill="none" stroke="#7c3aed" strokeWidth="3" className="transition-all duration-500" />
-            <text x={toX(wsLabelUAdjusted)} y={toY(wsLabelWPAdjusted) - 10} className="text-sm font-bold" textAnchor="middle" stroke="white" strokeWidth="4" paintOrder="stroke">
+            <path d={genWS(currentZ)} fill="none" stroke="var(--color-micro)" strokeWidth="3" className="transition-all duration-500" />
+            <text x={toX(wsLabelUAdjusted)} y={toY(wsLabelWPAdjusted) - 10} className="text-sm font-bold" textAnchor="middle" stroke="var(--color-bg-raised)" strokeWidth="4" paintOrder="stroke">
               WS{isWSMoving ? "'" : ''}
             </text>
-            <text x={toX(wsLabelUAdjusted)} y={toY(wsLabelWPAdjusted) - 10} className="text-sm font-bold fill-purple-600" textAnchor="middle">
+            <text x={toX(wsLabelUAdjusted)} y={toY(wsLabelWPAdjusted) - 10} className="text-sm font-bold fill-[var(--color-micro)]" textAnchor="middle">
               WS{isWSMoving ? "'" : ''}
             </text>
 
             {/* PS (orange) */}
-            <line x1={margin.left} y1={toY(currentPS)} x2={margin.left + w} y2={toY(currentPS)} stroke="#d97706" strokeWidth="3" className="transition-all duration-500" />
-            <text x={margin.left + w - 22} y={toY(currentPS) - 10} className="text-sm font-bold" textAnchor="middle" stroke="white" strokeWidth="4" paintOrder="stroke">
+            <line x1={margin.left} y1={toY(currentPS)} x2={margin.left + w} y2={toY(currentPS)} stroke="var(--color-warning)" strokeWidth="3" className="transition-all duration-500" />
+            <text x={margin.left + w - 22} y={toY(currentPS) - 10} className="text-sm font-bold" textAnchor="middle" stroke="var(--color-bg-raised)" strokeWidth="4" paintOrder="stroke">
               PS{isPSMoving ? "'" : ''}
             </text>
-            <text x={margin.left + w - 22} y={toY(currentPS) - 10} className="text-sm font-bold fill-amber-600" textAnchor="middle">
+            <text x={margin.left + w - 22} y={toY(currentPS) - 10} className="text-sm font-bold fill-[var(--color-warning)]" textAnchor="middle">
               PS{isPSMoving ? "'" : ''}
             </text>
 
             {/* Équilibre */}
-            <line x1={toX(currentUn)} y1={toY(currentPS)} x2={toX(currentUn)} y2={margin.top + h} stroke="#dc2626" strokeWidth="1.5" strokeDasharray="5,3" className="transition-all duration-500" />
+            <line x1={toX(currentUn)} y1={toY(currentPS)} x2={toX(currentUn)} y2={margin.top + h} stroke="var(--color-error)" strokeWidth="1.5" strokeDasharray="5,3" className="transition-all duration-500" />
             
             {mode === 'numerique' ? (
               <>
-                <text x={toX(currentUn)} y={margin.top + h + 28} className="text-xs font-bold fill-red-600" textAnchor="middle">uₙ={currentUn.toFixed(1)}%</text>
-                <text x={margin.left - 5} y={toY(currentPS) + 4} className="text-xs font-bold fill-amber-600" textAnchor="end">{currentPS.toFixed(2)}</text>
+                <text x={toX(currentUn)} y={margin.top + h + 28} className="text-xs font-bold fill-[var(--color-error)]" textAnchor="middle">uₙ={currentUn.toFixed(1)}%</text>
+                <text x={margin.left - 5} y={toY(currentPS) + 4} className="text-xs font-bold fill-[var(--color-warning)]" textAnchor="end">{currentPS.toFixed(2)}</text>
               </>
             ) : (
               <>
-                <text x={toX(currentUn)} y={margin.top + h + 15} className="text-xs font-medium fill-red-600" textAnchor="middle">uₙ</text>
-                <text x={margin.left - 8} y={toY(currentPS) + 4} className="text-xs font-medium fill-amber-600" textAnchor="end">W/P*</text>
+                <text x={toX(currentUn)} y={margin.top + h + 15} className="text-xs font-medium fill-[var(--color-error)]" textAnchor="middle">uₙ</text>
+                <text x={margin.left - 8} y={toY(currentPS) + 4} className="text-xs font-medium fill-[var(--color-warning)]" textAnchor="end">W/P*</text>
               </>
             )}
             
-            <circle cx={toX(currentUn)} cy={toY(currentPS)} r="9" fill="white" className="transition-all duration-500" />
-            <circle cx={toX(currentUn)} cy={toY(currentPS)} r="7" fill="#dc2626" className="transition-all duration-500" />
-            <text x={toX(currentUn) + 15} y={toY(currentPS) + 4} className="text-sm font-bold" stroke="white" strokeWidth="3" paintOrder="stroke">{event === 'none' ? 'E*' : 'E₁'}</text>
-            <text x={toX(currentUn) + 15} y={toY(currentPS) + 4} className="text-sm font-bold fill-red-600">{event === 'none' ? 'E*' : 'E₁'}</text>
+            <circle cx={toX(currentUn)} cy={toY(currentPS)} r="9" fill="var(--color-bg-raised)" className="transition-all duration-500" />
+            <circle cx={toX(currentUn)} cy={toY(currentPS)} r="7" fill="var(--color-error)" className="transition-all duration-500" />
+            <text x={toX(currentUn) + 15} y={toY(currentPS) + 4} className="text-sm font-bold" stroke="var(--color-bg-raised)" strokeWidth="3" paintOrder="stroke">{event === 'none' ? 'E*' : 'E₁'}</text>
+            <text x={toX(currentUn) + 15} y={toY(currentPS) + 4} className="text-sm font-bold fill-[var(--color-error)]">{event === 'none' ? 'E*' : 'E₁'}</text>
           </svg>
 
           {/* Encadré valeurs numériques */}
           {mode === 'numerique' && event !== 'none' && (
-            <div className="mt-4 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-              <p className="text-sm font-semibold text-emerald-800 mb-2">📊 Calcul numérique</p>
+            <div className="mt-4 p-3 bg-[var(--color-success-subtle)] rounded-lg border border-[var(--color-success)]">
+              <p className="text-sm font-semibold text-[var(--color-success)] mb-2">📊 Calcul numérique</p>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-slate-700">Avant (E₀) :</p>
-                  <p className="font-mono text-emerald-700">uₙ₀ = {currentUn0.toFixed(1)}%, Yₙ₀ = {Yn0.toFixed(1)}M</p>
+                  <p className="text-[var(--color-text-secondary)]">Avant (E₀) :</p>
+                  <p className="font-mono text-[var(--color-success)]">uₙ₀ = {currentUn0.toFixed(1)}%, Yₙ₀ = {Yn0.toFixed(1)}M</p>
                 </div>
                 <div>
-                  <p className="text-slate-700">Après (E₁) :</p>
-                  <p className="font-mono text-emerald-700">uₙ₁ = {currentUn.toFixed(1)}%, Yₙ₁ = {Yn.toFixed(1)}M</p>
+                  <p className="text-[var(--color-text-secondary)]">Après (E₁) :</p>
+                  <p className="font-mono text-[var(--color-success)]">uₙ₁ = {currentUn.toFixed(1)}%, Yₙ₁ = {Yn.toFixed(1)}M</p>
                 </div>
               </div>
-              <div className="mt-2 pt-2 border-t border-emerald-200">
-                <p className="text-sm text-emerald-700">
+              <div className="mt-2 pt-2 border-t border-[var(--color-success)]">
+                <p className="text-sm text-[var(--color-success)]">
                   <strong>Δuₙ = {(currentUn - currentUn0).toFixed(1)} pts</strong> | 
                   <strong> ΔYₙ = {(Yn - Yn0).toFixed(1)}M</strong> ({((Yn - Yn0) / Yn0 * 100).toFixed(1)}%)
                 </p>
@@ -424,36 +424,36 @@ export function InteractiveWSPS() {
 
         <div className="lg:col-span-2 space-y-4">
           {expl ? (
-            <div className="bg-purple-50 rounded-xl p-4 border border-purple-100">
-              <p className="font-semibold text-purple-900 mb-3">{expl.title}</p>
+            <div className="bg-[var(--color-micro-subtle)] rounded-xl p-4 border border-[var(--color-micro)]">
+              <p className="font-semibold text-[var(--color-text-primary)] mb-3">{expl.title}</p>
               <div className="space-y-3">
                 {expl.steps.map((s, i) => (
                   <div key={i} className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-purple-200 text-purple-800 text-xs flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                    <span className="w-5 h-5 rounded-full bg-[var(--color-micro-subtle)] text-[var(--color-micro)] text-xs flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
                     <div>
                       <MathDisplay>{s.formula}</MathDisplay>
-                      <p className="text-sm text-purple-700 mt-1">{s.text}</p>
+                      <p className="text-sm text-[var(--color-micro)] mt-1">{s.text}</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <p className="mt-4 pt-3 border-t border-purple-200 text-base font-bold text-purple-900">{expl.result}</p>
+              <p className="mt-4 pt-3 border-t border-[var(--color-micro)] text-base font-bold text-[var(--color-text-primary)]">{expl.result}</p>
               {mode === 'numerique' && expl.numeric && (
-                <div className="mt-3 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                  <p className="text-sm text-emerald-800">{expl.numeric}</p>
+                <div className="mt-3 p-3 bg-[var(--color-success-subtle)] rounded-lg border border-[var(--color-success)]">
+                  <p className="text-sm text-[var(--color-success)]">{expl.numeric}</p>
                 </div>
               )}
             </div>
           ) : (
-            <div className="bg-slate-100/50 rounded-xl p-4 border border-slate-200">
-              <p className="font-medium text-slate-800 mb-2">État initial</p>
-              <p className="text-sm text-slate-700 mb-3">Clique sur un événement pour voir les effets sur uₙ.</p>
+            <div className="bg-[var(--color-bg-overlay)] rounded-xl p-4 border border-[var(--color-border-default)]">
+              <p className="font-medium text-[var(--color-text-primary)] mb-2">État initial</p>
+              <p className="text-sm text-[var(--color-text-secondary)] mb-3">Clique sur un événement pour voir les effets sur uₙ.</p>
               <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-purple-500 rounded" /><span><strong>WS</strong> : Négociation salariale</span></div>
-                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-amber-500 rounded" /><span><strong>PS</strong> : Fixation des prix</span></div>
+                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-[var(--color-micro-subtle)]0 rounded" /><span><strong>WS</strong> : Négociation salariale</span></div>
+                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-[var(--color-warning)] rounded" /><span><strong>PS</strong> : Fixation des prix</span></div>
               </div>
               {mode === 'numerique' && (
-                <div className="mt-3 pt-3 border-t border-slate-200 text-sm text-slate-700">
+                <div className="mt-3 pt-3 border-t border-[var(--color-border-default)] text-sm text-[var(--color-text-secondary)]">
                   <p>Paramètres : z={params.z0}, μ={(params.mu0*100).toFixed(0)}%, A={params.A}</p>
                   <p>Équilibre : uₙ={currentUn0.toFixed(1)}%, Yₙ={Yn0.toFixed(1)}M</p>
                 </div>
@@ -462,7 +462,7 @@ export function InteractiveWSPS() {
           )}
 
           <div className="space-y-3">
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 bg-[var(--color-bg-overlay)] rounded-lg border border-[var(--color-border-default)] relative">
               <Tooltip term="WS (Wage Setting)" formula={"\\frac{W}{P^e} = z(1-\\alpha u)"}>
                 Courbe de <strong>négociation salariale</strong>. Les travailleurs demandent un salaire réel W/Pᵉ qui dépend de :
                 <br/>• <strong>u</strong> : plus le chômage est bas, plus ils ont de pouvoir → salaire demandé↑
@@ -471,7 +471,7 @@ export function InteractiveWSPS() {
               </Tooltip>
               <MathDisplay>{"\\frac{W}{P^e} = z(1-\\alpha u)"}</MathDisplay>
             </div>
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 bg-[var(--color-bg-overlay)] rounded-lg border border-[var(--color-border-default)] relative">
               <Tooltip term="PS (Price Setting)" formula={"\\frac{W}{P} = \\frac{A}{1+\\mu}"}>
                 Courbe de <strong>fixation des prix</strong>. Les entreprises fixent P = (1+μ)×W/A. 
                 Donc le salaire réel offert est W/P = A/(1+μ).
@@ -481,10 +481,10 @@ export function InteractiveWSPS() {
               </Tooltip>
               <MathDisplay>{"\\frac{W}{P} = \\frac{A}{1+\\mu}"}</MathDisplay>
               {mode === 'numerique' && (
-                <p className="text-xs text-emerald-600 mt-2">PS = {params.A}/{(1+params.mu0).toFixed(2)} = {wP_PS0.toFixed(3)}</p>
+                <p className="text-xs text-[var(--color-success)] mt-2">PS = {params.A}/{(1+params.mu0).toFixed(2)} = {wP_PS0.toFixed(3)}</p>
               )}
             </div>
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 bg-[var(--color-bg-overlay)] rounded-lg border border-[var(--color-border-default)] relative">
               <Tooltip term="Équilibre (P = Pᵉ)" formula={"F(u_n, z) = \\frac{A}{1+\\mu}"}>
                 À l'équilibre de <strong>moyen terme</strong>, les anticipations sont correctes : P = Pᵉ.
                 <br/>Le chômage naturel uₙ est celui où WS = PS.
@@ -493,7 +493,7 @@ export function InteractiveWSPS() {
               </Tooltip>
               <MathDisplay>{"z(1-\\alpha u_n) = \\frac{A}{1+\\mu}"}</MathDisplay>
             </div>
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 bg-[var(--color-bg-overlay)] rounded-lg border border-[var(--color-border-default)] relative">
               <Tooltip term="Production naturelle" formula={"Y_n = L(1-u_n)"}>
                 La production naturelle Yₙ correspond au niveau de production quand u = uₙ.
                 <br/>Avec L travailleurs dans l'économie et un taux de chômage uₙ :
@@ -503,7 +503,7 @@ export function InteractiveWSPS() {
               </Tooltip>
               <MathDisplay>{"Y_n = L(1-u_n)"}</MathDisplay>
               {mode === 'numerique' && (
-                <p className="text-xs text-emerald-600 mt-2">Yₙ = {params.L} × (1 - {(currentUn0/100).toFixed(3)}) = {Yn0.toFixed(1)}M</p>
+                <p className="text-xs text-[var(--color-success)] mt-2">Yₙ = {params.L} × (1 - {(currentUn0/100).toFixed(3)}) = {Yn0.toFixed(1)}M</p>
               )}
             </div>
           </div>

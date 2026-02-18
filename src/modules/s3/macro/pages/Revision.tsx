@@ -14,42 +14,42 @@ export function Revision() {
       <Section type="key" title="Formules essentielles">
         <Table headers={['Chapitre', 'Formule', 'Nom']}>
           <TableRow>
-            <TableCell><span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">IS-LM</span></TableCell>
+            <TableCell><span className="px-2 py-1 rounded text-xs font-medium" style={{ background: 'var(--color-info-subtle)', color: 'var(--color-info)' }}>IS-LM</span></TableCell>
             <TableCell><Math>{"k = \\frac{1}{1-c_1}"}</Math></TableCell>
             <TableCell>Multiplicateur keynésien</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell><span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">IS-LM</span></TableCell>
+            <TableCell><span className="px-2 py-1 rounded text-xs font-medium" style={{ background: 'var(--color-info-subtle)', color: 'var(--color-info)' }}>IS-LM</span></TableCell>
             <TableCell><Math>{"Y = C(Y-T) + I(i) + G"}</Math></TableCell>
             <TableCell>Équation IS</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell><span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">IS-LM</span></TableCell>
+            <TableCell><span className="px-2 py-1 rounded text-xs font-medium" style={{ background: 'var(--color-info-subtle)', color: 'var(--color-info)' }}>IS-LM</span></TableCell>
             <TableCell><Math>{"\\frac{M}{P} = L(Y, i)"}</Math></TableCell>
             <TableCell>Équation LM</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell><span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs font-medium">WS-PS</span></TableCell>
+            <TableCell><span className="px-2 py-1 rounded text-xs font-medium" style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}>WS-PS</span></TableCell>
             <TableCell><Math>{"\\frac{W}{P^e} = F(u, z)"}</Math></TableCell>
             <TableCell>Wage Setting</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell><span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs font-medium">WS-PS</span></TableCell>
+            <TableCell><span className="px-2 py-1 rounded text-xs font-medium" style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}>WS-PS</span></TableCell>
             <TableCell><Math>{"\\frac{W}{P} = \\frac{1}{1+\\mu}"}</Math></TableCell>
             <TableCell>Price Setting</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell><span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-medium">AS-AD</span></TableCell>
+            <TableCell><span className="px-2 py-1 rounded text-xs font-medium" style={{ background: 'var(--color-success-subtle)', color: 'var(--color-success)' }}>AS-AD</span></TableCell>
             <TableCell><Math>{"P = P^e(1+\\mu)F(1-Y/L, z)"}</Math></TableCell>
             <TableCell>Courbe AS</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell><span className="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-medium">Phillips</span></TableCell>
+            <TableCell><span className="px-2 py-1 rounded text-xs font-medium" style={{ background: 'var(--color-warning-subtle)', color: 'var(--color-warning)' }}>Phillips</span></TableCell>
             <TableCell><Math>{"\\pi = \\pi^e - \\alpha(u - u_n)"}</Math></TableCell>
             <TableCell>Courbe de Phillips</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell><span className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-medium">Dette</span></TableCell>
+            <TableCell><span className="px-2 py-1 rounded text-xs font-medium" style={{ background: 'var(--color-error-subtle)', color: 'var(--color-error)' }}>Dette</span></TableCell>
             <TableCell><Math>{"\\Delta(B/Y) = (r-g)(B/Y) + \\frac{G-T}{Y}"}</Math></TableCell>
             <TableCell>Dynamique dette</TableCell>
           </TableRow>
@@ -230,11 +230,11 @@ export function Revision() {
       </Section>
 
       <section className="mb-16">
-        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-emerald-50 text-emerald-700">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md" style={{ background: 'var(--color-success-subtle)', color: 'var(--color-success)' }}>
           <Dumbbell className="w-4 h-4" /> Ton profil
         </span>
         <h2 className="text-2xl font-semibold mb-5 tracking-tight">Avantage compétitif (ex-prépa)</h2>
-        <div className="text-slate-800 leading-relaxed text-lg">
+        <div className="leading-relaxed text-lg" style={{ color: 'var(--color-text-primary)' }}>
           <p className="mb-2"><strong>Ce que tu maîtrises déjà :</strong></p>
           <ul className="list-disc pl-6 space-y-1 mb-4">
             <li><strong>Systèmes d'équations</strong> — IS-LM = système 2×2, tu sais le résoudre instantanément</li>
@@ -250,7 +250,7 @@ export function Revision() {
       </section>
 
       <section className="mb-16">
-        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-blue-50 text-blue-700">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md" style={{ background: 'var(--color-info-subtle)', color: 'var(--color-info)' }}>
           <CheckSquare size={14} /> Checklist
         </span>
         <h2 className="text-2xl font-semibold mb-5 tracking-tight">Avant l'examen</h2>
@@ -271,41 +271,42 @@ export function Revision() {
             "Je comprends la spirale prix-salaires",
             "Je distingue anticipations nulles vs adaptatives",
           ].map((item, i) => (
-            <label key={i} className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-100/50 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
-              <span className="text-sm text-slate-800">{item}</span>
+            <label key={i} className="flex items-center gap-3 p-3 rounded-lg cursor-pointer" style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)', background: 'var(--color-bg-raised)' }}>
+              <input type="checkbox" className="w-4 h-4 rounded" style={{ borderColor: 'var(--color-border-default)' }} />
+              <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>{item}</span>
             </label>
           ))}
         </div>
       </section>
 
       <section className="mb-16">
-        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-amber-100 text-amber-700">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md" style={{ background: 'var(--color-warning-subtle)', color: 'var(--color-warning)' }}>
           <ClipboardList className="w-4 h-4" /> Fiches par chapitre
         </span>
         <h2 className="text-2xl font-semibold mb-5 tracking-tight">Fiches de révision rapide</h2>
         <div className="grid md:grid-cols-2 gap-4">
           {[
-            { path: '/revision-ch1', num: 'Fiche 01', title: 'Introduction & IS-LM', desc: 'Horizons, multiplicateur, éviction', color: 'bg-blue-50 border-blue-200 hover:border-blue-300' },
-            { path: '/revision-ch2', num: 'Fiche 02', title: 'Marché du Travail', desc: 'WS-PS, types de chômage, μ et z', color: 'bg-purple-50 border-purple-200 hover:border-purple-300' },
-            { path: '/revision-ch3', num: 'Fiche 03', title: 'AS-AD', desc: 'CT vs MT, stagflation, trappe', color: 'bg-emerald-50 border-emerald-200 hover:border-emerald-300' },
-            { path: '/revision-ch4', num: 'Fiche 04', title: 'Politique & Phillips', desc: 'BCE, dette, anticipations, spirale', color: 'bg-amber-50 border-amber-200 hover:border-amber-300' },
+            { path: '/revision-ch1', num: 'Fiche 01', title: 'Introduction & IS-LM', desc: 'Horizons, multiplicateur, éviction', bg: 'var(--color-info-subtle)', border: 'var(--color-info)' },
+            { path: '/revision-ch2', num: 'Fiche 02', title: 'Marché du Travail', desc: 'WS-PS, types de chômage, μ et z', bg: 'var(--color-accent-subtle)', border: 'var(--color-accent)' },
+            { path: '/revision-ch3', num: 'Fiche 03', title: 'AS-AD', desc: 'CT vs MT, stagflation, trappe', bg: 'var(--color-success-subtle)', border: 'var(--color-success)' },
+            { path: '/revision-ch4', num: 'Fiche 04', title: 'Politique & Phillips', desc: 'BCE, dette, anticipations, spirale', bg: 'var(--color-warning-subtle)', border: 'var(--color-warning)' },
           ].map((ch) => (
             <Link
               key={ch.path}
               to={ch.path}
-              className={`p-6 rounded-xl border transition-all no-underline group ${ch.color}`}
+              className="p-6 rounded-xl transition-all no-underline group"
+              style={{ background: ch.bg, borderWidth: '1px', borderStyle: 'solid', borderColor: ch.border }}
             >
-              <p className="text-sm text-slate-600 mb-1">{ch.num}</p>
-              <h3 className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">{ch.title}</h3>
-              <p className="text-sm text-slate-700">{ch.desc}</p>
+              <p className="text-sm mb-1" style={{ color: 'var(--color-text-secondary)' }}>{ch.num}</p>
+              <h3 className="font-semibold transition-colors" style={{ color: 'var(--color-text-primary)' }}>{ch.title}</h3>
+              <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{ch.desc}</p>
             </Link>
           ))}
         </div>
       </section>
 
       <section className="mb-16">
-        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-slate-100/80 text-slate-800">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md" style={{ background: 'var(--color-bg-overlay)', color: 'var(--color-text-primary)' }}>
           <BookOpen className="w-4 h-4" /> Navigation
         </span>
         <h2 className="text-2xl font-semibold mb-5 tracking-tight">Accès rapide aux cours</h2>
@@ -321,11 +322,12 @@ export function Revision() {
             <Link
               key={ch.path}
               to={ch.path}
-              className="p-6 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-100/50 transition-all no-underline group"
+              className="p-6 rounded-xl transition-all no-underline group"
+              style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)', background: 'var(--color-bg-raised)' }}
             >
-              <p className="text-sm text-slate-500 mb-1">{ch.num}</p>
-              <h3 className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">{ch.title}</h3>
-              <p className="text-sm text-slate-600">{ch.desc}</p>
+              <p className="text-sm mb-1" style={{ color: 'var(--color-text-muted)' }}>{ch.num}</p>
+              <h3 className="font-semibold transition-colors" style={{ color: 'var(--color-text-primary)' }}>{ch.title}</h3>
+              <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{ch.desc}</p>
             </Link>
           ))}
         </div>

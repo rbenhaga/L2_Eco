@@ -76,7 +76,7 @@ export function Chapter2() {
         </Table>
 
         <Callout type="warning" title="Distinction cruciale">
-          Le chômage <strong>conjoncturel</strong> peut être combattu par des politiques de demande (G↑, M↑). Le chômage <strong>naturel</strong> ne peut être réduit que par des réformes structurelles (formation, concurrence, flexibilité).
+          Le chômage <strong>conjoncturel</strong> peut être combattu par des politiques de demande (<Math>{"G \\uparrow"}</Math>, <Math>{"M \\uparrow"}</Math>). Le chômage <strong>naturel</strong> ne peut être réduit que par des réformes structurelles (formation, concurrence, flexibilité).
         </Callout>
 
         <p className="mt-6 mb-2"><strong>Concepts complémentaires :</strong></p>
@@ -128,15 +128,15 @@ export function Chapter2() {
         <p className="mb-2"><strong>Deux effets d'une hausse du salaire réel :</strong></p>
         <ul className="list-disc pl-6 space-y-2 mb-4">
           <li>
-            <strong>Effet substitution</strong> : Le loisir devient relativement plus "cher" (son coût d'opportunité augmente). Le travailleur substitue du loisir par du travail → <strong>Offre de travail ↑</strong>
+            <strong>Effet substitution</strong> : Le loisir devient relativement plus "cher" (son coût d'opportunité augmente). Le travailleur substitue du loisir par du travail <Math>{"\\Rightarrow"}</Math> <strong>Offre de travail <Math>{"\\uparrow"}</Math></strong>
           </li>
           <li>
-            <strong>Effet revenu</strong> : Le travailleur est plus riche, il peut "s'offrir" plus de loisir → <strong>Offre de travail ↓</strong>
+            <strong>Effet revenu</strong> : Le travailleur est plus riche, il peut "s'offrir" plus de loisir <Math>{"\\Rightarrow"}</Math> <strong>Offre de travail <Math>{"\\downarrow"}</Math></strong>
           </li>
         </ul>
         
         <Callout type="insight" title="Quel effet domine ?">
-          <strong>Généralement</strong>, l'effet substitution domine l'effet revenu → l'offre de travail est <strong>croissante</strong> avec le salaire réel.<br/><br/>
+          <strong>Généralement</strong>, l'effet substitution domine l'effet revenu <Math>{"\\Rightarrow"}</Math> l'offre de travail est <strong>croissante</strong> avec le salaire réel.<br/><br/>
           <strong>Exception</strong> : À très hauts salaires, l'effet revenu peut dominer (les très riches travaillent moins). C'est pourquoi la courbe d'offre peut se "recourber" (backward-bending).
         </Callout>
 
@@ -195,7 +195,7 @@ export function Chapter2() {
         </ul>
 
         <Callout type="insight" title="Interprétation">
-          Plus le chômage est faible, plus le pouvoir de négociation des travailleurs est fort → salaires plus élevés.
+          Plus le chômage est faible, plus le pouvoir de négociation des travailleurs est fort <Math>{"\\Rightarrow"}</Math> salaires plus élevés.
         </Callout>
       </Section>
 
@@ -247,7 +247,7 @@ export function Chapter2() {
         </Callout>
 
         <Callout type="warning" title="Point crucial pour les graphiques">
-          PS ne dépend <strong>PAS</strong> du chômage. C'est une droite <strong>horizontale</strong> dans le graphique (W/P, u). Le salaire réel offert par les firmes est fixé par la structure du marché, indépendamment du niveau de chômage.
+          PS ne dépend <strong>PAS</strong> du chômage. C'est une droite <strong>horizontale</strong> dans le graphique <Math>{"(W/P, u)"}</Math>. Le salaire réel offert par les firmes est fixé par la structure du marché, indépendamment du niveau de chômage.
         </Callout>
       </Section>
 
@@ -310,14 +310,14 @@ export function Chapter2() {
             <TableCell>PS se déplace vers le bas</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Productivité ↑ (à μ constant)</TableCell>
+            <TableCell>Productivité <Math>{"\\uparrow"}</Math> (à <Math>{"\\mu"}</Math> constant)</TableCell>
             <TableCell><Math>{"u_n \\downarrow"}</Math></TableCell>
             <TableCell>PS se déplace vers le haut</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Concurrence ↑</TableCell>
+            <TableCell>Concurrence <Math>{"\\uparrow"}</Math></TableCell>
             <TableCell><Math>{"u_n \\downarrow"}</Math></TableCell>
-            <TableCell>μ ↓ → PS se déplace vers le haut</TableCell>
+            <TableCell><Math>{"\\mu \\downarrow \\Rightarrow"}</Math> PS se déplace vers le haut</TableCell>
           </TableRow>
         </Table>
       </Section>
@@ -332,18 +332,18 @@ export function Chapter2() {
 
         <Callout type="tip" title="Méthode de calcul">
           1. Calculer le salaire réel PS : <Math>{"\\frac{W}{P} = \\frac{1}{1+\\mu}"}</Math><br/>
-          2. Égaliser WS = PS pour trouver <Math>{"u_n"}</Math><br/>
+          2. Égaliser <Math>{"WS = PS"}</Math> pour trouver <Math>{"u_n"}</Math><br/>
           3. Calculer <Math>{"Y_n = L(1-u_n)"}</Math>
         </Callout>
       </Section>
 
       <Section type="warning" title="Les erreurs classiques">
         <ul className="list-disc pl-6 space-y-2">
-          <li><strong>Confondre WS et offre de travail</strong> — WS = négociations, pas offre walrasienne</li>
+          <li><strong>Confondre WS et offre de travail</strong> — <Math>{"WS"}</Math> = négociations, pas offre walrasienne</li>
           <li><strong>Penser que PS dépend de u</strong> — PS est HORIZONTALE</li>
-          <li><strong>Oublier les anticipations</strong> — WS dépend de <Math>{"P^e"}</Math>, PS de <Math>P</Math></li>
-          <li><strong>Mal interpréter les déplacements</strong> — ↑z → WS vers le HAUT (pas la droite)</li>
-          <li><strong>Confondre P et P<sup>e</sup></strong> dans les équations WS/PS</li>
+          <li><strong>Oublier les anticipations</strong> — <Math>{"WS"}</Math> dépend de <Math>{"P^e"}</Math>, <Math>{"PS"}</Math> de <Math>P</Math></li>
+          <li><strong>Mal interpréter les déplacements</strong> — <Math>{"z \\uparrow \\Rightarrow WS"}</Math> vers le HAUT (pas la droite)</li>
+          <li><strong>Confondre P et <Math>{"P^e"}</Math></strong> dans les équations WS/PS</li>
         </ul>
       </Section>
 

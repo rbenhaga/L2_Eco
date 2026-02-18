@@ -18,7 +18,7 @@ interface AudioPlayerProps {
 }
 
 /**
- * Lecteur audio avec contrôles complets
+ * Lecteur audio avec controles complets
  */
 export function AudioPlayer({
   segment,
@@ -57,9 +57,10 @@ export function AudioPlayer({
   if (!segment) {
     return (
       <div
-        className={`bg-gray-100 rounded-lg p-4 text-center ${className}`}
+        className={`rounded-lg p-4 text-center ${className}`}
+        style={{ background: 'var(--color-bg-overlay)' }}
       >
-        <p className="text-gray-500">
+        <p style={{ color: 'var(--color-text-muted)' }}>
           Aucun audio disponible pour ce segment
         </p>
       </div>
@@ -69,74 +70,97 @@ export function AudioPlayer({
   if (state.error) {
     return (
       <div
-        className={`bg-red-50 rounded-lg p-4 text-center ${className}`}
+        className={`rounded-lg p-4 text-center ${className}`}
+        style={{ background: 'var(--color-error-subtle)' }}
       >
-        <p className="text-red-600">{state.error}</p>
+        <p style={{ color: 'var(--color-error)' }}>{state.error}</p>
       </div>
     );
   }
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden ${className}`}
+      className={`rounded-lg overflow-hidden ${className}`}
+      style={{
+        background: 'var(--color-bg-raised)',
+        boxShadow: 'var(--shadow-lg)',
+        border: '1px solid var(--color-border-default)',
+      }}
     >
       {/* Barre de progression */}
       <div
         ref={progressRef}
-        className="h-2 bg-gray-200 cursor-pointer hover:h-3 transition-all relative group"
+        className="h-2 cursor-pointer hover:h-3 transition-all relative group"
+        style={{ background: 'var(--color-bg-overlay)' }}
         onClick={handleProgressClick}
       >
         <div
-          className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all"
-          style={{ width: `${progressPercentage}%` }}
+          className="h-full transition-all"
+          style={{
+            width: `${progressPercentage}%`,
+            background: 'linear-gradient(to right, var(--color-info), var(--color-accent))',
+          }}
         />
 
         {/* Indicateur de position */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-blue-600 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
-          style={{ left: `${progressPercentage}%` }}
+          className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+          style={{
+            left: `${progressPercentage}%`,
+            background: 'var(--color-accent)',
+            boxShadow: 'var(--shadow-md)',
+          }}
         />
       </div>
 
       <div className="p-4 space-y-4">
         {/* Info et temps */}
         <div className="flex items-center justify-between text-sm">
-          <span className="font-medium text-gray-700">
+          <span className="font-medium" style={{ color: 'var(--color-text-secondary)' }}>
             {state.currentWordIndex !== null &&
               segment.words[state.currentWordIndex] && (
-                <span className="text-blue-600">
+                <span style={{ color: 'var(--color-info)' }}>
                   Mot {state.currentWordIndex + 1}/{segment.words.length}
                 </span>
               )}
           </span>
 
-          <div className="flex items-center gap-2 text-gray-600">
+          <div className="flex items-center gap-2" style={{ color: 'var(--color-text-secondary)' }}>
             <span>{formatTime(state.currentTime)}</span>
             <span>/</span>
             <span>{formatTime(state.duration)}</span>
           </div>
         </div>
 
-        {/* Contrôles principaux */}
+        {/* Controles principaux */}
         <div className="flex items-center justify-center gap-4">
           {/* Reculer de 5 secondes */}
           <button
             onClick={() => actions.skip(-5)}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 rounded-full transition-colors"
+            style={{ color: 'var(--color-text-secondary)' }}
             title="Reculer de 5s"
           >
-            <SkipBack className="w-5 h-5 text-gray-700" />
+            <SkipBack className="w-5 h-5" />
           </button>
 
           {/* Play/Pause */}
           <button
             onClick={actions.togglePlay}
             disabled={state.isLoading}
-            className="p-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-4 rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              background: 'linear-gradient(to right, var(--color-info), var(--color-accent))',
+              color: 'var(--color-accent-foreground)',
+              boxShadow: 'var(--shadow-lg)',
+            }}
             title={state.isPlaying ? 'Pause' : 'Lecture'}
           >
             {state.isLoading ? (
-              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div
+                className="w-6 h-6 border-2 rounded-full animate-spin"
+                style={{ borderColor: 'var(--color-accent-foreground)', borderTopColor: 'transparent' }}
+              />
             ) : state.isPlaying ? (
               <Pause className="w-6 h-6" fill="currentColor" />
             ) : (
@@ -147,14 +171,15 @@ export function AudioPlayer({
           {/* Avancer de 5 secondes */}
           <button
             onClick={() => actions.skip(5)}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 rounded-full transition-colors"
+            style={{ color: 'var(--color-text-secondary)' }}
             title="Avancer de 5s"
           >
-            <SkipForward className="w-5 h-5 text-gray-700" />
+            <SkipForward className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Contrôles secondaires */}
+        {/* Controles secondaires */}
         <div className="flex items-center justify-between">
           {/* Volume */}
           <div className="flex items-center gap-2">
@@ -162,13 +187,14 @@ export function AudioPlayer({
               onClick={() =>
                 actions.setVolume(state.volume === 0 ? 1 : 0)
               }
-              className="p-1.5 hover:bg-gray-100 rounded transition-colors"
+              className="p-1.5 rounded transition-colors"
+              style={{ color: 'var(--color-text-secondary)' }}
               title={state.volume === 0 ? 'Activer le son' : 'Couper le son'}
             >
               {state.volume === 0 ? (
-                <VolumeX className="w-4 h-4 text-gray-700" />
+                <VolumeX className="w-4 h-4" />
               ) : (
-                <Volume2 className="w-4 h-4 text-gray-700" />
+                <Volume2 className="w-4 h-4" />
               )}
             </button>
 
@@ -179,17 +205,23 @@ export function AudioPlayer({
               step="0.01"
               value={state.volume}
               onChange={(e) => actions.setVolume(Number(e.target.value))}
-              className="w-20 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+              className="w-20 h-1 rounded-lg appearance-none cursor-pointer"
+              style={{ background: 'var(--color-bg-overlay)' }}
             />
           </div>
 
           {/* Vitesse de lecture */}
           <div className="flex items-center gap-2">
-            <Settings className="w-4 h-4 text-gray-500" />
+            <Settings className="w-4 h-4" style={{ color: 'var(--color-text-muted)' }} />
             <select
               value={state.playbackRate}
               onChange={(e) => actions.setPlaybackRate(Number(e.target.value))}
-              className="text-sm bg-transparent border border-gray-300 rounded px-2 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="text-sm border rounded px-2 py-1 focus:outline-none focus:ring-2"
+              style={{
+                background: 'transparent',
+                borderColor: 'var(--color-border-default)',
+                color: 'var(--color-text-secondary)',
+              }}
             >
               <option value="0.5">0.5x</option>
               <option value="0.75">0.75x</option>
@@ -205,13 +237,19 @@ export function AudioPlayer({
         {/* Barre de progression visuelle */}
         {state.isPlaying && state.duration > 0 && (
           <div className="flex items-center gap-2">
-            <div className="flex-1 h-1 bg-gray-200 rounded-full overflow-hidden">
+            <div
+              className="flex-1 h-1 rounded-full overflow-hidden"
+              style={{ background: 'var(--color-bg-overlay)' }}
+            >
               <div
-                className="h-full bg-gradient-to-r from-blue-400 to-blue-500 transition-all duration-200"
-                style={{ width: `${progressPercentage}%` }}
+                className="h-full transition-all duration-200"
+                style={{
+                  width: `${progressPercentage}%`,
+                  background: 'linear-gradient(to right, var(--color-info), var(--color-accent))',
+                }}
               />
             </div>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
               {Math.round(progressPercentage)}%
             </span>
           </div>

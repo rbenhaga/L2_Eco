@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, type CSSProperties } from 'react';
 import { CheckCircle, XCircle, RotateCcw, Trophy, ChevronRight, Lightbulb, Brain, Ruler, Calculator } from 'lucide-react';
 import { Math as MathDisplay } from '../../../../../components/Math';
 
@@ -134,17 +134,17 @@ export function QuizCourbes() {
     setShowHint(false);
   };
 
-  const modelColors: Record<string, string> = {
-    'IS-LM': 'bg-blue-100 text-blue-700 border-blue-200',
-    'WS-PS': 'bg-purple-100 text-purple-700 border-purple-200',
-    'AS-AD': 'bg-orange-100 text-orange-700 border-orange-200',
-    'Phillips': 'bg-red-100 text-red-700 border-red-200',
+  const modelStyles: Record<Question['model'], { backgroundColor: string; color: string; borderColor: string }> = {
+    'IS-LM': { backgroundColor: 'var(--color-info-subtle)', color: 'var(--color-info)', borderColor: 'var(--color-info)' },
+    'WS-PS': { backgroundColor: 'var(--color-micro-subtle)', color: 'var(--color-micro)', borderColor: 'var(--color-micro)' },
+    'AS-AD': { backgroundColor: 'var(--color-warning-subtle)', color: 'var(--color-warning)', borderColor: 'var(--color-warning)' },
+    'Phillips': { backgroundColor: 'var(--color-error-subtle)', color: 'var(--color-error)', borderColor: 'var(--color-error)' },
   };
 
-  const typeColors: Record<string, string> = {
-    'deplacement': 'bg-cyan-100 text-cyan-700',
-    'raisonnement': 'bg-amber-100 text-amber-700',
-    'calcul': 'bg-emerald-100 text-emerald-700',
+  const typeStyles: Record<Question['type'], { backgroundColor: string; color: string }> = {
+    deplacement: { backgroundColor: 'var(--color-info-subtle)', color: 'var(--color-info)' },
+    raisonnement: { backgroundColor: 'var(--color-warning-subtle)', color: 'var(--color-warning)' },
+    calcul: { backgroundColor: 'var(--color-success-subtle)', color: 'var(--color-success)' },
   };
 
   const typeLabels: Record<string, { icon: React.ReactNode; label: string }> = {
@@ -154,21 +154,21 @@ export function QuizCourbes() {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 my-8">
+    <div className="bg-[var(--color-bg-raised)] rounded-2xl border border-[var(--color-border-default)] p-6 my-8">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-xl font-semibold flex items-center gap-2">
-            <Brain className="w-6 h-6 text-amber-500" />
+            <Brain className="w-6 h-6 text-[var(--color-warning)]" />
             Quiz : Maîtrise les modèles
           </h3>
-          <p className="text-sm text-slate-600">Déplacements, raisonnement et calculs</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">Déplacements, raisonnement et calculs</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200">
-            <Trophy size={16} className="text-amber-500" />
-            <span className="font-semibold text-amber-700">{score}/{filteredQuestions.length}</span>
+          <div className="flex items-center gap-1 bg-[var(--color-warning-subtle)] px-3 py-1.5 rounded-lg border border-[var(--color-warning)]">
+            <Trophy size={16} className="text-[var(--color-warning)]" />
+            <span className="font-semibold text-[var(--color-warning)]">{score}/{filteredQuestions.length}</span>
           </div>
-          <button onClick={reset} className="p-2 rounded-lg bg-slate-100/80 hover:bg-slate-200">
+          <button onClick={reset} className="p-2 rounded-lg bg-[var(--color-bg-overlay)] hover:bg-[var(--color-surface-hover)]">
             <RotateCcw size={18} />
           </button>
         </div>
@@ -176,10 +176,10 @@ export function QuizCourbes() {
 
       {/* Filtres par modèle */}
       <div className="flex flex-wrap gap-2 mb-3">
-        <span className="text-sm text-slate-600 self-center">Modèle :</span>
+        <span className="text-sm text-[var(--color-text-secondary)] self-center">Modèle :</span>
         {['all', 'IS-LM', 'WS-PS', 'AS-AD', 'Phillips'].map(f => (
           <button key={f} onClick={() => { setFilter(f); setCurrentQ(0); setSelected(null); setShowResult(false); }}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filter === f ? 'bg-gray-900 text-white' : 'bg-slate-100/80 hover:bg-slate-200'}`}>
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filter === f ? 'bg-[var(--color-text-primary)] text-[var(--color-bg-raised)]' : 'bg-[var(--color-bg-overlay)] hover:bg-[var(--color-surface-hover)]'}`}>
             {f === 'all' ? 'Tous' : f}
           </button>
         ))}
@@ -187,10 +187,10 @@ export function QuizCourbes() {
 
       {/* Filtres par type */}
       <div className="flex flex-wrap gap-2 mb-6">
-        <span className="text-sm text-slate-600 self-center">Type :</span>
+        <span className="text-sm text-[var(--color-text-secondary)] self-center">Type :</span>
         {['all', 'deplacement', 'raisonnement', 'calcul'].map(t => (
           <button key={t} onClick={() => { setTypeFilter(t); setCurrentQ(0); setSelected(null); setShowResult(false); }}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${typeFilter === t ? 'bg-gray-900 text-white' : 'bg-slate-100/80 hover:bg-slate-200'}`}>
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${typeFilter === t ? 'bg-[var(--color-text-primary)] text-[var(--color-bg-raised)]' : 'bg-[var(--color-bg-overlay)] hover:bg-[var(--color-surface-hover)]'}`}>
             {t === 'all' ? 'Tous types' : <span className="flex items-center gap-1">{typeLabels[t].icon} {typeLabels[t].label}</span>}
           </button>
         ))}
@@ -199,22 +199,22 @@ export function QuizCourbes() {
       {/* Question */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
-          <span className={`px-2 py-1 rounded text-xs font-semibold border ${modelColors[q.model]}`}>{q.model}</span>
-          <span className={`px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 ${typeColors[q.type]}`}>{typeLabels[q.type].icon} {typeLabels[q.type].label}</span>
-          <span className="text-sm text-slate-600">Question {currentQ + 1}/{filteredQuestions.length}</span>
+          <span className="px-2 py-1 rounded text-xs font-semibold border" style={modelStyles[q.model]}>{q.model}</span>
+          <span className="px-2 py-1 rounded text-xs font-semibold flex items-center gap-1" style={typeStyles[q.type]}>{typeLabels[q.type].icon} {typeLabels[q.type].label}</span>
+          <span className="text-sm text-[var(--color-text-secondary)]">Question {currentQ + 1}/{filteredQuestions.length}</span>
         </div>
-        <p className="text-lg font-medium text-slate-900 mb-3">{q.question}</p>
+        <p className="text-lg font-medium text-[var(--color-text-primary)] mb-3">{q.question}</p>
         
         {/* Bouton indice */}
         {!showResult && (
           <button onClick={() => setShowHint(!showHint)} 
-            className="text-sm text-amber-600 hover:text-amber-700 flex items-center gap-1 mb-3">
+            className="text-sm text-[var(--color-warning)] hover:text-[var(--color-warning)] flex items-center gap-1 mb-3">
             <Lightbulb size={14} /> {showHint ? 'Masquer' : 'Voir'} la formule
           </button>
         )}
         {showHint && !showResult && (
-          <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 mb-3">
-            <p className="text-xs text-amber-600 mb-1 font-medium">Formule clé :</p>
+          <div className="p-3 bg-[var(--color-warning-subtle)] rounded-xl border border-[var(--color-warning)] mb-3">
+            <p className="text-xs text-[var(--color-warning)] mb-1 font-medium">Formule clé :</p>
             <MathDisplay>{q.formula}</MathDisplay>
           </div>
         )}
@@ -223,18 +223,39 @@ export function QuizCourbes() {
       {/* Options */}
       <div className="space-y-2 mb-6">
         {shuffledOptions.map((opt, idx) => {
-          let style = 'bg-slate-100/50 hover:bg-slate-100/80 border-slate-200';
+          let style: CSSProperties = {
+            backgroundColor: 'var(--color-bg-overlay)',
+            borderColor: 'var(--color-border-default)',
+            color: 'var(--color-text-primary)',
+          };
           if (showResult) {
-            if (idx === shuffledCorrectIndex) style = 'bg-green-50 border-green-300 text-green-800';
-            else if (idx === selected) style = 'bg-red-50 border-red-300 text-red-800';
-            else style = 'bg-slate-100/50 border-slate-200 opacity-50';
+            if (idx === shuffledCorrectIndex) {
+              style = {
+                backgroundColor: 'var(--color-success-subtle)',
+                borderColor: 'var(--color-success)',
+                color: 'var(--color-success)',
+              };
+            } else if (idx === selected) {
+              style = {
+                backgroundColor: 'var(--color-error-subtle)',
+                borderColor: 'var(--color-error)',
+                color: 'var(--color-error)',
+              };
+            } else {
+              style = {
+                backgroundColor: 'var(--color-bg-overlay)',
+                borderColor: 'var(--color-border-default)',
+                color: 'var(--color-text-secondary)',
+              };
+            }
           }
           return (
             <button key={idx} onClick={() => handleAnswer(idx)} disabled={showResult}
-              className={`w-full text-left px-4 py-3 rounded-xl border-2 transition-all ${style} flex items-center justify-between`}>
+              className={`w-full text-left px-4 py-3 rounded-xl border-2 transition-all flex items-center justify-between ${!showResult ? 'hover:bg-[var(--color-surface-hover)]' : ''} ${showResult && idx !== shuffledCorrectIndex && idx !== selected ? 'opacity-50' : ''}`}
+              style={style}>
               <span>{opt}</span>
-              {showResult && idx === shuffledCorrectIndex && <CheckCircle size={20} className="text-green-500" />}
-              {showResult && idx === selected && idx !== shuffledCorrectIndex && <XCircle size={20} className="text-red-500" />}
+              {showResult && idx === shuffledCorrectIndex && <CheckCircle size={20} className="text-[var(--color-success)]" />}
+              {showResult && idx === selected && idx !== shuffledCorrectIndex && <XCircle size={20} className="text-[var(--color-error)]" />}
             </button>
           );
         })}
@@ -242,12 +263,25 @@ export function QuizCourbes() {
 
       {/* Explication */}
       {showResult && (
-        <div className={`p-4 rounded-xl mb-4 ${selected === shuffledCorrectIndex ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
-          <p className={`font-semibold mb-2 text-base flex items-center gap-2 ${selected === shuffledCorrectIndex ? 'text-green-800' : 'text-red-800'}`}>
+        <div
+          className="p-4 rounded-xl mb-4 border"
+          style={selected === shuffledCorrectIndex
+            ? { backgroundColor: 'var(--color-success-subtle)', borderColor: 'var(--color-success)' }
+            : { backgroundColor: 'var(--color-error-subtle)', borderColor: 'var(--color-error)' }}
+        >
+          <p
+            className="font-semibold mb-2 text-base flex items-center gap-2"
+            style={selected === shuffledCorrectIndex ? { color: 'var(--color-success)' } : { color: 'var(--color-error)' }}
+          >
             {selected === shuffledCorrectIndex ? <><CheckCircle size={18} /> Correct !</> : <><XCircle size={18} /> Incorrect</>}
           </p>
-          <p className={`text-sm mb-3 ${selected === shuffledCorrectIndex ? 'text-green-700' : 'text-red-700'}`}>{q.explanation}</p>
-          <div className="p-2 bg-white/60 rounded-lg inline-block">
+          <p
+            className="text-sm mb-3"
+            style={selected === shuffledCorrectIndex ? { color: 'var(--color-success)' } : { color: 'var(--color-error)' }}
+          >
+            {q.explanation}
+          </p>
+          <div className="p-2 bg-[var(--color-bg-raised)] rounded-lg inline-block">
             <MathDisplay>{q.formula}</MathDisplay>
           </div>
         </div>
@@ -256,7 +290,7 @@ export function QuizCourbes() {
       {/* Navigation */}
       {showResult && (
         <button onClick={nextQuestion}
-          className="w-full py-3 bg-gray-900 text-white rounded-xl font-medium hover:bg-gray-800 flex items-center justify-center gap-2">
+          className="w-full py-3 bg-[var(--color-text-primary)] text-[var(--color-bg-raised)] rounded-xl font-medium hover:bg-[var(--color-text-primary)] flex items-center justify-center gap-2">
           Question suivante <ChevronRight size={18} />
         </button>
       )}

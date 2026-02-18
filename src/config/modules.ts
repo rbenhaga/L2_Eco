@@ -10,6 +10,7 @@ import {
 /**
  * Module Configuration
  * Centralized module metadata for consistent styling across the app
+ * Uses CSS variables from design system instead of hardcoded Tailwind classes
  */
 
 export type ModuleId = 'macro' | 'micro' | 'stats' | 'socio' | 'management';
@@ -18,7 +19,13 @@ export interface ModuleConfig {
     id: ModuleId;
     name: string;
     icon: LucideIcon;
+    /** CSS variable for icon background */
+    iconBgStyle: React.CSSProperties;
+    /** CSS variable for text color */
+    textStyle: React.CSSProperties;
+    /** @deprecated Use iconBgStyle instead */
     iconBgLight: string;
+    /** @deprecated Use textStyle instead */
     text: string;
 }
 
@@ -27,36 +34,46 @@ export const MODULE_CONFIG: Record<ModuleId, ModuleConfig> = {
         id: 'macro',
         name: 'Macroéconomie',
         icon: TrendingUp,
-        iconBgLight: 'bg-blue-50 dark:bg-blue-500/10',
-        text: 'text-blue-600 dark:text-blue-400'
+        iconBgStyle: { background: 'var(--color-info-subtle)' },
+        textStyle: { color: 'var(--color-info)' },
+        iconBgLight: '',
+        text: ''
     },
     micro: {
         id: 'micro',
         name: 'Microéconomie',
         icon: PieChart,
-        iconBgLight: 'bg-emerald-50 dark:bg-emerald-500/10',
-        text: 'text-emerald-600 dark:text-emerald-400'
+        iconBgStyle: { background: 'var(--color-success-subtle)' },
+        textStyle: { color: 'var(--color-success)' },
+        iconBgLight: '',
+        text: ''
     },
     stats: {
         id: 'stats',
         name: 'Statistiques',
         icon: BarChart3,
-        iconBgLight: 'bg-amber-50 dark:bg-amber-500/10',
-        text: 'text-amber-600 dark:text-amber-400'
+        iconBgStyle: { background: 'var(--color-warning-subtle)' },
+        textStyle: { color: 'var(--color-warning)' },
+        iconBgLight: '',
+        text: ''
     },
     socio: {
         id: 'socio',
         name: 'Sociologie',
         icon: Users,
-        iconBgLight: 'bg-violet-50 dark:bg-violet-500/10',
-        text: 'text-violet-600 dark:text-violet-400'
+        iconBgStyle: { background: 'var(--callout-formula-bg, color-mix(in srgb, var(--color-accent) 8%, transparent))' },
+        textStyle: { color: 'var(--callout-formula-text, var(--color-micro))' },
+        iconBgLight: '',
+        text: ''
     },
     management: {
         id: 'management',
         name: 'Management',
         icon: Briefcase,
-        iconBgLight: 'bg-purple-50 dark:bg-purple-500/10',
-        text: 'text-purple-600 dark:text-purple-400'
+        iconBgStyle: { background: 'var(--callout-formula-bg, color-mix(in srgb, var(--color-accent) 8%, transparent))' },
+        textStyle: { color: 'var(--callout-formula-text, var(--color-micro))' },
+        iconBgLight: '',
+        text: ''
     }
 } as const;
 

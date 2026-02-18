@@ -5,6 +5,7 @@
 
 import { QCMPlayer } from '../../../features/qcm';
 import type { QCMConfig } from '../../../features/qcm';
+import type { QuizResult } from '../../../features/qcm/types';
 
 // Import QCM data
 import macroQCMData from '../../../modules/s3/macro/data/qcm.json';
@@ -16,9 +17,10 @@ interface QCMViewerProps {
     moduleId: string;
     baseRoute: string;
     onBack: () => void;
+    onQuizComplete?: (result: QuizResult) => void;
 }
 
-export function QCMViewer({ moduleId, baseRoute, onBack }: QCMViewerProps) {
+export function QCMViewer({ moduleId, baseRoute, onBack, onQuizComplete }: QCMViewerProps) {
     const config = getQCMConfig(moduleId);
     
     if (!config) {
@@ -40,6 +42,7 @@ export function QCMViewer({ moduleId, baseRoute, onBack }: QCMViewerProps) {
                 config={config}
                 subjectColor="var(--color-accent)"
                 backLink={baseRoute}
+                onQuizComplete={onQuizComplete}
             />
         </div>
     );

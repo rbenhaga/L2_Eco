@@ -25,8 +25,8 @@ export const chapters: Chapter[] = [
         id: 'ch0',
         title: 'Chapitre 0',
         subtitle: 'Théorie du consommateur',
-        color: 'emerald',
-        gradient: 'from-emerald-500 to-emerald-600',
+        color: 'var(--color-success)',
+        gradient: 'from-[var(--color-success-subtle)] to-[var(--color-success)]',
         questions: [
             { id: 1, question: "La condition d'équilibre du consommateur est :", options: ["TMS = p₂/p₁", "TMS = p₁/p₂", "TMS = R/p₁", "TMS = Um₁ × Um₂"], correct: 1, explanation: "À l'équilibre, le TMS (taux marginal de substitution) égale le rapport des prix $p_1/p_2$. C'est la condition de tangence entre la courbe d'indifférence et la droite de budget." },
             { id: 2, question: "Pour une fonction Cobb-Douglas $U = x_1^\\alpha x_2^\\beta$ avec $\\alpha + \\beta = 1$, la demande optimale de bien 1 est :", options: ["$x_1^* = \\alpha R/p_1$", "$x_1^* = \\beta R/p_1$", "$x_1^* = R/(\\alpha p_1)$", "$x_1^* = \\alpha p_1/R$"], correct: 0, explanation: "Pour Cobb-Douglas avec $\\alpha + \\beta = 1$, on a $p_1 x_1^* = \\alpha R$, donc $x_1^* = \\alpha R/p_1$. Le consommateur dépense une part $\\alpha$ de son revenu pour le bien 1." },
@@ -51,7 +51,7 @@ export const chapters: Chapter[] = [
         title: 'Chapitre 1',
         subtitle: 'Travail-Loisir',
         color: 'blue',
-        gradient: 'from-blue-500 to-blue-600',
+        gradient: 'from-[var(--color-info)] to-[var(--color-info)]',
         questions: [
             { id: 1, question: "Le coût d'opportunité du loisir est :", options: ["Le prix des biens de consommation", "Le salaire w", "Le revenu total", "Le temps de travail"], correct: 1, explanation: "Le salaire $w$ représente le coût d'opportunité du loisir : chaque heure de loisir 'coûte' $w$ euros de revenu sacrifié." },
             { id: 2, question: "Une courbe d'offre de travail 'backward-bending' signifie que :", options: ["L'offre de travail est toujours croissante", "L'offre de travail est toujours décroissante", "L'offre de travail décroît pour des salaires élevés", "L'offre de travail est indépendante du salaire"], correct: 2, explanation: "Pour des salaires élevés, l'effet revenu peut dominer l'effet substitution : les travailleurs préfèrent plus de loisir car ils sont 'assez riches'." },
@@ -72,7 +72,7 @@ export const chapters: Chapter[] = [
         title: 'Chapitre 2',
         subtitle: 'Choix intertemporels',
         color: 'purple',
-        gradient: 'from-purple-500 to-purple-600',
+        gradient: 'from-[var(--color-accent)] to-[var(--color-accent-hover)]',
         questions: [
             { id: 1, question: "La pente de la contrainte budgétaire intertemporelle est :", options: ["$-r$", "$-(1+r)$", "$-1/r$", "$-1/(1+r)$"], correct: 1, explanation: "La pente est $-(1+r)$. Renoncer à 1€ de consommation aujourd'hui permet d'obtenir $(1+r)$€ demain." },
             { id: 2, question: "L'équation de Fisher approximative est :", options: ["$\\rho \\approx i \\times \\pi$", "$\\rho \\approx i + \\pi$", "$\\rho \\approx i - \\pi$", "$\\rho \\approx i / \\pi$"], correct: 2, explanation: "Le taux réel $\\rho \\approx i - \\pi$ (taux nominal moins inflation). C'est le taux qui compte pour les décisions d'épargne." },
@@ -93,7 +93,7 @@ export const chapters: Chapter[] = [
         title: 'Chapitre 3',
         subtitle: 'Surplus et bien-être',
         color: 'amber',
-        gradient: 'from-amber-500 to-amber-600',
+        gradient: 'from-[var(--color-warning-subtle)] to-[var(--color-warning)]',
         questions: [
             { id: 1, question: "Le surplus du consommateur est graphiquement :", options: ["L'aire sous la courbe d'offre", "L'aire sous la courbe de demande et au-dessus du prix", "L'aire au-dessus de la courbe de demande", "Le rectangle prix × quantité"], correct: 1, explanation: "Le surplus est l'aire entre la courbe de demande (disposition à payer) et le prix de marché, jusqu'à la quantité consommée." },
             { id: 2, question: "La perte sèche (deadweight loss) d'une taxe représente :", options: ["La recette fiscale totale", "La perte de surplus non récupérée par personne", "La baisse de prix", "Le profit des entreprises"], correct: 1, explanation: "La perte sèche est la perte de bien-être qui n'est récupérée ni par les consommateurs, ni par les producteurs, ni par l'État. C'est l'inefficience pure de la taxe." },
@@ -113,7 +113,7 @@ export const chapters: Chapter[] = [
         title: 'Chapitre 4',
         subtitle: 'Demande de marché et élasticités',
         color: 'rose',
-        gradient: 'from-rose-500 to-rose-600',
+        gradient: 'from-[var(--color-error)] to-[var(--color-error)]',
         questions: [
             { id: 1, question: "Si $|\\varepsilon_p| < 1$, la demande est dite :", options: ["Élastique", "Inélastique", "Unitaire", "Parfaitement élastique"], correct: 1, explanation: "Si $|\\varepsilon_p| < 1$, la demande est inélastique : la quantité réagit faiblement au prix. Exemples : biens de première nécessité." },
             { id: 2, question: "Un bien inférieur a une élasticité-revenu :", options: ["$\\varepsilon_R > 1$", "$0 < \\varepsilon_R < 1$", "$\\varepsilon_R < 0$", "$\\varepsilon_R = 0$"], correct: 2, explanation: "Un bien inférieur a $\\varepsilon_R < 0$ : la demande diminue quand le revenu augmente. Les consommateurs substituent vers des alternatives supérieures." },
@@ -128,7 +128,7 @@ export const chapters: Chapter[] = [
         title: 'Chapitre 5',
         subtitle: 'Théorie du producteur',
         color: 'cyan',
-        gradient: 'from-cyan-500 to-cyan-600',
+        gradient: 'from-[var(--color-info)] to-[var(--color-info)]',
         questions: [
             { id: 1, question: "La condition de minimisation des coûts est :", options: ["$Pm_L/Pm_K = r/w$", "$Pm_L/Pm_K = w/r$", "$Pm_L \\times Pm_K = w \\times r$", "$Pm_L + Pm_K = w + r$"], correct: 1, explanation: "$TMST = Pm_L/Pm_K = w/r$. Le taux technique de substitution égale le rapport des prix des facteurs." },
             { id: 2, question: "Pour $Q = AK^\\alpha L^\\beta$, les rendements d'échelle sont constants si :", options: ["$\\alpha + \\beta > 1$", "$\\alpha + \\beta < 1$", "$\\alpha + \\beta = 1$", "$\\alpha = \\beta$"], correct: 2, explanation: "Pour Cobb-Douglas, $\\alpha + \\beta = 1$ implique des rendements constants. Si on double tous les inputs, on double l'output." },
@@ -160,7 +160,7 @@ export const chapters: Chapter[] = [
         title: 'Chapitre 6',
         subtitle: 'Concurrence pure et parfaite',
         color: 'teal',
-        gradient: 'from-teal-500 to-teal-600',
+        gradient: 'from-[var(--color-success)] to-[var(--color-success)]',
         questions: [
             { id: 1, question: "En CPP, le prix de fermeture de court terme est :", options: ["min CM", "min CVM", "min Cm", "max CM"], correct: 1, explanation: "Le prix de fermeture CT est min $CVM$. Si $P < $ min $CVM$, la firme ne couvre même pas ses coûts variables et doit fermer." },
             { id: 2, question: "À l'équilibre de long terme en CPP :", options: ["Le profit est maximal", "Le profit est nul", "Le prix est supérieur au coût moyen", "Il n'y a pas d'entrée de nouvelles firmes"], correct: 1, explanation: "La libre entrée/sortie force le profit à zéro en LT. Si $\\pi > 0$, de nouvelles firmes entrent, l'offre augmente, le prix baisse jusqu'à $\\pi = 0$." },
@@ -176,7 +176,7 @@ export const chapters: Chapter[] = [
         title: 'Chapitre 7',
         subtitle: 'Monopole et oligopole',
         color: 'indigo',
-        gradient: 'from-indigo-500 to-indigo-600',
+        gradient: 'from-[var(--color-accent)] to-[var(--color-accent)]',
         questions: [
             { id: 1, question: "La condition d'équilibre du monopole est :", options: ["$P = Cm$", "$Rm = Cm$", "$P = CM$", "$Rm = P$"], correct: 1, explanation: "Le monopole maximise son profit en égalisant recette marginale et coût marginal : $Rm = Cm$. Contrairement à la CPP, $Rm \\neq P$." },
             { id: 2, question: "L'indice de Lerner mesure :", options: ["L'élasticité de la demande", "Le pouvoir de marché", "Le coût marginal", "La recette totale"], correct: 1, explanation: "$L = \\frac{P - Cm}{P} = -\\frac{1}{\\varepsilon}$ mesure le pouvoir de marché. $L = 0$ en CPP (pas de pouvoir), $L$ élevé = fort pouvoir de marché." },

@@ -40,19 +40,19 @@ const variantStyles: Record<ButtonVariant, string> = {
         active:bg-[rgb(var(--surface-3))] active:scale-[0.98]
     `,
     success: `
-        bg-[var(--color-success)] text-white
+        bg-[var(--color-success)] text-[var(--color-accent-foreground)]
         hover:brightness-110 hover:-translate-y-px
         active:brightness-90 active:scale-[0.98]
         shadow-[0_4px_14px_rgb(var(--color-success)/0.25)]
     `,
     error: `
-        bg-[var(--color-destructive)] text-white
+        bg-[var(--color-destructive)] text-[var(--color-accent-foreground)]
         hover:brightness-110 hover:-translate-y-px
         active:brightness-90 active:scale-[0.98]
         shadow-[0_4px_14px_rgb(var(--color-destructive)/0.25)]
     `,
     accent: `
-        bg-[rgb(var(--accent))] text-white
+        bg-[rgb(var(--accent))] text-[var(--color-accent-foreground)]
         hover:bg-[rgb(var(--accent-hover))] hover:-translate-y-px
         active:scale-[0.98] active:translate-y-0
         shadow-[0_4px_14px_rgb(var(--accent)/0.3)]

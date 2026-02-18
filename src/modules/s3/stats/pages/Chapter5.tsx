@@ -61,7 +61,7 @@ export function Chapter5() {
 
       {/* ============ PARTIE 1 : VA DISCRÈTES 2D ============ */}
 
-      <h2 className="text-2xl font-bold mt-12 mb-6 text-slate-900 border-b pb-2">PARTIE 1 : Variables Aléatoires Discrètes 2D</h2>
+      <h2 className="text-2xl font-bold mt-12 mb-6 text-[var(--color-text-primary)] border-b pb-2">PARTIE 1 : Variables Aléatoires Discrètes 2D</h2>
 
       <Section type="key" title="II. Loi de Probabilité Conjointe">
         <p className="mb-4">
@@ -218,7 +218,7 @@ export function Chapter5() {
 
       {/* ============ PARTIE 2 : VA CONTINUES 2D ============ */}
 
-      <h2 className="text-2xl font-bold mt-12 mb-6 text-slate-900 border-b pb-2">PARTIE 2 : Variables Aléatoires Continues 2D</h2>
+      <h2 className="text-2xl font-bold mt-12 mb-6 text-[var(--color-text-primary)] border-b pb-2">PARTIE 2 : Variables Aléatoires Continues 2D</h2>
 
       <Section type="key" title="XII. Densité de Probabilité Conjointe">
         <p className="mb-4">
@@ -340,7 +340,7 @@ export function Chapter5() {
 
       {/* ============ MÉTHODES ET EXEMPLES ============ */}
 
-      <h2 className="text-2xl font-bold mt-12 mb-6 text-slate-900 border-b pb-2">Méthodes et Exemples</h2>
+      <h2 className="text-2xl font-bold mt-12 mb-6 text-[var(--color-text-primary)] border-b pb-2">Méthodes et Exemples</h2>
 
       <Section type="key" title="XXII. Méthode : Trouver la constante k">
         <p className="mb-4">
@@ -386,42 +386,42 @@ export function Chapter5() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-100/80">
-                <th className="border border-slate-300 p-2">Concept</th>
-                <th className="border border-slate-300 p-2">Discret</th>
-                <th className="border border-slate-300 p-2">Continu</th>
+              <tr className="bg-[var(--color-bg-overlay)]/80">
+                <th className="border border-[var(--color-border-strong)] p-2">Concept</th>
+                <th className="border border-[var(--color-border-strong)] p-2">Discret</th>
+                <th className="border border-[var(--color-border-strong)] p-2">Continu</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Loi conjointe</td>
-                <td className="border border-slate-300 p-2"><Math>{"p_{ij}"}</Math></td>
-                <td className="border border-slate-300 p-2"><Math>{"f(x,y)"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Loi conjointe</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"p_{ij}"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"f(x,y)"}</Math></td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Normalisation</td>
-                <td className="border border-slate-300 p-2"><Math>{"\\sum_i \\sum_j p_{ij} = 1"}</Math></td>
-                <td className="border border-slate-300 p-2"><Math>{"\\iint f(x,y) dx dy = 1"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Normalisation</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"\\sum_i \\sum_j p_{ij} = 1"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"\\iint f(x,y) dx dy = 1"}</Math></td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Marginale X</td>
-                <td className="border border-slate-300 p-2"><Math>{"p_{i.} = \\sum_j p_{ij}"}</Math></td>
-                <td className="border border-slate-300 p-2"><Math>{"f_X(x) = \\int f(x,y) dy"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Marginale X</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"p_{i.} = \\sum_j p_{ij}"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"f_X(x) = \\int f(x,y) dy"}</Math></td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Conditionnelle Y|X</td>
-                <td className="border border-slate-300 p-2"><Math>{"p_j^i = p_{ij}/p_{i.}"}</Math></td>
-                <td className="border border-slate-300 p-2"><Math>{"f_{Y|X} = f(x,y)/f_X(x)"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Conditionnelle Y|X</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"p_j^i = p_{ij}/p_{i.}"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"f_{Y|X} = f(x,y)/f_X(x)"}</Math></td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Indépendance</td>
-                <td className="border border-slate-300 p-2"><Math>{"p_{ij} = p_{i.} \\cdot p_{.j}"}</Math></td>
-                <td className="border border-slate-300 p-2"><Math>{"f = f_X \\cdot f_Y"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Indépendance</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"p_{ij} = p_{i.} \\cdot p_{.j}"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"f = f_X \\cdot f_Y"}</Math></td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">E[XY]</td>
-                <td className="border border-slate-300 p-2"><Math>{"\\sum_i \\sum_j x_i y_j p_{ij}"}</Math></td>
-                <td className="border border-slate-300 p-2"><Math>{"\\iint xy f(x,y) dx dy"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">E[XY]</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"\\sum_i \\sum_j x_i y_j p_{ij}"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"\\iint xy f(x,y) dx dy"}</Math></td>
               </tr>
             </tbody>
           </table>

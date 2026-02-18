@@ -31,34 +31,34 @@ interface FormulaBoxProps {
 
 export function FormulaBox({ children, label, highlight = false }: FormulaBoxProps) {
   return (
-    <div 
-      className="rounded-2xl p-6 sm:p-8 my-6 overflow-x-auto border"
+    <div
+      className="rounded-xl p-4 sm:p-5 my-4 overflow-x-auto"
       style={{
-        background: highlight 
-          ? 'linear-gradient(135deg, rgb(var(--accent) / 0.06), rgb(var(--accent) / 0.03))'
-          : 'rgb(var(--surface-1))',
-        borderColor: highlight ? 'rgb(var(--accent) / 0.25)' : 'rgb(var(--border))',
+        background: highlight
+          ? 'var(--callout-formula-bg)'
+          : 'var(--color-bg-overlay)',
+        border: `1px solid ${highlight ? 'var(--callout-formula-border)' : 'var(--color-border-default)'}`,
         boxShadow: highlight
-          ? '0 2px 12px rgba(99, 102, 241, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
-          : '0 1px 3px rgba(15, 23, 42, 0.04)'
+          ? '0 2px 12px color-mix(in srgb, var(--color-accent) 8%, transparent)'
+          : 'var(--shadow-sm)',
       }}
     >
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex items-center gap-3 flex-wrap justify-center">
         {label && (
-          <div 
-            className="px-4 py-1.5 rounded-full text-xs font-semibold"
-            style={{ 
-              background: highlight ? 'rgb(var(--accent) / 0.12)' : 'rgb(var(--surface-2))',
-              color: highlight ? 'rgb(var(--accent))' : 'rgb(var(--text-muted))',
-              border: `1px solid ${highlight ? 'rgb(var(--accent) / 0.2)' : 'rgb(var(--border))'}`
+          <span
+            className="text-[11px] font-semibold uppercase tracking-wider shrink-0 px-2.5 py-0.5 rounded-full"
+            style={{
+              background: highlight ? 'var(--callout-formula-icon-bg)' : 'var(--color-bg-overlay)',
+              color: highlight ? 'var(--callout-formula-text)' : 'var(--color-text-muted)',
+              border: `1px solid ${highlight ? 'var(--callout-formula-border)' : 'var(--color-border-default)'}`,
             }}
           >
             {label}
-          </div>
+          </span>
         )}
-        <div 
-          className="text-xl sm:text-2xl w-full text-center"
-          style={{ color: 'rgb(var(--text))' }}
+        <div
+          className="text-base sm:text-lg w-full text-center py-1"
+          style={{ color: 'var(--color-text-primary)' }}
         >
           <Math display>{children}</Math>
         </div>

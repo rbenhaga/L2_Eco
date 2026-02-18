@@ -34,31 +34,31 @@ export function Tooltip({ term, children, formula }: TooltipProps) {
 
   return (
     <div className="flex items-center justify-between mb-2" ref={tooltipRef}>
-      <span className="font-semibold text-sm text-slate-800">{term}</span>
+      <span className="font-semibold text-sm text-[var(--color-text-primary)]">{term}</span>
       <button
         onClick={() => setShow(!show)}
-        className={`p-1.5 rounded-full transition-all bg-slate-100/80 hover:bg-slate-200 text-slate-600 ${show ? 'ring-2 ring-gray-300' : ''}`}
+        className={`p-1.5 rounded-full transition-all bg-[var(--color-bg-overlay)]/80 hover:bg-[var(--color-surface-hover)] text-[var(--color-text-secondary)] ${show ? 'ring-2 ring-[var(--color-border-strong)]' : ''}`}
         aria-label={`Aide pour ${term}`}
       >
         <HelpCircle size={16} />
       </button>
       
       {show && (
-        <div className="absolute right-0 top-full mt-2 w-80 p-4 rounded-xl border border-slate-200 shadow-xl z-50 bg-white">
+        <div className="absolute right-0 top-full mt-2 w-80 p-4 rounded-xl border border-[var(--color-border-default)] shadow-xl z-50 bg-[var(--color-bg-raised)]">
           <div className="flex items-start justify-between mb-3">
-            <h4 className="font-bold text-base text-slate-900">{term}</h4>
-            <button onClick={() => setShow(false)} className="p-1 rounded hover:bg-slate-100/80 text-slate-500">
+            <h4 className="font-bold text-base text-[var(--color-text-primary)]">{term}</h4>
+            <button onClick={() => setShow(false)} className="p-1 rounded hover:bg-[var(--color-bg-overlay)]/80 text-[var(--color-text-muted)]">
               <X size={16} />
             </button>
           </div>
           
           {formula && (
-            <div className="mb-3 p-3 bg-slate-100/50 rounded-lg border border-gray-100 text-center">
+            <div className="mb-3 p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg border border-[var(--color-border-default)] text-center">
               <LatexFormula formula={formula} />
             </div>
           )}
           
-          <div className="text-sm leading-relaxed text-slate-700">
+          <div className="text-sm leading-relaxed text-[var(--color-text-secondary)]">
             {children}
           </div>
         </div>

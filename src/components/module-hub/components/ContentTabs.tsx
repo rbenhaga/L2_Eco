@@ -1,6 +1,7 @@
 /**
- * ContentTabs Component
- * Tab navigation for different content types (Cours, TD, QCM, Annales)
+ * ContentTabs Component - SEGMENTED CONTROL
+ * Premium pills with strong active state
+ * Badges for counts, tap-friendly (44px)
  */
 
 import type { ContentType } from '../types';
@@ -24,40 +25,60 @@ export function ContentTabs({
     annalesCount,
     themeColor
 }: ContentTabsProps) {
+    const tabs = [
+        { id: 'cours' as ContentType, label: 'Cours', count: coursCount },
+        { id: 'td' as ContentType, label: 'TD', count: tdCount },
+        { id: 'qcm' as ContentType, label: 'QCM', count: qcmCount },
+        { id: 'annales' as ContentType, label: 'Annales', count: annalesCount }
+    ];
+
     return (
-        <div className="mb-8">
-            <div className="flex items-center gap-2 p-2 rounded-xl bg-[var(--color-bg-overlay)] border border-[var(--color-border-soft)]" role="tablist">
-                <Tab label="Cours" count={coursCount} active={activeTab === 'cours'} onClick={() => onTabChange('cours')} themeColor={themeColor} />
-                <Tab label="TD" count={tdCount} active={activeTab === 'td'} onClick={() => onTabChange('td')} themeColor={themeColor} />
-                <Tab label="QCM" count={qcmCount} active={activeTab === 'qcm'} onClick={() => onTabChange('qcm')} themeColor={themeColor} />
-                <Tab label="Annales" count={annalesCount} active={activeTab === 'annales'} onClick={() => onTabChange('annales')} themeColor={themeColor} />
+        <div className="mb-6">
+            {/* Segmented Control Container */}
+            <div
+                className="inline-flex items-center gap-1 p-1.5 rounded-xl"
+                style={{
+                    background: "var(--color-bg-overlay)",
+                    boxShadow: "inset 0 1px 3px color-mix(in srgb, var(--color-text-primary) 5%, transparent)"
+                }}
+                role="tablist"
+            >
+                {tabs.map(tab => (
+                    <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => onTabChange(tab.id)}
+                        role="tab"
+                        aria-selected={activeTab === tab.id}
+                        className="relative min-h-[44px] px-5 py-2.5 rounded-lg font-bold text-sm inline-flex items-center gap-2.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
+                        style={activeTab === tab.id ? {
+                            background: 'var(--color-bg-raised)',
+                            color: themeColor,
+                            boxShadow: '0 2px 8px color-mix(in srgb, var(--color-text-primary) 8%, transparent), 0 1px 2px color-mix(in srgb, var(--color-text-primary) 6%, transparent)',
+                            '--tw-ring-color': themeColor
+                        } as React.CSSProperties : {
+                            background: 'transparent',
+                            color: 'var(--color-text-muted)',
+                            '--tw-ring-color': themeColor
+                        } as React.CSSProperties}
+                    >
+                        <span>{tab.label}</span>
+                        {/* Badge count */}
+                        <span
+                            className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-full text-xs font-black"
+                            style={activeTab === tab.id ? {
+                                background: themeColor,
+                                color: 'var(--color-bg-raised)'
+                            } : {
+                                background: 'var(--color-bg-raised)',
+                                color: 'var(--color-text-muted)'
+                            }}
+                        >
+                            {tab.count}
+                        </span>
+                    </button>
+                ))}
             </div>
         </div>
-    );
-}
-
-function Tab({ label, count, active, onClick, themeColor }: { label: string; count: number; active: boolean; onClick: () => void; themeColor: string }) {
-    return (
-        <button 
-            type="button" 
-            onClick={onClick} 
-            role="tab" 
-            aria-selected={active}
-            className="flex-1 px-4 py-2 rounded-lg font-medium text-sm inline-flex items-center justify-center gap-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-raised)]"
-            style={{ 
-                background: active ? 'var(--color-bg-raised)' : 'transparent', 
-                color: active ? 'var(--color-text-primary)' : 'var(--color-text-muted)',
-                boxShadow: active ? 'var(--shadow-sm)' : 'none',
-                borderBottom: active ? `2px solid ${themeColor}` : '2px solid transparent'
-            }}
-        >
-            <span>{label}</span>
-            <span className="px-2 py-2 rounded text-xs font-semibold" style={{ 
-                background: active ? `${themeColor}15` : 'var(--color-bg-overlay)', 
-                color: active ? themeColor : 'var(--color-text-muted)'
-            }}>
-                {count}
-            </span>
-        </button>
     );
 }

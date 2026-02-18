@@ -80,12 +80,12 @@ export function RevisionCh2() {
         <FormulaBox label="WS (Wage Setting)" highlight>
           {"\\frac{W}{P^e} = F(u, z) \\quad \\text{ou} \\quad \\frac{W}{P^e} = z(1 - \\alpha u)"}
         </FormulaBox>
-        <p className="text-sm text-slate-700">u↑ → W↓ (moins de pouvoir de négociation) | z↑ → W↑ (allocations, syndicats)</p>
+        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>u↑ → W↓ (moins de pouvoir de négociation) | z↑ → W↑ (allocations, syndicats)</p>
 
         <FormulaBox label="PS (Price Setting)" highlight>
           {"\\frac{W}{P} = \\frac{1}{1 + \\mu}"}
         </FormulaBox>
-        <p className="text-sm text-slate-700">μ = taux de marge. PS est HORIZONTALE (ne dépend pas de u)</p>
+        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>μ = taux de marge. PS est HORIZONTALE (ne dépend pas de u)</p>
       </Section>
 
       <Section type="key" title="Structures de marché et μ">
@@ -166,7 +166,7 @@ export function RevisionCh2() {
       </Section>
 
       <section className="mb-16">
-        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-purple-50 text-purple-700">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md" style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}>
           <CheckSquare className="w-4 h-4" /> Checklist Chapitre 2
         </span>
         <div className="grid md:grid-cols-2 gap-2">
@@ -178,9 +178,9 @@ export function RevisionCh2() {
             "Je connais les effets de μ et z sur uₙ",
             "Je sais calculer Yₙ à partir de uₙ",
           ].map((item, i) => (
-            <label key={i} className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-100/50 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
-              <span className="text-sm text-slate-800">{item}</span>
+            <label key={i} className="flex items-center gap-3 p-3 rounded-lg cursor-pointer" style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
+              <input type="checkbox" className="w-4 h-4 rounded" style={{ borderColor: 'var(--color-border-default)' }} />
+              <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>{item}</span>
             </label>
           ))}
         </div>

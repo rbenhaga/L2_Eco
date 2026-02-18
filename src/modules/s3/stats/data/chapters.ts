@@ -26,7 +26,7 @@ export const chapters: Chapter[] = [
         title: 'CH1 - Probabilités',
         subtitle: 'Algèbre de Boole, Bayes, Conditionnement',
         color: 'blue',
-        gradient: 'from-blue-500 to-blue-600',
+        gradient: 'from-[var(--color-info)] to-[var(--color-info)]',
         questions: [
             { id: 1, question: "Une algèbre de Boole doit être stable par :", options: ["Union uniquement", "Intersection uniquement", "Complémentaire et union finie", "Complémentaire uniquement"], correct: 2, explanation: "Une algèbre de Boole est stable par complémentation et par union finie (donc aussi par intersection via De Morgan)." },
             { id: 2, question: "Si $P(A) = 0.3$ et $P(B) = 0.5$ avec A et B indépendants, $P(A \\cap B) = $", options: ["0.8", "0.15", "0.2", "0.35"], correct: 1, explanation: "Indépendance : $P(A \\cap B) = P(A) \\times P(B) = 0.3 \\times 0.5 = 0.15$" },
@@ -50,7 +50,7 @@ export const chapters: Chapter[] = [
         title: 'CH2 - VA Discrètes',
         subtitle: 'Espérance, variance, fonction génératrice',
         color: 'emerald',
-        gradient: 'from-emerald-500 to-emerald-600',
+        gradient: 'from-[var(--color-success-subtle)] to-[var(--color-success)]',
         questions: [
             { id: 1, question: "Si $E(X) = 3$ et $V(X) = 4$, alors $E(X^2) = $", options: ["7", "9", "13", "12"], correct: 2, explanation: "$V(X) = E(X^2) - [E(X)]^2$, donc $E(X^2) = V(X) + [E(X)]^2 = 4 + 9 = 13$" },
             { id: 2, question: "Si $Y = 2X + 5$ avec $V(X) = 3$, alors $V(Y) = $", options: ["6", "11", "12", "17"], correct: 2, explanation: "$V(aX + b) = a^2 V(X) = 2^2 \\times 3 = 12$. La constante $b$ n'affecte pas la variance." },
@@ -76,7 +76,7 @@ export const chapters: Chapter[] = [
         title: 'CH3 - VA Continues',
         subtitle: 'Densité, répartition, Gamma, Beta',
         color: 'purple',
-        gradient: 'from-purple-500 to-purple-600',
+        gradient: 'from-[var(--color-accent)] to-[var(--color-accent-hover)]',
         questions: [
             { id: 1, question: "Pour une VA continue, $P(X = a) = $", options: ["$f(a)$", "$F(a)$", "0", "1"], correct: 2, explanation: "Pour une VA continue, la probabilité d'un point est toujours nulle : $P(X = a) = 0$." },
             { id: 2, question: "$\\Gamma(4) = $", options: ["4", "6", "24", "3"], correct: 1, explanation: "$\\Gamma(n) = (n-1)!$, donc $\\Gamma(4) = 3! = 6$." },
@@ -102,7 +102,7 @@ export const chapters: Chapter[] = [
         title: 'CH4 - Lois Usuelles',
         subtitle: 'Binomiale, Poisson, Hypergéométrique',
         color: 'amber',
-        gradient: 'from-amber-500 to-amber-600',
+        gradient: 'from-[var(--color-warning-subtle)] to-[var(--color-warning)]',
         questions: [
             { id: 1, question: "Pour $X \\sim B(10, 0.3)$, $E(X) = $", options: ["3", "0.3", "10", "2.1"], correct: 0, explanation: "$E(X) = np = 10 \\times 0.3 = 3$." },
             { id: 2, question: "Pour $X \\sim \\mathcal{P}(5)$, $V(X) = $", options: ["25", "5", "$\\sqrt{5}$", "10"], correct: 1, explanation: "Pour Poisson, $E(X) = V(X) = \\lambda = 5$." },
@@ -128,7 +128,7 @@ export const chapters: Chapter[] = [
         title: 'CH5 - VA 2D',
         subtitle: 'Marginales, conditionnelles, covariance',
         color: 'rose',
-        gradient: 'from-rose-500 to-rose-600',
+        gradient: 'from-[var(--color-error)] to-[var(--color-error)]',
         questions: [
             { id: 1, question: "La loi marginale de X s'obtient en :", options: ["Intégrant $f(x,y)$ sur $x$", "Intégrant $f(x,y)$ sur $y$", "Dérivant $F(x,y)$", "Multipliant par $y$"], correct: 1, explanation: "$f_X(x) = \\int f(x,y) \\, dy$ (on intègre sur l'autre variable)." },
             { id: 2, question: "$Cov(X,Y) = 0$ implique :", options: ["X et Y indépendantes", "Pas de liaison linéaire", "$r = 1$", "$E(XY) = 0$"], correct: 1, explanation: "$Cov = 0$ signifie pas de liaison linéaire, mais n'implique pas l'indépendance." },
@@ -154,7 +154,7 @@ export const chapters: Chapter[] = [
         title: 'Annales',
         subtitle: 'Questions type partiel et examen',
         color: 'slate',
-        gradient: 'from-slate-600 to-slate-700',
+        gradient: 'from-[var(--color-text-secondary)] to-[var(--color-text-primary)]',
         questions: [
             { id: 1, question: "Soit $f(x,y) = kxy^2$ sur $D = \\{0 \\leq y \\leq x, x \\leq 3\\}$. Pour que $f$ soit une densité, $k = $", options: ["$\\frac{5}{81}$", "$\\frac{1}{81}$", "$\\frac{3}{81}$", "$\\frac{81}{5}$"], correct: 0, explanation: "On résout $\\iint_D kxy^2 \\, dy \\, dx = 1$. Après calcul : $k = \\frac{5}{81}$." },
             { id: 2, question: "Avec $f(x,y) = \\frac{5}{81}xy^2$ sur $D$, la loi marginale $f_X(x) = $", options: ["$\\frac{5x^4}{243}$", "$\\frac{5x^3}{81}$", "$\\frac{x^4}{81}$", "$\\frac{5x^2}{243}$"], correct: 0, explanation: "$f_X(x) = \\int_0^x \\frac{5}{81}xy^2 \\, dy = \\frac{5x}{81} \\cdot \\frac{x^3}{3} = \\frac{5x^4}{243}$." },

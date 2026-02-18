@@ -13,90 +13,79 @@ interface CalloutProps {
 const calloutConfig: Record<CalloutType, {
   icon: LucideIcon;
   defaultTitle: string;
-  border: string;
-  bg: string;
-  iconBg: string;
-  iconColor: string;
+  borderVar: string;
+  bgVar: string;
+  iconColorVar: string;
 }> = {
   key: {
     icon: Key,
     defaultTitle: 'Concept clé',
-    border: 'border-l-indigo-500',
-    bg: 'bg-linear-to-r from-indigo-50/80 to-transparent',
-    iconBg: 'bg-indigo-100',
-    iconColor: 'text-indigo-600',
+    borderVar: 'var(--callout-key-border)',
+    bgVar: 'var(--callout-key-bg)',
+    iconColorVar: 'var(--callout-key-text)',
   },
   example: {
     icon: Lightbulb,
     defaultTitle: 'Exemple',
-    border: 'border-l-amber-500',
-    bg: 'bg-linear-to-r from-amber-50/80 to-transparent',
-    iconBg: 'bg-amber-100',
-    iconColor: 'text-amber-600',
+    borderVar: 'var(--callout-example-border)',
+    bgVar: 'var(--callout-example-bg)',
+    iconColorVar: 'var(--callout-example-text)',
   },
   warning: {
     icon: AlertTriangle,
     defaultTitle: 'Attention',
-    border: 'border-l-rose-500',
-    bg: 'bg-linear-to-r from-rose-50/80 to-transparent',
-    iconBg: 'bg-rose-100',
-    iconColor: 'text-rose-600',
+    borderVar: 'var(--callout-warning-border)',
+    bgVar: 'var(--callout-warning-bg)',
+    iconColorVar: 'var(--callout-warning-text)',
   },
   method: {
     icon: Settings,
     defaultTitle: 'Méthode',
-    border: 'border-l-emerald-500',
-    bg: 'bg-linear-to-r from-emerald-50/80 to-transparent',
-    iconBg: 'bg-emerald-100',
-    iconColor: 'text-emerald-600',
+    borderVar: 'var(--callout-method-border)',
+    bgVar: 'var(--callout-method-bg)',
+    iconColorVar: 'var(--callout-method-text)',
   },
   insight: {
     icon: Lightbulb,
     defaultTitle: 'Intuition',
-    border: 'border-l-sky-500',
-    bg: 'bg-linear-to-r from-sky-50/80 to-transparent',
-    iconBg: 'bg-sky-100',
-    iconColor: 'text-sky-600',
+    borderVar: 'var(--callout-intuition-border)',
+    bgVar: 'var(--callout-intuition-bg)',
+    iconColorVar: 'var(--callout-intuition-text)',
   },
   tip: {
     icon: GraduationCap,
     defaultTitle: 'Conseil',
-    border: 'border-l-teal-500',
-    bg: 'bg-linear-to-r from-teal-50/80 to-transparent',
-    iconBg: 'bg-teal-100',
-    iconColor: 'text-teal-600',
+    borderVar: 'var(--callout-tip-border)',
+    bgVar: 'var(--callout-tip-bg)',
+    iconColorVar: 'var(--callout-tip-text)',
   },
   quote: {
     icon: Quote,
     defaultTitle: 'Citation',
-    border: 'border-l-violet-500',
-    bg: 'bg-linear-to-r from-violet-50/80 to-transparent',
-    iconBg: 'bg-violet-100',
-    iconColor: 'text-violet-600',
+    borderVar: 'var(--callout-formula-border)',
+    bgVar: 'var(--callout-formula-bg)',
+    iconColorVar: 'var(--callout-formula-text)',
   },
   remember: {
     icon: BookMarked,
     defaultTitle: 'À retenir',
-    border: 'border-l-amber-500',
-    bg: 'bg-linear-to-r from-amber-50/80 to-transparent',
-    iconBg: 'bg-amber-100',
-    iconColor: 'text-amber-600',
+    borderVar: 'var(--callout-example-border)',
+    bgVar: 'var(--callout-example-bg)',
+    iconColorVar: 'var(--callout-example-text)',
   },
   exam: {
     icon: Target,
     defaultTitle: "Pour l'examen",
-    border: 'border-l-violet-500',
-    bg: 'bg-linear-to-r from-violet-50/80 to-transparent',
-    iconBg: 'bg-violet-100',
-    iconColor: 'text-violet-600',
+    borderVar: 'var(--callout-formula-border)',
+    bgVar: 'var(--callout-formula-bg)',
+    iconColorVar: 'var(--callout-formula-text)',
   },
   important: {
     icon: Zap,
     defaultTitle: 'Important',
-    border: 'border-l-orange-500',
-    bg: 'bg-linear-to-r from-orange-50/80 to-transparent',
-    iconBg: 'bg-orange-100',
-    iconColor: 'text-orange-600',
+    borderVar: 'var(--callout-warning-border)',
+    bgVar: 'var(--callout-warning-bg)',
+    iconColorVar: 'var(--callout-warning-text)',
   },
 };
 
@@ -106,13 +95,32 @@ export function Callout({ type, title, children }: CalloutProps) {
   const displayTitle = title || config.defaultTitle;
 
   return (
-    <div className={`flex gap-3 sm:gap-4 p-4 sm:p-5 my-4 sm:my-6 border-l-4 rounded-r-xl ${config.border} ${config.bg}`}>
-      <div className={`shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${config.iconBg} flex items-center justify-center shadow-sm`}>
-        <IconComponent className={`w-4 h-4 sm:w-5 sm:h-5 ${config.iconColor}`} />
+    <div
+      className="flex gap-2.5 p-3 my-2.5 border-l-[3px] rounded-r-lg"
+      style={{
+        borderLeftColor: config.borderVar,
+        background: `linear-gradient(to right, ${config.bgVar}, transparent)`,
+      }}
+    >
+      <div
+        className="shrink-0 w-6 h-6 rounded-md flex items-center justify-center mt-0.5"
+        style={{ color: config.iconColorVar }}
+      >
+        <IconComponent className="w-3.5 h-3.5" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="font-semibold text-slate-900 text-sm sm:text-base mb-1 sm:mb-2">{displayTitle}</p>
-        <div className="text-slate-600 text-sm sm:text-base leading-relaxed">{children}</div>
+        <p
+          className="font-semibold text-xs sm:text-sm mb-0.5"
+          style={{ color: 'var(--color-text-primary)' }}
+        >
+          {displayTitle}
+        </p>
+        <div
+          className="text-[13px] sm:text-sm leading-relaxed"
+          style={{ color: 'var(--color-text-secondary)' }}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

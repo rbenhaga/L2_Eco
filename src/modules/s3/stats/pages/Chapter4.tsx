@@ -62,17 +62,17 @@ export function Chapter4() {
         <div className="overflow-x-auto mb-4">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-100/80">
-                <th className="border border-slate-300 p-2">x</th>
-                <th className="border border-slate-300 p-2">0 (échec)</th>
-                <th className="border border-slate-300 p-2">1 (succès)</th>
+              <tr className="bg-[var(--color-bg-overlay)]/80">
+                <th className="border border-[var(--color-border-strong)] p-2">x</th>
+                <th className="border border-[var(--color-border-strong)] p-2">0 (échec)</th>
+                <th className="border border-[var(--color-border-strong)] p-2">1 (succès)</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="border border-slate-300 p-2">P(X=x)</td>
-                <td className="border border-slate-300 p-2">q = 1-p</td>
-                <td className="border border-slate-300 p-2">p</td>
+                <td className="border border-[var(--color-border-strong)] p-2">P(X=x)</td>
+                <td className="border border-[var(--color-border-strong)] p-2">q = 1-p</td>
+                <td className="border border-[var(--color-border-strong)] p-2">p</td>
               </tr>
             </tbody>
           </table>
@@ -135,14 +135,14 @@ export function Chapter4() {
 
         <FormulaBox label="Espérance" highlight>{"E[X] = np"}</FormulaBox>
 
-        <p className="mt-2 mb-4 pl-4 text-sm text-slate-700">
+        <p className="mt-2 mb-4 pl-4 text-sm text-[var(--color-text-secondary)]">
           <strong>Démonstration :</strong> <Math>{"X = \\sum_{i=1}^{n} Y_i"}</Math> avec <Math>{"E[Y_i] = p"}</Math>, 
           donc <Math>{"E[X] = \\sum E[Y_i] = np"}</Math>
         </p>
 
         <FormulaBox label="Variance" highlight>{"V[X] = npq = np(1-p)"}</FormulaBox>
 
-        <p className="mt-2 mb-4 pl-4 text-sm text-slate-700">
+        <p className="mt-2 mb-4 pl-4 text-sm text-[var(--color-text-secondary)]">
           <strong>Démonstration :</strong> Les <Math>{"Y_i"}</Math> sont indépendantes avec <Math>{"V[Y_i] = pq"}</Math>, 
           donc <Math>{"V[X] = \\sum V[Y_i] = npq"}</Math>
         </p>
@@ -161,8 +161,8 @@ export function Chapter4() {
           qui utilise les développements en série.
         </p>
 
-        <div className="p-5 bg-slate-100/50 rounded-lg border-l-4 border-blue-500">
-          <p className="font-semibold text-blue-800 mb-4">📐 Démonstration : Retrouver E[X] et V[X] via φ(t)</p>
+        <div className="p-5 bg-[var(--color-bg-overlay)]/50 rounded-lg border-l-4 border-[var(--color-info)]">
+          <p className="font-semibold text-[var(--color-info)] mb-4">📐 Démonstration : Retrouver E[X] et V[X] via φ(t)</p>
           
           <p className="mb-3"><strong>Point de départ :</strong></p>
           <p className="mb-4 pl-4"><Math>{"\\varphi_X(t) = (pe^{it}+q)^n"}</Math></p>
@@ -186,8 +186,8 @@ export function Chapter4() {
           <p className="mb-2 pl-4">On compare avec le développement général :</p>
           <p className="mb-4 pl-4"><Math>{"\\varphi_X(t) = 1 + m_1\\frac{it}{1!} + m_2\\frac{(it)^2}{2!} + ..."}</Math></p>
           
-          <div className="mt-4 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-            <p className="font-semibold text-emerald-800 mb-2">Résultats :</p>
+          <div className="mt-4 p-4 bg-[var(--color-success-subtle)] rounded-lg border border-[var(--color-success)]">
+            <p className="font-semibold text-[var(--color-success)] mb-2">Résultats :</p>
             <ul className="space-y-2">
               <li><Math>{"m_1 = np = E[X]"}</Math> ✓</li>
               <li><Math>{"m_2 = np + n(n-1)p^2"}</Math></li>
@@ -211,10 +211,10 @@ export function Chapter4() {
 
         <FormulaBox highlight>{"X_1 \\sim \\mathcal{B}(n_1, p), X_2 \\sim \\mathcal{B}(n_2, p) \\text{ indép.} \\Rightarrow X_1 + X_2 \\sim \\mathcal{B}(n_1+n_2, p)"}</FormulaBox>
 
-        <p className="mt-4 mb-2 pl-4 text-sm text-slate-700">
+        <p className="mt-4 mb-2 pl-4 text-sm text-[var(--color-text-secondary)]">
           <strong>Démonstration :</strong> Par les fonctions caractéristiques :
         </p>
-        <p className="pl-4 text-sm text-slate-700">
+        <p className="pl-4 text-sm text-[var(--color-text-secondary)]">
           <Math>{"\\varphi_{X_1+X_2}(t) = \\varphi_{X_1}(t) \\cdot \\varphi_{X_2}(t) = (pe^{it}+q)^{n_1} (pe^{it}+q)^{n_2} = (pe^{it}+q)^{n_1+n_2}"}</Math>
         </p>
 
@@ -277,10 +277,10 @@ export function Chapter4() {
 
         <p className="mt-4 mb-2">Autrement dit : <Math>{"F \\xrightarrow{P} p"}</Math> (convergence en probabilité)</p>
 
-        <p className="mt-4 mb-2 pl-4 text-sm text-slate-700">
+        <p className="mt-4 mb-2 pl-4 text-sm text-[var(--color-text-secondary)]">
           <strong>Démonstration (par Bienaymé-Tchebychev) :</strong>
         </p>
-        <p className="pl-4 text-sm text-slate-700">
+        <p className="pl-4 text-sm text-[var(--color-text-secondary)]">
           <Math>{"P[|F-p| \\geq \\varepsilon] \\leq \\frac{V[F]}{\\varepsilon^2} = \\frac{pq}{n\\varepsilon^2} \\rightarrow 0 \\text{ quand } n \\rightarrow +\\infty"}</Math>
         </p>
       </Section>
@@ -325,13 +325,13 @@ export function Chapter4() {
       <Section type="formule" title="Caractéristiques de la Poisson">
         <FormulaBox label="Espérance" highlight>{"E[X] = \\lambda"}</FormulaBox>
 
-        <p className="mt-2 mb-4 pl-4 text-sm text-slate-700">
+        <p className="mt-2 mb-4 pl-4 text-sm text-[var(--color-text-secondary)]">
           <strong>Démonstration :</strong> <Math>{"E[X] = \\sum_{x=0}^{\\infty} x \\frac{\\lambda^x e^{-\\lambda}}{x!} = e^{-\\lambda} \\lambda \\sum_{x=1}^{\\infty} \\frac{\\lambda^{x-1}}{(x-1)!} = e^{-\\lambda} \\lambda e^{\\lambda} = \\lambda"}</Math>
         </p>
 
         <FormulaBox label="Variance" highlight>{"V[X] = \\lambda = E[X]"}</FormulaBox>
 
-        <p className="mt-2 mb-4 pl-4 text-sm text-slate-700">
+        <p className="mt-2 mb-4 pl-4 text-sm text-[var(--color-text-secondary)]">
           <strong>Démonstration :</strong> <Math>{"E[X(X-1)] = \\lambda^2"}</Math>, donc 
           <Math>{"E[X^2] = \\lambda^2 + \\lambda"}</Math> et <Math>{"V[X] = \\lambda^2 + \\lambda - \\lambda^2 = \\lambda"}</Math>
         </p>
@@ -342,7 +342,7 @@ export function Chapter4() {
 
         <FormulaBox label="Fonction génératrice">{"G_X(u) = e^{\\lambda(u-1)}"}</FormulaBox>
 
-        <p className="mt-2 mb-4 pl-4 text-sm text-slate-700">
+        <p className="mt-2 mb-4 pl-4 text-sm text-[var(--color-text-secondary)]">
           <strong>Démonstration :</strong> <Math>{"G_X(u) = \\sum_{x=0}^{\\infty} u^x \\frac{\\lambda^x e^{-\\lambda}}{x!} = e^{-\\lambda} \\sum_{x=0}^{\\infty} \\frac{(\\lambda u)^x}{x!} = e^{-\\lambda} e^{\\lambda u} = e^{\\lambda(u-1)}"}</Math>
         </p>
 
@@ -378,10 +378,10 @@ export function Chapter4() {
 
         <FormulaBox highlight>{"X_1 \\sim \\mathcal{P}(\\lambda_1), X_2 \\sim \\mathcal{P}(\\lambda_2) \\text{ indép.} \\Rightarrow X_1 + X_2 \\sim \\mathcal{P}(\\lambda_1 + \\lambda_2)"}</FormulaBox>
 
-        <p className="mt-4 mb-2 pl-4 text-sm text-slate-700">
+        <p className="mt-4 mb-2 pl-4 text-sm text-[var(--color-text-secondary)]">
           <strong>Démonstration :</strong>
         </p>
-        <p className="pl-4 text-sm text-slate-700">
+        <p className="pl-4 text-sm text-[var(--color-text-secondary)]">
           <Math>{"\\varphi_{X_1+X_2}(t) = \\varphi_{X_1}(t) \\cdot \\varphi_{X_2}(t) = e^{\\lambda_1(e^{it}-1)} \\cdot e^{\\lambda_2(e^{it}-1)} = e^{(\\lambda_1+\\lambda_2)(e^{it}-1)}"}</Math>
         </p>
 
@@ -402,13 +402,13 @@ export function Chapter4() {
         <FormulaBox highlight>{"\\mathcal{B}(n, p) \\xrightarrow[n \\to \\infty, p \\to 0]{np = \\lambda} \\mathcal{P}(\\lambda)"}</FormulaBox>
 
         <p className="mt-4 mb-2"><strong>Démonstration :</strong></p>
-        <p className="mb-4 pl-4 text-sm text-slate-700">
+        <p className="mb-4 pl-4 text-sm text-[var(--color-text-secondary)]">
           Soit <Math>{"X \\sim \\mathcal{B}(n, p)"}</Math> avec <Math>{"\\lambda = np \\Rightarrow p = \\frac{\\lambda}{n}"}</Math>
         </p>
-        <p className="mb-4 pl-4 text-sm text-slate-700">
+        <p className="mb-4 pl-4 text-sm text-[var(--color-text-secondary)]">
           <Math>{"P_x = C_n^x p^x (1-p)^{n-x} = \\frac{\\lambda^x}{x!} \\cdot \\frac{n(n-1)...(n-x+1)}{n^x} \\cdot \\left(1-\\frac{\\lambda}{n}\\right)^n \\cdot \\left(1-\\frac{\\lambda}{n}\\right)^{-x}"}</Math>
         </p>
-        <p className="mb-4 pl-4 text-sm text-slate-700">
+        <p className="mb-4 pl-4 text-sm text-[var(--color-text-secondary)]">
           Quand n → +∞ : le premier facteur → 1, le deuxième → e^(-λ), le troisième → 1.
           Donc <Math>{"P_x \\rightarrow \\frac{\\lambda^x e^{-\\lambda}}{x!}"}</Math>
         </p>
@@ -464,42 +464,42 @@ export function Chapter4() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-100/80">
-                <th className="border border-slate-300 p-2">Loi</th>
-                <th className="border border-slate-300 p-2">P(X=x)</th>
-                <th className="border border-slate-300 p-2">E[X]</th>
-                <th className="border border-slate-300 p-2">V[X]</th>
-                <th className="border border-slate-300 p-2">G_X(u)</th>
+              <tr className="bg-[var(--color-bg-overlay)]/80">
+                <th className="border border-[var(--color-border-strong)] p-2">Loi</th>
+                <th className="border border-[var(--color-border-strong)] p-2">P(X=x)</th>
+                <th className="border border-[var(--color-border-strong)] p-2">E[X]</th>
+                <th className="border border-[var(--color-border-strong)] p-2">V[X]</th>
+                <th className="border border-[var(--color-border-strong)] p-2">G_X(u)</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Uniforme</td>
-                <td className="border border-slate-300 p-2">1/n</td>
-                <td className="border border-slate-300 p-2">(n+1)/2</td>
-                <td className="border border-slate-300 p-2">(n²-1)/12</td>
-                <td className="border border-slate-300 p-2 text-xs"><Math>{"\\frac{u(u^n-1)}{n(u-1)}"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Uniforme</td>
+                <td className="border border-[var(--color-border-strong)] p-2">1/n</td>
+                <td className="border border-[var(--color-border-strong)] p-2">(n+1)/2</td>
+                <td className="border border-[var(--color-border-strong)] p-2">(n²-1)/12</td>
+                <td className="border border-[var(--color-border-strong)] p-2 text-xs"><Math>{"\\frac{u(u^n-1)}{n(u-1)}"}</Math></td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Bernoulli</td>
-                <td className="border border-slate-300 p-2"><Math>{"p^x(1-p)^{1-x}"}</Math></td>
-                <td className="border border-slate-300 p-2">p</td>
-                <td className="border border-slate-300 p-2">pq</td>
-                <td className="border border-slate-300 p-2">q+up</td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Bernoulli</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"p^x(1-p)^{1-x}"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2">p</td>
+                <td className="border border-[var(--color-border-strong)] p-2">pq</td>
+                <td className="border border-[var(--color-border-strong)] p-2">q+up</td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Binomiale</td>
-                <td className="border border-slate-300 p-2"><Math>{"C_n^x p^x q^{n-x}"}</Math></td>
-                <td className="border border-slate-300 p-2">np</td>
-                <td className="border border-slate-300 p-2">npq</td>
-                <td className="border border-slate-300 p-2">(up+q)ⁿ</td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Binomiale</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"C_n^x p^x q^{n-x}"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2">np</td>
+                <td className="border border-[var(--color-border-strong)] p-2">npq</td>
+                <td className="border border-[var(--color-border-strong)] p-2">(up+q)ⁿ</td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Poisson</td>
-                <td className="border border-slate-300 p-2"><Math>{"\\frac{\\lambda^x e^{-\\lambda}}{x!}"}</Math></td>
-                <td className="border border-slate-300 p-2">λ</td>
-                <td className="border border-slate-300 p-2">λ</td>
-                <td className="border border-slate-300 p-2"><Math>{"e^{\\lambda(u-1)}"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Poisson</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"\\frac{\\lambda^x e^{-\\lambda}}{x!}"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2">λ</td>
+                <td className="border border-[var(--color-border-strong)] p-2">λ</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"e^{\\lambda(u-1)}"}</Math></td>
               </tr>
             </tbody>
           </table>
@@ -510,23 +510,23 @@ export function Chapter4() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-100/80">
-                <th className="border border-slate-300 p-2">Loi</th>
-                <th className="border border-slate-300 p-2">Propriété</th>
+              <tr className="bg-[var(--color-bg-overlay)]/80">
+                <th className="border border-[var(--color-border-strong)] p-2">Loi</th>
+                <th className="border border-[var(--color-border-strong)] p-2">Propriété</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Bernoulli</td>
-                <td className="border border-slate-300 p-2"><Math>{"\\sum_{i=1}^{n} \\mathcal{B}(1,p)_{ind} = \\mathcal{B}(n,p)"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Bernoulli</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"\\sum_{i=1}^{n} \\mathcal{B}(1,p)_{ind} = \\mathcal{B}(n,p)"}</Math></td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Binomiale</td>
-                <td className="border border-slate-300 p-2"><Math>{"\\sum_{i=1}^{k} \\mathcal{B}(n_i,p)_{ind} = \\mathcal{B}(\\sum n_i, p)"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Binomiale</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"\\sum_{i=1}^{k} \\mathcal{B}(n_i,p)_{ind} = \\mathcal{B}(\\sum n_i, p)"}</Math></td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Poisson</td>
-                <td className="border border-slate-300 p-2"><Math>{"\\sum_{i=1}^{k} \\mathcal{P}(\\lambda_i)_{ind} = \\mathcal{P}(\\sum \\lambda_i)"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Poisson</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"\\sum_{i=1}^{k} \\mathcal{P}(\\lambda_i)_{ind} = \\mathcal{P}(\\sum \\lambda_i)"}</Math></td>
               </tr>
             </tbody>
           </table>
@@ -537,19 +537,19 @@ export function Chapter4() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-100/80">
-                <th className="border border-slate-300 p-2">Loi</th>
-                <th className="border border-slate-300 p-2">Encadrement du mode</th>
+              <tr className="bg-[var(--color-bg-overlay)]/80">
+                <th className="border border-[var(--color-border-strong)] p-2">Loi</th>
+                <th className="border border-[var(--color-border-strong)] p-2">Encadrement du mode</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Binomiale B(n,p)</td>
-                <td className="border border-slate-300 p-2"><Math>{"np - q \\leq x_{Mo} \\leq np + p"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Binomiale B(n,p)</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"np - q \\leq x_{Mo} \\leq np + p"}</Math></td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Poisson P(λ)</td>
-                <td className="border border-slate-300 p-2"><Math>{"\\lambda - 1 \\leq x_{Mo} \\leq \\lambda"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Poisson P(λ)</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"\\lambda - 1 \\leq x_{Mo} \\leq \\lambda"}</Math></td>
               </tr>
             </tbody>
           </table>

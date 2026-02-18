@@ -27,7 +27,7 @@ function StatsTDViewer({ theme }: { theme: TDTheme }) {
         <div>
             <div className="mb-8">
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white" style={{ background: 'var(--color-accent)' }}>
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center font-bold" style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}>
                         {theme.number}
                     </div>
                     <span className="px-2.5 py-1 rounded-lg text-sm font-medium" style={{ background: 'var(--color-bg-overlay)', color: 'var(--color-text-secondary)' }}>
@@ -51,7 +51,7 @@ function StatsTDViewer({ theme }: { theme: TDTheme }) {
                             className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all"
                             style={{
                                 background: selectedYear === y.year ? 'var(--color-accent)' : 'var(--color-bg-raised)',
-                                color: selectedYear === y.year ? 'white' : 'var(--color-text-secondary)',
+                                color: selectedYear === y.year ? 'var(--color-accent-foreground)' : 'var(--color-text-secondary)',
                                 border: '1px solid',
                                 borderColor: selectedYear === y.year ? 'transparent' : 'var(--color-border-default)',
                                 boxShadow: selectedYear === y.year ? 'var(--shadow-md)' : 'none'
@@ -70,7 +70,7 @@ function StatsTDViewer({ theme }: { theme: TDTheme }) {
                             <Clock className="h-4 w-4" />
                             {y.year}
                             <span className="text-xs px-1.5 py-0.5 rounded" style={{
-                                background: selectedYear === y.year ? 'rgba(255, 255, 255, 0.2)' : 'var(--color-bg-overlay)'
+                                background: selectedYear === y.year ? 'color-mix(in srgb, var(--color-bg-raised) 20%, transparent)' : 'var(--color-bg-overlay)'
                             }}>
                                 {y.td.exercises.length}
                             </span>
@@ -92,7 +92,7 @@ function MicroTDViewer({ td }: { td: MicroTDSheet }) {
         <div>
             <div className="mb-8">
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white" style={{ background: 'var(--color-accent)' }}>
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center font-bold" style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}>
                         {td.number}
                     </div>
                     <span className="px-2.5 py-1 rounded-lg text-sm font-medium" style={{ background: 'var(--color-bg-overlay)', color: 'var(--color-text-secondary)' }}>
@@ -139,7 +139,7 @@ function MacroTDViewer({ td }: { td: MacroTDSheet }) {
         <div>
             <div className="mb-8">
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white" style={{ background: 'var(--color-accent)' }}>
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center font-bold" style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}>
                         {td.number}
                     </div>
                     <span className="px-2.5 py-1 rounded-lg text-sm font-medium" style={{ background: 'var(--color-bg-overlay)', color: 'var(--color-text-secondary)' }}>

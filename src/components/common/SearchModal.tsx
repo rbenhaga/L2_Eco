@@ -47,11 +47,11 @@ const searchDatabase: SearchItem[] = [
     { id: 'socio-home', title: 'Sociologie', description: 'Hub de révision sociologie', path: '/socio', type: 'module', subject: 'socio', keywords: ['société', 'social', 'théories'] },
 ];
 
-const subjectColors = {
-    macro: 'text-blue-600',
-    micro: 'text-emerald-600',
-    stats: 'text-cyan-600',
-    socio: 'text-violet-600'
+const subjectColorVars: Record<string, string> = {
+    macro: 'var(--color-macro, var(--color-info))',
+    micro: 'var(--color-micro, var(--color-success))',
+    stats: 'var(--color-stats, var(--color-accent))',
+    socio: 'var(--color-socio, var(--callout-formula-text))',
 };
 
 const subjectLabels = {
@@ -143,7 +143,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+                        className="fixed inset-0 backdrop-blur-sm z-50"
+                        style={{ background: 'color-mix(in srgb, var(--color-text-primary) 50%, transparent)' }}
                     />
 
                     {/* Modal */}
@@ -154,31 +155,35 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         transition={{ duration: 0.2 }}
                         className="fixed top-[15%] left-1/2 -translate-x-1/2 w-full max-w-2xl z-50 px-4"
                     >
-                        <div className="bg-white rounded-2xl shadow-2xl border border-[rgb(var(--border))] overflow-hidden">
+                        <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--color-bg-raised)', boxShadow: 'var(--shadow-xl)', border: '1px solid var(--color-border-default)' }}>
                             {/* Search Input */}
-                            <div className="flex items-center gap-3 px-4 py-4 border-b border-[rgb(var(--border))]">
-                                <Search className="w-5 h-5 text-[rgb(var(--text-muted))]" />
+                            <div className="flex items-center gap-3 px-4 py-4 border-b" style={{ borderColor: 'var(--color-border-default)' }}>
+                                <Search className="w-5 h-5" style={{ color: 'var(--color-text-muted)' }} />
                                 <input
                                     type="text"
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}
                                     onKeyDown={handleKeyDown}
                                     placeholder="Rechercher un cours, chapitre, QCM..."
-                                    className="flex-1 bg-transparent text-[rgb(var(--text))] placeholder-slate-400 outline-none text-base"
+                                    className="flex-1 bg-transparent outline-none text-base"
+                                    style={{ color: 'var(--color-text-primary)' }}
                                     autoFocus
                                 />
                                 <button
                                     onClick={onClose}
-                                    className="p-1.5 rounded-lg hover:bg-[rgb(var(--surface-2))] transition-colors"
+                                    className="p-1.5 rounded-lg transition-colors"
+                                    style={{ color: 'var(--color-text-muted)' }}
+                                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-bg-overlay)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                                 >
-                                    <X className="w-4 h-4 text-[rgb(var(--text-muted))]" />
+                                    <X className="w-4 h-4" />
                                 </button>
                             </div>
 
                             {/* Results */}
                             <div className="max-h-[400px] overflow-y-auto py-2">
                                 {results.length === 0 ? (
-                                    <div className="px-4 py-8 text-center text-[rgb(var(--text-muted))]">
+                                    <div className="px-4 py-8 text-center" style={{ color: 'var(--color-text-muted)' }}>
                                         Aucun résultat pour "{query}"
                                     </div>
                                 ) : (
@@ -192,32 +197,35 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                                     key={item.id}
                                                     onClick={() => handleSelect(item)}
                                                     onMouseEnter={() => setSelectedIndex(index)}
-                                                    className={`
-                                                        w-full flex items-center gap-3 px-4 py-3 text-left transition-colors
-                                                        ${isSelected
-                                                            ? 'bg-[rgb(var(--surface-2))]'
-                                                            : 'hover:bg-[rgb(var(--surface-2))]'
-                                                        }
-                                                    `}
+                                                    className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors"
+                                                    style={{
+                                                        background: isSelected ? 'var(--color-bg-overlay)' : 'transparent',
+                                                    }}
                                                 >
-                                                    <div className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-[rgb(var(--surface-2))] ${subjectColors[item.subject]}`}>
+                                                    <div
+                                                        className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                                                        style={{ background: 'var(--color-bg-overlay)', color: subjectColorVars[item.subject] }}
+                                                    >
                                                         <Icon size={16} />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex items-center gap-2">
-                                                            <span className="font-medium text-[rgb(var(--text))] truncate">
+                                                            <span className="font-medium truncate" style={{ color: 'var(--color-text-primary)' }}>
                                                                 {item.title}
                                                             </span>
-                                                            <span className={`text-xs font-medium px-1.5 py-0.5 rounded ${subjectColors[item.subject]} bg-[rgb(var(--surface-2))]`}>
+                                                            <span
+                                                                className="text-xs font-medium px-1.5 py-0.5 rounded"
+                                                                style={{ color: subjectColorVars[item.subject], background: 'var(--color-bg-overlay)' }}
+                                                            >
                                                                 {subjectLabels[item.subject]}
                                                             </span>
                                                         </div>
-                                                        <p className="text-sm text-[rgb(var(--text-muted))] truncate">
+                                                        <p className="text-sm truncate" style={{ color: 'var(--color-text-muted)' }}>
                                                             {item.description}
                                                         </p>
                                                     </div>
                                                     {isSelected && (
-                                                        <ArrowRight className="w-4 h-4 text-[rgb(var(--text-muted))] shrink-0" />
+                                                        <ArrowRight className="w-4 h-4 shrink-0" style={{ color: 'var(--color-text-muted)' }} />
                                                     )}
                                                 </button>
                                             );
@@ -227,18 +235,18 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             </div>
 
                             {/* Footer */}
-                            <div className="px-4 py-3 border-t border-[rgb(var(--border))] flex items-center justify-between text-xs text-[rgb(var(--text-muted))]">
+                            <div className="px-4 py-3 border-t flex items-center justify-between text-xs" style={{ borderColor: 'var(--color-border-default)', color: 'var(--color-text-muted)' }}>
                                 <div className="flex items-center gap-4">
                                     <span className="flex items-center gap-1">
-                                        <kbd className="px-1.5 py-0.5 bg-[rgb(var(--surface-2))] rounded">↑↓</kbd>
+                                        <kbd className="px-1.5 py-0.5 rounded" style={{ background: 'var(--color-bg-overlay)' }}>↑↓</kbd>
                                         naviguer
                                     </span>
                                     <span className="flex items-center gap-1">
-                                        <kbd className="px-1.5 py-0.5 bg-[rgb(var(--surface-2))] rounded">↵</kbd>
+                                        <kbd className="px-1.5 py-0.5 rounded" style={{ background: 'var(--color-bg-overlay)' }}>↵</kbd>
                                         ouvrir
                                     </span>
                                     <span className="flex items-center gap-1">
-                                        <kbd className="px-1.5 py-0.5 bg-[rgb(var(--surface-2))] rounded">esc</kbd>
+                                        <kbd className="px-1.5 py-0.5 rounded" style={{ background: 'var(--color-bg-overlay)' }}>esc</kbd>
                                         fermer
                                     </span>
                                 </div>

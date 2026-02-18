@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { authFetch } from '../utils/authFetch';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -19,7 +20,7 @@ export function useVideoProgress(module: Module) {
 
         const fetchStatus = async () => {
             try {
-                const res = await fetch(`${API_URL}/api/progress/${user.uid}/intro-videos`);
+                const res = await authFetch(`${API_URL}/api/progress/${user.uid}/intro-videos`);
                 if (res.ok) {
                     const data = await res.json();
                     setIntroVideoWatched(data[module]?.watched || false);
@@ -39,7 +40,7 @@ export function useVideoProgress(module: Module) {
         if (!user?.uid) return;
 
         try {
-            await fetch(`${API_URL}/api/progress/${user.uid}/watched`, {
+            await authFetch(`${API_URL}/api/progress/${user.uid}/watched`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -59,7 +60,7 @@ export function useVideoProgress(module: Module) {
         if (!user?.uid) return;
 
         try {
-            await fetch(`${API_URL}/api/progress/${user.uid}/completed`, {
+            await authFetch(`${API_URL}/api/progress/${user.uid}/completed`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

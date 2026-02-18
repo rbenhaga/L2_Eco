@@ -51,7 +51,7 @@ export function RevisionCh4() {
         </Table>
 
         <p className="mt-4 mb-2"><strong>Opérations REPO (prise en pension) :</strong></p>
-        <p className="text-sm text-slate-700 mb-4">BCE prête aux banques contre titres en garantie, avec rachat ultérieur. Taux REPO = (Prix rachat - Prix vente) / Prix vente</p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>BCE prête aux banques contre titres en garantie, avec rachat ultérieur. Taux REPO = (Prix rachat - Prix vente) / Prix vente</p>
 
         <p className="mb-2"><strong>Politiques non conventionnelles (i ≈ 0) :</strong></p>
         <ul className="list-disc pl-6 space-y-1">
@@ -99,7 +99,7 @@ export function RevisionCh4() {
         <FormulaBox label="Ratio de sacrifice">
           {"\\text{Ratio} = \\frac{1}{\\alpha}"}
         </FormulaBox>
-        <p className="text-sm text-slate-700">Hausse de u nécessaire pour réduire π de 1 point</p>
+        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>Hausse de u nécessaire pour réduire π de 1 point</p>
       </Section>
 
       <Section type="key" title="Types d'anticipations">
@@ -147,7 +147,7 @@ export function RevisionCh4() {
       </Section>
 
       <section className="mb-16">
-        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-amber-50 text-amber-700">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md" style={{ background: 'var(--color-warning-subtle)', color: 'var(--color-warning)' }}>
           <CheckSquare className="w-4 h-4" /> Checklist Chapitre 4
         </span>
         <div className="grid md:grid-cols-2 gap-2">
@@ -161,9 +161,9 @@ export function RevisionCh4() {
             "Je distingue anticipations nulles vs adaptatives",
             "Je comprends la spirale prix-salaires",
           ].map((item, i) => (
-            <label key={i} className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-100/50 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
-              <span className="text-sm text-slate-800">{item}</span>
+            <label key={i} className="flex items-center gap-3 p-3 rounded-lg cursor-pointer" style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
+              <input type="checkbox" className="w-4 h-4 rounded" style={{ borderColor: 'var(--color-border-default)' }} />
+              <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>{item}</span>
             </label>
           ))}
         </div>

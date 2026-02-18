@@ -51,8 +51,8 @@ export const microTDSheets: MicroTDSheet[] = [
               <p><Math>{'\\frac{\\partial \\mathcal{L}}{\\partial x_2} = \\beta x_1^\\alpha x_2^{\\beta-1} - \\lambda p_2 = 0'}</Math></p>
               <p className="mt-2">En divisant : <Math>{'\\frac{\\alpha x_2}{\\beta x_1} = \\frac{p_1}{p_2}'}</Math> → <Math>{'x_2 = \\frac{\\beta p_1}{\\alpha p_2} x_1'}</Math></p>
               <p className="mt-2">En substituant dans la contrainte :</p>
-              <p className="mt-1 p-2 bg-white rounded"><Math>{'x_1^* = \\frac{\\alpha R}{(\\alpha + \\beta) p_1} = \\frac{\\alpha R}{p_1}'}</Math></p>
-              <p className="mt-1 p-2 bg-white rounded"><Math>{'x_2^* = \\frac{\\beta R}{(\\alpha + \\beta) p_2} = \\frac{\\beta R}{p_2}'}</Math></p>
+              <p className="mt-1 p-2 bg-[var(--color-bg-raised)] rounded"><Math>{'x_1^* = \\frac{\\alpha R}{(\\alpha + \\beta) p_1} = \\frac{\\alpha R}{p_1}'}</Math></p>
+              <p className="mt-1 p-2 bg-[var(--color-bg-raised)] rounded"><Math>{'x_2^* = \\frac{\\beta R}{(\\alpha + \\beta) p_2} = \\frac{\\beta R}{p_2}'}</Math></p>
             </div>
             <div>
               <p className="font-medium mb-2">2. Biens normaux :</p>
@@ -137,7 +137,7 @@ export const microTDSheets: MicroTDSheet[] = [
             <div>
               <p className="font-medium mb-2">2. Loisir optimal :</p>
               <p>Par la méthode du Lagrangien, on obtient :</p>
-              <p className="mt-1 p-2 bg-white rounded"><Math>{'L^* = \\frac{\\beta}{\\alpha + \\beta} \\left(\\frac{R_0}{w} + T\\right) = \\beta \\left(\\frac{R_0}{w} + T\\right)'}</Math></p>
+              <p className="mt-1 p-2 bg-[var(--color-bg-raised)] rounded"><Math>{'L^* = \\frac{\\beta}{\\alpha + \\beta} \\left(\\frac{R_0}{w} + T\\right) = \\beta \\left(\\frac{R_0}{w} + T\\right)'}</Math></p>
             </div>
             <div>
               <p className="font-medium mb-2">3. Offre de travail :</p>

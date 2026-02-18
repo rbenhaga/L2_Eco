@@ -27,9 +27,10 @@ export function AudioTextReader({
   if (!segment) {
     return (
       <div
-        className={`bg-gray-50 rounded-lg p-8 text-center ${className}`}
+        className={`rounded-lg p-8 text-center ${className}`}
+        style={{ background: 'var(--color-bg-overlay)' }}
       >
-        <p className="text-gray-500">
+        <p style={{ color: 'var(--color-text-muted)' }}>
           Aucun audio disponible pour ce cours
         </p>
       </div>
@@ -38,18 +39,25 @@ export function AudioTextReader({
 
   return (
     <div className={`space-y-6 ${className}`}>
-      {/* Sélecteur de mode */}
-      <div className="flex items-center justify-center gap-2 p-2 bg-gray-100 rounded-lg">
+      {/* Selecteur de mode */}
+      <div
+        className="flex items-center justify-center gap-2 p-2 rounded-lg"
+        style={{ background: 'var(--color-bg-overlay)' }}
+      >
         <button
           onClick={() => setMode('audio-only')}
-          className={`
-            flex items-center gap-2 px-4 py-2 rounded-md transition-all
-            ${
-              mode === 'audio-only'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
+          className="flex items-center gap-2 px-4 py-2 rounded-md transition-all"
+          style={mode === 'audio-only'
+            ? {
+              background: 'var(--color-accent)',
+              color: 'var(--color-accent-foreground)',
+              boxShadow: 'var(--shadow-md)',
             }
-          `}
+            : {
+              background: 'var(--color-bg-raised)',
+              color: 'var(--color-text-secondary)',
+            }
+          }
         >
           <Headphones className="w-4 h-4" />
           <span className="text-sm font-medium">Audio uniquement</span>
@@ -57,14 +65,18 @@ export function AudioTextReader({
 
         <button
           onClick={() => setMode('text-only')}
-          className={`
-            flex items-center gap-2 px-4 py-2 rounded-md transition-all
-            ${
-              mode === 'text-only'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
+          className="flex items-center gap-2 px-4 py-2 rounded-md transition-all"
+          style={mode === 'text-only'
+            ? {
+              background: 'var(--color-accent)',
+              color: 'var(--color-accent-foreground)',
+              boxShadow: 'var(--shadow-md)',
             }
-          `}
+            : {
+              background: 'var(--color-bg-raised)',
+              color: 'var(--color-text-secondary)',
+            }
+          }
         >
           <BookOpen className="w-4 h-4" />
           <span className="text-sm font-medium">Texte uniquement</span>
@@ -72,14 +84,18 @@ export function AudioTextReader({
 
         <button
           onClick={() => setMode('synchronized')}
-          className={`
-            flex items-center gap-2 px-4 py-2 rounded-md transition-all
-            ${
-              mode === 'synchronized'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
+          className="flex items-center gap-2 px-4 py-2 rounded-md transition-all"
+          style={mode === 'synchronized'
+            ? {
+              background: 'var(--color-accent)',
+              color: 'var(--color-accent-foreground)',
+              boxShadow: 'var(--shadow-md)',
             }
-          `}
+            : {
+              background: 'var(--color-bg-raised)',
+              color: 'var(--color-text-secondary)',
+            }
+          }
         >
           <PlayCircle className="w-4 h-4" />
           <span className="text-sm font-medium">Audio + Texte</span>
@@ -88,21 +104,31 @@ export function AudioTextReader({
 
       {/* Lecteur audio (si mode audio-only ou synchronized) */}
       {(mode === 'audio-only' || mode === 'synchronized') && (
-        <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm pb-4">
+        <div
+          className="sticky top-0 z-10 backdrop-blur-sm pb-4"
+          style={{ background: 'color-mix(in srgb, var(--color-bg-raised) 95%, transparent)' }}
+        >
           <AudioPlayer segment={segment} config={config} />
         </div>
       )}
 
       {/* Texte avec surlignage (si mode text-only ou synchronized) */}
       {(mode === 'text-only' || mode === 'synchronized') && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div
+          className="rounded-lg p-6"
+          style={{
+            background: 'var(--color-bg-raised)',
+            boxShadow: 'var(--shadow-sm)',
+            border: '1px solid var(--color-border-default)',
+          }}
+        >
           {mode === 'synchronized' && state.isPlaying && (
             <div className="mb-4 flex items-center justify-between text-sm">
-              <span className="text-blue-600 font-medium">
-                🎧 En cours de lecture
+              <span className="font-medium" style={{ color: 'var(--color-info)' }}>
+                En cours de lecture
               </span>
               {state.currentWordIndex !== null && (
-                <span className="text-gray-600">
+                <span style={{ color: 'var(--color-text-secondary)' }}>
                   Progression :{' '}
                   {Math.round(
                     (state.currentWordIndex / segment.words.length) * 100
@@ -128,15 +154,20 @@ export function AudioTextReader({
 
       {/* Mode audio-only : afficher quelques stats */}
       {mode === 'audio-only' && (
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-6 text-center space-y-2">
-          <p className="text-sm text-gray-600">
+        <div
+          className="rounded-lg p-6 text-center space-y-2"
+          style={{
+            background: 'linear-gradient(to bottom right, var(--color-info-subtle), var(--color-accent-subtle))',
+          }}
+        >
+          <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
             Mode audio uniquement
           </p>
-          <p className="text-2xl font-bold text-gray-900">
+          <p className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>
             {segment.words.length} mots
           </p>
-          <p className="text-sm text-gray-500">
-            Durée :{' '}
+          <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
+            Duree :{' '}
             {Math.round(segment.totalDuration / 1000 / 60)} minutes
           </p>
         </div>

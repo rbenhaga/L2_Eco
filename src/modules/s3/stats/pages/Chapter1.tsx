@@ -18,13 +18,13 @@ export function Chapter1() {
           Une <strong>probabilité</strong> est une fonction qui associe à chaque événement A un nombre entre 0 et 1, représentant la "chance" que cet événement se réalise. Cette fonction doit respecter certaines règles logiques appelées <strong>axiomes</strong>.
         </p>
 
-        <div className="my-4 p-4 bg-slate-100/50 rounded-lg">
+        <div className="my-4 p-4 bg-[var(--color-bg-overlay)]/50 rounded-lg">
           <img 
             src="/stats/images/ch1_venn_simple.png" 
             alt="Diagramme de Venn - Ensemble A dans l'univers Ω" 
             className="w-full max-w-md mx-auto"
           />
-          <p className="text-center text-sm text-slate-600 mt-2">Diagramme de Venn : A ⊂ Ω avec un élément e ∈ A</p>
+          <p className="text-center text-sm text-[var(--color-text-secondary)] mt-2">Diagramme de Venn : A ⊂ Ω avec un élément e ∈ A</p>
         </div>
 
         <FormulaBox label="Application probabilité">{"P : A \\subset \\Omega \\to P(A) \\in [0,1]"}</FormulaBox>
@@ -76,20 +76,20 @@ export function Chapter1() {
 
       <Section type="formule" title="Conséquences de la définition">
         <p className="mb-2"><strong>Conséquence 1 :</strong> <Math>{"\\Omega \\in \\mathcal{F}"}</Math></p>
-        <p className="mb-4 pl-4 text-sm text-slate-700">
+        <p className="mb-4 pl-4 text-sm text-[var(--color-text-secondary)]">
           Démonstration : <Math>{"A \\in \\mathcal{F} \\Rightarrow \\bar{A} \\in \\mathcal{F}"}</Math>, donc <Math>{"A \\cup \\bar{A} = \\Omega \\in \\mathcal{F}"}</Math>
         </p>
 
         <p className="mb-2"><strong>Conséquence 2 :</strong> <Math>{"\\emptyset \\in \\mathcal{F}"}</Math></p>
-        <p className="mb-4 pl-4 text-sm text-slate-700">
+        <p className="mb-4 pl-4 text-sm text-[var(--color-text-secondary)]">
           Démonstration : <Math>{"\\Omega \\in \\mathcal{F} \\Rightarrow \\bar{\\Omega} = \\emptyset \\in \\mathcal{F}"}</Math>
         </p>
 
         <p className="mb-2"><strong>Conséquence 3 :</strong> <Math>{"\\mathcal{F}"}</Math> est fermée par rapport à l'intersection</p>
-        <p className="pl-4 text-sm text-slate-700 mb-2">
+        <p className="pl-4 text-sm text-[var(--color-text-secondary)] mb-2">
           Cela signifie que si <Math>{"A \\in \\mathcal{F}"}</Math> et <Math>{"B \\in \\mathcal{F}"}</Math>, alors <Math>{"A \\cap B \\in \\mathcal{F}"}</Math>.
         </p>
-        <p className="pl-4 text-sm text-slate-700">
+        <p className="pl-4 text-sm text-[var(--color-text-secondary)]">
           Démonstration via l'identité de Morgan : <Math>{"A \\cap B = \\overline{\\bar{A} \\cup \\bar{B}}"}</Math>. Comme <Math>{"\\mathcal{F}"}</Math> est fermée par complémentarité et par union, on a bien <Math>{"A \\cap B \\in \\mathcal{F}"}</Math>.
         </p>
       </Section>
@@ -119,7 +119,7 @@ export function Chapter1() {
 
         <p className="mb-2"><strong>Résultat :</strong></p>
         <FormulaBox>{"\\mathcal{F} = \\{\\emptyset, (a), (d), (bc), (ad), (bcd), (abc), \\Omega\\}"}</FormulaBox>
-        <p className="mt-2 text-sm text-slate-700">8 éléments (nombre pair ✓)</p>
+        <p className="mt-2 text-sm text-[var(--color-text-secondary)]">8 éléments (nombre pair ✓)</p>
       </Section>
 
       <Section type="intuition" title="III. Espace Probabilisé">
@@ -150,7 +150,7 @@ export function Chapter1() {
           <strong>Théorème :</strong> Si <Math>{"A \\subset B"}</Math> alors <Math>{"P(A) \\leq P(B)"}</Math>
         </p>
 
-        <div className="p-5 bg-slate-100/50 rounded-lg border-l-4 border-blue-500">
+        <div className="p-5 bg-[var(--color-bg-overlay)]/50 rounded-lg border-l-4 border-[var(--color-info)]">
           <p className="mb-3"><strong>Hypothèses :</strong> <Math>{"A, B \\in \\mathcal{F}"}</Math> avec <Math>{"A \\subset B"}</Math></p>
           
           <p className="mb-3"><strong>Raisonnement :</strong></p>
@@ -175,8 +175,8 @@ export function Chapter1() {
 
         <FormulaBox label="Probabilités totales" highlight>{"P(A \\cup B) = P(A) + P(B) - P(A \\cap B)"}</FormulaBox>
 
-        <div className="p-5 bg-slate-100/50 rounded-lg border-l-4 border-rose-500 mt-4">
-          <p className="font-semibold text-rose-800 mb-3">⚠️ Démonstration EXIGIBLE :</p>
+        <div className="p-5 bg-[var(--color-bg-overlay)]/50 rounded-lg border-l-4 border-[var(--color-error)] mt-4">
+          <p className="font-semibold text-[var(--color-error)] mb-3">⚠️ Démonstration EXIGIBLE :</p>
           
           <p className="mb-2"><strong>Étape 1 :</strong> On écrit <Math>{"A \\cup B = A \\cup (B \\cap \\bar{A})"}</Math> (disjoints)</p>
           <p className="mb-2 pl-4">Donc <Math>{"P(A \\cup B) = P(A) + P(B \\cap \\bar{A})"}</Math> ... (①)</p>
@@ -281,7 +281,7 @@ export function Chapter1() {
           <li>P(+|Malade) = 0.95, P(+|Sain) = 0.03</li>
           <li><Math>{"P(Malade|+) = \\frac{0.01 \\times 0.95}{0.01 \\times 0.95 + 0.99 \\times 0.03} = \\frac{0.0095}{0.0392} \\approx 24\\%"}</Math></li>
         </ul>
-        <p className="mt-2 pl-4 text-sm text-slate-700">
+        <p className="mt-2 pl-4 text-sm text-[var(--color-text-secondary)]">
           Même avec un test positif, il n'y a que 24% de chances d'être malade ! C'est le paradoxe des tests de dépistage.
         </p>
       </Section>

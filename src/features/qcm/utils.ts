@@ -89,13 +89,14 @@ export function calculateScore(correct: number, total: number): number {
 
 /**
  * Get encouraging message based on score
+ * Returns CSS variable references instead of hardcoded Tailwind color classes
  */
 export function getScoreMessage(score: number): { emoji: string; message: string; color: string } {
-    if (score >= 90) return { emoji: '🏆', message: 'Excellent !', color: 'text-yellow-500' };
-    if (score >= 75) return { emoji: '🌟', message: 'Très bien !', color: 'text-green-600' };
-    if (score >= 60) return { emoji: '👍', message: 'Bien joué !', color: 'text-blue-600' };
-    if (score >= 40) return { emoji: '💪', message: 'Continue !', color: 'text-orange-500' };
-    return { emoji: '📚', message: 'Révise encore !', color: 'text-red-500' };
+    if (score >= 90) return { emoji: '\u{1F3C6}', message: 'Excellent !', color: 'var(--color-warning)' };
+    if (score >= 75) return { emoji: '\u{1F31F}', message: 'Tres bien !', color: 'var(--color-success)' };
+    if (score >= 60) return { emoji: '\u{1F44D}', message: 'Bien joue !', color: 'var(--color-info)' };
+    if (score >= 40) return { emoji: '\u{1F4AA}', message: 'Continue !', color: 'var(--color-warning)' };
+    return { emoji: '\u{1F4DA}', message: 'Revise encore !', color: 'var(--color-error)' };
 }
 
 /**

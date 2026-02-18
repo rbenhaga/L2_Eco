@@ -16,13 +16,13 @@ export default function Chapter8() {
       />
 
       {/* Toggle version */}
-      <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-slate-100 rounded-xl w-full sm:w-fit">
+      <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-[var(--color-bg-overlay)] rounded-xl w-full sm:w-fit">
         <button
           onClick={() => setView('full')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
             view === 'full' 
-              ? 'bg-white text-slate-900 shadow-sm' 
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm' 
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
           }`}
         >
           <BookOpen className="w-4 h-4" />
@@ -33,8 +33,8 @@ export default function Chapter8() {
           onClick={() => setView('quick')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
             view === 'quick' 
-              ? 'bg-white text-slate-900 shadow-sm' 
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm' 
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
           }`}
         >
           <Zap className="w-4 h-4" />
@@ -46,14 +46,14 @@ export default function Chapter8() {
       {view === 'quick' && (
         <div className="space-y-5 sm:space-y-6">
           {/* Thèse centrale */}
-          <div className="p-5 sm:p-7 bg-linear-to-br from-indigo-50 via-violet-50/50 to-slate-50 rounded-2xl border border-indigo-100/80">
-            <h3 className="font-semibold text-slate-900 mb-4 sm:mb-5 flex items-center gap-2 text-base sm:text-lg">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          <div className="p-5 sm:p-7 bg-linear-to-br from-[var(--color-accent-subtle)] via-[var(--color-accent-subtle)] to-transparent rounded-2xl border border-[var(--color-accent)]">
+            <h3 className="font-semibold text-[var(--color-text-primary)] mb-4 sm:mb-5 flex items-center gap-2 text-base sm:text-lg">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-linear-to-br from-[var(--color-accent)] to-[var(--color-accent-hover)] flex items-center justify-center">
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-bg-raised)]" />
               </div>
               Thèse centrale du chapitre
             </h3>
-            <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+            <p className="text-[var(--color-text-secondary)] text-sm sm:text-base leading-relaxed">
               La société de consommation de masse (Trente Glorieuses) crée un <strong>malaise social</strong>. 
               La <strong>publicité</strong> dépossède le consommateur de sa subjectivité. La <strong>culture de masse</strong> 
               formate l'individu et homogénéise les goûts au service du <strong>capitalisme</strong>.
@@ -61,92 +61,92 @@ export default function Chapter8() {
           </div>
 
           {/* Citations clés */}
-          <div className="p-4 sm:p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">💬</span> Citations clés pour la dissertation
             </h4>
             <div className="space-y-3">
-              <blockquote className="p-3 bg-linear-to-r from-rose-50 to-transparent rounded-xl border-l-3 border-rose-400 text-sm">
-                <p className="italic text-slate-700">"Faux besoins fabriqués par le rendement et la publicité"</p>
-                <p className="text-xs text-rose-600 mt-1 font-medium">— Marcuse (L'homme unidimensionnel)</p>
+              <blockquote className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-error)] text-sm">
+                <p className="italic text-[var(--color-text-secondary)]">"Faux besoins fabriqués par le rendement et la publicité"</p>
+                <p className="text-xs text-[var(--color-error)] mt-1 font-medium">— Marcuse (L'homme unidimensionnel)</p>
               </blockquote>
-              <blockquote className="p-3 bg-linear-to-r from-violet-50 to-transparent rounded-xl border-l-3 border-violet-400 text-sm">
-                <p className="italic text-slate-700">"Le spectacle est l'appareil de propagande et la religion de la marchandise"</p>
-                <p className="text-xs text-violet-600 mt-1 font-medium">— Debord (La Société du spectacle)</p>
+              <blockquote className="p-3 bg-linear-to-r from-[var(--color-accent-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-accent)] text-sm">
+                <p className="italic text-[var(--color-text-secondary)]">"Le spectacle est l'appareil de propagande et la religion de la marchandise"</p>
+                <p className="text-xs text-[var(--color-accent)] mt-1 font-medium">— Debord (La Société du spectacle)</p>
               </blockquote>
-              <blockquote className="p-3 bg-linear-to-r from-amber-50 to-transparent rounded-xl border-l-3 border-amber-400 text-sm">
-                <p className="italic text-slate-700">"Dépravation de la culture : l'art transformé en business"</p>
-                <p className="text-xs text-amber-600 mt-1 font-medium">— Adorno & Horkheimer (La dialectique de la raison)</p>
+              <blockquote className="p-3 bg-linear-to-r from-[var(--color-warning-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-warning)] text-sm">
+                <p className="italic text-[var(--color-text-secondary)]">"Dépravation de la culture : l'art transformé en business"</p>
+                <p className="text-xs text-[var(--color-warning)] mt-1 font-medium">— Adorno & Horkheimer (La dialectique de la raison)</p>
               </blockquote>
             </div>
           </div>
 
           {/* Caractéristiques société de consommation */}
-          <div className="p-4 sm:p-6 bg-linear-to-br from-rose-50/50 to-amber-50/30 border border-rose-100 rounded-2xl">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent border border-[var(--color-error)] rounded-2xl">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">🛒</span> 5 caractéristiques de la société de consommation
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-              <div className="p-2 bg-white/80 rounded-lg text-xs text-slate-600">
-                <strong className="text-rose-700">1.</strong> Jouissance immédiate (crédit)
+              <div className="p-2 bg-[var(--color-bg-raised)]/80 rounded-lg text-xs text-[var(--color-text-secondary)]">
+                <strong className="text-[var(--color-error)]">1.</strong> Jouissance immédiate (crédit)
               </div>
-              <div className="p-2 bg-white/80 rounded-lg text-xs text-slate-600">
-                <strong className="text-rose-700">2.</strong> Abondance de biens (production de masse)
+              <div className="p-2 bg-[var(--color-bg-raised)]/80 rounded-lg text-xs text-[var(--color-text-secondary)]">
+                <strong className="text-[var(--color-error)]">2.</strong> Abondance de biens (production de masse)
               </div>
-              <div className="p-2 bg-white/80 rounded-lg text-xs text-slate-600">
-                <strong className="text-rose-700">3.</strong> Marchandisation des modes de vie
+              <div className="p-2 bg-[var(--color-bg-raised)]/80 rounded-lg text-xs text-[var(--color-text-secondary)]">
+                <strong className="text-[var(--color-error)]">3.</strong> Marchandisation des modes de vie
               </div>
-              <div className="p-2 bg-white/80 rounded-lg text-xs text-slate-600">
-                <strong className="text-rose-700">4.</strong> Émergence de nouveaux besoins (publicité)
+              <div className="p-2 bg-[var(--color-bg-raised)]/80 rounded-lg text-xs text-[var(--color-text-secondary)]">
+                <strong className="text-[var(--color-error)]">4.</strong> Émergence de nouveaux besoins (publicité)
               </div>
-              <div className="p-2 bg-white/80 rounded-lg col-span-1 sm:col-span-2 text-xs text-slate-600">
-                <strong className="text-rose-700">5.</strong> Extension des aspirations (publicité nous fait rêver)
+              <div className="p-2 bg-[var(--color-bg-raised)]/80 rounded-lg col-span-1 sm:col-span-2 text-xs text-[var(--color-text-secondary)]">
+                <strong className="text-[var(--color-error)]">5.</strong> Extension des aspirations (publicité nous fait rêver)
               </div>
             </div>
           </div>
 
           {/* Auteurs à maîtriser */}
-          <div className="p-4 sm:p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">🎯</span> Auteurs & concepts à maîtriser
             </h4>
             <div className="space-y-3 text-sm">
-              <div className="p-3 sm:p-4 bg-linear-to-r from-sky-50 to-transparent rounded-xl border-l-3 border-sky-400">
-                <strong className="text-sky-700">Baudrillard</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Société de consommation de masse • Puissance de l'objet à séduire • Disparition du réel</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-info)]">
+                <strong className="text-[var(--color-info)]">Baudrillard</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Société de consommation de masse • Puissance de l'objet à séduire • Disparition du réel</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-rose-50 to-transparent rounded-xl border-l-3 border-rose-400">
-                <strong className="text-rose-700">Marcuse</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">L'homme unidimensionnel • Faux besoins • Rendement + publicité</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-error)]">
+                <strong className="text-[var(--color-error)]">Marcuse</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">L'homme unidimensionnel • Faux besoins • Rendement + publicité</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-violet-50 to-transparent rounded-xl border-l-3 border-violet-400">
-                <strong className="text-violet-700">Debord</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">La Société du spectacle • Aliénation • Religion de la marchandise</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-accent-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-accent)]">
+                <strong className="text-[var(--color-accent)]">Debord</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">La Société du spectacle • Aliénation • Religion de la marchandise</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-amber-50 to-transparent rounded-xl border-l-3 border-amber-400">
-                <strong className="text-amber-700">Adorno & Horkheimer</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Dialectique de la raison • Industrie culturelle • Dépravation de la culture</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-warning-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-warning)]">
+                <strong className="text-[var(--color-warning)]">Adorno & Horkheimer</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Dialectique de la raison • Industrie culturelle • Dépravation de la culture</p>
               </div>
             </div>
           </div>
 
           {/* Opposition culture */}
-          <div className="p-4 sm:p-6 bg-linear-to-br from-indigo-50/50 to-violet-50/30 border border-indigo-100 rounded-2xl">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-linear-to-br from-[var(--color-accent-subtle)]/50 to-transparent border border-[var(--color-accent)] rounded-2xl">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">⚔️</span> Culture de masse : d'en haut ou d'en bas ?
             </h4>
             <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="p-3 bg-white/80 rounded-xl">
-                <p className="font-semibold text-indigo-700 mb-2">Top-down (d'en haut)</p>
-                <ul className="text-xs text-slate-600 space-y-1">
+              <div className="p-3 bg-[var(--color-bg-raised)]/80 rounded-xl">
+                <p className="font-semibold text-[var(--color-accent)] mb-2">Top-down (d'en haut)</p>
+                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                   <li>• Industrie <strong>standardise</strong> les goûts</li>
                   <li>• <strong>Uniformise</strong> les comportements</li>
                   <li>• Consommateur = acteur <strong>passif</strong></li>
                 </ul>
               </div>
-              <div className="p-3 bg-white/80 rounded-xl">
-                <p className="font-semibold text-emerald-700 mb-2">Bottom-up (d'en bas)</p>
-                <ul className="text-xs text-slate-600 space-y-1">
+              <div className="p-3 bg-[var(--color-bg-raised)]/80 rounded-xl">
+                <p className="font-semibold text-[var(--color-success)] mb-2">Bottom-up (d'en bas)</p>
+                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                   <li>• Public <strong>pas passif</strong></li>
                   <li>• Crée ses pratiques <strong>populaires</strong></li>
                   <li>• Repris par l'industrie (profit)</li>
@@ -164,7 +164,7 @@ export default function Chapter8() {
 
           <button
             onClick={() => setView('full')}
-            className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium transition-colors"
+            className="flex items-center gap-2 text-[var(--color-accent)] hover:text-[var(--color-accent)] text-sm font-medium transition-colors"
           >
             Voir le cours complet <ChevronRight className="w-4 h-4" />
           </button>
@@ -187,9 +187,9 @@ export default function Chapter8() {
                 Baudrillard analyse la <strong>société de consommation de masse</strong> née pendant les Trente Glorieuses.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-sky-50/50 to-blue-50/30 rounded-xl border border-sky-100 mb-4">
-                <p className="font-medium text-sky-900 text-sm mb-2">Contexte des Trente Glorieuses (1945-1975)</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-2">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-info)] mb-4">
+                <p className="font-medium text-[var(--color-info)] text-sm mb-2">Contexte des Trente Glorieuses (1945-1975)</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-2">
                   <li>• Période d'<strong>abondance</strong> et de prospérité (plein emploi, croissance ×3)</li>
                   <li>• Capitalisme industriel : <strong>taylorisme</strong> et <strong>fordisme</strong></li>
                   <li>• Standardisation et travail à la chaîne → <strong>baisse des coûts et des prix</strong></li>
@@ -198,18 +198,18 @@ export default function Chapter8() {
               </div>
 
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
-                  <p className="font-semibold text-emerald-700 text-sm">Évolutions positives</p>
-                  <ul className="text-xs text-slate-600 space-y-1">
+                <div className="p-3 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl border border-[var(--color-success)]">
+                  <p className="font-semibold text-[var(--color-success)] text-sm">Évolutions positives</p>
+                  <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                     <li>• Création super/hypermarchés</li>
                     <li>• Hausse espérance de vie (+14 ans)</li>
                     <li>• Arrivée des femmes sur le marché du travail</li>
                     <li>• Double salaire → plus de consommation</li>
                   </ul>
                 </div>
-                <div className="p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                  <p className="font-semibold text-amber-700 text-sm">Facteurs clés</p>
-                  <ul className="text-xs text-slate-600 space-y-1">
+                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-warning)] text-sm">Facteurs clés</p>
+                  <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                     <li>• <strong>Crédit à la consommation</strong></li>
                     <li>• <strong>Publicité</strong> (persuasion)</li>
                     <li>• Alimentation : 20-25% → baisse</li>
@@ -236,9 +236,9 @@ export default function Chapter8() {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-linear-to-br from-rose-50 to-pink-50/30 rounded-xl border border-rose-100">
-                  <p className="font-semibold text-rose-700 text-sm mb-2">5 caractéristiques</p>
-                  <ul className="text-xs text-slate-600 space-y-1">
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)]">
+                  <p className="font-semibold text-[var(--color-error)] text-sm mb-2">5 caractéristiques</p>
+                  <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                     <li>1. <strong>Jouissance immédiate</strong> (crédit)</li>
                     <li>2. <strong>Abondance</strong> de biens et services</li>
                     <li>3. <strong>Marchandisation</strong> des modes de vie</li>
@@ -246,9 +246,9 @@ export default function Chapter8() {
                     <li>5. <strong>Extension des aspirations</strong></li>
                   </ul>
                 </div>
-                <div className="p-3 bg-linear-to-br from-violet-50 to-fuchsia-50/30 rounded-xl border border-violet-100">
-                  <p className="font-semibold text-violet-700 text-sm mb-2">Baudrillard : disparition du réel</p>
-                  <p className="text-xs text-slate-600">
+                <div className="p-3 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)]">
+                  <p className="font-semibold text-[var(--color-accent)] text-sm mb-2">Baudrillard : disparition du réel</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">
                     Puissance de l'objet à <strong>séduire</strong>. Critique des technologies de l'information 
                     qui font basculer vers une société globale avec une <strong>prolifération excessive de sens</strong>.
                   </p>
@@ -275,13 +275,13 @@ export default function Chapter8() {
               </p>
 
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-linear-to-br from-rose-50 to-pink-50/30 rounded-xl border border-rose-100 text-center">
-                  <p className="font-semibold text-rose-700 text-sm">Toujours plus de rendements</p>
-                  <p className="text-xs text-slate-600">Logique productiviste</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)] text-center">
+                  <p className="font-semibold text-[var(--color-error)] text-sm">Toujours plus de rendements</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Logique productiviste</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-rose-50 to-pink-50/30 rounded-xl border border-rose-100 text-center">
-                  <p className="font-semibold text-rose-700 text-sm">Publicité</p>
-                  <p className="text-xs text-slate-600">Création de besoins artificiels</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)] text-center">
+                  <p className="font-semibold text-[var(--color-error)] text-sm">Publicité</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Création de besoins artificiels</p>
                 </div>
               </div>
             </AuthorCard>
@@ -298,9 +298,9 @@ export default function Chapter8() {
                 <strong> marchandise</strong> et la domination qu'elle exerce sur la vie des individus.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-violet-50/50 to-fuchsia-50/30 rounded-xl border border-violet-100 mb-4">
-                <p className="font-medium text-violet-900 text-sm mb-2">Thèses principales</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-2">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-accent-subtle)]/50 to-transparent rounded-xl border border-[var(--color-accent)] mb-4">
+                <p className="font-medium text-[var(--color-accent)] text-sm mb-2">Thèses principales</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-2">
                   <li>• Mode de reproduction basé sur des marchandises toujours plus <strong>nombreuses et semblables</strong></li>
                   <li>• Le <strong>spectacle</strong> = stade achevé du capitalisme</li>
                   <li>• Le spectacle = <strong>appareil de propagande</strong> (publicité)</li>
@@ -322,9 +322,9 @@ export default function Chapter8() {
                 Elle est très <strong>critiquée</strong> par les sociologues.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-indigo-50/50 to-violet-50/30 rounded-xl border border-indigo-100 mb-4">
-                <p className="font-medium text-indigo-900 text-sm mb-2">Émergence</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-2">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-accent-subtle)]/50 to-transparent rounded-xl border border-[var(--color-accent)] mb-4">
+                <p className="font-medium text-[var(--color-accent)] text-sm mb-2">Émergence</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-2">
                   <li>• <strong>USA années 30</strong> : cinéma hollywoodien</li>
                   <li>• <strong>France années 60</strong></li>
                   <li>• Canaux : télévision, radio, presse à gros tirage</li>
@@ -334,18 +334,18 @@ export default function Chapter8() {
               </div>
 
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-linear-to-br from-slate-50 to-gray-50/30 rounded-xl border border-slate-200">
-                  <p className="font-semibold text-slate-700 text-sm mb-2">Cultures traditionnelles</p>
-                  <ul className="text-xs text-slate-600 space-y-1">
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-border-default)]">
+                  <p className="font-semibold text-[var(--color-text-secondary)] text-sm mb-2">Cultures traditionnelles</p>
+                  <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                     <li>• <strong>Scolaire</strong> : école obligatoire</li>
                     <li>• <strong>Nationale</strong> : service militaire</li>
                     <li>• <strong>Religieuse</strong> : plus ou moins imposée</li>
                     <li>→ Souvent <strong>gratuites</strong></li>
                   </ul>
                 </div>
-                <div className="p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                  <p className="font-semibold text-amber-700 text-sm mb-2">Culture de masse</p>
-                  <ul className="text-xs text-slate-600 space-y-1">
+                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-warning)] text-sm mb-2">Culture de masse</p>
+                  <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                     <li>• Proposée sur un <strong>marché</strong></li>
                     <li>• Faite pour être <strong>consommée</strong></li>
                     <li>• Produite <strong>industriellement</strong></li>
@@ -374,12 +374,12 @@ export default function Chapter8() {
                 transformation négative, excès négatif. La culture transforme l'art en <strong>business</strong> : produits standardisés.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-amber-50/50 to-orange-50/30 rounded-xl border border-amber-100 mb-4">
-                <p className="font-medium text-amber-900 text-sm mb-2">La dialectique de la raison</p>
-                <p className="text-xs sm:text-sm text-slate-600 mb-2">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-warning-subtle)]/50 to-transparent rounded-xl border border-[var(--color-warning)] mb-4">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">La dialectique de la raison</p>
+                <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-2">
                   Une <strong>dialectique</strong> = méthode qui met en évidence une contradiction pour la dépasser.
                 </p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• Opposition entre ce qui serait <strong>rationnel</strong> et la culture de masse</li>
                   <li>• La raison est formatée et mise au service de l'<strong>industrie culturelle</strong></li>
                   <li>• Seul but : la <strong>rentabilité</strong></li>
@@ -433,18 +433,18 @@ export default function Chapter8() {
               hideAvatar
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                <div className="p-4 bg-linear-to-br from-indigo-50 to-violet-50/30 rounded-xl border border-indigo-100">
-                  <p className="font-semibold text-indigo-700 mb-2">D'en haut (top-down)</p>
-                  <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+                <div className="p-4 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)]">
+                  <p className="font-semibold text-[var(--color-accent)] mb-2">D'en haut (top-down)</p>
+                  <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                     <li>• L'industrie culturelle <strong>standardise</strong> les goûts</li>
                     <li>• <strong>Uniformise</strong> les comportements</li>
                     <li>• Transforme le consommateur en acteur <strong>passif</strong></li>
                     <li>• Il ne choisit pas vraiment</li>
                   </ul>
                 </div>
-                <div className="p-4 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
-                  <p className="font-semibold text-emerald-700 mb-2">D'en bas (bottom-up)</p>
-                  <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+                <div className="p-4 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl border border-[var(--color-success)]">
+                  <p className="font-semibold text-[var(--color-success)] mb-2">D'en bas (bottom-up)</p>
+                  <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                     <li>• Le public n'est <strong>pas passif</strong></li>
                     <li>• Il <strong>crée</strong> et développe ses pratiques populaires</li>
                     <li>• Opportunité de <strong>profits</strong></li>
@@ -467,16 +467,16 @@ export default function Chapter8() {
                 que l'élite n'aime pas mais que "monsieur tout le monde" adore.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-sky-50/50 to-blue-50/30 rounded-xl border border-sky-100 mb-4">
-                <p className="font-medium text-sky-900 text-sm mb-2">Deux forces derrière</p>
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-info)] mb-4">
+                <p className="font-medium text-[var(--color-info)] text-sm mb-2">Deux forces derrière</p>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="p-2 bg-white/60 rounded-lg text-center">
-                    <p className="font-semibold text-sky-700 text-sm">Américanisation</p>
-                    <p className="text-xs text-slate-600">Valeurs USA mondialisées</p>
+                  <div className="p-2 bg-[var(--color-bg-raised)]/60 rounded-lg text-center">
+                    <p className="font-semibold text-[var(--color-info)] text-sm">Américanisation</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Valeurs USA mondialisées</p>
                   </div>
-                  <div className="p-2 bg-white/60 rounded-lg text-center">
-                    <p className="font-semibold text-sky-700 text-sm">Mondialisation</p>
-                    <p className="text-xs text-slate-600">Culture internationalisée</p>
+                  <div className="p-2 bg-[var(--color-bg-raised)]/60 rounded-lg text-center">
+                    <p className="font-semibold text-[var(--color-info)] text-sm">Mondialisation</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Culture internationalisée</p>
                   </div>
                 </div>
               </div>
@@ -487,9 +487,9 @@ export default function Chapter8() {
                 (pays arabes, Inde, Chine).
               </Callout>
 
-              <div className="mt-4 p-3 bg-linear-to-r from-rose-50/50 to-transparent rounded-xl border border-rose-100">
-                <p className="font-medium text-slate-900 text-sm mb-2">Conséquences :</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="mt-4 p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)]">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Conséquences :</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• Culture <strong>banalisée</strong>, cache les disparités sociales</li>
                   <li>• Partout dans le monde, on aime les <strong>mêmes choses</strong></li>
                   <li>• Si on ne s'inclut pas dans la masse, on est <strong>stigmatisé</strong></li>
@@ -502,37 +502,37 @@ export default function Chapter8() {
             <div className="overflow-x-auto mb-4">
               <table className="w-full text-sm border-collapse">
                 <thead>
-                  <tr className="bg-slate-100">
-                    <th className="p-3 text-left font-semibold text-slate-700 border border-slate-200">Auteur</th>
-                    <th className="p-3 text-left font-semibold text-slate-700 border border-slate-200">Œuvre</th>
-                    <th className="p-3 text-left font-semibold text-slate-700 border border-slate-200">Concept clé</th>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <th className="p-3 text-left font-semibold text-[var(--color-text-secondary)] border border-[var(--color-border-default)]">Auteur</th>
+                    <th className="p-3 text-left font-semibold text-[var(--color-text-secondary)] border border-[var(--color-border-default)]">Œuvre</th>
+                    <th className="p-3 text-left font-semibold text-[var(--color-text-secondary)] border border-[var(--color-border-default)]">Concept clé</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="p-3 border border-slate-200 font-medium text-sky-700">Baudrillard</td>
-                    <td className="p-3 border border-slate-200">La Société de consommation</td>
-                    <td className="p-3 border border-slate-200">Disparition du réel, séduction</td>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium text-[var(--color-info)]">Baudrillard</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">La Société de consommation</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Disparition du réel, séduction</td>
                   </tr>
-                  <tr className="bg-slate-50">
-                    <td className="p-3 border border-slate-200 font-medium text-rose-700">Marcuse</td>
-                    <td className="p-3 border border-slate-200">L'homme unidimensionnel</td>
-                    <td className="p-3 border border-slate-200">Faux besoins</td>
-                  </tr>
-                  <tr>
-                    <td className="p-3 border border-slate-200 font-medium text-violet-700">Debord</td>
-                    <td className="p-3 border border-slate-200">La Société du spectacle</td>
-                    <td className="p-3 border border-slate-200">Aliénation, religion marchandise</td>
-                  </tr>
-                  <tr className="bg-slate-50">
-                    <td className="p-3 border border-slate-200 font-medium text-amber-700">Adorno & Horkheimer</td>
-                    <td className="p-3 border border-slate-200">La dialectique de la raison</td>
-                    <td className="p-3 border border-slate-200">Industrie culturelle, dépravation</td>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium text-[var(--color-error)]">Marcuse</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">L'homme unidimensionnel</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Faux besoins</td>
                   </tr>
                   <tr>
-                    <td className="p-3 border border-slate-200 font-medium text-teal-700">Lasch</td>
-                    <td className="p-3 border border-slate-200">La culture du narcissisme</td>
-                    <td className="p-3 border border-slate-200">Fossé culturel accru</td>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium text-[var(--color-accent)]">Debord</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">La Société du spectacle</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Aliénation, religion marchandise</td>
+                  </tr>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium text-[var(--color-warning)]">Adorno & Horkheimer</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">La dialectique de la raison</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Industrie culturelle, dépravation</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium text-[var(--color-success)]">Lasch</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">La culture du narcissisme</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Fossé culturel accru</td>
                   </tr>
                 </tbody>
               </table>

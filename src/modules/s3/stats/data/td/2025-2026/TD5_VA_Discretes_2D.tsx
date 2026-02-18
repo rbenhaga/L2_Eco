@@ -23,11 +23,11 @@ export const TD5_2526: TDSheet = {
       content: (
         <div>
           <p>Loi conjointe de (X, Y):</p>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">X \ Y</th><th className="border border-slate-300 p-2">0</th><th className="border border-slate-300 p-2">1</th><th className="border border-slate-300 p-2">2</th></tr></thead>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">X \ Y</th><th className="border border-[var(--color-border-strong)] p-2">0</th><th className="border border-[var(--color-border-strong)] p-2">1</th><th className="border border-[var(--color-border-strong)] p-2">2</th></tr></thead>
             <tbody>
-              <tr><td className="border border-slate-300 p-2">0</td><td className="border border-slate-300 p-2">1/3</td><td className="border border-slate-300 p-2">0</td><td className="border border-slate-300 p-2">0</td></tr>
-              <tr><td className="border border-slate-300 p-2">1</td><td className="border border-slate-300 p-2">0</td><td className="border border-slate-300 p-2">1/3</td><td className="border border-slate-300 p-2">1/3</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">0</td><td className="border border-[var(--color-border-strong)] p-2">1/3</td><td className="border border-[var(--color-border-strong)] p-2">0</td><td className="border border-[var(--color-border-strong)] p-2">0</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">1</td><td className="border border-[var(--color-border-strong)] p-2">0</td><td className="border border-[var(--color-border-strong)] p-2">1/3</td><td className="border border-[var(--color-border-strong)] p-2">1/3</td></tr>
             </tbody>
           </table>
           <ol className="list-decimal ml-6 mt-2">
@@ -40,9 +40,9 @@ export const TD5_2526: TDSheet = {
       ),
       solution: (
         <div className="space-y-4">
-          <div className="p-4 bg-amber-100/50 rounded-lg border border-amber-200 mb-4">
-            <p className="font-semibold text-amber-800 mb-2">📋 Méthode du professeur</p>
-            <ol className="list-decimal ml-4 text-sm text-amber-900 space-y-1">
+          <div className="p-4 bg-[var(--color-warning-subtle)]/50 rounded-lg border border-[var(--color-warning)] mb-4">
+            <p className="font-semibold text-[var(--color-warning)] mb-2">📋 Méthode du professeur</p>
+            <ol className="list-decimal ml-4 text-sm text-[var(--color-text-primary)] space-y-1">
               <li><strong>Marginales</strong> : Sommer les lignes (pour X) et les colonnes (pour Y)</li>
               <li><strong>E(XY)</strong> : Sommer xy × P(X=x, Y=y) sur toutes les cases non nulles</li>
               <li><strong>Cov(X,Y)</strong> = E(XY) - E(X)E(Y)</li>
@@ -65,18 +65,18 @@ export const TD5_2526: TDSheet = {
           <M>{"r(X,Y) = \\frac{1/3}{\\sqrt{2/9} \\times \\sqrt{2/3}} = \\boxed{\\frac{\\sqrt{3}}{2} \\approx 0.866}"}</M>
           
           <p><strong>3. Loi conditionnelle Y|X:</strong></p>
-          <div className="p-3 bg-blue-50 rounded-lg text-sm">
-            <p className="font-semibold text-blue-800">Formule : P(Y=y|X=x) = P(X=x,Y=y) / P(X=x)</p>
+          <div className="p-3 bg-[var(--color-info-subtle)] rounded-lg text-sm">
+            <p className="font-semibold text-[var(--color-info)]">Formule : P(Y=y|X=x) = P(X=x,Y=y) / P(X=x)</p>
           </div>
           <p className="mt-2">Y|X=0: P(Y=0|X=0) = (1/3)/(1/3) = 1 → E(Y|X=0) = 0</p>
           <p>Y|X=1: P(Y=1|X=1) = 1/2, P(Y=2|X=1) = 1/2 → E(Y|X=1) = 1.5</p>
-          <p className="text-emerald-700 font-semibold">Courbe de régression: <M>{"E(Y|X=x) = 1.5x"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold">Courbe de régression: <M>{"E(Y|X=x) = 1.5x"}</M></p>
           
           <p><strong>4. Lois de Z et T:</strong></p>
           <p>On liste les valeurs possibles en parcourant les cases non nulles:</p>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">Z = 2X+4Y</th><th className="border border-slate-300 p-2">0</th><th className="border border-slate-300 p-2">6</th><th className="border border-slate-300 p-2">10</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-2">P(Z=z)</td><td className="border border-slate-300 p-2">1/3</td><td className="border border-slate-300 p-2">1/3</td><td className="border border-slate-300 p-2">1/3</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">Z = 2X+4Y</th><th className="border border-[var(--color-border-strong)] p-2">0</th><th className="border border-[var(--color-border-strong)] p-2">6</th><th className="border border-[var(--color-border-strong)] p-2">10</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-2">P(Z=z)</td><td className="border border-[var(--color-border-strong)] p-2">1/3</td><td className="border border-[var(--color-border-strong)] p-2">1/3</td><td className="border border-[var(--color-border-strong)] p-2">1/3</td></tr></tbody>
           </table>
           <M>{"E(Z) = 2E(X) + 4E(Y) = \\frac{4}{3} + 4 = \\boxed{\\frac{16}{3}}"}</M>
         </div>
@@ -91,13 +91,13 @@ export const TD5_2526: TDSheet = {
       content: (
         <div>
           <p>X et Y indépendantes:</p>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">xi</th><th className="border border-slate-300 p-2">20</th><th className="border border-slate-300 p-2">60</th><th className="border border-slate-300 p-2">70</th><th className="border border-slate-300 p-2">90</th><th className="border border-slate-300 p-2">100</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-2">pi</td><td className="border border-slate-300 p-2">0.1</td><td className="border border-slate-300 p-2">0.1</td><td className="border border-slate-300 p-2">0.3</td><td className="border border-slate-300 p-2">0.2</td><td className="border border-slate-300 p-2">0.3</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">xi</th><th className="border border-[var(--color-border-strong)] p-2">20</th><th className="border border-[var(--color-border-strong)] p-2">60</th><th className="border border-[var(--color-border-strong)] p-2">70</th><th className="border border-[var(--color-border-strong)] p-2">90</th><th className="border border-[var(--color-border-strong)] p-2">100</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-2">pi</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td><td className="border border-[var(--color-border-strong)] p-2">0.3</td><td className="border border-[var(--color-border-strong)] p-2">0.2</td><td className="border border-[var(--color-border-strong)] p-2">0.3</td></tr></tbody>
           </table>
-          <table className="border-collapse border border-slate-300 text-sm mt-2">
-            <thead><tr><th className="border border-slate-300 p-2">yj</th><th className="border border-slate-300 p-2">10</th><th className="border border-slate-300 p-2">15</th><th className="border border-slate-300 p-2">20</th><th className="border border-slate-300 p-2">60</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-2">pj</td><td className="border border-slate-300 p-2">0.1</td><td className="border border-slate-300 p-2">0.1</td><td className="border border-slate-300 p-2">0.5</td><td className="border border-slate-300 p-2">0.3</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm mt-2">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">yj</th><th className="border border-[var(--color-border-strong)] p-2">10</th><th className="border border-[var(--color-border-strong)] p-2">15</th><th className="border border-[var(--color-border-strong)] p-2">20</th><th className="border border-[var(--color-border-strong)] p-2">60</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-2">pj</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td><td className="border border-[var(--color-border-strong)] p-2">0.5</td><td className="border border-[var(--color-border-strong)] p-2">0.3</td></tr></tbody>
           </table>
           <ol className="list-decimal ml-6 mt-2">
             <li>Loi du couple (X,Y)</li>
@@ -108,10 +108,10 @@ export const TD5_2526: TDSheet = {
       ),
       solution: (
         <div className="space-y-4">
-          <div className="p-4 bg-amber-100/50 rounded-lg border border-amber-200 mb-4">
-            <p className="font-semibold text-amber-800 mb-2">📋 Propriété clé : Indépendance</p>
-            <p className="text-sm text-amber-900">Si X et Y indépendantes : P(X=x, Y=y) = P(X=x) × P(Y=y)</p>
-            <p className="text-sm text-amber-900 mt-1">Conséquences : Cov(X,Y) = 0, r(X,Y) = 0, E(Y|X) = E(Y)</p>
+          <div className="p-4 bg-[var(--color-warning-subtle)]/50 rounded-lg border border-[var(--color-warning)] mb-4">
+            <p className="font-semibold text-[var(--color-warning)] mb-2">📋 Propriété clé : Indépendance</p>
+            <p className="text-sm text-[var(--color-text-primary)]">Si X et Y indépendantes : P(X=x, Y=y) = P(X=x) × P(Y=y)</p>
+            <p className="text-sm text-[var(--color-text-primary)] mt-1">Conséquences : Cov(X,Y) = 0, r(X,Y) = 0, E(Y|X) = E(Y)</p>
           </div>
 
           <p><strong>1. Loi conjointe:</strong> P(X=x, Y=y) = P(X=x) × P(Y=y)</p>
@@ -123,9 +123,9 @@ export const TD5_2526: TDSheet = {
           <M>{"V(Y) = 1312.5 - 930.25 = \\boxed{382.25}"}</M>
           
           <p><strong>3. Conséquences de l'indépendance:</strong></p>
-          <p className="text-emerald-700">• E(Y|X=60) = E(Y) = <strong>30.5</strong> (l'info sur X ne change rien)</p>
-          <p className="text-emerald-700">• r(X,Y) = <strong>0</strong> (pas de corrélation)</p>
-          <p className="text-emerald-700">• Courbe de régression: E(X|Y) = 77 (droite horizontale)</p>
+          <p className="text-[var(--color-success)]">• E(Y|X=60) = E(Y) = <strong>30.5</strong> (l'info sur X ne change rien)</p>
+          <p className="text-[var(--color-success)]">• r(X,Y) = <strong>0</strong> (pas de corrélation)</p>
+          <p className="text-[var(--color-success)]">• Courbe de régression: E(X|Y) = 77 (droite horizontale)</p>
         </div>
       ),
     },
@@ -138,12 +138,12 @@ export const TD5_2526: TDSheet = {
       content: (
         <div>
           <p>X = retards vers pays A, Y = retards vers pays B</p>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">X\Y</th><th className="border border-slate-300 p-2">0</th><th className="border border-slate-300 p-2">1</th><th className="border border-slate-300 p-2">2</th><th className="border border-slate-300 p-2">3</th></tr></thead>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">X\Y</th><th className="border border-[var(--color-border-strong)] p-2">0</th><th className="border border-[var(--color-border-strong)] p-2">1</th><th className="border border-[var(--color-border-strong)] p-2">2</th><th className="border border-[var(--color-border-strong)] p-2">3</th></tr></thead>
             <tbody>
-              <tr><td className="border border-slate-300 p-2">0</td><td className="border border-slate-300 p-2">0.1</td><td className="border border-slate-300 p-2">0.05</td><td className="border border-slate-300 p-2">0.05</td><td className="border border-slate-300 p-2">0</td></tr>
-              <tr><td className="border border-slate-300 p-2">1</td><td className="border border-slate-300 p-2">0</td><td className="border border-slate-300 p-2">p</td><td className="border border-slate-300 p-2">0.15</td><td className="border border-slate-300 p-2">0.1</td></tr>
-              <tr><td className="border border-slate-300 p-2">2</td><td className="border border-slate-300 p-2">0.05</td><td className="border border-slate-300 p-2">0.25</td><td className="border border-slate-300 p-2">0.05</td><td className="border border-slate-300 p-2">0.1</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">0</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td><td className="border border-[var(--color-border-strong)] p-2">0.05</td><td className="border border-[var(--color-border-strong)] p-2">0.05</td><td className="border border-[var(--color-border-strong)] p-2">0</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">1</td><td className="border border-[var(--color-border-strong)] p-2">0</td><td className="border border-[var(--color-border-strong)] p-2">p</td><td className="border border-[var(--color-border-strong)] p-2">0.15</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">2</td><td className="border border-[var(--color-border-strong)] p-2">0.05</td><td className="border border-[var(--color-border-strong)] p-2">0.25</td><td className="border border-[var(--color-border-strong)] p-2">0.05</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td></tr>
             </tbody>
           </table>
           <ol className="list-decimal ml-6 mt-2">
@@ -156,9 +156,9 @@ export const TD5_2526: TDSheet = {
       ),
       solution: (
         <div className="space-y-4">
-          <div className="p-4 bg-amber-100/50 rounded-lg border border-amber-200 mb-4">
-            <p className="font-semibold text-amber-800 mb-2">📋 Méthode pour trouver p</p>
-            <p className="text-sm text-amber-900">La somme de toutes les probabilités = 1</p>
+          <div className="p-4 bg-[var(--color-warning-subtle)]/50 rounded-lg border border-[var(--color-warning)] mb-4">
+            <p className="font-semibold text-[var(--color-warning)] mb-2">📋 Méthode pour trouver p</p>
+            <p className="text-sm text-[var(--color-text-primary)]">La somme de toutes les probabilités = 1</p>
           </div>
 
           <p><strong>1. Trouver p:</strong></p>
@@ -172,22 +172,22 @@ export const TD5_2526: TDSheet = {
           <M>{"E(Y) = \\boxed{1.5}, \\quad V(Y) = \\boxed{0.95}"}</M>
           
           <p><strong>3. Loi de Z = X + Y:</strong></p>
-          <div className="p-3 bg-blue-50 rounded-lg text-sm mb-2">
-            <p className="font-semibold text-blue-800">Méthode : Lister toutes les combinaisons (x,y) donnant la même somme z</p>
+          <div className="p-3 bg-[var(--color-info-subtle)] rounded-lg text-sm mb-2">
+            <p className="font-semibold text-[var(--color-info)]">Méthode : Lister toutes les combinaisons (x,y) donnant la même somme z</p>
           </div>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">Z</th><th className="border border-slate-300 p-2">0</th><th className="border border-slate-300 p-2">1</th><th className="border border-slate-300 p-2">2</th><th className="border border-slate-300 p-2">3</th><th className="border border-slate-300 p-2">4</th><th className="border border-slate-300 p-2">5</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-2">P(Z=z)</td><td className="border border-slate-300 p-2">0.1</td><td className="border border-slate-300 p-2">0.05</td><td className="border border-slate-300 p-2">0.15</td><td className="border border-slate-300 p-2">0.4</td><td className="border border-slate-300 p-2">0.15</td><td className="border border-slate-300 p-2">0.1</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">Z</th><th className="border border-[var(--color-border-strong)] p-2">0</th><th className="border border-[var(--color-border-strong)] p-2">1</th><th className="border border-[var(--color-border-strong)] p-2">2</th><th className="border border-[var(--color-border-strong)] p-2">3</th><th className="border border-[var(--color-border-strong)] p-2">4</th><th className="border border-[var(--color-border-strong)] p-2">5</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-2">P(Z=z)</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td><td className="border border-[var(--color-border-strong)] p-2">0.05</td><td className="border border-[var(--color-border-strong)] p-2">0.15</td><td className="border border-[var(--color-border-strong)] p-2">0.4</td><td className="border border-[var(--color-border-strong)] p-2">0.15</td><td className="border border-[var(--color-border-strong)] p-2">0.1</td></tr></tbody>
           </table>
           
           <p><strong>4. Covariance et corrélation:</strong></p>
-          <div className="p-3 bg-blue-50 rounded-lg text-sm mb-2">
-            <p className="font-semibold text-blue-800">Astuce : Utiliser V(X+Y) = V(X) + V(Y) + 2Cov(X,Y)</p>
+          <div className="p-3 bg-[var(--color-info-subtle)] rounded-lg text-sm mb-2">
+            <p className="font-semibold text-[var(--color-info)]">Astuce : Utiliser V(X+Y) = V(X) + V(Y) + 2Cov(X,Y)</p>
           </div>
           <M>{"V(Z) = 1.5875, \\quad V(X) + V(Y) = 1.5375"}</M>
           <M>{"Cov(X,Y) = \\frac{1.5875 - 1.5375}{2} = \\boxed{0.025}"}</M>
           <M>{"r(X,Y) = \\frac{0.025}{\\sqrt{0.5875 \\times 0.95}} = \\boxed{0.033}"}</M>
-          <p className="text-slate-700 italic">Corrélation très faible → X et Y presque indépendantes.</p>
+          <p className="text-[var(--color-text-secondary)] italic">Corrélation très faible → X et Y presque indépendantes.</p>
         </div>
       ),
     },
@@ -211,9 +211,9 @@ export const TD5_2526: TDSheet = {
       ),
       solution: (
         <div className="space-y-4">
-          <div className="p-4 bg-amber-100/50 rounded-lg border border-amber-200 mb-4">
-            <p className="font-semibold text-amber-800 mb-2">📋 Méthode de dénombrement</p>
-            <ol className="list-decimal ml-4 text-sm text-amber-900 space-y-1">
+          <div className="p-4 bg-[var(--color-warning-subtle)]/50 rounded-lg border border-[var(--color-warning)] mb-4">
+            <p className="font-semibold text-[var(--color-warning)] mb-2">📋 Méthode de dénombrement</p>
+            <ol className="list-decimal ml-4 text-sm text-[var(--color-text-primary)] space-y-1">
               <li>Total de cas : 4 × 4 = 16 (tirage avec remise)</li>
               <li>Pour chaque case (x,y) avec x ≤ y, compter les tirages correspondants</li>
               <li>Attention : si x = y, un seul tirage ; si x {'<'} y, deux tirages (x,y) et (y,x)</li>
@@ -221,21 +221,21 @@ export const TD5_2526: TDSheet = {
           </div>
 
           <p><strong>1. Loi conjointe:</strong></p>
-          <table className="border-collapse border border-slate-300 text-xs">
-            <thead><tr><th className="border border-slate-300 p-1">X\Y</th><th className="border border-slate-300 p-1">0</th><th className="border border-slate-300 p-1">1</th><th className="border border-slate-300 p-1">2</th><th className="border border-slate-300 p-1">3</th><th className="border border-slate-300 p-1">P(X)</th></tr></thead>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-xs">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-1">X\Y</th><th className="border border-[var(--color-border-strong)] p-1">0</th><th className="border border-[var(--color-border-strong)] p-1">1</th><th className="border border-[var(--color-border-strong)] p-1">2</th><th className="border border-[var(--color-border-strong)] p-1">3</th><th className="border border-[var(--color-border-strong)] p-1">P(X)</th></tr></thead>
             <tbody>
-              <tr><td className="border border-slate-300 p-1">0</td><td className="border border-slate-300 p-1">1/16</td><td className="border border-slate-300 p-1">2/16</td><td className="border border-slate-300 p-1">2/16</td><td className="border border-slate-300 p-1">2/16</td><td className="border border-slate-300 p-1 font-semibold">7/16</td></tr>
-              <tr><td className="border border-slate-300 p-1">1</td><td className="border border-slate-300 p-1">0</td><td className="border border-slate-300 p-1">1/16</td><td className="border border-slate-300 p-1">2/16</td><td className="border border-slate-300 p-1">2/16</td><td className="border border-slate-300 p-1 font-semibold">5/16</td></tr>
-              <tr><td className="border border-slate-300 p-1">2</td><td className="border border-slate-300 p-1">0</td><td className="border border-slate-300 p-1">0</td><td className="border border-slate-300 p-1">1/16</td><td className="border border-slate-300 p-1">2/16</td><td className="border border-slate-300 p-1 font-semibold">3/16</td></tr>
-              <tr><td className="border border-slate-300 p-1">3</td><td className="border border-slate-300 p-1">0</td><td className="border border-slate-300 p-1">0</td><td className="border border-slate-300 p-1">0</td><td className="border border-slate-300 p-1">1/16</td><td className="border border-slate-300 p-1 font-semibold">1/16</td></tr>
-              <tr><td className="border border-slate-300 p-1 font-semibold">P(Y)</td><td className="border border-slate-300 p-1">1/16</td><td className="border border-slate-300 p-1">3/16</td><td className="border border-slate-300 p-1">5/16</td><td className="border border-slate-300 p-1">7/16</td><td className="border border-slate-300 p-1">1</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">0</td><td className="border border-[var(--color-border-strong)] p-1">1/16</td><td className="border border-[var(--color-border-strong)] p-1">2/16</td><td className="border border-[var(--color-border-strong)] p-1">2/16</td><td className="border border-[var(--color-border-strong)] p-1">2/16</td><td className="border border-[var(--color-border-strong)] p-1 font-semibold">7/16</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">1</td><td className="border border-[var(--color-border-strong)] p-1">0</td><td className="border border-[var(--color-border-strong)] p-1">1/16</td><td className="border border-[var(--color-border-strong)] p-1">2/16</td><td className="border border-[var(--color-border-strong)] p-1">2/16</td><td className="border border-[var(--color-border-strong)] p-1 font-semibold">5/16</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">2</td><td className="border border-[var(--color-border-strong)] p-1">0</td><td className="border border-[var(--color-border-strong)] p-1">0</td><td className="border border-[var(--color-border-strong)] p-1">1/16</td><td className="border border-[var(--color-border-strong)] p-1">2/16</td><td className="border border-[var(--color-border-strong)] p-1 font-semibold">3/16</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">3</td><td className="border border-[var(--color-border-strong)] p-1">0</td><td className="border border-[var(--color-border-strong)] p-1">0</td><td className="border border-[var(--color-border-strong)] p-1">0</td><td className="border border-[var(--color-border-strong)] p-1">1/16</td><td className="border border-[var(--color-border-strong)] p-1 font-semibold">1/16</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1 font-semibold">P(Y)</td><td className="border border-[var(--color-border-strong)] p-1">1/16</td><td className="border border-[var(--color-border-strong)] p-1">3/16</td><td className="border border-[var(--color-border-strong)] p-1">5/16</td><td className="border border-[var(--color-border-strong)] p-1">7/16</td><td className="border border-[var(--color-border-strong)] p-1">1</td></tr>
             </tbody>
           </table>
           
           <p><strong>2. Moments:</strong></p>
           <M>{"E(X) = \\frac{14}{16} = \\boxed{0.875}, \\quad E(Y) = \\frac{34}{16} = \\boxed{2.125}"}</M>
           <M>{"V(X) = V(Y) = \\frac{220}{256} = \\boxed{0.859}"}</M>
-          <p className="text-sm text-slate-700">(Symétrie : min et max ont même variance)</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">(Symétrie : min et max ont même variance)</p>
           
           <p><strong>3. Courbe de régression X|Y:</strong></p>
           <M>{"E(X|Y=0) = 0, \\quad E(X|Y=1) = \\frac{1}{3}, \\quad E(X|Y=2) = \\frac{4}{5}, \\quad E(X|Y=3) = \\frac{9}{7}"}</M>

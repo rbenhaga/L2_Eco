@@ -48,7 +48,7 @@ export function RevisionCh1() {
             <TableCell><Math>{"\\frac{\\text{PIB nominal}}{\\text{PIB réel}} \\times 100"}</Math></TableCell>
           </TableRow>
         </Table>
-        <p className="mt-2 text-sm text-slate-700">Le déflateur mesure l'inflation. PIB réel = prix constants (pas courants !)</p>
+        <p className="mt-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>Le déflateur mesure l'inflation. PIB réel = prix constants (pas courants !)</p>
       </Section>
 
       <Section type="key" title="Classiques vs Keynésiens">
@@ -69,7 +69,7 @@ export function RevisionCh1() {
             <TableCell>Efficace à CT</TableCell>
           </TableRow>
         </Table>
-        <p className="mt-2 text-sm text-slate-700">Synthèse moderne : Keynésiens à CT, Classiques à MT/LT</p>
+        <p className="mt-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>Synthèse moderne : Keynésiens à CT, Classiques à MT/LT</p>
       </Section>
 
       <Section type="formule" title="Formules IS-LM">
@@ -84,7 +84,7 @@ export function RevisionCh1() {
         <FormulaBox label="Multiplicateur keynésien" highlight>
           {"k = \\frac{1}{1 - c_1}"}
         </FormulaBox>
-        <p className="text-sm text-slate-700">où <Math>{"c_1"}</Math> = propension marginale à consommer</p>
+        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>où <Math>{"c_1"}</Math> = propension marginale à consommer</p>
       </Section>
 
       <Section type="key" title="Propriétés des courbes">
@@ -134,7 +134,7 @@ export function RevisionCh1() {
       </Section>
 
       <section className="mb-16">
-        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-blue-50 text-blue-700">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md" style={{ background: 'var(--color-info-subtle)', color: 'var(--color-info)' }}>
           <CheckSquare className="w-4 h-4" /> Checklist Chapitre 1
         </span>
         <div className="grid md:grid-cols-2 gap-2">
@@ -146,9 +146,9 @@ export function RevisionCh1() {
             "Je sais expliquer l'effet d'éviction",
             "Je sais résoudre un système IS-LM",
           ].map((item, i) => (
-            <label key={i} className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-100/50 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
-              <span className="text-sm text-slate-800">{item}</span>
+            <label key={i} className="flex items-center gap-3 p-3 rounded-lg cursor-pointer" style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
+              <input type="checkbox" className="w-4 h-4 rounded" style={{ borderColor: 'var(--color-border-default)' }} />
+              <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>{item}</span>
             </label>
           ))}
         </div>

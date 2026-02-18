@@ -27,24 +27,47 @@ export function ChapterSelector({
             {onStartAll && (
                 <button
                     onClick={onStartAll}
-                    className="w-full p-6 sm:p-8 rounded-3xl border border-dashed border-slate-300 hover:border-slate-400 bg-white/40 hover:bg-white/60 transition-all group relative overflow-hidden"
+                    className="w-full p-6 sm:p-8 rounded-3xl border border-dashed transition-all group relative overflow-hidden"
+                    style={{
+                        borderColor: 'var(--color-border-default)',
+                        background: 'color-mix(in srgb, var(--color-bg-raised) 40%, transparent)',
+                    }}
                 >
                     <div className="flex items-center justify-between relative z-10">
                         <div className="flex items-center gap-6">
-                            <div className="w-14 h-14 rounded-2xl bg-slate-200 text-slate-700 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <div
+                                className="w-14 h-14 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"
+                                style={{
+                                    background: 'var(--color-bg-overlay)',
+                                    color: 'var(--color-text-secondary)',
+                                    boxShadow: 'var(--shadow-lg)',
+                                }}
+                            >
                                 <Play size={24} fill="currentColor" />
                             </div>
                             <div className="text-left">
-                                <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-1">
+                                <h3
+                                    className="text-xl font-bold transition-colors mb-1"
+                                    style={{ color: 'var(--color-text-primary)' }}
+                                >
                                     Toutes les questions
                                 </h3>
-                                <p className="text-sm text-slate-500 font-medium">
-                                    {totalQuestions} questions • Mode mélangé
+                                <p
+                                    className="text-sm font-medium"
+                                    style={{ color: 'var(--color-text-muted)' }}
+                                >
+                                    {totalQuestions} questions - Mode melange
                                 </p>
                             </div>
                         </div>
-                        <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-blue-600 group-hover:border-blue-500/30 transition-all">
-                            →
+                        <div
+                            className="w-10 h-10 rounded-full border flex items-center justify-center transition-all"
+                            style={{
+                                borderColor: 'var(--color-border-default)',
+                                color: 'var(--color-text-muted)',
+                            }}
+                        >
+                            &rarr;
                         </div>
                     </div>
                 </button>
@@ -59,30 +82,53 @@ export function ChapterSelector({
                         <button
                             key={chapter.id}
                             onClick={() => onSelectChapter(chapter.id)}
-                            className={`
-                p-6 rounded-3xl border text-left transition-all duration-300 group
-                ${isSelected
-                                    ? 'border-blue-500/50 bg-blue-50 ring-1 ring-blue-500/20'
-                                    : 'border-slate-200 bg-white/60 hover:bg-white/80 hover:border-slate-300'
+                            className="p-6 rounded-3xl border text-left transition-all duration-300 group"
+                            style={isSelected
+                                ? {
+                                    borderColor: 'color-mix(in srgb, var(--color-info) 50%, transparent)',
+                                    background: 'var(--color-info-subtle)',
+                                    boxShadow: '0 0 0 1px color-mix(in srgb, var(--color-info) 20%, transparent)',
                                 }
-              `}
+                                : {
+                                    borderColor: 'var(--color-border-default)',
+                                    background: 'color-mix(in srgb, var(--color-bg-raised) 60%, transparent)',
+                                }
+                            }
                         >
                             <div className="flex items-start justify-between mb-4">
                                 <div
-                                    className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform"
-                                    style={{ backgroundColor: chapter.color || '#3b82f6' }}
+                                    className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform"
+                                    style={{
+                                        backgroundColor: chapter.color || 'var(--color-info)',
+                                        color: 'var(--color-accent-foreground)',
+                                        boxShadow: 'var(--shadow-lg)',
+                                    }}
                                 >
                                     <BookOpen size={20} />
                                 </div>
-                                <div className={`text-xs font-bold px-2 py-1 rounded-lg ${isSelected ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500'}`}>
+                                <div
+                                    className="text-xs font-bold px-2 py-1 rounded-lg"
+                                    style={isSelected
+                                        ? { background: 'var(--color-info-subtle)', color: 'var(--color-info)' }
+                                        : { background: 'var(--color-bg-overlay)', color: 'var(--color-text-muted)' }
+                                    }
+                                >
                                     {chapter.questions.length} Q
                                 </div>
                             </div>
 
-                            <h3 className={`text-lg font-bold mb-2 ${isSelected ? 'text-blue-600' : 'text-slate-900'}`}>
+                            <h3
+                                className="text-lg font-bold mb-2"
+                                style={{ color: isSelected ? 'var(--color-info)' : 'var(--color-text-primary)' }}
+                            >
                                 {chapter.title}
                             </h3>
-                            <p className="text-sm text-slate-500 font-medium leading-relaxed">{chapter.subtitle}</p>
+                            <p
+                                className="text-sm font-medium leading-relaxed"
+                                style={{ color: 'var(--color-text-muted)' }}
+                            >
+                                {chapter.subtitle}
+                            </p>
                         </button>
                     );
                 })}

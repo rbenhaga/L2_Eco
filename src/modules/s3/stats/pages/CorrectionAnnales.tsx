@@ -16,18 +16,18 @@ interface ExerciseProps {
 function Exercise({ title, points, children, defaultOpen = false }: ExerciseProps) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="border border-slate-200 rounded-xl mb-4 overflow-hidden">
+    <div className="border border-[var(--color-border-default)] rounded-xl mb-4 overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between p-4 bg-slate-100/50 hover:bg-slate-100/80 transition-colors text-left"
+        className="w-full flex items-center justify-between p-4 bg-[var(--color-bg-overlay)]/50 hover:bg-[var(--color-bg-overlay)]/80 transition-colors text-left"
       >
         <div className="flex items-center gap-3">
-          {open ? <ChevronDown className="w-5 h-5 text-slate-600" /> : <ChevronRight className="w-5 h-5 text-slate-600" />}
-          <span className="font-semibold text-slate-900">{title}</span>
+          {open ? <ChevronDown className="w-5 h-5 text-[var(--color-text-secondary)]" /> : <ChevronRight className="w-5 h-5 text-[var(--color-text-secondary)]" />}
+          <span className="font-semibold text-[var(--color-text-primary)]">{title}</span>
         </div>
-        <span className="text-sm text-slate-600 bg-white px-2 py-1 rounded">{points} pts</span>
+        <span className="text-sm text-[var(--color-text-secondary)] bg-[var(--color-bg-raised)] px-2 py-1 rounded">{points} pts</span>
       </button>
-      {open && <div className="p-5 bg-white">{children}</div>}
+      {open && <div className="p-5 bg-[var(--color-bg-raised)]">{children}</div>}
     </div>
   );
 }
@@ -36,15 +36,15 @@ function Question({ num, question, children }: { num: string; question: React.Re
   return (
     <div className="mb-6 last:mb-0">
       <div className="flex items-start gap-3 mb-3">
-        <span className="shrink-0 w-7 h-7 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-medium">
+        <span className="shrink-0 w-7 h-7 bg-[var(--color-info-subtle)] text-[var(--color-info)] rounded-full flex items-center justify-center text-sm font-medium">
           {num}
         </span>
-        <div className="text-slate-900 font-medium pt-0.5">{question}</div>
+        <div className="text-[var(--color-text-primary)] font-medium pt-0.5">{question}</div>
       </div>
-      <div className="ml-10 p-4 bg-green-50 border border-green-200 rounded-lg">
+      <div className="ml-10 p-4 bg-[var(--color-success-subtle)] border border-[var(--color-success)] rounded-lg">
         <div className="flex items-start gap-2">
-          <CheckCircle className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
-          <div className="text-slate-800 space-y-2">{children}</div>
+          <CheckCircle className="w-5 h-5 text-[var(--color-success)] shrink-0 mt-0.5" />
+          <div className="text-[var(--color-text-primary)] space-y-2">{children}</div>
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@ function Question({ num, question, children }: { num: string; question: React.Re
 
 function Formula({ children }: { children: React.ReactNode }) {
   return (
-    <div className="my-3 p-3 bg-blue-50 border border-blue-200 rounded-lg text-center overflow-x-auto">
+    <div className="my-3 p-3 bg-[var(--color-info-subtle)] border border-[var(--color-info)] rounded-lg text-center overflow-x-auto">
       {children}
     </div>
   );
@@ -66,22 +66,22 @@ export function CorrectionAnnales() {
     <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-12">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 text-sm text-slate-600 mb-3">
+        <div className="inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] mb-3">
           <FileText className="w-4 h-4" />
           <span>Correction détaillée</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Annales Corrigées</h1>
-        <p className="text-slate-700 max-w-2xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4">Annales Corrigées</h1>
+        <p className="text-[var(--color-text-secondary)] max-w-2xl mx-auto">
           Corrections complètes et rigoureuses des examens 2023-2024 et 2024-2025 avec toutes les étapes de calcul.
         </p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-8 p-1 bg-slate-100/80 rounded-lg w-fit mx-auto">
+      <div className="flex gap-2 mb-8 p-1 bg-[var(--color-bg-overlay)]/80 rounded-lg w-fit mx-auto">
         <button
           onClick={() => setActiveYear('2024')}
           className={`px-4 py-2 rounded-md font-medium transition-colors ${
-            activeYear === '2024' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-700 hover:text-slate-900'
+            activeYear === '2024' ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
           }`}
         >
           2024-2025
@@ -89,7 +89,7 @@ export function CorrectionAnnales() {
         <button
           onClick={() => setActiveYear('2023')}
           className={`px-4 py-2 rounded-md font-medium transition-colors ${
-            activeYear === '2023' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-700 hover:text-slate-900'
+            activeYear === '2023' ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
           }`}
         >
           2023-2024
@@ -99,9 +99,9 @@ export function CorrectionAnnales() {
       {/* Contenu 2024-2025 */}
       {activeYear === '2024' && (
         <div>
-          <div className="bg-linear-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-xl mb-6">
+          <div className="bg-linear-to-r from-[var(--color-info)] to-[var(--color-accent)] text-[var(--color-bg-raised)] p-6 rounded-xl mb-6">
             <h2 className="text-2xl font-bold mb-2">Examen 2024-2025</h2>
-            <p className="text-blue-100">Session 1 · Durée 2h · 20 points</p>
+            <p className="text-[var(--color-info-subtle)]">Session 1 · Durée 2h · 20 points</p>
           </div>
 
           <Exercise title="Exercice I - QCM Théorique" points={3} defaultOpen={true}>
@@ -111,7 +111,7 @@ export function CorrectionAnnales() {
                 Une VA est une <strong>application</strong> qui à chaque élément e de l'univers Ω fait correspondre un réel :
               </p>
               <Formula><M>{"X: e \\in \\Omega \\to X(e) \\in \\mathbb{R}"}</M></Formula>
-              <p className="text-sm text-slate-700">⚠️ Ce n'est pas une "valeur numérique" (c'est l'image qui est numérique)</p>
+              <p className="text-sm text-[var(--color-text-secondary)]">⚠️ Ce n'est pas une "valeur numérique" (c'est l'image qui est numérique)</p>
             </Question>
 
             <Question num="2" question={<>Soit <M>{"f(x) = \\frac{3}{x^4}"}</M> pour x &gt; 1. Densité linéaire moyenne sur [2,4] :</>}>
@@ -162,7 +162,7 @@ export function CorrectionAnnales() {
           </Exercise>
 
           <Exercise title="Exercice II - Algèbre de Boole" points={2}>
-            <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+            <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
               <strong>Énoncé :</strong> Ω = {'{a, b, c, d, e}'}. Construire la plus petite algèbre de Boole contenant (a), (c,d), (a,b,c) et (c).
             </div>
             <Question num="1" question="Cardinal de F :">
@@ -178,7 +178,7 @@ export function CorrectionAnnales() {
           </Exercise>
 
           <Exercise title="Exercice III - Probabilités Conditionnelles (Urbanisme)" points={2}>
-            <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm overflow-x-auto">
+            <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm overflow-x-auto">
               <table className="w-full text-center">
                 <thead>
                   <tr className="border-b">
@@ -207,7 +207,7 @@ export function CorrectionAnnales() {
           </Exercise>
 
           <Exercise title="Exercice IV - VA Discrète 2D (Billetterie)" points={6}>
-            <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+            <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
               <strong>Contexte :</strong> 4 caisses, 2 clients consécutifs. X = nb clients caisse 1, Y = nb clients caisse 2.
             </div>
 
@@ -259,7 +259,7 @@ export function CorrectionAnnales() {
               <p className="text-sm">Calcul de Cov(X,Y) :</p>
               <Formula><M>{"Cov(X,Y) = E[XY] - E[X]E[Y] = \\frac{1}{8} - \\frac{1}{2} \\times \\frac{1}{2} = -\\frac{1}{8}"}</M></Formula>
               <Formula><M>{"\\rho_{XY} = \\frac{-1/8}{\\sqrt{3/8} \\times \\sqrt{3/8}} = \\frac{-1/8}{3/8} = -\\frac{1}{3} \\approx -0.333"}</M></Formula>
-              <p className="text-sm text-slate-700">⚠️ Corrélation négative : si X↑ alors Y↓ (logique !)</p>
+              <p className="text-sm text-[var(--color-text-secondary)]">⚠️ Corrélation négative : si X↑ alors Y↓ (logique !)</p>
             </Question>
 
             <Question num="10" question="Borne sup de P(Y ≥ 1) par Markov :">
@@ -271,7 +271,7 @@ export function CorrectionAnnales() {
           </Exercise>
 
           <Exercise title="Exercice V - VA Continue 2D" points={6}>
-            <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+            <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
               <strong>Énoncé :</strong> <M>{"f(x,y) = k(x+y)"}</M> sur D : y &lt; x &lt; y+1, 0 &lt; y &lt; 1
             </div>
 
@@ -324,13 +324,13 @@ export function CorrectionAnnales() {
       {/* Contenu 2023-2024 */}
       {activeYear === '2023' && (
         <div>
-          <div className="bg-linear-to-r from-emerald-600 to-teal-600 text-white p-6 rounded-xl mb-6">
+          <div className="bg-linear-to-r from-[var(--color-success)] to-[var(--color-success)] text-[var(--color-bg-raised)] p-6 rounded-xl mb-6">
             <h2 className="text-2xl font-bold mb-2">Examen 2023-2024</h2>
-            <p className="text-emerald-100">Session 1 · Durée 2h · 20 points</p>
+            <p className="text-[var(--color-success-subtle)]">Session 1 · Durée 2h · 20 points</p>
           </div>
 
           <Exercise title="Exercice I - Algèbre de Boole" points={2} defaultOpen={true}>
-            <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+            <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
               <strong>Énoncé :</strong> Ω = {'{a, b, c, d, e, f}'}. Construire la plus petite algèbre de Boole contenant (a), (a,c), (b,d,e) et (f).
             </div>
             <Question num="1" question="Cardinal de F :">
@@ -354,7 +354,7 @@ export function CorrectionAnnales() {
           </Exercise>
 
           <Exercise title="Exercice II - VA Continue" points={3}>
-            <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+            <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
               <strong>Énoncé :</strong> <M>{"f(x) = k e^{-(x-2)^2/2}"}</M> pour x &gt; 2, 0 ailleurs.
             </div>
 
@@ -382,7 +382,7 @@ export function CorrectionAnnales() {
           </Exercise>
 
           <Exercise title="Exercice III - Covariance et Variance" points={3}>
-            <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+            <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
               <strong>Données :</strong> E[X]=1, V[X]=2, E[Y]=2, V[Y]=3, E[Z]=1, V[Z]=5, Cov(X,Z)=1, Cov(X,Y)=1, Cov(Y,Z)=0
             </div>
 
@@ -411,14 +411,14 @@ export function CorrectionAnnales() {
           </Exercise>
 
           <Exercise title="Exercice IV - Loterie et Espérance" points={5}>
-            <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+            <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
               <strong>Contexte :</strong> Roue à 8 secteurs : 2 bleus (gagne), 4 blancs (perd), 2 rouges (rejoue une fois).
             </div>
 
             <Question num="1" question="P(gagner) = ?">
               <p><strong>Réponse : 0.3125</strong></p>
               <p className="text-sm mt-2">Arbre de probabilité :</p>
-              <div className="text-sm bg-white p-3 rounded border font-mono">
+              <div className="text-sm bg-[var(--color-bg-raised)] p-3 rounded border font-mono">
                 Premier tirage:<br/>
                 ├── Bleu (2/8 = 1/4) → GAGNE<br/>
                 ├── Blanc (4/8 = 1/2) → PERD<br/>
@@ -431,7 +431,7 @@ export function CorrectionAnnales() {
           </Exercise>
 
           <Exercise title="Exercice V - VA 2D Continue" points={5}>
-            <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+            <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
               <strong>Énoncé :</strong> <M>{"f(x,y) = kx \\cdot e^{-y}"}</M> sur D : y ≤ x, x ≥ 0, y ≥ x-5, y ≥ 0
             </div>
 
@@ -494,42 +494,42 @@ export function CorrectionAnnales() {
       )}
 
       {/* Récapitulatif des formules */}
-      <div className="mt-12 p-6 bg-linear-to-br from-gray-50 to-gray-100 rounded-xl border border-slate-200">
+      <div className="mt-12 p-6 bg-linear-to-br from-[var(--color-bg-overlay)] to-[var(--color-bg-raised)] rounded-xl border border-[var(--color-border-default)]">
         <div className="flex items-center gap-3 mb-4">
-          <Calculator className="w-6 h-6 text-slate-800" />
-          <h2 className="text-xl font-bold text-slate-900">Formules Essentielles</h2>
+          <Calculator className="w-6 h-6 text-[var(--color-text-primary)]" />
+          <h2 className="text-xl font-bold text-[var(--color-text-primary)]">Formules Essentielles</h2>
         </div>
         
         <div className="grid sm:grid-cols-2 gap-4 text-sm">
-          <div className="p-4 bg-white rounded-lg">
-            <h3 className="font-semibold text-slate-900 mb-2">Espérance & Variance</h3>
-            <ul className="space-y-1 text-slate-700">
+          <div className="p-4 bg-[var(--color-bg-raised)] rounded-lg">
+            <h3 className="font-semibold text-[var(--color-text-primary)] mb-2">Espérance & Variance</h3>
+            <ul className="space-y-1 text-[var(--color-text-secondary)]">
               <li>• E[aX + bY] = aE[X] + bE[Y]</li>
               <li>• V[aX + bY] = a²V[X] + b²V[Y] + 2ab·Cov(X,Y)</li>
               <li>• Cov(X,Y) = E[XY] - E[X]E[Y]</li>
             </ul>
           </div>
           
-          <div className="p-4 bg-white rounded-lg">
-            <h3 className="font-semibold text-slate-900 mb-2">Lois Usuelles</h3>
-            <ul className="space-y-1 text-slate-700">
+          <div className="p-4 bg-[var(--color-bg-raised)] rounded-lg">
+            <h3 className="font-semibold text-[var(--color-text-primary)] mb-2">Lois Usuelles</h3>
+            <ul className="space-y-1 text-[var(--color-text-secondary)]">
               <li>• Binomiale B(n,p) : E = np, V = np(1-p)</li>
               <li>• Poisson P(λ) : E = V = λ</li>
               <li>• Mode Binomiale : ⌊(n+1)p⌋</li>
             </ul>
           </div>
           
-          <div className="p-4 bg-white rounded-lg">
-            <h3 className="font-semibold text-slate-900 mb-2">Inégalités</h3>
-            <ul className="space-y-1 text-slate-700">
+          <div className="p-4 bg-[var(--color-bg-raised)] rounded-lg">
+            <h3 className="font-semibold text-[var(--color-text-primary)] mb-2">Inégalités</h3>
+            <ul className="space-y-1 text-[var(--color-text-secondary)]">
               <li>• Markov : P(X ≥ t) ≤ E[X]/t</li>
               <li>• Bienaymé : P(|X-E[X]| ≥ ε) ≤ V[X]/ε²</li>
             </ul>
           </div>
           
-          <div className="p-4 bg-white rounded-lg">
-            <h3 className="font-semibold text-slate-900 mb-2">VA 2D</h3>
-            <ul className="space-y-1 text-slate-700">
+          <div className="p-4 bg-[var(--color-bg-raised)] rounded-lg">
+            <h3 className="font-semibold text-[var(--color-text-primary)] mb-2">VA 2D</h3>
+            <ul className="space-y-1 text-[var(--color-text-secondary)]">
               <li>• Marginale : f_X(x) = ∫f(x,y)dy</li>
               <li>• Conditionnelle : f(Y|X) = f(x,y)/f_X(x)</li>
               <li>• ρ = Cov(X,Y)/(σ_X·σ_Y)</li>
@@ -539,7 +539,7 @@ export function CorrectionAnnales() {
       </div>
 
       {/* Footer */}
-      <div className="mt-8 text-center text-sm text-slate-600">
+      <div className="mt-8 text-center text-sm text-[var(--color-text-secondary)]">
         <p>Bonne chance pour ton examen ! 🍀</p>
       </div>
     </main>

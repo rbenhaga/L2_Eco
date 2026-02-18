@@ -1,55 +1,52 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 
 interface SidebarContextType {
-    isPinned: boolean;
-    isVisible: boolean;
-    isHovered: boolean;
-    isMinimized: boolean;
-    isMobileOpen: boolean; // ← Mobile drawer state
-    setIsPinned: (pinned: boolean) => void;
+    // Core states
+    isExpanded: boolean;         // Visual state: rail (false) or expanded (true)
+    isPinned: boolean;           // Lock state: stays expanded when true
+    isHovered: boolean;          // Hover state
+    isMobileOpen: boolean;       // Mobile drawer state
+
+    // Derived state for convenience  
+    isVisible: boolean;          // Always true on desktop (rail always shows)
+
+    // Setters
     setIsHovered: (hovered: boolean) => void;
-    setIsMinimized: (minimized: boolean) => void;
-    setIsMobileOpen: (open: boolean) => void; // ← Mobile drawer setter
-    togglePin: () => void;
-    toggleMinimize: () => void;
-    toggleMobile: () => void; // ← Mobile drawer toggle
+    setIsMobileOpen: (open: boolean) => void;
+
+    // Actions
+    togglePin: () => void;       // Click to pin/unpin (lock expanded state)
+    toggleMobile: () => void;    // Toggle mobile drawer
 }
 
 const SidebarContext = createContext<SidebarContextType | null>(null);
 
+export const SIDEBAR_RAIL_WIDTH = 64;
+export const SIDEBAR_EXPANDED_WIDTH = 280;  // Matches ModuleSidebar
+
 export function SidebarProvider({ children }: { children: ReactNode }) {
+    // Pin state persisted - determines if sidebar stays expanded
     const [isPinned, setIsPinnedState] = useState(() => {
         const saved = localStorage.getItem('sidebar-pinned');
-        return saved !== null ? saved === 'true' : true;
-    });
-    const [isMinimized, setIsMinimizedState] = useState(() => {
-        const saved = localStorage.getItem('sidebar-minimized');
+        // Default to NOT pinned (rail mode)
         return saved !== null ? saved === 'true' : false;
     });
+
     const [isHovered, setIsHovered] = useState(false);
-    const [isVisible, setIsVisible] = useState(isPinned);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+    // Expanded = pinned OR hovered
+    const isExpanded = isPinned || isHovered;
+
+    // Desktop sidebar always visible (rail mode minimum)
+    const isVisible = true;
 
     // Persist pin state
     useEffect(() => {
         localStorage.setItem('sidebar-pinned', String(isPinned));
     }, [isPinned]);
 
-    // Persist minimized state
-    useEffect(() => {
-        localStorage.setItem('sidebar-minimized', String(isMinimized));
-    }, [isMinimized]);
-
-    // Update visibility based on hover and pin state
-    useEffect(() => {
-        if (isPinned) {
-            setIsVisible(true);
-        } else {
-            setIsVisible(isHovered);
-        }
-    }, [isHovered, isPinned]);
-
-    // Close mobile drawer on route change or resize
+    // Close mobile drawer on resize
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
@@ -72,24 +69,9 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
         };
     }, [isMobileOpen]);
 
-    const setIsPinned = useCallback((pinned: boolean) => {
-        setIsPinnedState(pinned);
-        if (!pinned) {
-            setIsVisible(false);
-        }
-    }, []);
-
     const togglePin = useCallback(() => {
-        setIsPinned(!isPinned);
-    }, [isPinned, setIsPinned]);
-
-    const setIsMinimized = useCallback((minimized: boolean) => {
-        setIsMinimizedState(minimized);
+        setIsPinnedState(prev => !prev);
     }, []);
-
-    const toggleMinimize = useCallback(() => {
-        setIsMinimized(!isMinimized);
-    }, [isMinimized, setIsMinimized]);
 
     const toggleMobile = useCallback(() => {
         setIsMobileOpen(prev => !prev);
@@ -97,17 +79,14 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
 
     return (
         <SidebarContext.Provider value={{
+            isExpanded,
             isPinned,
-            isVisible,
             isHovered,
-            isMinimized,
             isMobileOpen,
-            setIsPinned,
+            isVisible,
             setIsHovered,
-            setIsMinimized,
             setIsMobileOpen,
             togglePin,
-            toggleMinimize,
             toggleMobile,
         }}>
             {children}

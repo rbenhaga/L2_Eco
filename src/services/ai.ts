@@ -158,12 +158,6 @@ async function apiRequest<T>(
         headers['Authorization'] = `Bearer ${token}`;
     }
 
-    // Add internal API key if configured (for same-server security)
-    const internalApiKey = import.meta.env.VITE_AI_INTERNAL_API_KEY;
-    if (internalApiKey) {
-        headers['X-API-Key'] = internalApiKey;
-    }
-
     const response = await fetch(`${API_URL}${endpoint}`, {
         method,
         headers,

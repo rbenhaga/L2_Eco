@@ -21,15 +21,19 @@ export function IntuitionPanel({ sections }: IntuitionPanelProps) {
       {sections.map((section) => (
         <div 
           key={section.title} 
-          className="bg-slate-100/50 rounded-xl p-5 border border-gray-100"
+          className="rounded-xl p-5"
+          style={{
+            background: 'var(--color-bg-overlay)',
+            border: '1px solid var(--color-border-default)',
+          }}
         >
           {/* Header */}
-          <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-200">
+          <div className="flex items-center gap-2 mb-4 pb-3" style={{ borderBottom: '1px solid var(--color-border-default)' }}>
             <div 
               className="w-3 h-3 rounded-full" 
               style={{ backgroundColor: section.color }} 
             />
-            <h4 className="font-semibold text-slate-900 text-sm">
+            <h4 className="font-semibold text-sm" style={{ color: 'var(--color-text-primary)' }}>
               {section.title}
             </h4>
           </div>
@@ -40,11 +44,14 @@ export function IntuitionPanel({ sections }: IntuitionPanelProps) {
               <div key={i} className="flex gap-3">
                 <span 
                   className="shrink-0 w-5 h-5 rounded-full text-xs font-medium flex items-center justify-center"
-                  style={{ backgroundColor: `${section.color}20`, color: section.color }}
+                  style={{
+                    backgroundColor: `color-mix(in srgb, ${section.color} 20%, transparent)`,
+                    color: section.color,
+                  }}
                 >
                   {i + 1}
                 </span>
-                <div className="flex-1 text-sm text-slate-800 leading-relaxed">
+                <div className="flex-1 text-sm leading-relaxed" style={{ color: 'var(--color-text-primary)' }}>
                   {step.text}
                   {step.formula && (
                     <div className="mt-1">

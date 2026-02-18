@@ -156,7 +156,7 @@ export function Methodes() {
         <FormulaBox label="Indice de Lerner" highlight>
           {"L = \\frac{P - Cm}{P} = \\frac{1}{|\\varepsilon|}"}
         </FormulaBox>
-        <p className="text-sm text-slate-700">L = 0 : CPP | L → 1 : Monopole pur</p>
+        <p className="text-sm text-[var(--color-text-secondary)]">L = 0 : CPP | L → 1 : Monopole pur</p>
       </Section>
 
       <Section type="formule" title="Méthode 7 : Oligopole de Cournot">
@@ -222,7 +222,7 @@ export function Methodes() {
             <TableCell>Nul</TableCell>
           </TableRow>
         </Table>
-        <p className="text-sm text-slate-600 mt-4">Relation : Q<sub>m</sub> {'<'} Q<sub>c</sub> {'<'} Q<sub>cpp</sub> et P<sub>m</sub> {'>'} P<sub>c</sub> {'>'} P<sub>cpp</sub></p>
+        <p className="text-sm text-[var(--color-text-secondary)] mt-4">Relation : Q<sub>m</sub> {'<'} Q<sub>c</sub> {'<'} Q<sub>cpp</sub> et P<sub>m</sub> {'>'} P<sub>c</sub> {'>'} P<sub>cpp</sub></p>
       </Section>
     </main>
   );

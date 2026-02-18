@@ -11,7 +11,7 @@ interface WordHighlighterProps {
 }
 
 /**
- * Composant pour afficher le texte avec surlignage mot par mot synchronisé
+ * Composant pour afficher le texte avec surlignage mot par mot synchronise
  */
 export function WordHighlighter({
   segment,
@@ -21,7 +21,7 @@ export function WordHighlighter({
   className = '',
 }: WordHighlighterProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   // Cast for useWordSynchronization which expects HTMLElement
   const syncRef = containerRef as React.RefObject<HTMLElement>;
 
@@ -43,7 +43,8 @@ export function WordHighlighter({
   if (!segment.words.length) {
     return (
       <div
-        className={`text-center p-8 text-gray-500 ${className}`}
+        className={`text-center p-8 ${className}`}
+        style={{ color: 'var(--color-text-muted)' }}
       >
         <p>Aucun contenu disponible pour ce segment</p>
       </div>
@@ -64,18 +65,21 @@ export function WordHighlighter({
             key={idx}
             data-word-index={idx}
             onClick={() => handleWordClick(idx)}
-            className={`
-              inline-block cursor-pointer transition-all duration-150
-              px-1 py-0.5 rounded mx-0.5 my-0.5
-              ${
-                isActive
-                  ? 'bg-yellow-300 font-semibold scale-110 shadow-sm text-gray-900'
-                  : 'hover:bg-gray-100 text-gray-800'
+            className="inline-block cursor-pointer transition-all duration-150 px-1 py-0.5 rounded mx-0.5 my-0.5"
+            style={isActive
+              ? {
+                background: 'var(--color-warning-subtle)',
+                color: 'var(--color-text-primary)',
+                fontWeight: 600,
+                transform: 'scale(1.1)',
+                boxShadow: 'var(--shadow-sm)',
+                transformOrigin: 'center',
               }
-            `}
-            style={{
-              transformOrigin: 'center',
-            }}
+              : {
+                color: 'var(--color-text-primary)',
+                transformOrigin: 'center',
+              }
+            }
           >
             {word.word}
           </span>

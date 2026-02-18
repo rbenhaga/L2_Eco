@@ -30,7 +30,7 @@ export function ProgrammeSection({ title, subjects, delay = 0 }: ProgrammeSectio
       transition={{ delay }}
     >
       <div
-        className="rounded-xl bg-white p-8"
+        className="rounded-xl bg-[var(--color-bg-raised)] p-8"
         style={{
           border: "1px solid var(--color-border-default)",
           boxShadow: "var(--shadow-sm)",

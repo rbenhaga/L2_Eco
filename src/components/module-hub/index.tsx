@@ -17,6 +17,7 @@ import { ModuleStatsCards } from './components/ModuleStatsCards';
 import { TDList, QCMList, AnnalesList } from './components/ContentLists';
 import type { ModuleHubProps, ContentType } from './types';
 import { PaywallModal } from '../PaywallModal';
+import { DEFAULT_SITE_CONFIG, type SiteConfig } from '../../types/siteConfig';
 
 const QCMViewer = lazy(() => import('./viewers/QCMViewer').then(m => ({ default: m.QCMViewer })));
 const TDViewer = lazy(() => import('./viewers/TDViewer').then(m => ({ default: m.TDViewer })));
@@ -27,6 +28,23 @@ const RESOURCE_WEIGHTS: Record<ResourceType, number> = {
   qcm: 0.3,
   annale: 0.8,
 };
+const COURSE_PROGRESS_WEIGHTS = {
+  scroll: 0.8,
+  time: 0.2,
+} as const;
+
+function getChapterCourseProgressPercent(
+  scrollProgress: number,
+  timeSpentSeconds: number,
+  isReadComplete: boolean
+): number {
+  if (isReadComplete) return 100;
+  const safeScroll = Math.max(0, Math.min(100, Math.floor(scrollProgress)));
+  const timePct = Math.max(0, Math.min(100, Math.floor((timeSpentSeconds / (15 * 60)) * 100)));
+  return Math.max(0, Math.min(100, Math.floor(
+    safeScroll * COURSE_PROGRESS_WEIGHTS.scroll + timePct * COURSE_PROGRESS_WEIGHTS.time
+  )));
+}
 
 function ViewerLoading() {
   return (
@@ -66,6 +84,8 @@ export default function ModuleHub({
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [lockedContentTitle, setLockedContentTitle] = useState('ce contenu');
   const [, setLastActionTick] = useState(0);
+  const [siteConfig, setSiteConfig] = useState<SiteConfig>(DEFAULT_SITE_CONFIG);
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
   // Get real progress data - MUST be called before any conditional returns
   const chapterIds = chapters.map(ch => ch.id);
@@ -80,6 +100,26 @@ export default function ModuleHub({
 
   // All hooks must be called before any conditional returns
   useVideoProgress(moduleId);
+
+  useEffect(() => {
+    let mounted = true;
+    fetch(`${API_URL}/api/site-config`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!mounted || !data) return;
+        setSiteConfig({
+          courseBadges: data.courseBadges || DEFAULT_SITE_CONFIG.courseBadges,
+          notifications: Array.isArray(data.notifications) ? data.notifications : [],
+        });
+      })
+      .catch(() => {
+        if (mounted) setSiteConfig(DEFAULT_SITE_CONFIG);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [API_URL]);
   
   useEffect(() => {
     if (tabParam && ['cours', 'td', 'qcm', 'annales'].includes(tabParam)) {
@@ -148,8 +188,15 @@ export default function ModuleHub({
     return (progress?.timeSpent ?? 0) > 0 || (progress?.scrollProgress ?? 0) > 0;
   });
   const startChapter = isFreeTier ? freeChapter : activeChapter;
+  const startChapterProgress = startChapter
+    ? getChapterCourseProgressPercent(
+      getChapterProgress(startChapter.id)?.scrollProgress ?? 0,
+      getChapterProgress(startChapter.id)?.timeSpent ?? 0,
+      getChapterProgress(startChapter.id)?.isReadComplete ?? false,
+    )
+    : 0;
   const startButtonLabel = startChapter
-    ? `${hasModuleProgress ? 'Reprendre' : 'Commencer'} le cours ${startChapter.number}`
+    ? `${hasModuleProgress ? 'Continuer' : 'Commencer'} le cours ${startChapter.number}${hasModuleProgress ? ` (${startChapterProgress}%)` : ''}`
     : 'Commencer le cours';
   const startDetailText = startChapter
     ? `${hasModuleProgress ? 'Continuer' : 'Commencer'} le cours ${startChapter.number} - ${startChapter.title}`
@@ -255,6 +302,17 @@ export default function ModuleHub({
   const chapterDataList: ChapterData[] = chapters.map((ch, index) => {
     const progress = getChapterProgress(ch.id);
     const isCompleted = progress?.isCompleted ?? false;
+    const chapterProgressPercent = getChapterCourseProgressPercent(
+      progress?.scrollProgress ?? 0,
+      progress?.timeSpent ?? 0,
+      progress?.isReadComplete ?? false
+    );
+    const isInProgress = !isCompleted && chapterProgressPercent > 0;
+    const chapterSlug = ch.path.split('/').filter(Boolean).pop() || ch.id;
+    const courseBadgeKey = `${baseRoute.replace(/^\//, '').replace('/', ':')}:${chapterSlug}`;
+    const configuredBadge = siteConfig.courseBadges[courseBadgeKey];
+    const isComingSoonByContent = /a venir|à venir/i.test(ch.description || '');
+    const badge = configuredBadge || (isComingSoonByContent ? 'soon' : '');
 
     return {
       id: ch.id,
@@ -271,6 +329,9 @@ export default function ModuleHub({
       isLocked: isFreeTier && index > 0,
       icon: ch.icon,
       accentColor: ch.iconColor,
+      badge: badge === 'new' || badge === 'soon' ? badge : undefined,
+      progressPercent: chapterProgressPercent,
+      isInProgress,
     };
   });
 
@@ -344,6 +405,7 @@ export default function ModuleHub({
           title={title}
           description={description}
           chaptersCount={totalChapters}
+          completedCoursesCount={completedChapters}
           totalDuration={String(totalMinutes)}
           todoCount={Math.max(0, totalUnits - completionUnits)}
           moduleId={moduleId}
@@ -376,10 +438,10 @@ export default function ModuleHub({
             >
               <div className="min-w-0">
                 <p className="text-sm sm:text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>
-                  {lockedItemsCount}{' contenus Premium verrouillés'}
+                  {lockedItemsCount}{' contenus Premium verrouilles'}
                 </p>
                 <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>
-                  {"Continue sans interruption avec l'accès complet aux cours, TD, QCM et annales."}
+                  {"Continue sans interruption avec l'acces complet aux cours, TD, QCM et annales."}
                 </p>
               </div>
               <motion.button

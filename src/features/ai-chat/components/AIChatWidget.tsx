@@ -1,11 +1,11 @@
 /**
- * AI Chat Widget - "Οἶκο" (Oiko)
- * 
+ * AI Chat Widget - "Oiko"
+ *
  * Clean ChatGPT-style chat interface for students.
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { Send, Loader2, X, AlertCircle, Bot, User, RotateCcw } from 'lucide-react';
+import { Send, Loader2, X, AlertCircle, Bot, User, RotateCcw, Maximize2, Minimize2 } from 'lucide-react';
 import { getAuth } from 'firebase/auth';
 import {
     sendChatMessage,
@@ -38,21 +38,24 @@ interface Message {
 function UserAvatar() {
     const auth = getAuth();
     const user = auth.currentUser;
-    
+
     if (user?.photoURL) {
         return (
-            <img 
-                src={user.photoURL} 
+            <img
+                src={user.photoURL}
                 alt="Vous"
                 referrerPolicy="no-referrer"
                 className="shrink-0 w-8 h-8 rounded-full object-cover"
             />
         );
     }
-    
+
     return (
-        <div className="shrink-0 w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
-            <User className="w-4 h-4 text-slate-500" />
+        <div
+            className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+            style={{ background: 'var(--color-bg-overlay)' }}
+        >
+            <User className="w-4 h-4" style={{ color: 'var(--color-text-muted)' }} />
         </div>
     );
 }
@@ -63,6 +66,10 @@ function UserAvatar() {
 
 export function AIChatWidget() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [isDesktop, setIsDesktop] = useState(() =>
+        typeof window !== 'undefined' ? window.matchMedia('(min-width: 1024px)').matches : false
+    );
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -95,7 +102,7 @@ export function AIChatWidget() {
 
         const nextSpace = fullContent.indexOf(' ', currentLength + 1);
         const chunkEnd = nextSpace === -1 ? fullContent.length : nextSpace + 1;
-        
+
         const timer = setTimeout(() => {
             if (streamingRef.current.cancel) return;
             setMessages(prev => prev.map(m =>
@@ -125,6 +132,14 @@ export function AIChatWidget() {
             inputRef.current?.focus();
         }
     }, [isOpen]);
+
+    useEffect(() => {
+        const media = window.matchMedia('(min-width: 1024px)');
+        const onChange = (event: MediaQueryListEvent) => setIsDesktop(event.matches);
+        setIsDesktop(media.matches);
+        media.addEventListener('change', onChange);
+        return () => media.removeEventListener('change', onChange);
+    }, []);
 
     const handleSend = async () => {
         if (!input.trim() || isLoading) return;
@@ -180,11 +195,11 @@ export function AIChatWidget() {
             console.error('Chat error:', error);
 
             if (error instanceof RateLimitError) {
-                setError(`Limite atteinte. Réessayez dans ${error.retryAfter}s.`);
+                setError(`Limite atteinte. Reessayez dans ${error.retryAfter}s.`);
             } else if (error instanceof ServiceUnavailableError) {
                 setError('Service temporairement indisponible.');
             } else {
-                setError('Une erreur est survenue. Veuillez réessayer.');
+                setError('Une erreur est survenue. Veuillez reessayer.');
             }
         } finally {
             setIsLoading(false);
@@ -201,8 +216,16 @@ export function AIChatWidget() {
     if (!isOpen) {
         return (
             <button
-                onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full p-4 shadow-lg transition-all hover:scale-105 z-50"
+                onClick={() => {
+                    setIsOpen(true);
+                    setIsExpanded(false);
+                }}
+                className="fixed bottom-24 right-4 sm:right-6 lg:bottom-6 rounded-full p-4 transition-all hover:scale-105 z-[70]"
+                style={{
+                    background: 'var(--color-accent)',
+                    color: 'var(--color-accent-foreground)',
+                    boxShadow: 'var(--shadow-lg)',
+                }}
                 aria-label="Ouvrir Oiko"
             >
                 <Bot className="w-6 h-6" />
@@ -211,19 +234,73 @@ export function AIChatWidget() {
     }
 
     return (
-        <div className="fixed bottom-6 right-6 w-[380px] h-[550px] bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] flex flex-col z-50 border border-black/5 overflow-hidden">
+        <>
+        {isExpanded && (
+            <div
+                className="fixed z-50"
+                style={{
+                    background: 'color-mix(in srgb, var(--color-text-primary) 16%, transparent)',
+                    left: isDesktop ? 'var(--sidebar-width, 0px)' : '0',
+                    top: isDesktop ? '56px' : '0',
+                    width: isDesktop ? 'calc(100vw - var(--sidebar-width, 0px))' : '100vw',
+                    height: isDesktop ? 'calc(100vh - 56px)' : '100vh',
+                }}
+                onClick={() => setIsExpanded(false)}
+            />
+        )}
+        <div
+            className={`fixed rounded-2xl flex flex-col z-[70] overflow-hidden transition-all duration-200 ${
+                isExpanded ? '' : 'bottom-24 right-3 sm:right-6 lg:bottom-6 w-[min(94vw,380px)] h-[min(76vh,550px)]'
+            }`}
+            style={{
+                background: 'var(--color-bg-raised)',
+                boxShadow: 'var(--shadow-xl)',
+                border: '1px solid color-mix(in srgb, var(--color-text-primary) 5%, transparent)',
+                ...(isExpanded
+                    ? {
+                        left: isDesktop
+                            ? 'calc(var(--sidebar-width, 0px) + ((100vw - var(--sidebar-width, 0px)) / 2))'
+                            : '50%',
+                        top: isDesktop ? 'calc(56px + ((100vh - 56px) / 2))' : '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: isDesktop ? 'min(92vw, 980px)' : 'min(94vw, 980px)',
+                        maxWidth: isDesktop ? 'calc(100vw - var(--sidebar-width, 0px) - 32px)' : 'calc(100vw - 24px)',
+                        height: isDesktop ? 'min(88vh, 760px)' : 'min(92vh, 760px)',
+                        maxHeight: isDesktop ? 'calc(100vh - 56px - 24px)' : 'calc(100vh - 24px)',
+                    }
+                    : {}),
+            }}
+        >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-black/5 bg-gradient-to-r from-indigo-50 to-white">
+            <div
+                className="flex items-center justify-between px-4 py-3 border-b"
+                style={{
+                    borderColor: 'color-mix(in srgb, var(--color-text-primary) 5%, transparent)',
+                    background: 'linear-gradient(to right, var(--color-accent-subtle), var(--color-bg-raised))',
+                }}
+            >
                 <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
-                        <Bot className="w-5 h-5 text-indigo-500" />
+                    <div
+                        className="w-9 h-9 rounded-full flex items-center justify-center"
+                        style={{ background: 'linear-gradient(to bottom right, var(--color-accent-subtle), color-mix(in srgb, var(--callout-formula-text) 15%, transparent))' }}
+                    >
+                        <Bot className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
                     </div>
                     <div>
-                        <h3 className="font-semibold text-slate-900 text-sm">Οἶκο</h3>
-                        <p className="text-xs text-slate-500">Assistant pédagogique</p>
+                        <h3 className="font-semibold text-sm" style={{ color: 'var(--color-text-primary)' }}>Oiko</h3>
+                        <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Assistant pedagogique</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-1">
+                    <button
+                        onClick={() => setIsExpanded((prev) => !prev)}
+                        className="p-2 rounded-lg transition-colors"
+                        style={{ color: 'var(--color-text-muted)' }}
+                        title={isExpanded ? 'Reduire' : 'Agrandir'}
+                        aria-label={isExpanded ? 'Reduire la fenetre du chatbot' : 'Agrandir la fenetre du chatbot'}
+                    >
+                        {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                    </button>
                     {/* New Conversation Button */}
                     {messages.length > 0 && (
                         <button
@@ -233,7 +310,8 @@ export function AIChatWidget() {
                                 streamingRef.current.cancel = true;
                                 setStreamingMessageId(null);
                             }}
-                            className="p-2 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                            className="p-2 rounded-lg transition-colors"
+                            style={{ color: 'var(--color-text-muted)' }}
                             title="Nouvelle conversation"
                             aria-label="Nouvelle conversation"
                         >
@@ -241,8 +319,12 @@ export function AIChatWidget() {
                         </button>
                     )}
                     <button
-                        onClick={() => setIsOpen(false)}
-                        className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                        onClick={() => {
+                            setIsOpen(false);
+                            setIsExpanded(false);
+                        }}
+                        className="p-2 rounded-lg transition-colors"
+                        style={{ color: 'var(--color-text-muted)' }}
                         aria-label="Fermer"
                     >
                         <X className="w-5 h-5" />
@@ -251,15 +333,18 @@ export function AIChatWidget() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#FAFBFF]">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ background: 'var(--color-bg-overlay)' }}>
                 {messages.length === 0 && (
                     <div className="text-center py-12">
-                        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
-                            <Bot className="w-8 h-8 text-indigo-500" />
+                        <div
+                            className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+                            style={{ background: 'linear-gradient(to bottom right, var(--color-accent-subtle), color-mix(in srgb, var(--callout-formula-text) 15%, transparent))' }}
+                        >
+                            <Bot className="w-8 h-8" style={{ color: 'var(--color-accent)' }} />
                         </div>
-                        <h4 className="font-medium text-slate-900 mb-1">Bonjour ! Je suis Οἶκο</h4>
-                        <p className="text-sm text-slate-500 max-w-[240px] mx-auto">
-                            Posez-moi vos questions sur le cours, je suis là pour vous aider.
+                        <h4 className="font-medium mb-1" style={{ color: 'var(--color-text-primary)' }}>Bonjour ! Je suis Oiko</h4>
+                        <p className="text-sm max-w-[240px] mx-auto" style={{ color: 'var(--color-text-muted)' }}>
+                            Posez-moi vos questions sur le cours, je suis la pour vous aider.
                         </p>
                     </div>
                 )}
@@ -268,8 +353,11 @@ export function AIChatWidget() {
                     <div key={message.id} className="flex gap-3">
                         {/* Avatar */}
                         {message.role === 'assistant' ? (
-                            <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
-                                <Bot className="w-4 h-4 text-indigo-500" />
+                            <div
+                                className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                                style={{ background: 'linear-gradient(to bottom right, var(--color-accent-subtle), color-mix(in srgb, var(--callout-formula-text) 15%, transparent))' }}
+                            >
+                                <Bot className="w-4 h-4" style={{ color: 'var(--color-accent)' }} />
                             </div>
                         ) : (
                             <UserAvatar />
@@ -277,21 +365,34 @@ export function AIChatWidget() {
 
                         {/* Message content */}
                         <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium text-slate-500 mb-1">
-                                {message.role === 'assistant' ? 'Οἶκο' : 'Vous'}
+                            <p className="text-xs font-medium mb-1" style={{ color: 'var(--color-text-muted)' }}>
+                                {message.role === 'assistant' ? 'Oiko' : 'Vous'}
                             </p>
-                            <div className={`rounded-2xl px-4 py-3 ${
-                                message.role === 'user'
-                                    ? 'bg-indigo-600 text-white'
-                                    : 'bg-white border border-black/5 text-slate-700 shadow-sm'
-                            }`}>
+                            <div
+                                className="rounded-2xl px-4 py-3"
+                                style={message.role === 'user'
+                                    ? {
+                                        background: 'var(--color-accent)',
+                                        color: 'var(--color-accent-foreground)',
+                                    }
+                                    : {
+                                        background: 'var(--color-bg-raised)',
+                                        color: 'var(--color-text-secondary)',
+                                        border: '1px solid color-mix(in srgb, var(--color-text-primary) 5%, transparent)',
+                                        boxShadow: 'var(--shadow-sm)',
+                                    }
+                                }
+                            >
                                 {message.role === 'assistant' ? (
                                     <div className="text-sm leading-relaxed">
-                                        <MarkdownMessage 
+                                        <MarkdownMessage
                                             content={message.displayedContent ?? message.content}
                                         />
                                         {message.isStreaming && (
-                                            <span className="inline-block w-1.5 h-4 ml-0.5 bg-indigo-500 animate-pulse rounded-sm" />
+                                            <span
+                                                className="inline-block w-1.5 h-4 ml-0.5 animate-pulse rounded-sm"
+                                                style={{ background: 'var(--color-accent)' }}
+                                            />
                                         )}
                                     </div>
                                 ) : (
@@ -307,16 +408,26 @@ export function AIChatWidget() {
                 {/* Loading */}
                 {isLoading && (
                     <div className="flex gap-3">
-                        <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
-                            <Bot className="w-4 h-4 text-indigo-500" />
+                        <div
+                            className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                            style={{ background: 'linear-gradient(to bottom right, var(--color-accent-subtle), color-mix(in srgb, var(--callout-formula-text) 15%, transparent))' }}
+                        >
+                            <Bot className="w-4 h-4" style={{ color: 'var(--color-accent)' }} />
                         </div>
                         <div className="flex-1">
-                            <p className="text-xs font-medium text-slate-500 mb-1">Οἶκο</p>
-                            <div className="bg-white border border-black/5 rounded-2xl px-4 py-3 shadow-sm">
+                            <p className="text-xs font-medium mb-1" style={{ color: 'var(--color-text-muted)' }}>Oiko</p>
+                            <div
+                                className="rounded-2xl px-4 py-3"
+                                style={{
+                                    background: 'var(--color-bg-raised)',
+                                    border: '1px solid color-mix(in srgb, var(--color-text-primary) 5%, transparent)',
+                                    boxShadow: 'var(--shadow-sm)',
+                                }}
+                            >
                                 <div className="flex items-center gap-1">
-                                    <span className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                    <span className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                    <span className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                    <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: 'var(--color-accent)', animationDelay: '0ms' }} />
+                                    <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: 'var(--color-accent)', animationDelay: '150ms' }} />
+                                    <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: 'var(--color-accent)', animationDelay: '300ms' }} />
                                 </div>
                             </div>
                         </div>
@@ -328,14 +439,26 @@ export function AIChatWidget() {
 
             {/* Error */}
             {error && (
-                <div className="mx-4 mb-2 p-3 bg-red-50 border border-red-100 rounded-xl flex items-start gap-2">
-                    <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
-                    <p className="text-sm text-red-600">{error}</p>
+                <div
+                    className="mx-4 mb-2 p-3 rounded-xl flex items-start gap-2"
+                    style={{
+                        background: 'var(--color-error-subtle)',
+                        border: '1px solid color-mix(in srgb, var(--color-error) 20%, transparent)',
+                    }}
+                >
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" style={{ color: 'var(--color-error)' }} />
+                    <p className="text-sm" style={{ color: 'var(--color-error)' }}>{error}</p>
                 </div>
             )}
 
             {/* Input */}
-            <div className="p-4 border-t border-black/5 bg-white">
+            <div
+                className="p-4 border-t"
+                style={{
+                    borderColor: 'color-mix(in srgb, var(--color-text-primary) 5%, transparent)',
+                    background: 'var(--color-bg-raised)',
+                }}
+            >
                 <div className="flex gap-2">
                     <textarea
                         ref={inputRef}
@@ -343,14 +466,24 @@ export function AIChatWidget() {
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyDown}
                         placeholder="Posez votre question..."
-                        className="flex-1 resize-none px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:bg-white min-h-[44px] max-h-32 text-sm transition-colors"
+                        className="flex-1 resize-none px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:border-transparent min-h-[44px] max-h-32 text-sm transition-colors"
+                        style={{
+                            borderColor: 'var(--color-border-default)',
+                            background: 'var(--color-bg-overlay)',
+                            color: 'var(--color-text-primary)',
+                            /* focus ring via CSS variable not easily done inline; kept as functional */
+                        }}
                         rows={1}
                         disabled={isLoading}
                     />
                     <button
                         onClick={handleSend}
                         disabled={!input.trim() || isLoading}
-                        className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="px-4 py-2.5 rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        style={{
+                            background: 'var(--color-accent)',
+                            color: 'var(--color-accent-foreground)',
+                        }}
                         aria-label="Envoyer"
                     >
                         {isLoading ? (
@@ -360,11 +493,12 @@ export function AIChatWidget() {
                         )}
                     </button>
                 </div>
-                <p className="text-[11px] text-slate-400 mt-2 text-center">
-                    Οἶκο peut faire des erreurs. Vérifiez les informations importantes.
+                <p className="text-[11px] mt-2 text-center" style={{ color: 'var(--color-text-muted)' }}>
+                    Oiko peut faire des erreurs. Verifiez les informations importantes.
                 </p>
             </div>
         </div>
+        </>
     );
 }
 

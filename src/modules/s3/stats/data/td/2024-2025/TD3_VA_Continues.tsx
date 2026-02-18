@@ -97,7 +97,7 @@ export const TD3_2425: TDSheet = {
         <div className="space-y-3">
           <p><strong>1. Déterminer k:</strong></p>
           <M>{"\\int_2^4 \\frac{k}{(1-x)^2} dx = k\\left(1 - \\frac{1}{3}\\right) = \\frac{2k}{3} = 1"}</M>
-          <p className="text-emerald-700 font-semibold"><M>{"\\boxed{k = \\frac{3}{2}}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"\\boxed{k = \\frac{3}{2}}"}</M></p>
           
           <p><strong>2. Fonction de répartition:</strong></p>
           <M>{"F(x) = \\begin{cases} 0 & x < 2 \\\\ \\frac{3(2-x)}{2(x-1)} & 2 \\leq x < 4 \\\\ 1 & x \\geq 4 \\end{cases}"}</M>
@@ -125,7 +125,7 @@ export const TD3_2425: TDSheet = {
         <div className="space-y-3">
           <p><strong>1. Déterminer k:</strong></p>
           <p>On reconnaît une loi Gamma Γ(p, 2).</p>
-          <p className="text-emerald-700 font-semibold"><M>{"\\boxed{k = 1}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"\\boxed{k = 1}"}</M></p>
           
           <p><strong>2. E(X):</strong></p>
           <M>{"E(X) = \\frac{p}{\\theta} = \\boxed{\\frac{p}{2}}"}</M>
@@ -179,7 +179,7 @@ export const TD3_2425: TDSheet = {
           <p><strong>1. Calculer c:</strong></p>
           <M>{"\\int_0^{+\\infty} x^2 e^{-2\\theta x} dx = \\frac{\\Gamma(3)}{(2\\theta)^3} = \\frac{2}{8\\theta^3}"}</M>
           <M>{"\\frac{-c \\theta^3}{\\Gamma(3)} \\times \\frac{2}{8\\theta^3} = 1 \\Rightarrow -c = 8"}</M>
-          <p className="text-emerald-700 font-semibold"><M>{"\\boxed{c = -8}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"\\boxed{c = -8}"}</M></p>
           
           <p><strong>2. E(X):</strong></p>
           <p>C'est une loi Γ(3, 2θ):</p>
@@ -203,9 +203,9 @@ export const TD3_2425: TDSheet = {
         <div className="space-y-3">
           <p><strong>Calcul:</strong></p>
           <M>{"\\int_{-1}^{1} \\frac{c}{x^2} dx = c\\left[-\\frac{1}{x}\\right]_{-1}^{1}"}</M>
-          <p className="text-red-600 font-semibold">⚠️ Cette intégrale diverge en x = 0!</p>
+          <p className="text-[var(--color-error)] font-semibold">⚠️ Cette intégrale diverge en x = 0!</p>
           <M>{"\\int_{-1}^{0^-} \\frac{1}{x^2} dx = +\\infty"}</M>
-          <p className="text-emerald-700 font-semibold">Conclusion: f ne peut pas être une densité de probabilité (intégrale divergente).</p>
+          <p className="text-[var(--color-success)] font-semibold">Conclusion: f ne peut pas être une densité de probabilité (intégrale divergente).</p>
         </div>
       ),
     },

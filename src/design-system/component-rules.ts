@@ -37,7 +37,8 @@ export const buttonRules = {
   // Variants
   variants: {
     primary: {
-      background: 'var(--color-text-primary)',
+      background: 'var(--color-primary-gradient)',
+      border: `1px solid var(--color-primary-border)`,
       color: 'var(--color-bg-raised)',
       shadow: shadows.md,
       hoverShadow: shadows.lg,

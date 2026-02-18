@@ -147,10 +147,10 @@ export function InteractiveASAD() {
   };
 
   const events = [
-    { id: 'fiscal', label: '↑G (budgétaire)', color: '#2563eb' },
-    { id: 'monetary', label: '↑M (monétaire)', color: '#059669' },
-    { id: 'supply_neg', label: 'Choc offre -', color: '#dc2626' },
-    { id: 'supply_pos', label: 'Choc offre +', color: '#0d9488' },
+    { id: 'fiscal', label: '↑G (budgétaire)', color: 'var(--color-info)' },
+    { id: 'monetary', label: '↑M (monétaire)', color: 'var(--color-success)' },
+    { id: 'supply_neg', label: 'Choc offre -', color: 'var(--color-error)' },
+    { id: 'supply_pos', label: 'Choc offre +', color: 'var(--color-stats)' },
   ] as const;
 
   const isADMoving = adShift !== 0;
@@ -256,35 +256,36 @@ export function InteractiveASAD() {
   const asLabelP = calcAS(asLabelY, asShift, Yn);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 my-8">
+    <div className="rounded-2xl p-6 my-8" style={{ background: 'var(--color-bg-raised)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-xl font-semibold">Modèle AS-AD</h3>
         <div className="flex items-center gap-2">
           {/* Toggle Mode - Désactivé pour production
-          <div className="flex bg-slate-100/80 rounded-lg p-1">
+          <div className="flex bg-[var(--color-bg-overlay)] rounded-lg p-1">
             <button onClick={() => setMode('theorique')}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors ${mode === 'theorique' ? 'bg-white shadow text-orange-600' : 'text-slate-700 hover:text-slate-900'}`}>
+              className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors ${mode === 'theorique' ? 'bg-[var(--color-bg-raised)] shadow text-[var(--color-warning)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>
               <BookOpen size={14} /> Théorique
             </button>
             <button onClick={() => setMode('numerique')}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors ${mode === 'numerique' ? 'bg-white shadow text-emerald-600' : 'text-slate-700 hover:text-slate-900'}`}>
+              className={`px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors ${mode === 'numerique' ? 'bg-[var(--color-bg-raised)] shadow text-[var(--color-success)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>
               <Calculator size={14} /> Numérique
             </button>
           </div>
           */}
           <button onClick={() => setShowLegend(!showLegend)}
-            className={`px-3 py-1.5 rounded-lg text-sm flex items-center gap-1.5 ${showLegend ? 'bg-orange-100 text-orange-600' : 'bg-slate-100/80 text-slate-700 hover:bg-slate-200'}`}>
+            className="px-3 py-1.5 rounded-lg text-sm flex items-center gap-1.5"
+            style={showLegend ? { background: 'var(--color-warning-subtle)', color: 'var(--color-warning)' } : { background: 'var(--color-bg-overlay)', color: 'var(--color-text-secondary)' }}>
             <Info size={16} /> {showLegend ? 'Masquer' : 'Variables'}
           </button>
         </div>
       </div>
-      <p className="text-sm text-slate-600 mb-4">
+      <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>
         Offre et demande agrégées : dynamique CT → MT
       </p>
 
       {showLegend && (
-        <div className="mb-4 p-3 bg-orange-50 rounded-lg text-sm border border-orange-100">
-          <div className="grid grid-cols-4 gap-2 text-orange-800">
+        <div className="mb-4 p-3 rounded-lg text-sm" style={{ background: 'var(--color-warning-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-warning)' }}>
+          <div className="grid grid-cols-4 gap-2" style={{ color: 'var(--color-warning)' }}>
             <span><strong>Y</strong> = Production</span>
             <span><strong>P</strong> = Niveau des prix</span>
             <span><strong>Yₙ</strong> = Production naturelle</span>
@@ -295,7 +296,7 @@ export function InteractiveASAD() {
             <span><strong>Pᵉ</strong> = Prix anticipé</span>
           </div>
           {mode === 'numerique' && (
-            <div className="mt-3 pt-3 border-t border-orange-200 grid grid-cols-3 gap-2 text-emerald-700">
+            <div className="mt-3 pt-3 grid grid-cols-3 gap-2" style={{ borderTop: '1px solid var(--color-warning)', color: 'var(--color-success)' }}>
               <span>Yₙ₀ = {params.Yn0}</span>
               <span>P₀ = {params.P0}</span>
               <span>α = {params.alpha}, β = {params.beta}</span>
@@ -307,7 +308,8 @@ export function InteractiveASAD() {
       {/* Bouton Intuition */}
       <div className="mb-4">
         <button onClick={() => setShowIntuition(!showIntuition)}
-          className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${showIntuition ? 'bg-gray-900 text-white' : 'bg-slate-100/80 text-slate-700 hover:bg-slate-200'}`}>
+          className="px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
+          style={showIntuition ? { background: 'var(--color-text-primary)', color: 'var(--color-bg-raised)' } : { background: 'var(--color-bg-overlay)', color: 'var(--color-text-secondary)' }}>
           <Lightbulb size={16} /> {showIntuition ? 'Masquer' : 'Intuition'}
         </button>
       </div>
@@ -315,20 +317,21 @@ export function InteractiveASAD() {
       {showIntuition && (
         <IntuitionPanel
           sections={[
-            { title: intuitionContent.AD.title, color: '#2563eb', steps: intuitionContent.AD.steps },
-            { title: intuitionContent.AS.title, color: '#f97316', steps: intuitionContent.AS.steps },
+            { title: intuitionContent.AD.title, color: 'var(--color-info)', steps: intuitionContent.AD.steps },
+            { title: intuitionContent.AS.title, color: 'var(--color-warning)', steps: intuitionContent.AS.steps },
           ]}
         />
       )}
 
       <div className="flex flex-wrap gap-2 mb-4">
         <button onClick={() => { setScenario('none'); setPhase(0); }}
-          className={`px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1 ${scenario === 'none' ? 'bg-gray-900 text-white' : 'bg-slate-100/80 hover:bg-slate-200'}`}>
+          className="px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1"
+          style={scenario === 'none' ? { background: 'var(--color-text-primary)', color: 'var(--color-bg-raised)' } : { background: 'var(--color-bg-overlay)' }}>
           <RotateCcw size={14} /> Reset
         </button>
         {events.map(e => (
           <button key={e.id} onClick={() => setScenario(e.id)}
-            style={{ backgroundColor: scenario === e.id ? e.color : `${e.color}15`, color: scenario === e.id ? 'white' : e.color }}
+            style={{ backgroundColor: scenario === e.id ? e.color : `color-mix(in srgb, ${e.color} 14%, transparent)`, color: scenario === e.id ? 'var(--color-bg-raised)' : e.color }}
             className="px-3 py-1.5 rounded-lg text-sm font-medium">
             {e.label}
           </button>
@@ -339,13 +342,14 @@ export function InteractiveASAD() {
         <div className="flex items-center gap-3 mb-6">
           <button onClick={() => { setPhase(0); setIsPlaying(true); }}
             disabled={isPlaying}
-            className="px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-orange-600 disabled:opacity-50">
+            className="px-4 py-2 bg-[var(--color-warning)] text-[var(--color-bg-raised)] rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-[var(--color-warning)] disabled:opacity-50">
             <Play size={16} /> Play
           </button>
           <div className="flex gap-1">
             {[0, 1, 2].slice(0, maxPhase + 1).map(p => (
               <button key={p} onClick={() => { setPhase(p as 0|1|2); setIsPlaying(false); }}
-                className={`px-3 py-1.5 rounded text-sm font-medium ${phase === p ? 'bg-orange-500 text-white' : 'bg-slate-100/80 hover:bg-slate-200'}`}>
+                className="px-3 py-1.5 rounded text-sm font-medium"
+                style={phase === p ? { background: 'var(--color-warning)', color: 'var(--color-bg-raised)' } : { background: 'var(--color-bg-overlay)' }}>
                 {p === 0 ? 't₀' : p === 1 ? 'CT' : 'MT'}
               </button>
             ))}
@@ -355,39 +359,39 @@ export function InteractiveASAD() {
 
       <div className="grid lg:grid-cols-5 gap-6">
         <div className="lg:col-span-3">
-          <svg viewBox={`0 0 ${W} ${H}`} className="w-full bg-slate-100/50 rounded-xl border border-gray-100">
+          <svg viewBox={`0 0 ${W} ${H}`} className="w-full rounded-xl" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
             {/* Grille */}
             {(mode === 'numerique' ? [0, 350, 700, 1050, 1400] : [0, 30, 60, 90, 120]).map(v => (
-              <line key={`gx${v}`} x1={toX(v)} y1={margin.top} x2={toX(v)} y2={margin.top + h} stroke="#e5e7eb" />
+              <line key={`gx${v}`} x1={toX(v)} y1={margin.top} x2={toX(v)} y2={margin.top + h} stroke="var(--color-border-default)" />
             ))}
             {(mode === 'numerique' ? [0, 40, 80, 120, 160] : [0, 30, 60, 90, 120]).map(v => (
-              <line key={`gy${v}`} x1={margin.left} y1={toY(v)} x2={margin.left + w} y2={toY(v)} stroke="#e5e7eb" />
+              <line key={`gy${v}`} x1={margin.left} y1={toY(v)} x2={margin.left + w} y2={toY(v)} stroke="var(--color-border-default)" />
             ))}
             
             {/* Axes */}
-            <line x1={margin.left} y1={margin.top + h} x2={margin.left + w} y2={margin.top + h} stroke="#1f2937" strokeWidth="2" />
-            <line x1={margin.left} y1={margin.top} x2={margin.left} y2={margin.top + h} stroke="#1f2937" strokeWidth="2" />
-            <polygon points={`${margin.left + w},${margin.top + h} ${margin.left + w - 8},${margin.top + h - 4} ${margin.left + w - 8},${margin.top + h + 4}`} fill="#1f2937" />
-            <polygon points={`${margin.left},${margin.top} ${margin.left - 4},${margin.top + 8} ${margin.left + 4},${margin.top + 8}`} fill="#1f2937" />
-            <text x={margin.left + w + 10} y={margin.top + h + 5} className="text-sm font-semibold fill-gray-700">Y</text>
-            <text x={margin.left - 8} y={margin.top - 8} className="text-sm font-semibold fill-gray-700">P</text>
+            <line x1={margin.left} y1={margin.top + h} x2={margin.left + w} y2={margin.top + h} stroke="var(--color-text-secondary)" strokeWidth="2" />
+            <line x1={margin.left} y1={margin.top} x2={margin.left} y2={margin.top + h} stroke="var(--color-text-secondary)" strokeWidth="2" />
+            <polygon points={`${margin.left + w},${margin.top + h} ${margin.left + w - 8},${margin.top + h - 4} ${margin.left + w - 8},${margin.top + h + 4}`} fill="var(--color-text-secondary)" />
+            <polygon points={`${margin.left},${margin.top} ${margin.left - 4},${margin.top + 8} ${margin.left + 4},${margin.top + 8}`} fill="var(--color-text-secondary)" />
+            <text x={margin.left + w + 10} y={margin.top + h + 5} className="text-sm font-semibold fill-[var(--color-text-secondary)]">Y</text>
+            <text x={margin.left - 8} y={margin.top - 8} className="text-sm font-semibold fill-[var(--color-text-secondary)]">P</text>
 
             {/* Graduations en mode numérique */}
             {mode === 'numerique' && (
               <>
                 {[0, 350, 700, 1050, 1400].map(v => (
-                  <text key={`lx${v}`} x={toX(v)} y={margin.top + h + 15} className="text-[10px] fill-gray-500" textAnchor="middle">{v}</text>
+                  <text key={`lx${v}`} x={toX(v)} y={margin.top + h + 15} className="text-[10px] fill-[var(--color-text-muted)]" textAnchor="middle">{v}</text>
                 ))}
                 {[40, 80, 120, 160].map(v => (
-                  <text key={`ly${v}`} x={margin.left - 8} y={toY(v) + 4} className="text-[10px] fill-gray-500" textAnchor="end">{v}</text>
+                  <text key={`ly${v}`} x={margin.left - 8} y={toY(v) + 4} className="text-[10px] fill-[var(--color-text-muted)]" textAnchor="end">{v}</text>
                 ))}
               </>
             )}
 
             {/* Yₙ verticale */}
             <line x1={toX(Yn)} y1={margin.top} x2={toX(Yn)} y2={margin.top + h}
-              stroke="#dc2626" strokeWidth="2" strokeDasharray="8,4" className="transition-all duration-500" />
-            <text x={toX(Yn) + 5} y={margin.top + 15} className="text-xs font-bold fill-red-600">
+              stroke="var(--color-error)" strokeWidth="2" strokeDasharray="8,4" className="transition-all duration-500" />
+            <text x={toX(Yn) + 5} y={margin.top + 15} className="text-xs font-bold fill-[var(--color-error)]">
               Yₙ{mode === 'numerique' ? `=${Yn.toFixed(0)}` : ''}
             </text>
 
@@ -396,84 +400,84 @@ export function InteractiveASAD() {
               <>
                 {isADMoving && (
                   <>
-                    <path d={genAD(0)} fill="none" stroke="#94a3b8" strokeWidth="2" strokeDasharray="6,4" />
-                    <text x={toX(mode === 'numerique' ? 350 : 30)} y={toY(calcAD(mode === 'numerique' ? 350 : 30, 0)) - 8} className="text-xs fill-gray-400" textAnchor="middle">AD</text>
+                    <path d={genAD(0)} fill="none" stroke="var(--color-text-muted)" strokeWidth="2" strokeDasharray="6,4" />
+                    <text x={toX(mode === 'numerique' ? 350 : 30)} y={toY(calcAD(mode === 'numerique' ? 350 : 30, 0)) - 8} className="text-xs fill-[var(--color-text-muted)]" textAnchor="middle">AD</text>
                   </>
                 )}
                 {isASMoving && (
                   <>
-                    <path d={genAS(0, Yn0)} fill="none" stroke="#94a3b8" strokeWidth="2" strokeDasharray="6,4" />
-                    <text x={toX(mode === 'numerique' ? 1150 : 90)} y={toY(calcAS(mode === 'numerique' ? 1150 : 90, 0, Yn0)) - 8} className="text-xs fill-gray-400" textAnchor="middle">AS</text>
+                    <path d={genAS(0, Yn0)} fill="none" stroke="var(--color-text-muted)" strokeWidth="2" strokeDasharray="6,4" />
+                    <text x={toX(mode === 'numerique' ? 1150 : 90)} y={toY(calcAS(mode === 'numerique' ? 1150 : 90, 0, Yn0)) - 8} className="text-xs fill-[var(--color-text-muted)]" textAnchor="middle">AS</text>
                   </>
                 )}
-                <circle cx={toX(eq0.Y)} cy={toY(eq0.P)} r="7" fill="white" />
-                <circle cx={toX(eq0.Y)} cy={toY(eq0.P)} r="5" fill="#94a3b8" />
-                <text x={toX(eq0.Y)} y={toY(eq0.P) - 12} className="text-xs font-medium" textAnchor="middle" stroke="white" strokeWidth="3" paintOrder="stroke">E₀</text>
-                <text x={toX(eq0.Y)} y={toY(eq0.P) - 12} className="text-xs font-medium fill-gray-500" textAnchor="middle">E₀</text>
+                <circle cx={toX(eq0.Y)} cy={toY(eq0.P)} r="7" fill="var(--color-bg-raised)" />
+                <circle cx={toX(eq0.Y)} cy={toY(eq0.P)} r="5" fill="var(--color-text-muted)" />
+                <text x={toX(eq0.Y)} y={toY(eq0.P) - 12} className="text-xs font-medium" textAnchor="middle" stroke="var(--color-bg-raised)" strokeWidth="3" paintOrder="stroke">E₀</text>
+                <text x={toX(eq0.Y)} y={toY(eq0.P) - 12} className="text-xs font-medium fill-[var(--color-text-muted)]" textAnchor="middle">E₀</text>
               </>
             )}
 
             {/* AD (bleue) */}
-            <path d={genAD(adShift)} fill="none" stroke="#2563eb" strokeWidth="3" className="transition-all duration-500" />
-            <text x={toX(adLabelY)} y={toY(adLabelP) - 10} className="text-sm font-bold" textAnchor="middle" stroke="white" strokeWidth="4" paintOrder="stroke">
+            <path d={genAD(adShift)} fill="none" stroke="var(--color-info)" strokeWidth="3" className="transition-all duration-500" />
+            <text x={toX(adLabelY)} y={toY(adLabelP) - 10} className="text-sm font-bold" textAnchor="middle" stroke="var(--color-bg-raised)" strokeWidth="4" paintOrder="stroke">
               AD{isADMoving ? "'" : ''}
             </text>
-            <text x={toX(adLabelY)} y={toY(adLabelP) - 10} className="text-sm font-bold fill-blue-600" textAnchor="middle">
+            <text x={toX(adLabelY)} y={toY(adLabelP) - 10} className="text-sm font-bold fill-[var(--color-info)]" textAnchor="middle">
               AD{isADMoving ? "'" : ''}
             </text>
 
             {/* AS (orange) */}
-            <path d={genAS(asShift, Yn)} fill="none" stroke="#f97316" strokeWidth="3" className="transition-all duration-500" />
-            <text x={toX(asLabelY)} y={toY(asLabelP) - 10} className="text-sm font-bold" textAnchor="middle" stroke="white" strokeWidth="4" paintOrder="stroke">
+            <path d={genAS(asShift, Yn)} fill="none" stroke="var(--color-warning)" strokeWidth="3" className="transition-all duration-500" />
+            <text x={toX(asLabelY)} y={toY(asLabelP) - 10} className="text-sm font-bold" textAnchor="middle" stroke="var(--color-bg-raised)" strokeWidth="4" paintOrder="stroke">
               AS{isASMoving ? "'" : ''}
             </text>
-            <text x={toX(asLabelY)} y={toY(asLabelP) - 10} className="text-sm font-bold fill-orange-500" textAnchor="middle">
+            <text x={toX(asLabelY)} y={toY(asLabelP) - 10} className="text-sm font-bold fill-[var(--color-warning)]" textAnchor="middle">
               AS{isASMoving ? "'" : ''}
             </text>
 
             {/* Équilibre */}
-            <line x1={toX(eq.Y)} y1={toY(eq.P)} x2={toX(eq.Y)} y2={margin.top + h} stroke="#dc2626" strokeWidth="1.5" strokeDasharray="5,3" className="transition-all duration-500" />
-            <line x1={margin.left} y1={toY(eq.P)} x2={toX(eq.Y)} y2={toY(eq.P)} stroke="#dc2626" strokeWidth="1.5" strokeDasharray="5,3" className="transition-all duration-500" />
+            <line x1={toX(eq.Y)} y1={toY(eq.P)} x2={toX(eq.Y)} y2={margin.top + h} stroke="var(--color-error)" strokeWidth="1.5" strokeDasharray="5,3" className="transition-all duration-500" />
+            <line x1={margin.left} y1={toY(eq.P)} x2={toX(eq.Y)} y2={toY(eq.P)} stroke="var(--color-error)" strokeWidth="1.5" strokeDasharray="5,3" className="transition-all duration-500" />
             
             {mode === 'numerique' ? (
               <>
-                <text x={toX(eq.Y)} y={margin.top + h + 28} className="text-xs font-bold fill-red-600" textAnchor="middle">Y*={eq.Y.toFixed(0)}</text>
-                <text x={margin.left - 5} y={toY(eq.P) + 4} className="text-xs font-bold fill-red-600" textAnchor="end">P*={eq.P.toFixed(0)}</text>
+                <text x={toX(eq.Y)} y={margin.top + h + 28} className="text-xs font-bold fill-[var(--color-error)]" textAnchor="middle">Y*={eq.Y.toFixed(0)}</text>
+                <text x={margin.left - 5} y={toY(eq.P) + 4} className="text-xs font-bold fill-[var(--color-error)]" textAnchor="end">P*={eq.P.toFixed(0)}</text>
               </>
             ) : (
               <>
-                <text x={toX(eq.Y)} y={margin.top + h + 15} className="text-xs font-medium fill-red-600" textAnchor="middle">Y*</text>
-                <text x={margin.left - 8} y={toY(eq.P) + 4} className="text-xs font-medium fill-red-600" textAnchor="end">P*</text>
+                <text x={toX(eq.Y)} y={margin.top + h + 15} className="text-xs font-medium fill-[var(--color-error)]" textAnchor="middle">Y*</text>
+                <text x={margin.left - 8} y={toY(eq.P) + 4} className="text-xs font-medium fill-[var(--color-error)]" textAnchor="end">P*</text>
               </>
             )}
             
-            <circle cx={toX(eq.Y)} cy={toY(eq.P)} r="9" fill="white" className="transition-all duration-500" />
-            <circle cx={toX(eq.Y)} cy={toY(eq.P)} r="7" fill="#dc2626" className="transition-all duration-500" />
+            <circle cx={toX(eq.Y)} cy={toY(eq.P)} r="9" fill="var(--color-bg-raised)" className="transition-all duration-500" />
+            <circle cx={toX(eq.Y)} cy={toY(eq.P)} r="7" fill="var(--color-error)" className="transition-all duration-500" />
             {(() => {
               const eqLabel = scenario === 'none' ? 'E*' : phase === 0 ? 'E₀' : phase === 1 ? 'E₁' : 'E₂';
               return <>
-                <text x={toX(eq.Y) + 15} y={toY(eq.P) + 4} className="text-sm font-bold" stroke="white" strokeWidth="3" paintOrder="stroke">{eqLabel}</text>
-                <text x={toX(eq.Y) + 15} y={toY(eq.P) + 4} className="text-sm font-bold fill-red-600">{eqLabel}</text>
+                <text x={toX(eq.Y) + 15} y={toY(eq.P) + 4} className="text-sm font-bold" stroke="var(--color-bg-raised)" strokeWidth="3" paintOrder="stroke">{eqLabel}</text>
+                <text x={toX(eq.Y) + 15} y={toY(eq.P) + 4} className="text-sm font-bold fill-[var(--color-error)]">{eqLabel}</text>
               </>;
             })()}
           </svg>
 
           {/* Encadré valeurs numériques */}
           {mode === 'numerique' && scenario !== 'none' && phase > 0 && (
-            <div className="mt-4 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-              <p className="text-sm font-semibold text-emerald-800 mb-2">📊 Calcul numérique</p>
+            <div className="mt-4 p-3 rounded-lg" style={{ background: 'var(--color-success-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-success)' }}>
+              <p className="text-sm font-semibold mb-2" style={{ color: 'var(--color-success)' }}>📊 Calcul numérique</p>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-slate-700">Avant (E₀) :</p>
-                  <p className="font-mono text-emerald-700">Y₀ = {eq0.Y.toFixed(0)}, P₀ = {eq0.P.toFixed(0)}</p>
+                  <p style={{ color: 'var(--color-text-secondary)' }}>Avant (E₀) :</p>
+                  <p className="font-mono" style={{ color: 'var(--color-success)' }}>Y₀ = {eq0.Y.toFixed(0)}, P₀ = {eq0.P.toFixed(0)}</p>
                 </div>
                 <div>
-                  <p className="text-slate-700">Après ({phase === 1 ? 'E₁' : 'E₂'}) :</p>
-                  <p className="font-mono text-emerald-700">Y = {eq.Y.toFixed(0)}, P = {eq.P.toFixed(0)}</p>
+                  <p style={{ color: 'var(--color-text-secondary)' }}>Après ({phase === 1 ? 'E₁' : 'E₂'}) :</p>
+                  <p className="font-mono" style={{ color: 'var(--color-success)' }}>Y = {eq.Y.toFixed(0)}, P = {eq.P.toFixed(0)}</p>
                 </div>
               </div>
-              <div className="mt-2 pt-2 border-t border-emerald-200">
-                <p className="text-sm text-emerald-700">
+              <div className="mt-2 pt-2" style={{ borderTop: '1px solid var(--color-success)' }}>
+                <p className="text-sm" style={{ color: 'var(--color-success)' }}>
                   <strong>ΔY = {(eq.Y - eq0.Y).toFixed(0)}</strong> ({((eq.Y - eq0.Y) / eq0.Y * 100).toFixed(1)}%) | 
                   <strong> ΔP = {(eq.P - eq0.P).toFixed(0)}</strong> ({((eq.P - eq0.P) / eq0.P * 100).toFixed(1)}%)
                 </p>
@@ -484,36 +488,37 @@ export function InteractiveASAD() {
 
         <div className="lg:col-span-2 space-y-4">
           {expl ? (
-            <div className="bg-orange-50 rounded-xl p-4 border border-orange-100">
-              <p className="font-semibold text-orange-900 mb-3">{expl.title}</p>
+            <div className="rounded-xl p-4" style={{ background: 'var(--color-warning-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-warning)' }}>
+              <p className="font-semibold mb-3" style={{ color: 'var(--color-text-primary)' }}>{expl.title}</p>
               <div className="space-y-3">
                 {expl.phases.slice(0, phase + 1).map((p, i) => (
                   <div key={i} className={`flex items-start gap-2 ${i === phase ? '' : 'opacity-50'}`}>
-                    <span className={`px-2 py-0.5 rounded text-xs font-bold ${i === phase ? 'bg-orange-500 text-white' : 'bg-orange-200 text-orange-700'}`}>
+                    <span className="px-2 py-0.5 rounded text-xs font-bold"
+                      style={i === phase ? { background: 'var(--color-warning)', color: 'var(--color-bg-raised)' } : { background: 'var(--color-warning-subtle)', color: 'var(--color-warning)' }}>
                       {p.name}
                     </span>
-                    <p className="text-sm text-orange-700">{p.desc}</p>
+                    <p className="text-sm" style={{ color: 'var(--color-warning)' }}>{p.desc}</p>
                   </div>
                 ))}
               </div>
-              <p className="mt-4 pt-3 border-t border-orange-200 text-base font-bold text-orange-900">{expl.conclusion}</p>
+              <p className="mt-4 pt-3 text-base font-bold" style={{ borderTop: '1px solid var(--color-warning)', color: 'var(--color-text-primary)' }}>{expl.conclusion}</p>
               {mode === 'numerique' && expl.numeric && (
-                <div className="mt-3 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                  <p className="text-sm text-emerald-800">{expl.numeric}</p>
+                <div className="mt-3 p-3 rounded-lg" style={{ background: 'var(--color-success-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-success)' }}>
+                  <p className="text-sm" style={{ color: 'var(--color-success)' }}>{expl.numeric}</p>
                 </div>
               )}
             </div>
           ) : (
-            <div className="bg-slate-100/50 rounded-xl p-4 border border-slate-200">
-              <p className="font-medium text-slate-800 mb-2">État initial</p>
-              <p className="text-sm text-slate-700 mb-3">Clique sur un événement pour voir la dynamique CT → MT.</p>
+            <div className="rounded-xl p-4" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
+              <p className="font-medium mb-2" style={{ color: 'var(--color-text-primary)' }}>État initial</p>
+              <p className="text-sm mb-3" style={{ color: 'var(--color-text-secondary)' }}>Clique sur un événement pour voir la dynamique CT → MT.</p>
               <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-blue-500 rounded" /><span><strong>AD</strong> : Demande agrégée</span></div>
-                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-orange-500 rounded" /><span><strong>AS</strong> : Offre agrégée</span></div>
-                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-red-500 rounded" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #dc2626 0, #dc2626 6px, transparent 6px, transparent 10px)' }} /><span><strong>Yₙ</strong> : Production naturelle</span></div>
+                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-[var(--color-info)] rounded" /><span><strong>AD</strong> : Demande agrégée</span></div>
+                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-[var(--color-warning)] rounded" /><span><strong>AS</strong> : Offre agrégée</span></div>
+                <div className="flex items-center gap-2"><div className="w-6 h-1 bg-[var(--color-error-subtle)]0 rounded" style={{ backgroundImage: 'repeating-linear-gradient(90deg, var(--color-error) 0, var(--color-error) 6px, transparent 6px, transparent 10px)' }} /><span><strong>Yₙ</strong> : Production naturelle</span></div>
               </div>
               {mode === 'numerique' && (
-                <div className="mt-3 pt-3 border-t border-slate-200 text-sm text-slate-700">
+                <div className="mt-3 pt-3 text-sm" style={{ borderTop: '1px solid var(--color-border-default)', color: 'var(--color-text-secondary)' }}>
                   <p>Équilibre initial : Y₀={eq0.Y.toFixed(0)}, P₀={eq0.P.toFixed(0)}</p>
                 </div>
               )}
@@ -521,7 +526,7 @@ export function InteractiveASAD() {
           )}
 
           <div className="space-y-3">
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 rounded-lg relative" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
               <Tooltip term="AD (Demande agrégée)" formula={"Y = Y(\\frac{M}{P}, G, T)"}>
                 AD est la relation Y-P issue de IS-LM. Pourquoi est-elle <strong>décroissante</strong> ?
                 <br/>• Si P↑ → M/P↓ (pouvoir d'achat de la monnaie↓)
@@ -531,7 +536,7 @@ export function InteractiveASAD() {
               </Tooltip>
               <MathDisplay>{"Y = Y(\\frac{M}{P}, G, T)"}</MathDisplay>
             </div>
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 rounded-lg relative" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
               <Tooltip term="AS (Offre agrégée)" formula={"P = P^e(1+\\mu)F(1-\\frac{Y}{L}, z)"}>
                 AS vient de WS-PS. Pourquoi est-elle <strong>croissante</strong> à CT ?
                 <br/>• Les entreprises fixent P = (1+μ)×W
@@ -541,7 +546,7 @@ export function InteractiveASAD() {
               </Tooltip>
               <MathDisplay>{"P = P^e(1+\\mu)F(1-\\frac{Y}{L}, z)"}</MathDisplay>
             </div>
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 rounded-lg relative" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
               <Tooltip term="Équilibre MT" formula={"Y = Y_n, \\quad P = P^e"}>
                 À <strong>moyen terme</strong>, les anticipations s'ajustent : Pᵉ = P.
                 <br/>Cela implique que Y = Yₙ (production naturelle).
@@ -550,7 +555,7 @@ export function InteractiveASAD() {
               </Tooltip>
               <MathDisplay>{"Y = Y_n, \\quad P = P^e"}</MathDisplay>
             </div>
-            <div className="p-4 bg-slate-100/50 rounded-lg border border-slate-200 relative">
+            <div className="p-4 rounded-lg relative" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
               <Tooltip term="Spirale prix-salaires">
                 Mécanisme d'ajustement vers le moyen terme :
                 <br/>1. Production au-dessus du potentiel → chômage bas
@@ -560,7 +565,7 @@ export function InteractiveASAD() {
                 <br/>5. La courbe AS monte progressivement
                 <br/>6. Retour à la production naturelle avec prix plus élevés
               </Tooltip>
-              <div className="space-y-1 text-sm text-slate-800">
+              <div className="space-y-1 text-sm" style={{ color: 'var(--color-text-primary)' }}>
                 <p>Si <strong>Y &gt; Yₙ</strong> (production au-dessus du potentiel) :</p>
                 <p className="pl-3">→ Chômage bas → Salaires↑ → Prix↑ → Pᵉ↑ → AS↑ → Retour à Yₙ</p>
               </div>
@@ -571,3 +576,4 @@ export function InteractiveASAD() {
     </div>
   );
 }
+

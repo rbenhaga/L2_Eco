@@ -17,6 +17,10 @@ export interface ModuleChapter {
     isUpdated?: boolean;
     difficulty?: 'débutant' | 'intermédiaire' | 'avancé';
     estimatedTime?: string;
+    /** Lucide icon component for this chapter */
+    icon?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+    /** Accent color for the icon bg/text */
+    iconColor?: string;
 }
 
 export interface ModuleStats {

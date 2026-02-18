@@ -20,13 +20,13 @@ export function Chapter2() {
           L'ensemble des valeurs possibles de X s'appelle l'<strong>ensemble de définition</strong>, noté <Math>{"\\mathcal{X} = \\{x_1, x_2, ..., x_n\\}"}</Math>.
         </p>
 
-        <div className="my-4 p-4 bg-slate-100/50 rounded-lg">
+        <div className="my-4 p-4 bg-[var(--color-bg-overlay)]/50 rounded-lg">
           <img 
             src="/stats/images/ch2_variable_aleatoire.png" 
             alt="Schéma d'une variable aléatoire X : Ω → ℝ" 
             className="w-full max-w-md mx-auto"
           />
-          <p className="text-center text-sm text-slate-600 mt-2">Une VA transforme un événement e ∈ Ω en un réel X(e) ∈ ℝ</p>
+          <p className="text-center text-sm text-[var(--color-text-secondary)] mt-2">Une VA transforme un événement e ∈ Ω en un réel X(e) ∈ ℝ</p>
         </div>
 
         <p className="mb-2"><strong>Notations :</strong></p>
@@ -37,13 +37,13 @@ export function Chapter2() {
         </ul>
 
         <p className="mt-4 mb-2"><strong>Définition formelle :</strong></p>
-        <p className="pl-4 text-sm text-slate-700">
+        <p className="pl-4 text-sm text-[var(--color-text-secondary)]">
           Soit <Math>{"A_x"}</Math> la partie de Ω image inverse de <Math>{"]-\\infty, x["}</Math>. 
           On dit que X est une VA si <Math>{"\\forall A, A_x \\in \\mathcal{F}"}</Math>.
         </p>
 
         <p className="mt-4 mb-2"><strong>Processus aléatoire :</strong></p>
-        <p className="pl-4 text-sm text-slate-700">
+        <p className="pl-4 text-sm text-[var(--color-text-secondary)]">
           Un <strong>processus aléatoire</strong> (ou stochastique) est une famille de variables aléatoires indicée par le temps.
         </p>
       </Section>
@@ -63,31 +63,31 @@ export function Chapter2() {
         <div className="overflow-x-auto mb-4">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-100/80">
-                <th className="border border-slate-300 p-2">x</th>
-                <th className="border border-slate-300 p-2">0</th>
-                <th className="border border-slate-300 p-2">1</th>
-                <th className="border border-slate-300 p-2">2</th>
+              <tr className="bg-[var(--color-bg-overlay)]/80">
+                <th className="border border-[var(--color-border-strong)] p-2">x</th>
+                <th className="border border-[var(--color-border-strong)] p-2">0</th>
+                <th className="border border-[var(--color-border-strong)] p-2">1</th>
+                <th className="border border-[var(--color-border-strong)] p-2">2</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="border border-slate-300 p-2"><Math>{"P_x"}</Math></td>
-                <td className="border border-slate-300 p-2">1/4</td>
-                <td className="border border-slate-300 p-2">1/2</td>
-                <td className="border border-slate-300 p-2">1/4</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"P_x"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2">1/4</td>
+                <td className="border border-[var(--color-border-strong)] p-2">1/2</td>
+                <td className="border border-[var(--color-border-strong)] p-2">1/4</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <div className="my-4 p-4 bg-slate-100/50 rounded-lg">
+        <div className="my-4 p-4 bg-[var(--color-bg-overlay)]/50 rounded-lg">
           <img 
             src="/stats/images/ch2_diagramme_batons.png" 
             alt="Diagramme en bâtons - Loi de probabilité" 
             className="w-full max-w-md mx-auto"
           />
-          <p className="text-center text-sm text-slate-600 mt-2">Diagramme en bâtons : chaque bâton représente P(X = xᵢ)</p>
+          <p className="text-center text-sm text-[var(--color-text-secondary)] mt-2">Diagramme en bâtons : chaque bâton représente P(X = xᵢ)</p>
         </div>
 
         <Callout type="insight" title="Important">
@@ -112,31 +112,31 @@ export function Chapter2() {
 
         <p className="mb-4">Pour une VA discrète, F est une <strong>fonction en escalier</strong> avec des sauts aux valeurs <Math>{"x_i"}</Math>. Le saut en <Math>{"x_i"}</Math> vaut <Math>{"P_i"}</Math>.</p>
 
-        <div className="my-4 p-4 bg-slate-100/50 rounded-lg">
+        <div className="my-4 p-4 bg-[var(--color-bg-overlay)]/50 rounded-lg">
           <img 
             src="/stats/images/ch2_fonction_repartition.png" 
             alt="Fonction de répartition en escalier" 
             className="w-full max-w-md mx-auto"
           />
-          <p className="text-center text-sm text-slate-600 mt-2">Fonction de répartition F(x) : fonction en escalier de 0 à 1</p>
+          <p className="text-center text-sm text-[var(--color-text-secondary)] mt-2">Fonction de répartition F(x) : fonction en escalier de 0 à 1</p>
         </div>
 
         <p className="mb-2"><strong>Cas discret :</strong></p>
         <FormulaBox label="Probabilité d'intervalle (discret)">{"P(a < X \\leq b) = F(b) - F(a)"}</FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4">
           ⚠️ En discret, les bornes comptent ! P(a ≤ X ≤ b) ≠ P(a &lt; X ≤ b) car P(X=a) peut être ≠ 0.
         </p>
 
         <p className="mb-2"><strong>Cas continu :</strong></p>
         <FormulaBox label="Probabilité d'intervalle (continu)" highlight>{"P(a \\leq X \\leq b) = P(a < X < b) = F(b) - F(a)"}</FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4">
           ✓ En continu, les bornes ne changent rien car P(X=x) = 0 pour tout x.
         </p>
 
         <p className="mt-4 mb-2"><strong>Autres formules utiles :</strong></p>
         <ul className="list-disc pl-6 space-y-1">
           <li><Math>{"P(X > x_0) = 1 - F(x_0)"}</Math></li>
-          <li><Math>{"P(X \\geq x_0) = 1 - F(x_0)"}</Math> <span className="text-sm text-slate-600">(en continu uniquement)</span></li>
+          <li><Math>{"P(X \\geq x_0) = 1 - F(x_0)"}</Math> <span className="text-sm text-[var(--color-text-secondary)]">(en continu uniquement)</span></li>
         </ul>
       </Section>
 
@@ -146,27 +146,27 @@ export function Chapter2() {
         <div className="overflow-x-auto mb-4">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-100/80">
-                <th className="border border-slate-300 p-2">Type</th>
-                <th className="border border-slate-300 p-2">Cardinalité de 𝒳</th>
-                <th className="border border-slate-300 p-2">Description</th>
+              <tr className="bg-[var(--color-bg-overlay)]/80">
+                <th className="border border-[var(--color-border-strong)] p-2">Type</th>
+                <th className="border border-[var(--color-border-strong)] p-2">Cardinalité de 𝒳</th>
+                <th className="border border-[var(--color-border-strong)] p-2">Description</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Discrète</td>
-                <td className="border border-slate-300 p-2">Fini ou infini dénombrable</td>
-                <td className="border border-slate-300 p-2">Valeurs isolées</td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Discrète</td>
+                <td className="border border-[var(--color-border-strong)] p-2">Fini ou infini dénombrable</td>
+                <td className="border border-[var(--color-border-strong)] p-2">Valeurs isolées</td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Continue</td>
-                <td className="border border-slate-300 p-2">Infini (non dénombrable)</td>
-                <td className="border border-slate-300 p-2">Intervalle ou réunion d'intervalles</td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Continue</td>
+                <td className="border border-[var(--color-border-strong)] p-2">Infini (non dénombrable)</td>
+                <td className="border border-[var(--color-border-strong)] p-2">Intervalle ou réunion d'intervalles</td>
               </tr>
               <tr>
-                <td className="border border-slate-300 p-2 font-semibold">Mixte</td>
-                <td className="border border-slate-300 p-2">Réunion des deux</td>
-                <td className="border border-slate-300 p-2">Partie discrète + partie continue</td>
+                <td className="border border-[var(--color-border-strong)] p-2 font-semibold">Mixte</td>
+                <td className="border border-[var(--color-border-strong)] p-2">Réunion des deux</td>
+                <td className="border border-[var(--color-border-strong)] p-2">Partie discrète + partie continue</td>
               </tr>
             </tbody>
           </table>
@@ -192,17 +192,17 @@ export function Chapter2() {
         <div className="overflow-x-auto mb-4">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-slate-100/80">
-                <th className="border border-slate-300 p-2">x</th>
-                <th className="border border-slate-300 p-2">0</th>
-                <th className="border border-slate-300 p-2">1</th>
+              <tr className="bg-[var(--color-bg-overlay)]/80">
+                <th className="border border-[var(--color-border-strong)] p-2">x</th>
+                <th className="border border-[var(--color-border-strong)] p-2">0</th>
+                <th className="border border-[var(--color-border-strong)] p-2">1</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="border border-slate-300 p-2"><Math>{"P_x"}</Math></td>
-                <td className="border border-slate-300 p-2">q = 1-p</td>
-                <td className="border border-slate-300 p-2">p</td>
+                <td className="border border-[var(--color-border-strong)] p-2"><Math>{"P_x"}</Math></td>
+                <td className="border border-[var(--color-border-strong)] p-2">q = 1-p</td>
+                <td className="border border-[var(--color-border-strong)] p-2">p</td>
               </tr>
             </tbody>
           </table>
@@ -266,7 +266,7 @@ export function Chapter2() {
           <li><strong>Additivité</strong> (toujours vraie) : <Math>{"E(X + Y) = E(X) + E(Y)"}</Math></li>
           <li><strong>Produit</strong> (si indépendantes) : <Math>{"E(XY) = E(X) \\cdot E(Y)"}</Math></li>
         </ul>
-        <p className="text-sm text-slate-700 mb-4">
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4">
           ⚠️ Si X et Y ne sont pas indépendantes, E(XY) ≠ E(X)·E(Y) en général. On verra au CH5 que E(XY) = E(X)·E(Y) + Cov(X,Y).
         </p>
 
@@ -313,23 +313,23 @@ export function Chapter2() {
 
         <p className="mb-2"><strong>Moment non centré d'ordre k :</strong></p>
         <FormulaBox>{"m_k = E(X^k) = \\sum_{i} x_i^k \\cdot P_i"}</FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Note : <Math>{"m_1 = E(X)"}</Math></p>
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4">Note : <Math>{"m_1 = E(X)"}</Math></p>
 
         <p className="mb-2"><strong>Moment centré d'ordre k :</strong></p>
         <FormulaBox>{"\\mu_k = E[(X - E(X))^k]"}</FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Note : <Math>{"\\mu_2 = V(X)"}</Math></p>
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4">Note : <Math>{"\\mu_2 = V(X)"}</Math></p>
 
         <p className="mb-2"><strong>Relation fondamentale :</strong></p>
         <FormulaBox highlight>{"V(X) = \\mu_2 = m_2 - m_1^2"}</FormulaBox>
 
         <p className="mt-4 mb-2"><strong>Moment factoriel d'ordre k :</strong></p>
         <FormulaBox>{"M_{[k]} = E[X(X-1)(X-2)...(X-k+1)]"}</FormulaBox>
-        <p className="text-sm text-slate-700 mb-2">Utilisé pour les VA discrètes à valeurs entières (0, 1, 2, ...).</p>
+        <p className="text-sm text-[var(--color-text-secondary)] mb-2">Utilisé pour les VA discrètes à valeurs entières (0, 1, 2, ...).</p>
         <ul className="list-disc pl-6 space-y-1 text-sm">
           <li><Math>{"M_{[1]} = E(X) = m_1"}</Math></li>
           <li><Math>{"M_{[2]} = E[X(X-1)] = E(X^2) - E(X) = m_2 - m_1"}</Math></li>
         </ul>
-        <p className="text-sm text-slate-700 mt-2">
+        <p className="text-sm text-[var(--color-text-secondary)] mt-2">
           Les moments factoriels sont obtenus facilement via la fonction génératrice : <Math>{"M_{[k]} = g_X^{(k)}(1)"}</Math>
         </p>
       </Section>

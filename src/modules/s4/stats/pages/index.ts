@@ -1,5 +1,8 @@
 export { StatsHome } from './Home';
-export { Chapter1 } from './Chapter1';
-export { Chapter2 } from './Chapter2';
-export { Chapter3 } from './Chapter3';
-export { Chapter4 } from './Chapter4';
+export { Chapter6 } from './Chapter6';
+export { Chapter7 } from './Chapter7';
+export { Chapter8 } from './Chapter8';
+export { Chapter9 } from './Chapter9';
+export { Chapter10 } from './Chapter10';
+export { Chapter11 } from './Chapter11';
+export { CorrectionTD3 } from './CorrectionTD3';

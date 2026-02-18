@@ -143,7 +143,7 @@ export function RevisionCh3() {
       </Section>
 
       <section className="mb-16">
-        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md bg-emerald-50 text-emerald-700">
+        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-4 px-3 py-1.5 rounded-md" style={{ background: 'var(--color-success-subtle)', color: 'var(--color-success)' }}>
           <CheckSquare className="w-4 h-4" /> Checklist Chapitre 3
         </span>
         <div className="grid md:grid-cols-2 gap-2">
@@ -156,9 +156,9 @@ export function RevisionCh3() {
             "Je sais expliquer la stagflation",
             "Je connais la trappe à liquidité",
           ].map((item, i) => (
-            <label key={i} className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-100/50 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
-              <span className="text-sm text-slate-800">{item}</span>
+            <label key={i} className="flex items-center gap-3 p-3 rounded-lg cursor-pointer" style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
+              <input type="checkbox" className="w-4 h-4 rounded" style={{ borderColor: 'var(--color-border-default)' }} />
+              <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>{item}</span>
             </label>
           ))}
         </div>

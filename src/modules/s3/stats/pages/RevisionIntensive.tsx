@@ -10,10 +10,10 @@ function M({ children }: { children: string }) {
 type ProbabilityTag = 'deja-tombe' | 'tres-probable' | 'probable' | 'peu-probable';
 
 const tagConfig: Record<ProbabilityTag, { label: string; color: string; bg: string; icon: typeof Flame; iconColor: string }> = {
-  'deja-tombe': { label: 'Déjà tombé', color: 'text-red-700', bg: 'bg-red-50 border-red-200', icon: Flame, iconColor: 'text-red-600' },
-  'tres-probable': { label: 'Très probable', color: 'text-orange-700', bg: 'bg-orange-50 border-orange-200', icon: Target, iconColor: 'text-orange-600' },
-  'probable': { label: 'Probable', color: 'text-yellow-700', bg: 'bg-yellow-50 border-yellow-200', icon: TrendingUp, iconColor: 'text-yellow-600' },
-  'peu-probable': { label: 'Peu probable', color: 'text-green-700', bg: 'bg-green-50 border-green-200', icon: Clock, iconColor: 'text-green-600' },
+  'deja-tombe': { label: 'Déjà tombé', color: 'text-[var(--color-error)]', bg: 'bg-[var(--color-error-subtle)] border-[var(--color-error)]', icon: Flame, iconColor: 'text-[var(--color-error)]' },
+  'tres-probable': { label: 'Très probable', color: 'text-[var(--color-warning)]', bg: 'bg-[var(--color-warning-subtle)] border-[var(--color-warning)]', icon: Target, iconColor: 'text-[var(--color-warning)]' },
+  'probable': { label: 'Probable', color: 'text-[var(--color-warning)]', bg: 'bg-[var(--color-warning-subtle)] border-[var(--color-warning)]', icon: TrendingUp, iconColor: 'text-[var(--color-warning)]' },
+  'peu-probable': { label: 'Peu probable', color: 'text-[var(--color-success)]', bg: 'bg-[var(--color-success-subtle)] border-[var(--color-success)]', icon: Clock, iconColor: 'text-[var(--color-success)]' },
 };
 
 function ProbabilityBadge({ tag }: { tag: ProbabilityTag }) {
@@ -41,16 +41,16 @@ function Exercise({ title, tag, examRef, children, defaultOpen = false }: Exerci
     <div className={`border rounded-xl mb-4 overflow-hidden ${tagConfig[tag].bg}`}>
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between p-4 hover:bg-white/50 transition-colors text-left"
+        className="w-full flex items-center justify-between p-4 hover:bg-[var(--color-bg-raised)]/50 transition-colors text-left"
       >
         <div className="flex items-center gap-3 flex-wrap">
-          {open ? <ChevronDown className="w-5 h-5 text-slate-600" /> : <ChevronRight className="w-5 h-5 text-slate-600" />}
-          <span className="font-semibold text-slate-900">{title}</span>
+          {open ? <ChevronDown className="w-5 h-5 text-[var(--color-text-secondary)]" /> : <ChevronRight className="w-5 h-5 text-[var(--color-text-secondary)]" />}
+          <span className="font-semibold text-[var(--color-text-primary)]">{title}</span>
           <ProbabilityBadge tag={tag} />
         </div>
-        {examRef && <span className="text-xs text-slate-600 bg-white px-2 py-1 rounded">{examRef}</span>}
+        {examRef && <span className="text-xs text-[var(--color-text-secondary)] bg-[var(--color-bg-raised)] px-2 py-1 rounded">{examRef}</span>}
       </button>
-      {open && <div className="p-5 bg-white border-t">{children}</div>}
+      {open && <div className="p-5 bg-[var(--color-bg-raised)] border-t">{children}</div>}
     </div>
   );
 }
@@ -59,16 +59,16 @@ function Question({ num, question, tag, children }: { num: string; question: Rea
   return (
     <div className="mb-6 last:mb-0">
       <div className="flex items-start gap-3 mb-3 flex-wrap">
-        <span className="shrink-0 w-7 h-7 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-medium">
+        <span className="shrink-0 w-7 h-7 bg-[var(--color-info-subtle)] text-[var(--color-info)] rounded-full flex items-center justify-center text-sm font-medium">
           {num}
         </span>
-        <div className="text-slate-900 font-medium pt-0.5 flex-1">{question}</div>
+        <div className="text-[var(--color-text-primary)] font-medium pt-0.5 flex-1">{question}</div>
         {tag && <ProbabilityBadge tag={tag} />}
       </div>
-      <div className="ml-10 p-4 bg-green-50 border border-green-200 rounded-lg">
+      <div className="ml-10 p-4 bg-[var(--color-success-subtle)] border border-[var(--color-success)] rounded-lg">
         <div className="flex items-start gap-2">
-          <CheckCircle className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
-          <div className="text-slate-800 space-y-2">{children}</div>
+          <CheckCircle className="w-5 h-5 text-[var(--color-success)] shrink-0 mt-0.5" />
+          <div className="text-[var(--color-text-primary)] space-y-2">{children}</div>
         </div>
       </div>
     </div>
@@ -95,9 +95,9 @@ function WarningBox({ children }: { children: React.ReactNode }) {
 function Section({ title, icon: Icon, children }: { title: string; icon: typeof Flame; children: React.ReactNode }) {
   return (
     <div className="mb-10">
-      <div className="flex items-center gap-3 mb-4 pb-2 border-b-2 border-slate-200">
-        <Icon className="w-6 h-6 text-slate-800" />
-        <h2 className="text-xl font-bold text-slate-900">{title}</h2>
+      <div className="flex items-center gap-3 mb-4 pb-2 border-b-2 border-[var(--color-border-default)]">
+        <Icon className="w-6 h-6 text-[var(--color-text-primary)]" />
+        <h2 className="text-xl font-bold text-[var(--color-text-primary)]">{title}</h2>
       </div>
       {children}
     </div>
@@ -109,12 +109,12 @@ export function RevisionIntensive() {
     <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-12">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 text-sm text-red-600 mb-3 font-medium">
+        <div className="inline-flex items-center gap-2 text-sm text-[var(--color-error)] mb-3 font-medium">
           <Flame className="w-4 h-4" />
           <span>DERNIÈRE LIGNE DROITE</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Révision Intensive</h1>
-        <p className="text-slate-700 max-w-2xl mx-auto mb-6">
+        <h1 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4">Révision Intensive</h1>
+        <p className="text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-6">
           Exercices ciblés basés sur l'analyse des annales 2023-2024 et 2024-2025. Focus sur ce qui tombe vraiment.
         </p>
 
@@ -129,7 +129,7 @@ export function RevisionIntensive() {
       </div>
 
       {/* Analyse rapide des patterns */}
-      <div className="bg-linear-to-r from-red-600 to-orange-600 text-white p-6 rounded-xl mb-8">
+      <div className="bg-linear-to-r from-[var(--color-accent)] to-[var(--color-accent-hover)] text-[var(--color-bg-raised)] p-6 rounded-xl mb-8">
         <div className="flex items-center gap-2 mb-3">
           <BarChart3 className="w-5 h-5" />
           <h2 className="text-xl font-bold">Analyse des Annales</h2>
@@ -140,7 +140,7 @@ export function RevisionIntensive() {
               <CheckCircle className="w-4 h-4" />
               <p>TOUJOURS présent :</p>
             </div>
-            <ul className="list-disc ml-4 text-red-100">
+            <ul className="list-disc ml-4 text-[var(--color-error)]">
               <li>VA 2D continue avec domaine complexe</li>
               <li>Marginales (souvent 2 cas !)</li>
               <li>Conditionnelles et E[X|Y=a]</li>
@@ -152,7 +152,7 @@ export function RevisionIntensive() {
               <AlertTriangle className="w-4 h-4" />
               <p>TRÈS fréquent :</p>
             </div>
-            <ul className="list-disc ml-4 text-orange-100">
+            <ul className="list-disc ml-4 text-[var(--color-warning)]">
               <li>Bayes / Probabilités totales</li>
               <li>Covariance, Variance combinaisons</li>
               <li>Intégrale Beta</li>
@@ -166,7 +166,7 @@ export function RevisionIntensive() {
       {/* SECTION 1: Probabilités et Bayes */}
       <Section title="Probabilités Conditionnelles & Bayes" icon={Target}>
         <Exercise title="Exercice 1 - Bayes Classique (Usines)" tag="deja-tombe" examRef="Style 2024-2025" defaultOpen={true}>
-          <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+          <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
             <strong>Énoncé :</strong> Une entreprise a 3 usines. Usine A : 50% production, 2% défauts. Usine B : 30% production, 3% défauts. Usine C : 20% production, 5% défauts.
           </div>
 
@@ -186,7 +186,7 @@ export function RevisionIntensive() {
         </Exercise>
 
         <Exercise title="Exercice 2 - Tableau de contingence (Urbanisme)" tag="deja-tombe" examRef="Examen 2024-2025">
-          <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm overflow-x-auto">
+          <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm overflow-x-auto">
             <table className="w-full text-center text-xs">
               <thead>
                 <tr className="border-b"><th className="p-2">Arr.</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
@@ -208,7 +208,7 @@ export function RevisionIntensive() {
       {/* SECTION 2: VA Discrètes */}
       <Section title="Variables Aléatoires Discrètes" icon={TrendingUp}>
         <Exercise title="Exercice 3 - Covariance et Variance" tag="deja-tombe" examRef="Examen 2023-2024">
-          <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+          <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
             <strong>Données :</strong> E[X]=1, V[X]=2, E[Y]=2, V[Y]=3, E[Z]=1, V[Z]=5, Cov(X,Z)=1, Cov(X,Y)=1, Cov(Y,Z)=0
           </div>
 
@@ -232,7 +232,7 @@ export function RevisionIntensive() {
         </Exercise>
 
         <Exercise title="Exercice 4 - VA Discrète 2D (Billetterie)" tag="deja-tombe" examRef="Examen 2024-2025">
-          <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+          <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
             <strong>Contexte :</strong> 4 caisses équiprobables, 2 clients consécutifs indépendants.<br />
             X = nb clients qui choisissent la caisse 1, Y = nb clients qui choisissent la caisse 2.
           </div>
@@ -304,7 +304,7 @@ export function RevisionIntensive() {
             <Formula><M>{"P(Y \\ge t) \\le \\frac{E[Y]}{t}"}</M></Formula>
             <p className="text-sm">Application avec t = 1 :</p>
             <Formula><M>{"P(Y \\ge 1) \\le \\frac{E[Y]}{1} = \\frac{1/2}{1} = \\boxed{0.5}"}</M></Formula>
-            <p className="text-sm text-slate-700 mt-2">Note : La vraie valeur est P(Y≥1) = P(Y=1) + P(Y=2) = 6/16 + 1/16 = 7/16 ≈ 0.44, bien inférieure à la borne.</p>
+            <p className="text-sm text-[var(--color-text-secondary)] mt-2">Note : La vraie valeur est P(Y≥1) = P(Y=1) + P(Y=2) = 6/16 + 1/16 = 7/16 ≈ 0.44, bien inférieure à la borne.</p>
           </Question>
         </Exercise>
 
@@ -337,7 +337,7 @@ export function RevisionIntensive() {
         </Exercise>
 
         <Exercise title="Exercice 7 - Densité Gaussienne tronquée" tag="deja-tombe" examRef="Examen 2023-2024">
-          <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+          <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
             <strong>Énoncé :</strong> <M>{"f(x) = k e^{-(x-2)^2/2}"}</M> pour x &gt; 2, 0 ailleurs.
           </div>
 
@@ -354,7 +354,7 @@ export function RevisionIntensive() {
         </Exercise>
 
         <Exercise title="Exercice 8 - Densité linéaire moyenne" tag="deja-tombe" examRef="QCM 2024-2025">
-          <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+          <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
             <strong>Énoncé :</strong> <M>{"f(x) = \\frac{3}{x^4}"}</M> pour x &gt; 1. Calculer la densité linéaire moyenne sur [2,4].
           </div>
 
@@ -366,7 +366,7 @@ export function RevisionIntensive() {
         </Exercise>
 
         <Exercise title="Exercice 9 - Inégalités de Markov et Bienaymé" tag="deja-tombe" examRef="Examen 2024-2025">
-          <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+          <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
             <strong>Données :</strong> E[X] = 10, V[X] = 4
           </div>
 
@@ -384,14 +384,14 @@ export function RevisionIntensive() {
 
       {/* SECTION 4: VA 2D Continues - LE PLUS IMPORTANT */}
       <Section title="VA 2D Continues - PRIORITÉ ABSOLUE" icon={Flame}>
-        <div className="bg-red-100 border border-red-300 rounded-lg p-4 mb-6">
-          <p className="text-red-800 font-medium">⚠️ Cette section représente ~6 points sur 20 à chaque examen. Maîtrise-la parfaitement !</p>
+        <div className="bg-[var(--color-error-subtle)] border border-[var(--color-error)] rounded-lg p-4 mb-6">
+          <p className="text-[var(--color-error)] font-medium">⚠️ Cette section représente ~6 points sur 20 à chaque examen. Maîtrise-la parfaitement !</p>
         </div>
 
         {/* Rappel méthodologique */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-          <h3 className="font-bold text-blue-900 mb-2">📐 MÉTHODOLOGIE - Calcul des intégrales doubles</h3>
-          <div className="text-sm text-blue-800 space-y-2">
+        <div className="bg-[var(--color-info-subtle)] border border-[var(--color-info)] rounded-lg p-4 mb-6">
+          <h3 className="font-bold text-[var(--color-text-primary)] mb-2">📐 MÉTHODOLOGIE - Calcul des intégrales doubles</h3>
+          <div className="text-sm text-[var(--color-info)] space-y-2">
             <p><strong>Méthode 1 - On bloque x :</strong> x est constant, y varie en fonction de x</p>
             <Formula><M>{"\\iint_D f(x,y) \\, dxdy = \\int_{D_{/ox}} \\left[ \\int_{D_{Y/X}} f(x,y) \\, dy \\right] dx"}</M></Formula>
             <p><strong>Méthode 2 - On bloque y :</strong> y est constant, x varie en fonction de y</p>
@@ -405,7 +405,7 @@ export function RevisionIntensive() {
         </div>
 
         <Exercise title="Exercice 10 - Domaine parallélogramme (2 cas pour marginale)" tag="deja-tombe" examRef="Examen 2024-2025" defaultOpen={true}>
-          <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+          <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
             <strong>Énoncé :</strong> <M>{"f(x,y) = k(x+y)"}</M> sur D : y &lt; x &lt; y+1, 0 &lt; y &lt; 1
           </div>
 
@@ -413,7 +413,7 @@ export function RevisionIntensive() {
             <p><strong>Étape 1 : Tracer le domaine</strong></p>
             <p className="text-sm">Les contraintes sont : y &lt; x &lt; y+1 et 0 &lt; y &lt; 1</p>
             <p className="text-sm">Réécrivons : x &gt; y (droite y = x) et x &lt; y+1 (droite y = x-1)</p>
-            <div className="bg-slate-100/80 p-3 rounded font-mono text-xs my-2">
+            <div className="bg-[var(--color-bg-overlay)]/80 p-3 rounded font-mono text-xs my-2">
               <pre>{`y
 ↑
 1 ├───────┬───────┐
@@ -481,7 +481,7 @@ export function RevisionIntensive() {
             <Formula><M>{"= \\frac{2}{3}\\left[x + \\frac{1}{2} - x^2 + x - \\frac{x^2 - 2x + 1}{2}\\right] = \\boxed{-x^2 + 2x - \\frac{1}{3}}"}</M></Formula>
 
             <p className="mt-3"><strong>Conclusion - Loi marginale de X :</strong></p>
-            <div className="bg-green-100 p-3 rounded text-sm">
+            <div className="bg-[var(--color-success-subtle)] p-3 rounded text-sm">
               <M>{"a(x) = \\begin{cases} x^2 & \\text{si } x \\in ]0, 1] \\\\ -x^2 + 2x - \\frac{1}{3} & \\text{si } x \\in ]1, 2[ \\\\ 0 & \\text{sinon} \\end{cases}"}</M>
             </div>
           </Question>
@@ -501,7 +501,7 @@ export function RevisionIntensive() {
             <Formula><M>{"a^*_{Y=1/2}(x) = \\frac{f(x, 1/2)}{b(1/2)} = \\frac{\\frac{2}{3}(x + \\frac{1}{2})}{1} = \\boxed{\\frac{2x + 1}{3}}"}</M></Formula>
             <p className="text-sm">pour x ∈ ]1/2, 3/2[</p>
 
-            <p className="text-sm mt-2 text-slate-700"><strong>Vérification :</strong> <M>{"\\int_{1/2}^{3/2} \\frac{2x+1}{3} dx = 1"}</M> ✓</p>
+            <p className="text-sm mt-2 text-[var(--color-text-secondary)]"><strong>Vérification :</strong> <M>{"\\int_{1/2}^{3/2} \\frac{2x+1}{3} dx = 1"}</M> ✓</p>
           </Question>
 
           <Question num="5" question="E[X | Y = 1/2] = ?" tag="deja-tombe">
@@ -514,7 +514,7 @@ export function RevisionIntensive() {
         </Exercise>
 
         <Exercise title="Exercice 11 - Domaine type examen (y ≤ x, y ≥ x-c)" tag="deja-tombe" examRef="Examen 2023-2024">
-          <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+          <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
             <strong>Énoncé :</strong> <M>{"f(x,y) = ke^{-y}"}</M> sur D : y ≤ x, x ≥ 0, y ≥ x-4, y ≥ 0
           </div>
 
@@ -527,7 +527,7 @@ export function RevisionIntensive() {
               <li>x ≥ 0 → à droite de l'axe des y</li>
             </ul>
 
-            <div className="bg-slate-100/80 p-3 rounded font-mono text-xs my-2">
+            <div className="bg-[var(--color-bg-overlay)]/80 p-3 rounded font-mono text-xs my-2">
               <pre>{`y
 ↑
   │         y = x
@@ -540,7 +540,7 @@ export function RevisionIntensive() {
             </div>
 
             <p className="mt-3"><strong>Étape 2 : Domaines marginaux et conditionnels</strong></p>
-            <div className="bg-yellow-50 p-3 rounded text-sm">
+            <div className="bg-[var(--color-warning-subtle)] p-3 rounded text-sm">
               <p><strong>Méthode "on bloque y" :</strong></p>
               <ul className="list-disc ml-4">
                 <li><M>{"D_{/oy} = [0, +\\infty["}</M></li>
@@ -569,7 +569,7 @@ export function RevisionIntensive() {
             <Formula><M>{"\\int_0^{+\\infty} 4ke^{-y} \\, dy = 4k \\cdot [-e^{-y}]_0^{+\\infty} = 4k \\cdot (0 - (-1)) = 4k = 1"}</M></Formula>
             <Formula><M>{"\\boxed{k = \\frac{1}{4}}"}</M></Formula>
 
-            <p className="text-sm mt-2 text-slate-700"><strong>Vérification f ≥ 0 :</strong> k = 1/4 &gt; 0 et e<sup>-y</sup> &gt; 0 ✓</p>
+            <p className="text-sm mt-2 text-[var(--color-text-secondary)]"><strong>Vérification f ≥ 0 :</strong> k = 1/4 &gt; 0 et e<sup>-y</sup> &gt; 0 ✓</p>
           </Question>
 
           <Question num="3" question={<>Loi marginale de X : <M>{"\\{a(x); D_{/ox}\\}"}</M></>} tag="deja-tombe">
@@ -583,7 +583,7 @@ export function RevisionIntensive() {
             <Formula><M>{"= \\frac{1}{4}(-e^{-x} + e^{-(x-4)}) = \\frac{1}{4}e^{-x}(e^4 - 1)"}</M></Formula>
 
             <p className="mt-3"><strong>Conclusion :</strong></p>
-            <div className="bg-green-100 p-3 rounded text-sm">
+            <div className="bg-[var(--color-success-subtle)] p-3 rounded text-sm">
               <M>{"a(x) = \\begin{cases} \\frac{1}{4}(1 - e^{-x}) & \\text{si } x \\in [0, 4] \\\\ \\frac{e^4 - 1}{4}e^{-x} & \\text{si } x \\in ]4, +\\infty[ \\\\ 0 & \\text{sinon} \\end{cases}"}</M>
             </div>
           </Question>
@@ -592,7 +592,7 @@ export function RevisionIntensive() {
             <p><strong>Formule :</strong> <M>{"b(y) = \\int_{D_{X/Y}} f(x,y) \\, dx"}</M></p>
             <p className="text-sm">∀y ∈ [0, +∞[, D<sub>X/Y</sub> = [y, y+4]</p>
             <Formula><M>{"b(y) = \\int_y^{y+4} \\frac{1}{4}e^{-y} \\, dx = \\frac{e^{-y}}{4} \\cdot [x]_y^{y+4} = \\frac{e^{-y}}{4} \\cdot 4 = \\boxed{e^{-y}}"}</M></Formula>
-            <p className="text-sm text-slate-700">C'est une loi exponentielle de paramètre λ = 1 !</p>
+            <p className="text-sm text-[var(--color-text-secondary)]">C'est une loi exponentielle de paramètre λ = 1 !</p>
           </Question>
 
           <Question num="5" question="Loi conditionnelle de X sachant Y = 2" tag="deja-tombe">
@@ -600,13 +600,13 @@ export function RevisionIntensive() {
             <p className="text-sm">Pour y = 2 : D<sub>X/Y=2</sub> = [2, 6]</p>
             <Formula><M>{"a^*_{Y=2}(x) = \\frac{f(x, 2)}{b(2)} = \\frac{\\frac{1}{4}e^{-2}}{e^{-2}} = \\boxed{\\frac{1}{4}}"}</M></Formula>
             <p className="text-sm">pour x ∈ [2, 6]</p>
-            <p className="text-sm text-slate-700 mt-2">C'est une loi uniforme sur [2, 6] !</p>
+            <p className="text-sm text-[var(--color-text-secondary)] mt-2">C'est une loi uniforme sur [2, 6] !</p>
           </Question>
 
           <Question num="6" question="E[X | Y = 2] = ?" tag="deja-tombe">
             <p><strong>Formule :</strong> <M>{"E[X|Y=y] = \\int_{D_{X/Y}} x \\cdot a^*(x) \\, dx"}</M></p>
             <Formula><M>{"E[X|Y=2] = \\int_2^6 x \\cdot \\frac{1}{4} \\, dx = \\frac{1}{4}\\left[\\frac{x^2}{2}\\right]_2^6 = \\frac{1}{4} \\cdot \\frac{36 - 4}{2} = \\frac{1}{4} \\cdot 16 = \\boxed{4}"}</M></Formula>
-            <p className="text-sm text-slate-700">Cohérent avec la loi uniforme : E[U[a,b]] = (a+b)/2 = (2+6)/2 = 4 ✓</p>
+            <p className="text-sm text-[var(--color-text-secondary)]">Cohérent avec la loi uniforme : E[U[a,b]] = (a+b)/2 = (2+6)/2 = 4 ✓</p>
           </Question>
 
           <Question num="7" question="X et Y sont-elles indépendantes ?" tag="tres-probable">
@@ -624,7 +624,7 @@ export function RevisionIntensive() {
 
 
         <Exercise title="Exercice 12 - Changement de variable et Jacobien" tag="tres-probable" examRef="TD6 + Annales">
-          <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+          <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
             <strong>Énoncé :</strong> <M>{"f(x,y) = ke^{-y}"}</M> sur D : 0 &lt; y ≤ x² ≤ 1.<br />
             On pose U = X² et V = Y. Déterminer la loi marginale de U.
           </div>
@@ -635,7 +635,7 @@ export function RevisionIntensive() {
               <li>x² ≤ 1 → -1 ≤ x ≤ 1, mais on prend x &gt; 0 (racine positive)</li>
               <li>y ≤ x² et y &gt; 0</li>
             </ul>
-            <div className="bg-slate-100/80 p-3 rounded font-mono text-xs my-2">
+            <div className="bg-[var(--color-bg-overlay)]/80 p-3 rounded font-mono text-xs my-2">
               <pre>{`y
 ↑
 1 ├─────────┐
@@ -694,9 +694,9 @@ export function RevisionIntensive() {
         </Exercise>
 
         <Exercise title="Exercice 13 - Synthèse : Indépendance et critères" tag="tres-probable" examRef="Méthode classique">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-            <h4 className="font-bold text-blue-900 mb-2">📋 Critères d'indépendance entre X et Y</h4>
-            <div className="text-sm text-blue-800">
+          <div className="bg-[var(--color-info-subtle)] border border-[var(--color-info)] rounded-lg p-4 mb-4">
+            <h4 className="font-bold text-[var(--color-text-primary)] mb-2">📋 Critères d'indépendance entre X et Y</h4>
+            <div className="text-sm text-[var(--color-info)]">
               <p><strong>X et Y sont indépendantes si et seulement si :</strong></p>
               <ol className="list-decimal ml-4 mt-2 space-y-1">
                 <li>f(x,y) = a(x) × b(y) (la densité jointe est le produit des marginales)</li>
@@ -712,9 +712,9 @@ export function RevisionIntensive() {
           <Question num="1" question="Méthode graphique rapide" tag="tres-probable">
             <p><strong>Règle :</strong> Si le domaine D n'est PAS un rectangle (ou carré), alors X et Y ne sont PAS indépendantes.</p>
             <div className="grid grid-cols-2 gap-4 mt-3 text-sm">
-              <div className="bg-green-50 p-3 rounded">
-                <p className="font-medium text-green-800">✓ Rectangle → Possible indépendance</p>
-                <div className="bg-white p-2 rounded font-mono text-xs mt-2">
+              <div className="bg-[var(--color-success-subtle)] p-3 rounded">
+                <p className="font-medium text-[var(--color-success)]">✓ Rectangle → Possible indépendance</p>
+                <div className="bg-[var(--color-bg-raised)] p-2 rounded font-mono text-xs mt-2">
                   <pre>{`y
 ↑
 b ├─────────┐
@@ -724,9 +724,9 @@ a ├─────────┘
     c       d`}</pre>
                 </div>
               </div>
-              <div className="bg-red-50 p-3 rounded">
-                <p className="font-medium text-red-800">✗ Triangle → Pas indépendantes</p>
-                <div className="bg-white p-2 rounded font-mono text-xs mt-2">
+              <div className="bg-[var(--color-error-subtle)] p-3 rounded">
+                <p className="font-medium text-[var(--color-error)]">✗ Triangle → Pas indépendantes</p>
+                <div className="bg-[var(--color-bg-raised)] p-2 rounded font-mono text-xs mt-2">
                   <pre>{`y
 ↑
   │     ╱
@@ -784,7 +784,7 @@ a ├─────────┘
         </Exercise>
 
         <Exercise title="Exercice 16 - Identifier une loi via moments factoriels" tag="deja-tombe" examRef="Examen 2024-2025">
-          <div className="p-3 bg-slate-100/50 rounded-lg mb-4 text-sm">
+          <div className="p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-4 text-sm">
             <strong>Énoncé :</strong> On connaît μ₍ₖ₎ = 3ᵏ. Identifier la loi de X.
           </div>
 
@@ -798,16 +798,16 @@ a ├─────────┘
       </Section>
 
       {/* Récapitulatif final */}
-      <div className="mt-12 p-6 bg-linear-to-br from-red-50 to-orange-50 rounded-xl border border-red-200">
-        <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-          <Flame className="w-6 h-6 text-red-600" />
+      <div className="mt-12 p-6 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)]">
+        <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-4 flex items-center gap-2">
+          <Flame className="w-6 h-6 text-[var(--color-error)]" />
           Checklist Dernière Minute
         </h2>
 
         <div className="grid sm:grid-cols-2 gap-4 text-sm">
-          <div className="p-4 bg-white rounded-lg">
-            <h3 className="font-semibold text-red-700 mb-2">🔴 À SAVOIR PAR CŒUR</h3>
-            <ul className="space-y-1 text-slate-800">
+          <div className="p-4 bg-[var(--color-bg-raised)] rounded-lg">
+            <h3 className="font-semibold text-[var(--color-error)] mb-2">🔴 À SAVOIR PAR CŒUR</h3>
+            <ul className="space-y-1 text-[var(--color-text-primary)]">
               <li>✓ Formule de Bayes</li>
               <li>✓ V[aX + bY + cZ] avec covariances</li>
               <li>✓ Intégrale Beta : B(p,q) = (p-1)!(q-1)!/(p+q-1)!</li>
@@ -817,9 +817,9 @@ a ├─────────┘
             </ul>
           </div>
 
-          <div className="p-4 bg-white rounded-lg">
-            <h3 className="font-semibold text-orange-700 mb-2">⚠️ PIÈGES À ÉVITER</h3>
-            <ul className="space-y-1 text-slate-800">
+          <div className="p-4 bg-[var(--color-bg-raised)] rounded-lg">
+            <h3 className="font-semibold text-[var(--color-warning)] mb-2">⚠️ PIÈGES À ÉVITER</h3>
+            <ul className="space-y-1 text-[var(--color-text-primary)]">
               <li>✗ Oublier les 2 cas pour f_X(x)</li>
               <li>✗ Confondre P(A|B) et P(B|A)</li>
               <li>✗ Oublier |J| (valeur absolue)</li>
@@ -833,8 +833,8 @@ a ├─────────┘
 
       {/* Footer */}
       <div className="mt-8 text-center">
-        <p className="text-lg font-medium text-slate-900 mb-2">Tu vas gérer ! 💪</p>
-        <p className="text-sm text-slate-600">Concentre-toi sur les exercices 🔴 et 🟠 en priorité.</p>
+        <p className="text-lg font-medium text-[var(--color-text-primary)] mb-2">Tu vas gérer ! 💪</p>
+        <p className="text-sm text-[var(--color-text-secondary)]">Concentre-toi sur les exercices 🔴 et 🟠 en priorité.</p>
       </div>
     </main>
   );

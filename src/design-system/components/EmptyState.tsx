@@ -52,7 +52,7 @@ const variantConfig: Record<EmptyStateVariant, {
     qcm: {
         icon: Zap,
         iconColor: 'var(--color-warning)',
-        iconBg: 'rgba(245, 158, 11, 0.1)',
+        iconBg: 'var(--color-warning-subtle)',
     },
     inbox: {
         icon: FileQuestion,

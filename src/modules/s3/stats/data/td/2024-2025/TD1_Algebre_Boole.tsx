@@ -33,7 +33,7 @@ export const TD1_2425: TDSheet = {
             <li>{'{c}'} ∪ {'{d}'} = {'{c,d}'} → complémentaire: {'{a,b}'}</li>
             <li>{'{c}'} ∩ {'{d}'} = ∅ → complémentaire: Ω</li>
           </ul>
-          <p className="text-emerald-700 font-semibold">La plus petite algèbre de Boole:</p>
+          <p className="text-[var(--color-success)] font-semibold">La plus petite algèbre de Boole:</p>
           <M>{"\\mathcal{F} = \\{\\emptyset, \\{c\\}, \\{d\\}, \\{c,d\\}, \\{a,b\\}, \\{a,b,c\\}, \\{a,b,d\\}, \\Omega\\}"}</M>
           <p>Vérification: 2³ = 8 éléments ✓</p>
         </div>
@@ -63,7 +63,7 @@ export const TD1_2425: TDSheet = {
             <li><strong>c.</strong> (a) ∈ F mais (b,c,d,e) ∉ F → ❌</li>
             <li><strong>d.</strong> 12 éléments ≠ 2ⁿ → ❌</li>
           </ul>
-          <p className="text-emerald-700 font-semibold">Réponse: e. Autre - Aucune des familles proposées n'est une algèbre de Boole.</p>
+          <p className="text-[var(--color-success)] font-semibold">Réponse: e. Autre - Aucune des familles proposées n'est une algèbre de Boole.</p>
         </div>
       ),
     },
@@ -198,19 +198,19 @@ export const TD1_2425: TDSheet = {
       ),
       solution: (
         <div className="space-y-3">
-          <table className="border-collapse border border-gray-300 text-xs">
-            <thead><tr><th className="border border-gray-300 p-1">Q</th><th className="border border-gray-300 p-1">Calcul</th><th className="border border-gray-300 p-1">Réponse</th></tr></thead>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-xs">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-1">Q</th><th className="border border-[var(--color-border-strong)] p-1">Calcul</th><th className="border border-[var(--color-border-strong)] p-1">Réponse</th></tr></thead>
             <tbody>
-              <tr><td className="border border-gray-300 p-1">1</td><td className="border border-gray-300 p-1">[(b,c,d) ∪ (a,b)] ∩ (a,c,d)</td><td className="border border-gray-300 p-1">(a,c,d)</td></tr>
-              <tr><td className="border border-gray-300 p-1">2</td><td className="border border-gray-300 p-1">(a,b,c) ∩ (b,c,d) ∩ (b,c,e)</td><td className="border border-gray-300 p-1">(b,c)</td></tr>
-              <tr><td className="border border-gray-300 p-1">3</td><td className="border border-gray-300 p-1">[(∅) ∪ (ā)] ∩ [∅ ∪ (a,e)]</td><td className="border border-gray-300 p-1">(e)</td></tr>
-              <tr><td className="border border-gray-300 p-1">4</td><td className="border border-gray-300 p-1">(a,d,e) ∪ ∅</td><td className="border border-gray-300 p-1">(a,d,e)</td></tr>
-              <tr><td className="border border-gray-300 p-1">5</td><td className="border border-gray-300 p-1">R1 ∪ R2</td><td className="border border-gray-300 p-1">(a,b,c,d)</td></tr>
-              <tr><td className="border border-gray-300 p-1">6</td><td className="border border-gray-300 p-1">[(a,d) ∪ (a,d,e)] ∩ (a,e)</td><td className="border border-gray-300 p-1">(a,e)</td></tr>
-              <tr><td className="border border-gray-300 p-1">7</td><td className="border border-gray-300 p-1">[(d,e) ∩ (d,e)] ∪ ∅</td><td className="border border-gray-300 p-1">(d,e)</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">1</td><td className="border border-[var(--color-border-strong)] p-1">[(b,c,d) ∪ (a,b)] ∩ (a,c,d)</td><td className="border border-[var(--color-border-strong)] p-1">(a,c,d)</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">2</td><td className="border border-[var(--color-border-strong)] p-1">(a,b,c) ∩ (b,c,d) ∩ (b,c,e)</td><td className="border border-[var(--color-border-strong)] p-1">(b,c)</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">3</td><td className="border border-[var(--color-border-strong)] p-1">[(∅) ∪ (ā)] ∩ [∅ ∪ (a,e)]</td><td className="border border-[var(--color-border-strong)] p-1">(e)</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">4</td><td className="border border-[var(--color-border-strong)] p-1">(a,d,e) ∪ ∅</td><td className="border border-[var(--color-border-strong)] p-1">(a,d,e)</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">5</td><td className="border border-[var(--color-border-strong)] p-1">R1 ∪ R2</td><td className="border border-[var(--color-border-strong)] p-1">(a,b,c,d)</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">6</td><td className="border border-[var(--color-border-strong)] p-1">[(a,d) ∪ (a,d,e)] ∩ (a,e)</td><td className="border border-[var(--color-border-strong)] p-1">(a,e)</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-1">7</td><td className="border border-[var(--color-border-strong)] p-1">[(d,e) ∩ (d,e)] ∪ ∅</td><td className="border border-[var(--color-border-strong)] p-1">(d,e)</td></tr>
             </tbody>
           </table>
-          <p className="text-emerald-700 font-semibold">Les 14 éléments + ∅ et Ω = 16 éléments</p>
+          <p className="text-[var(--color-success)] font-semibold">Les 14 éléments + ∅ et Ω = 16 éléments</p>
         </div>
       ),
     },

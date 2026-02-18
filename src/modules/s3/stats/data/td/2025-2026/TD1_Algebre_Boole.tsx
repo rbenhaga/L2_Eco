@@ -28,9 +28,9 @@ export const TD1_2526: TDSheet = {
       ),
       solution: (
         <div className="space-y-3">
-          <div className="bg-blue-50 border-l-4 border-blue-500 p-3 mb-4">
-            <p className="font-semibold text-blue-800">📋 Méthode générale pour construire la plus petite algèbre de Boole</p>
-            <ol className="list-decimal ml-6 mt-2 text-sm text-blue-900">
+          <div className="bg-[var(--color-info-subtle)] border-l-4 border-[var(--color-info)] p-3 mb-4">
+            <p className="font-semibold text-[var(--color-info)]">📋 Méthode générale pour construire la plus petite algèbre de Boole</p>
+            <ol className="list-decimal ml-6 mt-2 text-sm text-[var(--color-text-primary)]">
               <li><strong>Trouver les atomes</strong> : créer un tableau avec chaque élément de Ω et cocher dans quels ensembles de base il apparaît</li>
               <li><strong>Regrouper</strong> : les éléments avec exactement les mêmes coches forment un atome</li>
               <li><strong>Construire l'algèbre</strong> : faire toutes les unions possibles d'atomes (2ⁿ éléments avec n atomes)</li>
@@ -38,30 +38,30 @@ export const TD1_2526: TDSheet = {
           </div>
 
           <p><strong>Étape 1: Trouver les atomes avec un tableau</strong></p>
-          <p className="text-sm text-slate-700 mb-2">
+          <p className="text-sm text-[var(--color-text-secondary)] mb-2">
             On liste chaque élément de Ω = {'{a, b, c, d, e}'} et on coche dans quels ensembles de base il apparaît :
           </p>
           
-          <table className="border-collapse border border-slate-300 text-sm mb-3">
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm mb-3">
             <thead>
-              <tr className="bg-slate-100/80">
-                <th className="border border-slate-300 px-3 py-1">Élément</th>
-                <th className="border border-slate-300 px-3 py-1">{'{a}'}</th>
-                <th className="border border-slate-300 px-3 py-1">{'{c,d}'}</th>
-                <th className="border border-slate-300 px-3 py-1">{'{b,d,e}'}</th>
-                <th className="border border-slate-300 px-3 py-1">→ Atome</th>
+              <tr className="bg-[var(--color-bg-overlay)]/80">
+                <th className="border border-[var(--color-border-strong)] px-3 py-1">Élément</th>
+                <th className="border border-[var(--color-border-strong)] px-3 py-1">{'{a}'}</th>
+                <th className="border border-[var(--color-border-strong)] px-3 py-1">{'{c,d}'}</th>
+                <th className="border border-[var(--color-border-strong)] px-3 py-1">{'{b,d,e}'}</th>
+                <th className="border border-[var(--color-border-strong)] px-3 py-1">→ Atome</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td className="border border-slate-300 px-3 py-1 font-semibold">a</td><td className="border border-slate-300 px-3 py-1 text-center">✓</td><td className="border border-slate-300 px-3 py-1 text-center">-</td><td className="border border-slate-300 px-3 py-1 text-center">-</td><td className="border border-slate-300 px-3 py-1 bg-yellow-50">{'{a}'}</td></tr>
-              <tr><td className="border border-slate-300 px-3 py-1 font-semibold">b</td><td className="border border-slate-300 px-3 py-1 text-center">-</td><td className="border border-slate-300 px-3 py-1 text-center">-</td><td className="border border-slate-300 px-3 py-1 text-center">✓</td><td className="border border-slate-300 px-3 py-1 bg-green-50" rowSpan={2}>{'{b,e}'}</td></tr>
-              <tr><td className="border border-slate-300 px-3 py-1 font-semibold">e</td><td className="border border-slate-300 px-3 py-1 text-center">-</td><td className="border border-slate-300 px-3 py-1 text-center">-</td><td className="border border-slate-300 px-3 py-1 text-center">✓</td></tr>
-              <tr><td className="border border-slate-300 px-3 py-1 font-semibold">c</td><td className="border border-slate-300 px-3 py-1 text-center">-</td><td className="border border-slate-300 px-3 py-1 text-center">✓</td><td className="border border-slate-300 px-3 py-1 text-center">-</td><td className="border border-slate-300 px-3 py-1 bg-orange-50">{'{c}'}</td></tr>
-              <tr><td className="border border-slate-300 px-3 py-1 font-semibold">d</td><td className="border border-slate-300 px-3 py-1 text-center">-</td><td className="border border-slate-300 px-3 py-1 text-center">✓</td><td className="border border-slate-300 px-3 py-1 text-center">✓</td><td className="border border-slate-300 px-3 py-1 bg-purple-50">{'{d}'}</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] px-3 py-1 font-semibold">a</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">✓</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">-</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">-</td><td className="border border-[var(--color-border-strong)] px-3 py-1 bg-[var(--color-warning-subtle)]">{'{a}'}</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] px-3 py-1 font-semibold">b</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">-</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">-</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">✓</td><td className="border border-[var(--color-border-strong)] px-3 py-1 bg-[var(--color-success-subtle)]" rowSpan={2}>{'{b,e}'}</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] px-3 py-1 font-semibold">e</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">-</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">-</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">✓</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] px-3 py-1 font-semibold">c</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">-</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">✓</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">-</td><td className="border border-[var(--color-border-strong)] px-3 py-1 bg-[var(--color-warning-subtle)]">{'{c}'}</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] px-3 py-1 font-semibold">d</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">-</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">✓</td><td className="border border-[var(--color-border-strong)] px-3 py-1 text-center">✓</td><td className="border border-[var(--color-border-strong)] px-3 py-1 bg-[var(--color-micro-subtle)]">{'{d}'}</td></tr>
             </tbody>
           </table>
           
-          <p className="text-sm text-slate-700">
+          <p className="text-sm text-[var(--color-text-secondary)]">
             <strong>Lecture du tableau :</strong> b et e ont exactement les mêmes coches (seulement dans {'{b,d,e}'}) → ils forment ensemble l'atome {'{b,e}'}. 
             Les autres éléments ont des coches différentes → chacun forme son propre atome.
           </p>
@@ -69,31 +69,31 @@ export const TD1_2526: TDSheet = {
           <p className="mt-2"><strong>Atomes trouvés :</strong> {'{a}'}, {'{b,e}'}, {'{c}'}, {'{d}'} → <strong>4 atomes</strong></p>
           
           <p className="mt-4"><strong>Étape 2: Construire l'algèbre</strong></p>
-          <p className="text-sm text-slate-700 mb-2">
+          <p className="text-sm text-[var(--color-text-secondary)] mb-2">
             L'algèbre = toutes les unions possibles d'atomes. Avec 4 atomes → 2⁴ = 16 éléments.
           </p>
           
-          <table className="border-collapse border border-slate-300 text-sm mb-3">
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm mb-3">
             <thead>
-              <tr className="bg-slate-100/80">
-                <th className="border border-slate-300 px-3 py-1">Nb d'atomes</th>
-                <th className="border border-slate-300 px-3 py-1">Combinaisons</th>
-                <th className="border border-slate-300 px-3 py-1">Éléments de F</th>
+              <tr className="bg-[var(--color-bg-overlay)]/80">
+                <th className="border border-[var(--color-border-strong)] px-3 py-1">Nb d'atomes</th>
+                <th className="border border-[var(--color-border-strong)] px-3 py-1">Combinaisons</th>
+                <th className="border border-[var(--color-border-strong)] px-3 py-1">Éléments de F</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td className="border border-slate-300 px-3 py-1">0</td><td className="border border-slate-300 px-3 py-1">C(4,0) = 1</td><td className="border border-slate-300 px-3 py-1">∅</td></tr>
-              <tr><td className="border border-slate-300 px-3 py-1">1</td><td className="border border-slate-300 px-3 py-1">C(4,1) = 4</td><td className="border border-slate-300 px-3 py-1">{'{a}'}, {'{c}'}, {'{d}'}, {'{b,e}'}</td></tr>
-              <tr><td className="border border-slate-300 px-3 py-1">2</td><td className="border border-slate-300 px-3 py-1">C(4,2) = 6</td><td className="border border-slate-300 px-3 py-1">{'{a,c}'}, {'{a,d}'}, {'{a,b,e}'}, {'{c,d}'}, {'{c,b,e}'}, {'{d,b,e}'}</td></tr>
-              <tr><td className="border border-slate-300 px-3 py-1">3</td><td className="border border-slate-300 px-3 py-1">C(4,3) = 4</td><td className="border border-slate-300 px-3 py-1">{'{a,c,d}'}, {'{a,c,b,e}'}, {'{a,d,b,e}'}, {'{c,d,b,e}'}</td></tr>
-              <tr><td className="border border-slate-300 px-3 py-1">4</td><td className="border border-slate-300 px-3 py-1">C(4,4) = 1</td><td className="border border-slate-300 px-3 py-1">Ω = {'{a,b,c,d,e}'}</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] px-3 py-1">0</td><td className="border border-[var(--color-border-strong)] px-3 py-1">C(4,0) = 1</td><td className="border border-[var(--color-border-strong)] px-3 py-1">∅</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] px-3 py-1">1</td><td className="border border-[var(--color-border-strong)] px-3 py-1">C(4,1) = 4</td><td className="border border-[var(--color-border-strong)] px-3 py-1">{'{a}'}, {'{c}'}, {'{d}'}, {'{b,e}'}</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] px-3 py-1">2</td><td className="border border-[var(--color-border-strong)] px-3 py-1">C(4,2) = 6</td><td className="border border-[var(--color-border-strong)] px-3 py-1">{'{a,c}'}, {'{a,d}'}, {'{a,b,e}'}, {'{c,d}'}, {'{c,b,e}'}, {'{d,b,e}'}</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] px-3 py-1">3</td><td className="border border-[var(--color-border-strong)] px-3 py-1">C(4,3) = 4</td><td className="border border-[var(--color-border-strong)] px-3 py-1">{'{a,c,d}'}, {'{a,c,b,e}'}, {'{a,d,b,e}'}, {'{c,d,b,e}'}</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] px-3 py-1">4</td><td className="border border-[var(--color-border-strong)] px-3 py-1">C(4,4) = 1</td><td className="border border-[var(--color-border-strong)] px-3 py-1">Ω = {'{a,b,c,d,e}'}</td></tr>
             </tbody>
           </table>
           
-          <p className="text-sm text-slate-700">Total : 1 + 4 + 6 + 4 + 1 = 16 ✓</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">Total : 1 + 4 + 6 + 4 + 1 = 16 ✓</p>
           
           <p className="mt-2"><strong>Réponse finale :</strong></p>
-          <div className="bg-slate-100/50 p-3 rounded border overflow-x-auto">
+          <div className="bg-[var(--color-bg-overlay)]/50 p-3 rounded border overflow-x-auto">
             <p className="text-sm font-mono whitespace-nowrap">
               <strong>F = {'{'}</strong> ∅, {'{a}'}, {'{c}'}, {'{d}'}, {'{b,e}'}, {'{a,c}'}, {'{a,d}'}, {'{a,b,e}'}, {'{c,d}'}, {'{c,b,e}'}, {'{d,b,e}'}, {'{a,c,d}'}, {'{a,c,b,e}'}, {'{a,d,b,e}'}, {'{c,d,b,e}'}, Ω <strong>{'}'}</strong>
             </p>
@@ -124,7 +124,7 @@ export const TD1_2526: TDSheet = {
             <li>{'{j,l}'} ∩ {'{i,j,k}'} = {'{j}'}</li>
           </ul>
           <p><strong>Atomes:</strong> {'{i}'}, {'{j}'}, {'{k}'}, {'{l}'} → 4 atomes → 2⁴ = 16 éléments</p>
-          <p className="text-emerald-700 font-semibold">✓ Réponse: b.</p>
+          <p className="text-[var(--color-success)] font-semibold">✓ Réponse: b.</p>
         </div>
       ),
     },
@@ -155,23 +155,23 @@ export const TD1_2526: TDSheet = {
           <p className="text-sm">Ensembles de base : {'{B}'}, {'{A,D}'}, {'{B,C,D,E}'}</p>
           <p className="text-sm mb-2">Atomes (méthode du tableau) : {'{A}'}, {'{B}'}, {'{C,E}'}, {'{D}'} → 4 atomes → 2⁴ = 16 éléments</p>
           
-          <p className="text-sm text-slate-700 mb-2">
+          <p className="text-sm text-[var(--color-text-secondary)] mb-2">
             <strong>F = </strong>{'{'}∅, {'{A}'}, {'{B}'}, {'{D}'}, {'{C,E}'}, {'{A,B}'}, {'{A,D}'}, {'{A,C,E}'}, {'{B,D}'}, {'{B,C,E}'}, {'{D,C,E}'}, {'{A,B,D}'}, {'{A,B,C,E}'}, {'{A,D,C,E}'}, {'{B,D,C,E}'}, Ω{'}'}
           </p>
           
-          <table className="border-collapse border border-slate-300 text-sm mt-2">
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm mt-2">
             <thead>
-              <tr><th className="border border-slate-300 p-2">#</th><th className="border border-slate-300 p-2">Réponse</th><th className="border border-slate-300 p-2">Justification</th></tr>
+              <tr><th className="border border-[var(--color-border-strong)] p-2">#</th><th className="border border-[var(--color-border-strong)] p-2">Réponse</th><th className="border border-[var(--color-border-strong)] p-2">Justification</th></tr>
             </thead>
             <tbody>
-              <tr><td className="border border-slate-300 p-2">1</td><td className="border border-slate-300 p-2 text-red-600">FAUX</td><td className="border border-slate-300 p-2">{'{F}'} n'existe pas car F ∉ Ω = {'{A,B,C,D,E}'}</td></tr>
-              <tr><td className="border border-slate-300 p-2">2</td><td className="border border-slate-300 p-2 text-red-600">FAUX</td><td className="border border-slate-300 p-2">{'{D}'} ∪ {'{E}'} = {'{D,E}'} ∉ F car E et C forment un atome inséparable</td></tr>
-              <tr><td className="border border-slate-300 p-2">3</td><td className="border border-slate-300 p-2 text-red-600">FAUX</td><td className="border border-slate-300 p-2">∅̄ ∩ {'{A,B}'} = Ω ∩ {'{A,B}'} = {'{A,B}'} ∈ F, donc l'affirmation est fausse</td></tr>
-              <tr><td className="border border-slate-300 p-2">4</td><td className="border border-slate-300 p-2 text-red-600">FAUX</td><td className="border border-slate-300 p-2">(Ω̄ ∩ ∅) ∪ ({'{B,C}'} ∩ {'{D,E}'}) = ∅ ∪ ∅ = ∅ ∈ F</td></tr>
-              <tr><td className="border border-slate-300 p-2">5</td><td className="border border-slate-300 p-2 text-emerald-600">VRAI</td><td className="border border-slate-300 p-2">C apparaît dans 8/16 = 50% des éléments de F</td></tr>
-              <tr><td className="border border-slate-300 p-2">6</td><td className="border border-slate-300 p-2 text-red-600">FAUX</td><td className="border border-slate-300 p-2">B apparaît dans 8/16 = 50% (pas 75%)</td></tr>
-              <tr><td className="border border-slate-300 p-2">7</td><td className="border border-slate-300 p-2 text-red-600">FAUX</td><td className="border border-slate-300 p-2">{'{B}'} ∩ {'{A,D}'} ∩ {'{B,C,D,E}'} = ∅ ∈ F</td></tr>
-              <tr><td className="border border-slate-300 p-2">8</td><td className="border border-slate-300 p-2 text-emerald-600">VRAI</td><td className="border border-slate-300 p-2">Parties à 2 éléments de Ω : {'{A,B}'}, {'{A,D}'}, {'{B,D}'}, {'{C,E}'} = 4/16 = 25%</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">1</td><td className="border border-[var(--color-border-strong)] p-2 text-[var(--color-error)]">FAUX</td><td className="border border-[var(--color-border-strong)] p-2">{'{F}'} n'existe pas car F ∉ Ω = {'{A,B,C,D,E}'}</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">2</td><td className="border border-[var(--color-border-strong)] p-2 text-[var(--color-error)]">FAUX</td><td className="border border-[var(--color-border-strong)] p-2">{'{D}'} ∪ {'{E}'} = {'{D,E}'} ∉ F car E et C forment un atome inséparable</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">3</td><td className="border border-[var(--color-border-strong)] p-2 text-[var(--color-error)]">FAUX</td><td className="border border-[var(--color-border-strong)] p-2">∅̄ ∩ {'{A,B}'} = Ω ∩ {'{A,B}'} = {'{A,B}'} ∈ F, donc l'affirmation est fausse</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">4</td><td className="border border-[var(--color-border-strong)] p-2 text-[var(--color-error)]">FAUX</td><td className="border border-[var(--color-border-strong)] p-2">(Ω̄ ∩ ∅) ∪ ({'{B,C}'} ∩ {'{D,E}'}) = ∅ ∪ ∅ = ∅ ∈ F</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">5</td><td className="border border-[var(--color-border-strong)] p-2 text-[var(--color-success)]">VRAI</td><td className="border border-[var(--color-border-strong)] p-2">C apparaît dans 8/16 = 50% des éléments de F</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">6</td><td className="border border-[var(--color-border-strong)] p-2 text-[var(--color-error)]">FAUX</td><td className="border border-[var(--color-border-strong)] p-2">B apparaît dans 8/16 = 50% (pas 75%)</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">7</td><td className="border border-[var(--color-border-strong)] p-2 text-[var(--color-error)]">FAUX</td><td className="border border-[var(--color-border-strong)] p-2">{'{B}'} ∩ {'{A,D}'} ∩ {'{B,C,D,E}'} = ∅ ∈ F</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">8</td><td className="border border-[var(--color-border-strong)] p-2 text-[var(--color-success)]">VRAI</td><td className="border border-[var(--color-border-strong)] p-2">Parties à 2 éléments de Ω : {'{A,B}'}, {'{A,D}'}, {'{B,D}'}, {'{C,E}'} = 4/16 = 25%</td></tr>
             </tbody>
           </table>
         </div>
@@ -205,12 +205,12 @@ export const TD1_2526: TDSheet = {
           <p>M en panne = M̄1 ∪ (M̄2 ∩ M̄3)</p>
           <M>{"P(\\text{M en panne}) = P(\\bar{M1}) + P(\\bar{M2} \\cap \\bar{M3}) - P(\\bar{M1} \\cap \\bar{M2} \\cap \\bar{M3})"}</M>
           <M>{"= 0.2 + (0.1 \\times 0.3) - (0.2 \\times 0.1 \\times 0.3) = 0.2 + 0.03 - 0.006 = 0.224"}</M>
-          <p className="text-emerald-700 font-semibold"><M>{"P(\\text{M fonctionne}) = 1 - 0.224 = \\boxed{0.776}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"P(\\text{M fonctionne}) = 1 - 0.224 = \\boxed{0.776}"}</M></p>
           
           <p><strong>2. P(rendement réduit | M fonctionne):</strong></p>
           <M>{"P(\\text{réduit}) = P(M1) \\times [P(M2) \\times P(\\bar{M3}) + P(\\bar{M2}) \\times P(M3)]"}</M>
           <M>{"= 0.8 \\times [0.9 \\times 0.3 + 0.1 \\times 0.7] = 0.8 \\times 0.34 = 0.272"}</M>
-          <p className="text-emerald-700 font-semibold"><M>{"P(\\text{réduit} | \\text{fonctionne}) = \\frac{0.272}{0.776} = \\boxed{0.351}"}</M></p>
+          <p className="text-[var(--color-success)] font-semibold"><M>{"P(\\text{réduit} | \\text{fonctionne}) = \\frac{0.272}{0.776} = \\boxed{0.351}"}</M></p>
           
           <p><strong>3. P(M1 en panne | M en panne):</strong></p>
           <M>{"P(\\bar{M1} | \\text{M en panne}) = \\frac{P(\\bar{M1})}{P(\\text{M en panne})} = \\frac{0.2}{0.224} = \\boxed{0.893}"}</M>
@@ -270,14 +270,14 @@ export const TD1_2526: TDSheet = {
       solution: (
         <div className="space-y-3">
           <p><strong>Tableau de contingence:</strong></p>
-          <table className="border-collapse border border-slate-300 text-sm">
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
             <thead>
-              <tr><th className="border border-slate-300 p-2"></th><th className="border border-slate-300 p-2">Défectueuse (D)</th><th className="border border-slate-300 p-2">Non défectueuse</th><th className="border border-slate-300 p-2">Total</th></tr>
+              <tr><th className="border border-[var(--color-border-strong)] p-2"></th><th className="border border-[var(--color-border-strong)] p-2">Défectueuse (D)</th><th className="border border-[var(--color-border-strong)] p-2">Non défectueuse</th><th className="border border-[var(--color-border-strong)] p-2">Total</th></tr>
             </thead>
             <tbody>
-              <tr><td className="border border-slate-300 p-2">Abîmée (A)</td><td className="border border-slate-300 p-2">30</td><td className="border border-slate-300 p-2">20</td><td className="border border-slate-300 p-2">50</td></tr>
-              <tr><td className="border border-slate-300 p-2">Non abîmée</td><td className="border border-slate-300 p-2">19</td><td className="border border-slate-300 p-2">931</td><td className="border border-slate-300 p-2">950</td></tr>
-              <tr><td className="border border-slate-300 p-2 font-semibold">Total</td><td className="border border-slate-300 p-2 font-semibold">49</td><td className="border border-slate-300 p-2 font-semibold">951</td><td className="border border-slate-300 p-2 font-semibold">1000</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">Abîmée (A)</td><td className="border border-[var(--color-border-strong)] p-2">30</td><td className="border border-[var(--color-border-strong)] p-2">20</td><td className="border border-[var(--color-border-strong)] p-2">50</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2">Non abîmée</td><td className="border border-[var(--color-border-strong)] p-2">19</td><td className="border border-[var(--color-border-strong)] p-2">931</td><td className="border border-[var(--color-border-strong)] p-2">950</td></tr>
+              <tr><td className="border border-[var(--color-border-strong)] p-2 font-semibold">Total</td><td className="border border-[var(--color-border-strong)] p-2 font-semibold">49</td><td className="border border-[var(--color-border-strong)] p-2 font-semibold">951</td><td className="border border-[var(--color-border-strong)] p-2 font-semibold">1000</td></tr>
             </tbody>
           </table>
           <p><strong>Par Bayes:</strong></p>
@@ -313,7 +313,7 @@ export const TD1_2526: TDSheet = {
           <M>{"P(\\bar{B} | A) = \\frac{P(A) - P(A \\cap B)}{P(A)} = \\frac{0.3 - 0.15}{0.3} = \\boxed{0.5}"}</M>
           
           <p><strong>4. P(B \ (A∩B)):</strong></p>
-          <p className="text-sm text-slate-700 mb-1">B \ (A∩B) = éléments de B qui ne sont pas dans A∩B = B ∩ Ā (car A∩B est exactement la partie de B qui est dans A)</p>
+          <p className="text-sm text-[var(--color-text-secondary)] mb-1">B \ (A∩B) = éléments de B qui ne sont pas dans A∩B = B ∩ Ā (car A∩B est exactement la partie de B qui est dans A)</p>
           <M>{"P(B \\setminus (A \\cap B)) = P(B) - P(A \\cap B) = 0.4 - 0.15 = \\boxed{0.25}"}</M>
         </div>
       ),

@@ -2,10 +2,16 @@ import { ArrowRight, Coffee, GraduationCap } from "lucide-react";
 
 const SITE_NAME = "Οἰκονομία";
 
-export function Footer() {
+type FooterProps = {
+    className?: string;
+};
+
+export function Footer({ className }: FooterProps) {
+    const footerClassName = className ?? "mt-12 sm:mt-20 border-t";
+
     return (
         <footer
-            className="mt-12 sm:mt-20 border-t"
+            className={footerClassName}
             style={{
                 background: 'var(--color-surface-raised)',
                 borderColor: 'var(--color-border-default)',
@@ -47,6 +53,12 @@ export function Footer() {
                                 >Licence 2</a>
                             </li>
                             <li><span className="text-xs sm:text-sm" style={{ color: 'var(--color-text-muted)' }}>L3 · Bientôt</span></li>
+                            <li>
+                                <a href="/pricing" className="text-xs sm:text-sm transition-colors" style={{ color: 'var(--color-text-secondary)' }}
+                                    onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-text-primary)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-text-secondary)'}
+                                >Tarifs</a>
+                            </li>
                         </ul>
                     </div>
 

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 
 export interface CardProps {
@@ -13,10 +13,30 @@ export interface CardProps {
 
 /**
  * Card - Reusable card component with variants
- * 
- * Designed for consistency across all content types (cours, QCM, TD, etc.)
+ *
+ * Design Contract v3: No hardcoded Tailwind colors - uses CSS custom properties.
  * Supports multiple visual styles and interaction states.
  */
+
+const variantStyles: Record<string, CSSProperties> = {
+    default: {
+        background: 'var(--color-bg-raised)',
+        border: '1px solid var(--color-border-default)',
+        boxShadow: 'var(--shadow-sm)',
+    },
+    outline: {
+        background: 'transparent',
+        border: '1px solid var(--color-border-default)',
+    },
+    ghost: {
+        background: 'var(--color-bg-overlay)',
+        border: '1px solid transparent',
+    },
+    glass: {
+        boxShadow: 'var(--shadow-lg)',
+    },
+};
+
 export function Card({
     children,
     variant = 'default',
@@ -29,12 +49,7 @@ export function Card({
 
     const baseClasses = 'rounded-2xl transition-all duration-300';
 
-    const variantClasses = {
-        default: 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 shadow-sm',
-        outline: 'bg-transparent border border-slate-300 dark:border-white/20',
-        ghost: 'bg-slate-50/50 dark:bg-slate-800/50 border border-transparent',
-        glass: 'glass-effect shadow-lg'
-    };
+    const glassClasses = variant === 'glass' ? 'glass-effect' : '';
 
     const paddingClasses = {
         compact: 'p-4',
@@ -43,7 +58,7 @@ export function Card({
     };
 
     const hoverClasses = hoverable
-        ? 'hover:-translate-y-1 hover:shadow-xl hover:border-slate-300 dark:hover:border-white/30'
+        ? 'hover:-translate-y-1'
         : '';
 
     const clickableClasses = clickable
@@ -52,7 +67,7 @@ export function Card({
 
     const combinedClasses = `
     ${baseClasses}
-    ${variantClasses[variant]}
+    ${glassClasses}
     ${paddingClasses[padding]}
     ${hoverClasses}
     ${clickableClasses}
@@ -64,6 +79,7 @@ export function Card({
     return (
         <Component
             className={combinedClasses}
+            style={variantStyles[variant]}
             onClick={onClick}
             whileHover={hoverable ? { y: -4 } : undefined}
             whileTap={clickable ? { scale: 0.98 } : undefined}

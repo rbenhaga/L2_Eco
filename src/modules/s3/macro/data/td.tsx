@@ -349,7 +349,7 @@ export const macroTDSheets: MacroTDSheet[] = [
                 <li>L'économie peut rester durablement sous <Math>{"Y_n"}</Math></li>
               </ul>
             </div>
-            <div className="p-3 rounded-lg mt-3" style={{ background: 'rgb(239 68 68 / 0.1)', borderLeft: '3px solid rgb(239 68 68)' }}>
+            <div className="p-3 rounded-lg mt-3" style={{ background: 'var(--color-error-subtle)', borderLeft: '3px solid var(--color-error)' }}>
               <p className="font-semibold mb-2">Implication</p>
               <p>En trappe à liquidité, la politique budgétaire restrictive est <strong>contre-productive</strong>.</p>
               <p className="mt-2">Il faudrait au contraire une politique budgétaire <strong>expansionniste</strong>.</p>
@@ -403,7 +403,7 @@ export const macroTDSheets: MacroTDSheet[] = [
               <p className="mt-2"><strong>Mécanisme de retour à <Math>{"Y_n"}</Math> :</strong></p>
               <p>Baisse des prix anticipés → Baisse des salaires nominaux → Baisse des coûts → Baisse des prix → Hausse de <Math>{"\\frac{M}{P}"}</Math> → Baisse de i → Hausse de I → Retour à <Math>{"Y_n"}</Math></p>
             </div>
-            <div className="p-3 rounded-lg mt-3" style={{ background: 'rgb(239 68 68 / 0.1)', borderLeft: '3px solid rgb(239 68 68)' }}>
+            <div className="p-3 rounded-lg mt-3" style={{ background: 'var(--color-error-subtle)', borderLeft: '3px solid var(--color-error)' }}>
               <p className="font-semibold mb-2">En trappe à liquidité</p>
               <p>Si i = 0, le mécanisme d'ajustement ne fonctionne pas :</p>
               <ul className="list-disc pl-6 space-y-1 mt-2">

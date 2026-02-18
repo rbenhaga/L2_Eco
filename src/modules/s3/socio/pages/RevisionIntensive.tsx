@@ -15,12 +15,12 @@ export default function RevisionIntensive() {
       />
 
       {/* Toggle thème */}
-      <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-slate-100 rounded-xl w-full sm:w-fit">
+      <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-[var(--color-bg-overlay)] rounded-xl w-full sm:w-fit">
         <button
           onClick={() => setView('theme1')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'theme1'
-              ? 'bg-white text-slate-900 shadow-sm'
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm'
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
             }`}
         >
           <BookOpen className="w-4 h-4" />
@@ -29,8 +29,8 @@ export default function RevisionIntensive() {
         <button
           onClick={() => setView('theme2')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'theme2'
-              ? 'bg-white text-slate-900 shadow-sm'
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm'
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
             }`}
         >
           <Zap className="w-4 h-4" />
@@ -51,17 +51,17 @@ export default function RevisionIntensive() {
               hideAvatar
             >
               <div className="space-y-2">
-                <div className="p-3 bg-linear-to-r from-indigo-50 to-transparent rounded-xl border-l-3 border-indigo-400">
-                  <strong className="text-indigo-700">Jaya</strong>
-                  <p className="text-slate-600 text-xs sm:text-sm">Ensemble des recherches positives sur l'organisation et le fonctionnement des sociétés.</p>
+                <div className="p-3 bg-linear-to-r from-[var(--color-accent-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-accent)]">
+                  <strong className="text-[var(--color-accent)]">Jaya</strong>
+                  <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm">Ensemble des recherches positives sur l'organisation et le fonctionnement des sociétés.</p>
                 </div>
-                <div className="p-3 bg-linear-to-r from-violet-50 to-transparent rounded-xl border-l-3 border-violet-400">
-                  <strong className="text-violet-700">Ferréol & Noreck</strong>
-                  <p className="text-slate-600 text-xs sm:text-sm">Projet d'analyse "objective" des faits sociaux.</p>
+                <div className="p-3 bg-linear-to-r from-[var(--color-accent-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-accent)]">
+                  <strong className="text-[var(--color-accent)]">Ferréol & Noreck</strong>
+                  <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm">Projet d'analyse "objective" des faits sociaux.</p>
                 </div>
-                <div className="p-3 bg-linear-to-r from-sky-50 to-transparent rounded-xl border-l-3 border-sky-400">
-                  <strong className="text-sky-700">Berthelot</strong>
-                  <p className="text-slate-600 text-xs sm:text-sm">Entreprise de connaissance scientifique du social.</p>
+                <div className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-info)]">
+                  <strong className="text-[var(--color-info)]">Berthelot</strong>
+                  <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm">Entreprise de connaissance scientifique du social.</p>
                 </div>
               </div>
             </AuthorCard>
@@ -74,29 +74,29 @@ export default function RevisionIntensive() {
               hideAvatar
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="p-3 bg-linear-to-br from-violet-50 to-fuchsia-50/30 rounded-xl border border-violet-100">
-                  <p className="font-semibold text-violet-700 text-sm">Platon</p>
-                  <p className="text-xs text-slate-600">Conception organique et fonctionnaliste (3 groupes)</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)]">
+                  <p className="font-semibold text-[var(--color-accent)] text-sm">Platon</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Conception organique et fonctionnaliste (3 groupes)</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-sky-50 to-blue-50/30 rounded-xl border border-sky-100">
-                  <p className="font-semibold text-sky-700 text-sm">Aristote</p>
-                  <p className="text-xs text-slate-600">"L'homme est un animal politique"</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-info)]">
+                  <p className="font-semibold text-[var(--color-info)] text-sm">Aristote</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">"L'homme est un animal politique"</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
-                  <p className="font-semibold text-emerald-700 text-sm">Ibn Khaldoun</p>
-                  <p className="text-xs text-slate-600">Théorie cyclique, cohésion sociale</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl border border-[var(--color-success)]">
+                  <p className="font-semibold text-[var(--color-success)] text-sm">Ibn Khaldoun</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Théorie cyclique, cohésion sociale</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-slate-50 to-gray-50/30 rounded-xl border border-slate-200">
-                  <p className="font-semibold text-slate-700 text-sm">Hobbes</p>
-                  <p className="text-xs text-slate-600">Contrat social, état de nature violent</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-border-default)]">
+                  <p className="font-semibold text-[var(--color-text-secondary)] text-sm">Hobbes</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Contrat social, état de nature violent</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                  <p className="font-semibold text-amber-700 text-sm">Rousseau</p>
-                  <p className="text-xs text-slate-600">Contrat social, état de nature paisible</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-warning)] text-sm">Rousseau</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Contrat social, état de nature paisible</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-rose-50 to-pink-50/30 rounded-xl border border-rose-100">
-                  <p className="font-semibold text-rose-700 text-sm">Montesquieu</p>
-                  <p className="text-xs text-slate-600">Lettres persanes, critique sociale</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)]">
+                  <p className="font-semibold text-[var(--color-error)] text-sm">Montesquieu</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Lettres persanes, critique sociale</p>
                 </div>
               </div>
             </AuthorCard>
@@ -106,37 +106,37 @@ export default function RevisionIntensive() {
             <div className="overflow-x-auto mb-4">
               <table className="w-full text-sm border-collapse">
                 <thead>
-                  <tr className="bg-slate-100">
-                    <th className="p-3 text-left font-semibold text-slate-700 border border-slate-200">Aspect</th>
-                    <th className="p-3 text-left font-semibold text-rose-700 border border-slate-200">Durkheim</th>
-                    <th className="p-3 text-left font-semibold text-violet-700 border border-slate-200">Weber</th>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <th className="p-3 text-left font-semibold text-[var(--color-text-secondary)] border border-[var(--color-border-default)]">Aspect</th>
+                    <th className="p-3 text-left font-semibold text-[var(--color-error)] border border-[var(--color-border-default)]">Durkheim</th>
+                    <th className="p-3 text-left font-semibold text-[var(--color-accent)] border border-[var(--color-border-default)]">Weber</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="p-3 border border-slate-200 font-medium">Objectif</td>
-                    <td className="p-3 border border-slate-200 text-rose-800">Expliquer</td>
-                    <td className="p-3 border border-slate-200 text-violet-800">Comprendre</td>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Objectif</td>
+                    <td className="p-3 border border-[var(--color-border-default)] text-[var(--color-error)]">Expliquer</td>
+                    <td className="p-3 border border-[var(--color-border-default)] text-[var(--color-accent)]">Comprendre</td>
                   </tr>
-                  <tr className="bg-slate-50">
-                    <td className="p-3 border border-slate-200 font-medium">Objet</td>
-                    <td className="p-3 border border-slate-200 text-rose-800">Fait social</td>
-                    <td className="p-3 border border-slate-200 text-violet-800">Action sociale</td>
-                  </tr>
-                  <tr>
-                    <td className="p-3 border border-slate-200 font-medium">Méthode</td>
-                    <td className="p-3 border border-slate-200 text-rose-800">Statistiques</td>
-                    <td className="p-3 border border-slate-200 text-violet-800">Idéaux-types</td>
-                  </tr>
-                  <tr className="bg-slate-50">
-                    <td className="p-3 border border-slate-200 font-medium">Niveau</td>
-                    <td className="p-3 border border-slate-200 text-rose-800">Macro (holisme)</td>
-                    <td className="p-3 border border-slate-200 text-violet-800">Micro (individualisme)</td>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Objet</td>
+                    <td className="p-3 border border-[var(--color-border-default)] text-[var(--color-error)]">Fait social</td>
+                    <td className="p-3 border border-[var(--color-border-default)] text-[var(--color-accent)]">Action sociale</td>
                   </tr>
                   <tr>
-                    <td className="p-3 border border-slate-200 font-medium">Individu</td>
-                    <td className="p-3 border border-slate-200 text-rose-800">Déterminisme social</td>
-                    <td className="p-3 border border-slate-200 text-violet-800">Autonomie de l'acteur</td>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Méthode</td>
+                    <td className="p-3 border border-[var(--color-border-default)] text-[var(--color-error)]">Statistiques</td>
+                    <td className="p-3 border border-[var(--color-border-default)] text-[var(--color-accent)]">Idéaux-types</td>
+                  </tr>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Niveau</td>
+                    <td className="p-3 border border-[var(--color-border-default)] text-[var(--color-error)]">Macro (holisme)</td>
+                    <td className="p-3 border border-[var(--color-border-default)] text-[var(--color-accent)]">Micro (individualisme)</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Individu</td>
+                    <td className="p-3 border border-[var(--color-border-default)] text-[var(--color-error)]">Déterminisme social</td>
+                    <td className="p-3 border border-[var(--color-border-default)] text-[var(--color-accent)]">Autonomie de l'acteur</td>
                   </tr>
                 </tbody>
               </table>
@@ -150,25 +150,25 @@ export default function RevisionIntensive() {
               hideAvatar
             >
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-linear-to-br from-sky-50 to-blue-50/30 rounded-xl border border-sky-100">
-                  <p className="font-semibold text-sky-700 text-sm">Altruiste</p>
-                  <p className="text-xs text-slate-500">Intégration forte</p>
-                  <p className="text-xs text-slate-600">Ex: kamikazes</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-info)]">
+                  <p className="font-semibold text-[var(--color-info)] text-sm">Altruiste</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Intégration forte</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Ex: kamikazes</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-slate-50 to-gray-50/30 rounded-xl border border-slate-200">
-                  <p className="font-semibold text-slate-700 text-sm">Égoïste</p>
-                  <p className="text-xs text-slate-500">Intégration faible</p>
-                  <p className="text-xs text-slate-600">Ex: célibataires</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-border-default)]">
+                  <p className="font-semibold text-[var(--color-text-secondary)] text-sm">Égoïste</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Intégration faible</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Ex: célibataires</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-rose-50 to-pink-50/30 rounded-xl border border-rose-100">
-                  <p className="font-semibold text-rose-700 text-sm">Fataliste</p>
-                  <p className="text-xs text-slate-500">Régulation forte</p>
-                  <p className="text-xs text-slate-600">Ex: mariage forcé</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)]">
+                  <p className="font-semibold text-[var(--color-error)] text-sm">Fataliste</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Régulation forte</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Ex: mariage forcé</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                  <p className="font-semibold text-amber-700 text-sm">Anomique</p>
-                  <p className="text-xs text-slate-500">Régulation faible</p>
-                  <p className="text-xs text-slate-600">Ex: crise 1929</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-warning)] text-sm">Anomique</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Régulation faible</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Ex: crise 1929</p>
                 </div>
               </div>
             </AuthorCard>
@@ -183,7 +183,7 @@ export default function RevisionIntensive() {
               hideAvatar
             >
               <p className="text-sm mb-2">Vie sociale = <strong>jeu de rôle</strong>. Identité virtuelle vs réelle.</p>
-              <p className="text-xs text-slate-600">Stigmates = attributs socialement disqualifiants.</p>
+              <p className="text-xs text-[var(--color-text-secondary)]">Stigmates = attributs socialement disqualifiants.</p>
             </AuthorCard>
 
             <AuthorCard
@@ -193,9 +193,9 @@ export default function RevisionIntensive() {
               hideAvatar
             >
               <p className="text-sm mb-2">On ne naît pas déviant, on le devient par <strong>étiquetage</strong>.</p>
-              <div className="p-3 bg-linear-to-r from-rose-50/50 to-transparent rounded-xl border border-rose-100">
-                <p className="font-medium text-rose-900 text-xs mb-1">4 étapes :</p>
-                <p className="text-xs text-slate-600">1. Transgression → 2. Apprentissage → 3. Désignation publique → 4. Affiliation</p>
+              <div className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)]">
+                <p className="font-medium text-[var(--color-error)] text-xs mb-1">4 étapes :</p>
+                <p className="text-xs text-[var(--color-text-secondary)]">1. Transgression → 2. Apprentissage → 3. Désignation publique → 4. Affiliation</p>
               </div>
             </AuthorCard>
 
@@ -207,7 +207,7 @@ export default function RevisionIntensive() {
                 color="violet"
                 hideAvatar
               >
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• 3 capitaux : économique, culturel, social</li>
                   <li>• <strong>Habitus unique</strong> de classe</li>
                   <li>• École = reproduction des inégalités</li>
@@ -219,7 +219,7 @@ export default function RevisionIntensive() {
                 color="emerald"
                 hideAvatar
               >
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• <strong>Homme pluriel</strong></li>
                   <li>• Habitus contradictoires selon contextes</li>
                   <li>• École = ascension sociale possible</li>
@@ -246,13 +246,13 @@ export default function RevisionIntensive() {
               hideAvatar
             >
               <div className="space-y-2 mb-4">
-                <div className="p-3 bg-linear-to-r from-emerald-50 to-transparent rounded-xl border-l-3 border-emerald-400">
-                  <strong className="text-emerald-700">Steiner</strong>
-                  <p className="text-slate-600 text-xs sm:text-sm">"La sociologie économique étudie les faits économiques en les considérant comme des faits sociaux."</p>
+                <div className="p-3 bg-linear-to-r from-[var(--color-success-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-success)]">
+                  <strong className="text-[var(--color-success)]">Steiner</strong>
+                  <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm">"La sociologie économique étudie les faits économiques en les considérant comme des faits sociaux."</p>
                 </div>
-                <div className="p-3 bg-linear-to-r from-teal-50 to-transparent rounded-xl border-l-3 border-teal-400">
-                  <strong className="text-teal-700">Polanyi</strong>
-                  <p className="text-slate-600 text-xs sm:text-sm">Notion d'<strong>encastrement</strong> : l'économie est encastrée dans le social.</p>
+                <div className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-success)]">
+                  <strong className="text-[var(--color-success)]">Polanyi</strong>
+                  <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm">Notion d'<strong>encastrement</strong> : l'économie est encastrée dans le social.</p>
                 </div>
               </div>
             </AuthorCard>
@@ -260,17 +260,17 @@ export default function RevisionIntensive() {
 
           <Section title="La monnaie">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div className="p-4 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                <p className="font-semibold text-amber-700 mb-2">Économistes</p>
-                <ul className="text-xs text-slate-600 space-y-1">
+              <div className="p-4 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                <p className="font-semibold text-[var(--color-warning)] mb-2">Économistes</p>
+                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                   <li>• Instrument des échanges</li>
                   <li>• <strong>Neutralité</strong> de la monnaie</li>
                   <li>• "Voile sur les échanges"</li>
                 </ul>
               </div>
-              <div className="p-4 bg-linear-to-br from-violet-50 to-fuchsia-50/30 rounded-xl border border-violet-100">
-                <p className="font-semibold text-violet-700 mb-2">Sociologues</p>
-                <ul className="text-xs text-slate-600 space-y-1">
+              <div className="p-4 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)]">
+                <p className="font-semibold text-[var(--color-accent)] mb-2">Sociologues</p>
+                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                   <li>• <strong>Institution sociale</strong></li>
                   <li>• Construction collective</li>
                   <li>• Fondée sur la <strong>confiance</strong></li>
@@ -285,14 +285,14 @@ export default function RevisionIntensive() {
               hideAvatar
             >
               <div className="space-y-2">
-                <div className="p-2 bg-linear-to-r from-violet-50/50 to-transparent rounded-lg">
-                  <strong className="text-violet-700 text-sm">Simmel</strong> : Pouvoir d'attraction, effets sur les consciences
+                <div className="p-2 bg-linear-to-r from-[var(--color-accent-subtle)]/50 to-transparent rounded-lg">
+                  <strong className="text-[var(--color-accent)] text-sm">Simmel</strong> : Pouvoir d'attraction, effets sur les consciences
                 </div>
-                <div className="p-2 bg-linear-to-r from-rose-50/50 to-transparent rounded-lg">
-                  <strong className="text-rose-700 text-sm">Marx & Weber</strong> : Vision pessimiste, destruction du lien social
+                <div className="p-2 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-lg">
+                  <strong className="text-[var(--color-error)] text-sm">Marx & Weber</strong> : Vision pessimiste, destruction du lien social
                 </div>
-                <div className="p-2 bg-linear-to-r from-emerald-50/50 to-transparent rounded-lg">
-                  <strong className="text-emerald-700 text-sm">Simiand</strong> : Critique TQM, fait social fondé sur croyances
+                <div className="p-2 bg-linear-to-r from-[var(--color-success-subtle)]/50 to-transparent rounded-lg">
+                  <strong className="text-[var(--color-success)] text-sm">Simiand</strong> : Critique TQM, fait social fondé sur croyances
                 </div>
               </div>
             </AuthorCard>
@@ -308,7 +308,7 @@ export default function RevisionIntensive() {
               <p className="text-sm mb-2">
                 <strong>Effet Veblen</strong> (snobisme) : on désire des biens PARCE QUE leur prix est élevé.
               </p>
-              <p className="text-xs text-slate-600">Classe des loisirs : luxe, confort, temps improductif.</p>
+              <p className="text-xs text-[var(--color-text-secondary)]">Classe des loisirs : luxe, confort, temps improductif.</p>
             </AuthorCard>
 
             <AuthorCard
@@ -330,14 +330,14 @@ export default function RevisionIntensive() {
               hideAvatar
             >
               <div className="space-y-2">
-                <div className="p-2 bg-linear-to-r from-rose-50/50 to-transparent rounded-lg">
-                  <strong className="text-rose-700 text-sm">Marcuse</strong> : <strong>Faux besoins</strong> fabriqués par rendement + publicité
+                <div className="p-2 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-lg">
+                  <strong className="text-[var(--color-error)] text-sm">Marcuse</strong> : <strong>Faux besoins</strong> fabriqués par rendement + publicité
                 </div>
-                <div className="p-2 bg-linear-to-r from-violet-50/50 to-transparent rounded-lg">
-                  <strong className="text-violet-700 text-sm">Debord</strong> : Spectacle = religion de la marchandise
+                <div className="p-2 bg-linear-to-r from-[var(--color-accent-subtle)]/50 to-transparent rounded-lg">
+                  <strong className="text-[var(--color-accent)] text-sm">Debord</strong> : Spectacle = religion de la marchandise
                 </div>
-                <div className="p-2 bg-linear-to-r from-amber-50/50 to-transparent rounded-lg">
-                  <strong className="text-amber-700 text-sm">Adorno & Horkheimer</strong> : Dépravation de la culture
+                <div className="p-2 bg-linear-to-r from-[var(--color-warning-subtle)]/50 to-transparent rounded-lg">
+                  <strong className="text-[var(--color-warning)] text-sm">Adorno & Horkheimer</strong> : Dépravation de la culture
                 </div>
               </div>
             </AuthorCard>
@@ -351,21 +351,21 @@ export default function RevisionIntensive() {
               color="emerald"
               hideAvatar
             >
-              <div className="p-3 bg-linear-to-r from-emerald-50/50 to-transparent rounded-xl border border-emerald-100 mb-3">
-                <p className="text-sm text-slate-700">
+              <div className="p-3 bg-linear-to-r from-[var(--color-success-subtle)]/50 to-transparent rounded-xl border border-[var(--color-success)] mb-3">
+                <p className="text-sm text-[var(--color-text-secondary)]">
                   Le marché est une <strong>institution sociale</strong> construite par la société.
                   Il doit être <strong>légitime</strong> (équité, pas seulement efficience).
                 </p>
               </div>
               <div className="space-y-2">
-                <div className="p-2 bg-linear-to-r from-rose-50/50 to-transparent rounded-lg">
-                  <strong className="text-rose-700 text-sm">Polanyi</strong> : Pouvoir destructeur, "erreur économiste", encastrement
+                <div className="p-2 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-lg">
+                  <strong className="text-[var(--color-error)] text-sm">Polanyi</strong> : Pouvoir destructeur, "erreur économiste", encastrement
                 </div>
-                <div className="p-2 bg-linear-to-r from-teal-50/50 to-transparent rounded-lg">
-                  <strong className="text-teal-700 text-sm">Titmuss</strong> : Don du sang &gt; marché (sélection adverse, valeurs éthiques)
+                <div className="p-2 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-lg">
+                  <strong className="text-[var(--color-success)] text-sm">Titmuss</strong> : Don du sang &gt; marché (sélection adverse, valeurs éthiques)
                 </div>
-                <div className="p-2 bg-linear-to-r from-violet-50/50 to-transparent rounded-lg">
-                  <strong className="text-violet-700 text-sm">Bourdieu</strong> : Marché du logement, habitus de classe moyenne
+                <div className="p-2 bg-linear-to-r from-[var(--color-accent-subtle)]/50 to-transparent rounded-lg">
+                  <strong className="text-[var(--color-accent)] text-sm">Bourdieu</strong> : Marché du logement, habitus de classe moyenne
                 </div>
               </div>
             </AuthorCard>
@@ -381,7 +381,7 @@ export default function RevisionIntensive() {
               <p className="text-sm mb-2">
                 L'<strong>attention</strong> portée aux salariés (positive ou négative) augmente la productivité.
               </p>
-              <p className="text-xs text-slate-600">L'Homme n'est pas seulement économique : besoin de <strong>considération</strong>.</p>
+              <p className="text-xs text-[var(--color-text-secondary)]">L'Homme n'est pas seulement économique : besoin de <strong>considération</strong>.</p>
             </AuthorCard>
 
             <AuthorCard
@@ -391,20 +391,20 @@ export default function RevisionIntensive() {
               hideAvatar
             >
               <div className="grid grid-cols-3 gap-2 mb-3">
-                <div className="p-2 bg-linear-to-br from-slate-50 to-gray-50/30 rounded-lg text-center">
-                  <p className="font-bold text-slate-700">19%</p>
-                  <p className="text-xs text-slate-500">Démarche directe</p>
+                <div className="p-2 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-lg text-center">
+                  <p className="font-bold text-[var(--color-text-secondary)]">19%</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Démarche directe</p>
                 </div>
-                <div className="p-2 bg-linear-to-br from-slate-50 to-gray-50/30 rounded-lg text-center">
-                  <p className="font-bold text-slate-700">6%</p>
-                  <p className="text-xs text-slate-500">Annonces</p>
+                <div className="p-2 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-lg text-center">
+                  <p className="font-bold text-[var(--color-text-secondary)]">6%</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Annonces</p>
                 </div>
-                <div className="p-2 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-lg text-center">
-                  <p className="font-bold text-emerald-700">56%</p>
-                  <p className="text-xs text-slate-500">Contacts personnels</p>
+                <div className="p-2 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-lg text-center">
+                  <p className="font-bold text-[var(--color-success)]">56%</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Contacts personnels</p>
                 </div>
               </div>
-              <p className="text-xs text-slate-600">Le <strong>réseau social</strong> est déterminant pour l'employabilité.</p>
+              <p className="text-xs text-[var(--color-text-secondary)]">Le <strong>réseau social</strong> est déterminant pour l'employabilité.</p>
             </AuthorCard>
 
             <AuthorCard
@@ -426,13 +426,13 @@ export default function RevisionIntensive() {
               hideAvatar
             >
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-linear-to-br from-rose-50 to-pink-50/30 rounded-xl border border-rose-100">
-                  <p className="font-semibold text-rose-700 text-sm">Théorie X</p>
-                  <p className="text-xs text-slate-600">Homme paresseux, contrôle, cercle vicieux</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)]">
+                  <p className="font-semibold text-[var(--color-error)] text-sm">Théorie X</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Homme paresseux, contrôle, cercle vicieux</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
-                  <p className="font-semibold text-emerald-700 text-sm">Théorie Y</p>
-                  <p className="text-xs text-slate-600">Travail enrichissant, cercle vertueux</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl border border-[var(--color-success)]">
+                  <p className="font-semibold text-[var(--color-success)] text-sm">Théorie Y</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Travail enrichissant, cercle vertueux</p>
                 </div>
               </div>
             </AuthorCard>
@@ -447,12 +447,12 @@ export default function RevisionIntensive() {
       )}
 
       {/* CTA */}
-      <div className="mt-12 bg-linear-to-r from-violet-600 to-purple-600 rounded-2xl p-8 text-white text-center shadow-xl">
+      <div className="mt-12 bg-linear-to-r from-[var(--color-accent)] to-[var(--color-accent-hover)] rounded-2xl p-8 text-[var(--color-bg-raised)] text-center shadow-xl">
         <h3 className="text-xl font-bold mb-2">Prêt à tester tes connaissances ?</h3>
-        <p className="text-violet-100 mb-6">Passe au QCM pour vérifier ta maîtrise des concepts</p>
+        <p className="text-[var(--color-accent)] mb-6">Passe au QCM pour vérifier ta maîtrise des concepts</p>
         <Link
           to="/socio/qcm"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-white text-violet-700 rounded-xl font-semibold hover:bg-violet-50 transition-colors no-underline shadow-lg"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-bg-raised)] text-[var(--color-accent)] rounded-xl font-semibold hover:bg-[var(--color-accent-subtle)] transition-colors no-underline shadow-lg"
         >
           Lancer le QCM
           <ArrowRight size={18} />

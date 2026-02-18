@@ -16,12 +16,12 @@ export default function Chapter1() {
             />
 
             {/* Toggle version */}
-            <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-slate-100 rounded-xl w-full sm:w-fit">
+            <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-[var(--color-bg-overlay)] rounded-xl w-full sm:w-fit">
                 <button
                     onClick={() => setView('full')}
                     className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'full'
-                        ? 'bg-white text-slate-900 shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm'
+                        : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
                         }`}
                 >
                     <BookOpen className="w-4 h-4" />
@@ -31,8 +31,8 @@ export default function Chapter1() {
                 <button
                     onClick={() => setView('quick')}
                     className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${view === 'quick'
-                        ? 'bg-white text-slate-900 shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm'
+                        : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
                         }`}
                 >
                     <Zap className="w-4 h-4" />
@@ -44,14 +44,14 @@ export default function Chapter1() {
             {view === 'quick' && (
                 <div className="space-y-5 sm:space-y-6">
                     {/* Thèse centrale */}
-                    <div className="p-5 sm:p-7 bg-linear-to-br from-indigo-50 via-violet-50/50 to-slate-50 rounded-2xl border border-indigo-100/80">
-                        <h3 className="font-semibold text-slate-900 mb-4 sm:mb-5 flex items-center gap-2 text-base sm:text-lg">
-                            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-                                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                    <div className="p-5 sm:p-7 bg-linear-to-br from-[var(--color-accent-subtle)] via-[var(--color-accent-subtle)] to-transparent rounded-2xl border border-[var(--color-accent)]">
+                        <h3 className="font-semibold text-[var(--color-text-primary)] mb-4 sm:mb-5 flex items-center gap-2 text-base sm:text-lg">
+                            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-linear-to-br from-[var(--color-accent)] to-[var(--color-accent-hover)] flex items-center justify-center">
+                                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-bg-raised)]" />
                             </div>
                             Thèse centrale du chapitre
                         </h3>
-                        <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+                        <p className="text-[var(--color-text-secondary)] text-sm sm:text-base leading-relaxed">
                             La sociologie naît progressivement grâce aux <strong>précurseurs</strong> de l'Antiquité aux Lumières.
                             Ces penseurs posent les bases de la réflexion sur la société, mais la sociologie comme
                             <strong> science autonome</strong> naît au XIXe siècle avec Auguste Comte.
@@ -60,41 +60,41 @@ export default function Chapter1() {
 
                     {/* Les précurseurs */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm">
-                            <h4 className="font-semibold text-slate-900 mb-2 text-sm flex items-center gap-2">
+                        <div className="p-4 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+                            <h4 className="font-semibold text-[var(--color-text-primary)] mb-2 text-sm flex items-center gap-2">
                                 <span className="text-lg">🏛️</span> Platon
                             </h4>
-                            <p className="text-xs text-slate-600">
+                            <p className="text-xs text-[var(--color-text-secondary)]">
                                 <strong>Vision organique et fonctionnaliste</strong>. Trois groupes :
                                 les gouvernants, les gardiens, les producteurs. Défend l'éducation des femmes.
                             </p>
                         </div>
 
-                        <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm">
-                            <h4 className="font-semibold text-slate-900 mb-2 text-sm flex items-center gap-2">
+                        <div className="p-4 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+                            <h4 className="font-semibold text-[var(--color-text-primary)] mb-2 text-sm flex items-center gap-2">
                                 <span className="text-lg">🏛️</span> Aristote
                             </h4>
-                            <p className="text-xs text-slate-600">
+                            <p className="text-xs text-[var(--color-text-secondary)]">
                                 <strong>"L'homme est un animal politique"</strong>.
                                 La politique a un rôle central dans l'organisation de la société.
                             </p>
                         </div>
 
-                        <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm">
-                            <h4 className="font-semibold text-slate-900 mb-2 text-sm flex items-center gap-2">
+                        <div className="p-4 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+                            <h4 className="font-semibold text-[var(--color-text-primary)] mb-2 text-sm flex items-center gap-2">
                                 <span className="text-lg">📚</span> Ibn Khaldoun
                             </h4>
-                            <p className="text-xs text-slate-600">
+                            <p className="text-xs text-[var(--color-text-secondary)]">
                                 Première <strong>analyse scientifique</strong> de la société.
                                 <strong>Théorie cyclique</strong> : simplicité → prospérité → décadence → renouveau.
                             </p>
                         </div>
 
-                        <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm">
-                            <h4 className="font-semibold text-slate-900 mb-2 text-sm flex items-center gap-2">
+                        <div className="p-4 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+                            <h4 className="font-semibold text-[var(--color-text-primary)] mb-2 text-sm flex items-center gap-2">
                                 <span className="text-lg">👑</span> Hobbes
                             </h4>
-                            <p className="text-xs text-slate-600">
+                            <p className="text-xs text-[var(--color-text-secondary)]">
                                 <strong>Contrat social</strong>. État de nature = conflit permanent.
                                 Les hommes ne sont pas naturellement sociaux.
                             </p>
@@ -102,22 +102,22 @@ export default function Chapter1() {
                     </div>
 
                     {/* Les Lumières */}
-                    <div className="p-4 sm:p-6 bg-linear-to-br from-violet-50/50 to-indigo-50/30 border border-violet-100 rounded-2xl">
-                        <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+                    <div className="p-4 sm:p-6 bg-linear-to-br from-[var(--color-accent-subtle)]/50 to-transparent border border-[var(--color-accent)] rounded-2xl">
+                        <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
                             <span className="text-lg">💡</span> Les Lumières : naissance de la pensée sociologique
                         </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-                            <div className="p-3 bg-white/80 rounded-xl">
-                                <p className="font-semibold text-slate-900 mb-1">Rousseau</p>
-                                <p className="text-xs text-slate-600">État de nature <strong>paisible</strong>. Propriété privée source d'inégalités.</p>
+                            <div className="p-3 bg-[var(--color-bg-raised)]/80 rounded-xl">
+                                <p className="font-semibold text-[var(--color-text-primary)] mb-1">Rousseau</p>
+                                <p className="text-xs text-[var(--color-text-secondary)]">État de nature <strong>paisible</strong>. Propriété privée source d'inégalités.</p>
                             </div>
-                            <div className="p-3 bg-white/80 rounded-xl">
-                                <p className="font-semibold text-slate-900 mb-1">Montesquieu</p>
-                                <p className="text-xs text-slate-600">Méthode comparative. <strong>Typologies</strong>. Critique sociale.</p>
+                            <div className="p-3 bg-[var(--color-bg-raised)]/80 rounded-xl">
+                                <p className="font-semibold text-[var(--color-text-primary)] mb-1">Montesquieu</p>
+                                <p className="text-xs text-[var(--color-text-secondary)]">Méthode comparative. <strong>Typologies</strong>. Critique sociale.</p>
                             </div>
-                            <div className="p-3 bg-white/80 rounded-xl">
-                                <p className="font-semibold text-slate-900 mb-1">Voltaire</p>
-                                <p className="text-xs text-slate-600">Critique des institutions. <strong>Relativisme culturel</strong>. Progrès social.</p>
+                            <div className="p-3 bg-[var(--color-bg-raised)]/80 rounded-xl">
+                                <p className="font-semibold text-[var(--color-text-primary)] mb-1">Voltaire</p>
+                                <p className="text-xs text-[var(--color-text-secondary)]">Critique des institutions. <strong>Relativisme culturel</strong>. Progrès social.</p>
                             </div>
                         </div>
                     </div>
@@ -131,7 +131,7 @@ export default function Chapter1() {
 
                     <button
                         onClick={() => setView('full')}
-                        className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium transition-colors"
+                        className="flex items-center gap-2 text-[var(--color-accent)] hover:text-[var(--color-accent)] text-sm font-medium transition-colors"
                     >
                         Voir le cours complet <ChevronRight className="w-4 h-4" />
                     </button>
@@ -142,7 +142,7 @@ export default function Chapter1() {
             {view === 'full' && (
                 <>
                     <Section title="Introduction : De l'Antiquité aux Lumières">
-                        <p className="mb-4 text-slate-600">
+                        <p className="mb-4 text-[var(--color-text-secondary)]">
                             La sociologie comme <strong>science autonome</strong> naît au XIXe siècle, mais ses racines remontent
                             à l'Antiquité. De nombreux penseurs ont préparé son émergence en réfléchissant sur l'organisation
                             de la société.
@@ -169,17 +169,17 @@ export default function Chapter1() {
                             </p>
 
                             <div className="grid grid-cols-3 gap-3 mb-4">
-                                <div className="text-center p-3 bg-linear-to-br from-blue-50 to-sky-50/30 rounded-xl border border-blue-100">
-                                    <p className="font-bold text-blue-700">Gouvernants</p>
-                                    <p className="text-xs text-slate-600 mt-1">Direction politique</p>
+                                <div className="text-center p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-info)]">
+                                    <p className="font-bold text-[var(--color-info)]">Gouvernants</p>
+                                    <p className="text-xs text-[var(--color-text-secondary)] mt-1">Direction politique</p>
                                 </div>
-                                <div className="text-center p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
-                                    <p className="font-bold text-emerald-700">Gardiens</p>
-                                    <p className="text-xs text-slate-600 mt-1">Protection militaire</p>
+                                <div className="text-center p-3 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl border border-[var(--color-success)]">
+                                    <p className="font-bold text-[var(--color-success)]">Gardiens</p>
+                                    <p className="text-xs text-[var(--color-text-secondary)] mt-1">Protection militaire</p>
                                 </div>
-                                <div className="text-center p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                                    <p className="font-bold text-amber-700">Producteurs</p>
-                                    <p className="text-xs text-slate-600 mt-1">Activité économique</p>
+                                <div className="text-center p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                                    <p className="font-bold text-[var(--color-warning)]">Producteurs</p>
+                                    <p className="text-xs text-[var(--color-text-secondary)] mt-1">Activité économique</p>
                                 </div>
                             </div>
 
@@ -189,9 +189,9 @@ export default function Chapter1() {
                                 L'ordre social repose sur la <strong>complémentarité</strong>.
                             </Callout>
 
-                            <div className="mt-4 p-3 bg-linear-to-r from-violet-50/50 to-transparent rounded-xl border-l-3 border-violet-300">
-                                <p className="text-sm font-medium text-slate-900 mb-1">Innovation sociale :</p>
-                                <p className="text-xs text-slate-600">
+                            <div className="mt-4 p-3 bg-linear-to-r from-[var(--color-accent-subtle)]/50 to-transparent rounded-xl border-l-3 border-[var(--color-accent)]">
+                                <p className="text-sm font-medium text-[var(--color-text-primary)] mb-1">Innovation sociale :</p>
+                                <p className="text-xs text-[var(--color-text-secondary)]">
                                     Platon défend l'<strong>éducation des femmes</strong>,
                                     vision égalitaire remarquable pour une société patriarcale.
                                 </p>
@@ -205,7 +205,7 @@ export default function Chapter1() {
                             color="emerald"
                             image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/220px-Aristotle_Altemps_Inv8575.jpg"
                         >
-                            <blockquote className="text-base italic text-slate-600 border-l-4 border-emerald-300 pl-4 mb-4">
+                            <blockquote className="text-base italic text-[var(--color-text-secondary)] border-l-4 border-[var(--color-success)] pl-4 mb-4">
                                 "L'homme est un animal politique"
                             </blockquote>
 
@@ -215,11 +215,11 @@ export default function Chapter1() {
 
                             <ul className="space-y-2 text-sm sm:text-base mb-4">
                                 <li className="flex items-start gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 shrink-0" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-success-subtle)]0 mt-2 shrink-0" />
                                     <span>La <strong>politique</strong> a un rôle central dans l'organisation de la société</span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 shrink-0" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-success-subtle)]0 mt-2 shrink-0" />
                                     <span>L'Homme ne peut pas vivre en dehors des <strong>relations sociales</strong></span>
                                 </li>
                             </ul>
@@ -241,15 +241,15 @@ export default function Chapter1() {
                             </p>
 
                             <div className="grid grid-cols-2 gap-4 mb-4">
-                                <div className="p-3 bg-linear-to-br from-amber-50/50 to-transparent rounded-xl border border-amber-100">
-                                    <p className="font-semibold text-slate-900 text-sm mb-2">Sociétés nomades</p>
-                                    <p className="text-xs text-slate-600">
+                                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)]/50 to-transparent rounded-xl border border-[var(--color-warning)]">
+                                    <p className="font-semibold text-[var(--color-text-primary)] text-sm mb-2">Sociétés nomades</p>
+                                    <p className="text-xs text-[var(--color-text-secondary)]">
                                         Rudesse, simplicité, <strong>forte solidarité</strong>
                                     </p>
                                 </div>
-                                <div className="p-3 bg-linear-to-br from-amber-50/50 to-transparent rounded-xl border border-amber-100">
-                                    <p className="font-semibold text-slate-900 text-sm mb-2">Sociétés sédentaires</p>
-                                    <p className="text-xs text-slate-600">
+                                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)]/50 to-transparent rounded-xl border border-[var(--color-warning)]">
+                                    <p className="font-semibold text-[var(--color-text-primary)] text-sm mb-2">Sociétés sédentaires</p>
+                                    <p className="text-xs text-[var(--color-text-secondary)]">
                                         Richesse, mais aussi <strong>inégalités</strong> et déclin de la cohésion
                                     </p>
                                 </div>
@@ -260,9 +260,9 @@ export default function Chapter1() {
                                 Remplacement par de nouvelles sociétés nomades → Le cycle recommence.
                             </Callout>
 
-                            <div className="mt-4 p-3 bg-linear-to-r from-violet-50/50 to-transparent rounded-xl border-l-3 border-violet-300">
-                                <p className="text-sm font-medium text-slate-900 mb-2">Apports majeurs :</p>
-                                <ul className="text-xs text-slate-600 space-y-1">
+                            <div className="mt-4 p-3 bg-linear-to-r from-[var(--color-accent-subtle)]/50 to-transparent rounded-xl border-l-3 border-[var(--color-accent)]">
+                                <p className="text-sm font-medium text-[var(--color-text-primary)] mb-2">Apports majeurs :</p>
+                                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                                     <li>• La société <strong>évolue</strong>, elle n'est pas statique</li>
                                     <li>• Anticipe des concepts modernes : cohésion sociale, lutte des classes, dynamiques de pouvoir</li>
                                     <li>• Méthode empirique et comparative</li>
@@ -286,17 +286,17 @@ export default function Chapter1() {
                             </p>
 
                             <div className="space-y-3 mb-4">
-                                <div className="p-3 bg-linear-to-r from-red-50/50 to-transparent rounded-xl border-l-3 border-red-300">
-                                    <p className="font-semibold text-slate-900 text-sm mb-1">1. État de nature</p>
-                                    <p className="text-xs text-slate-600">Conflit permanent, "guerre de tous contre tous"</p>
+                                <div className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-error)]">
+                                    <p className="font-semibold text-[var(--color-text-primary)] text-sm mb-1">1. État de nature</p>
+                                    <p className="text-xs text-[var(--color-text-secondary)]">Conflit permanent, "guerre de tous contre tous"</p>
                                 </div>
-                                <div className="p-3 bg-linear-to-r from-blue-50/50 to-transparent rounded-xl border-l-3 border-blue-300">
-                                    <p className="font-semibold text-slate-900 text-sm mb-1">2. Contrat social</p>
-                                    <p className="text-xs text-slate-600">Les hommes renoncent à leur liberté naturelle</p>
+                                <div className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-info)]">
+                                    <p className="font-semibold text-[var(--color-text-primary)] text-sm mb-1">2. Contrat social</p>
+                                    <p className="text-xs text-[var(--color-text-secondary)]">Les hommes renoncent à leur liberté naturelle</p>
                                 </div>
-                                <div className="p-3 bg-linear-to-r from-emerald-50/50 to-transparent rounded-xl border-l-3 border-emerald-300">
-                                    <p className="font-semibold text-slate-900 text-sm mb-1">3. Souverain</p>
-                                    <p className="text-xs text-slate-600">Devient le garant de la paix et de l'ordre</p>
+                                <div className="p-3 bg-linear-to-r from-[var(--color-success-subtle)]/50 to-transparent rounded-xl border-l-3 border-[var(--color-success)]">
+                                    <p className="font-semibold text-[var(--color-text-primary)] text-sm mb-1">3. Souverain</p>
+                                    <p className="text-xs text-[var(--color-text-secondary)]">Devient le garant de la paix et de l'ordre</p>
                                 </div>
                             </div>
 
@@ -308,7 +308,7 @@ export default function Chapter1() {
                     </Section>
 
                     <Section title="IV. Les Lumières : naissance de la pensée sociologique">
-                        <p className="mb-5 text-slate-600">
+                        <p className="mb-5 text-[var(--color-text-secondary)]">
                             Selon Raymond Aron, c'est au <strong>siècle des Lumières</strong> que naît véritablement la pensée sociologique.
                         </p>
 
@@ -324,13 +324,13 @@ export default function Chapter1() {
                             </p>
 
                             <div className="grid grid-cols-2 gap-3 mb-4">
-                                <div className="text-center p-3 bg-linear-to-br from-red-50 to-pink-50/30 rounded-xl border border-red-100">
-                                    <p className="font-bold text-red-700">Hobbes</p>
-                                    <p className="text-xs text-slate-600 mt-1">État de nature <strong>violent</strong></p>
+                                <div className="text-center p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)]">
+                                    <p className="font-bold text-[var(--color-error)]">Hobbes</p>
+                                    <p className="text-xs text-[var(--color-text-secondary)] mt-1">État de nature <strong>violent</strong></p>
                                 </div>
-                                <div className="text-center p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
-                                    <p className="font-bold text-emerald-700">Rousseau</p>
-                                    <p className="text-xs text-slate-600 mt-1">État de nature <strong>paisible</strong></p>
+                                <div className="text-center p-3 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl border border-[var(--color-success)]">
+                                    <p className="font-bold text-[var(--color-success)]">Rousseau</p>
+                                    <p className="text-xs text-[var(--color-text-secondary)] mt-1">État de nature <strong>paisible</strong></p>
                                 </div>
                             </div>
 
@@ -353,21 +353,21 @@ export default function Chapter1() {
 
                             <ul className="space-y-2 text-sm mb-4">
                                 <li className="flex items-start gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 shrink-0" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent-subtle)] mt-2 shrink-0" />
                                     <span>La diversité des sociétés s'explique par l'<strong>adaptation aux circonstances</strong></span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 shrink-0" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent-subtle)] mt-2 shrink-0" />
                                     <span>Un phénomène social s'explique par une <strong>multitude de causes</strong></span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 shrink-0" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent-subtle)] mt-2 shrink-0" />
                                     <span>Méthode basée sur l'élaboration de <strong>typologies</strong></span>
                                 </li>
                             </ul>
 
-                            <div className="p-3 bg-linear-to-r from-indigo-50/50 to-transparent rounded-xl border-l-3 border-indigo-300">
-                                <p className="text-sm font-medium text-slate-900 mb-2">Critique sociale (Lettres persanes) :</p>
+                            <div className="p-3 bg-linear-to-r from-[var(--color-accent-subtle)]/50 to-transparent rounded-xl border-l-3 border-[var(--color-accent)]">
+                                <p className="text-sm font-medium text-[var(--color-text-primary)] mb-2">Critique sociale (Lettres persanes) :</p>
                                 <div className="grid grid-cols-2 gap-2 text-xs">
                                     <div>
                                         <p>• Absolutisme monarchique</p>
@@ -380,7 +380,7 @@ export default function Chapter1() {
                                         <p>• Condition des femmes</p>
                                     </div>
                                 </div>
-                                <p className="text-xs text-slate-500 mt-2 italic">→ L'oppression est universelle</p>
+                                <p className="text-xs text-[var(--color-text-muted)] mt-2 italic">→ L'oppression est universelle</p>
                             </div>
                         </AuthorCard>
 
@@ -397,15 +397,15 @@ export default function Chapter1() {
 
                             <ul className="space-y-2 text-sm mb-4">
                                 <li className="flex items-start gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 shrink-0" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-warning-subtle)]0 mt-2 shrink-0" />
                                     <span>Montre comment les structures sociales <strong>maintiennent les inégalités</strong></span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 shrink-0" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-warning-subtle)]0 mt-2 shrink-0" />
                                     <span>Défend le <strong>relativisme culturel</strong> et la tolérance</span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 shrink-0" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-warning-subtle)]0 mt-2 shrink-0" />
                                     <span>Défend la <strong>liberté individuelle</strong> et la justice sociale</span>
                                 </li>
                             </ul>

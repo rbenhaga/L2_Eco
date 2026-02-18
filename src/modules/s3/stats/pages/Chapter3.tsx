@@ -107,11 +107,11 @@ export function Chapter3() {
 
         <p className="mb-2"><strong>Moment non centré d'ordre k :</strong></p>
         <FormulaBox>{"m_k = E[X^k]"}</FormulaBox>
-        <p className="text-sm text-slate-700 mb-4"><Math>{"m_1 = E[X]"}</Math>, <Math>{"m_2 = E[X^2]"}</Math></p>
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4"><Math>{"m_1 = E[X]"}</Math>, <Math>{"m_2 = E[X^2]"}</Math></p>
 
         <p className="mb-2"><strong>Moment centré d'ordre k :</strong></p>
         <FormulaBox>{"\\mu_k = E[(X - E[X])^k]"}</FormulaBox>
-        <p className="text-sm text-slate-700 mb-4"><Math>{"\\mu_1 = 0"}</Math>, <Math>{"\\mu_2 = V(X)"}</Math></p>
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4"><Math>{"\\mu_1 = 0"}</Math>, <Math>{"\\mu_2 = V(X)"}</Math></p>
 
         <p className="mb-2"><strong>Relations importantes :</strong></p>
         <FormulaBox highlight>{"\\mu_2 = m_2 - m_1^2 \\quad \\text{(c'est la variance !)}"}</FormulaBox>
@@ -152,7 +152,7 @@ export function Chapter3() {
       <Section type="key" title="Propriétés de la Variance">
         <p className="mb-2"><strong>P1 — Transformation linéaire :</strong></p>
         <FormulaBox highlight>{"V(aX + b) = a^2 V(X)"}</FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">La constante b disparaît ! Seul le coefficient a compte (au carré).</p>
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4">La constante b disparaît ! Seul le coefficient a compte (au carré).</p>
 
         <p className="mb-2"><strong>P2 — Variable centrée réduite :</strong></p>
         <p className="mb-4 pl-4">
@@ -161,11 +161,11 @@ export function Chapter3() {
 
         <p className="mb-2"><strong>P3 — Somme de VA :</strong></p>
         <FormulaBox>{"V(X+Y) = V(X) + V(Y) + 2Cov(X,Y)"}</FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Si X et Y indépendantes : <Math>{"V(X+Y) = V(X) + V(Y)"}</Math></p>
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4">Si X et Y indépendantes : <Math>{"V(X+Y) = V(X) + V(Y)"}</Math></p>
 
         <p className="mb-2"><strong>P4 — La variance minimise E[(X-c)²] :</strong></p>
         <FormulaBox>{"E[(X-c)^2] = V(X) + (m-c)^2 \\geq V(X)"}</FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">L'égalité est atteinte quand c = m = E[X].</p>
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4">L'égalité est atteinte quand c = m = E[X].</p>
 
         <p className="mb-2"><strong>P5 — Variance d'une moyenne :</strong></p>
         <p className="pl-4">Si <Math>{"X_1, ..., X_n"}</Math> indépendantes avec <Math>{"V(X_i) = \\sigma^2"}</Math> :</p>
@@ -297,7 +297,7 @@ export function Chapter3() {
         <p className="mb-2"><strong>Développement en série :</strong></p>
         <p className="mb-4">En posant u = 1+v avec v voisin de 0 :</p>
         <FormulaBox>{"G_X(1+v) = 1 + \\frac{v}{1!}M_{[1]} + \\frac{v^2}{2!}M_{[2]} + ... + \\frac{v^k}{k!}M_{[k]} + ..."}</FormulaBox>
-        <p className="text-sm text-slate-700 mt-2">Le coefficient de <Math>{"\\frac{v^k}{k!}"}</Math> est le moment factoriel d'ordre k.</p>
+        <p className="text-sm text-[var(--color-text-secondary)] mt-2">Le coefficient de <Math>{"\\frac{v^k}{k!}"}</Math> est le moment factoriel d'ordre k.</p>
       </Section>
 
       <Section type="formule" title="X. Fonction Caractéristique">
@@ -322,11 +322,11 @@ export function Chapter3() {
 
         <p className="mb-2"><strong>Obtention des moments non-centrés :</strong></p>
         <FormulaBox>{"\\varphi_X(t) = 1 + itm_1 + \\frac{(it)^2}{2!}m_2 + ... + \\frac{(it)^k}{k!}m_k + ..."}</FormulaBox>
-        <p className="text-sm text-slate-700 mt-2">Le coefficient de <Math>{"\\frac{(it)^k}{k!}"}</Math> est le moment non-centré d'ordre k.</p>
+        <p className="text-sm text-[var(--color-text-secondary)] mt-2">Le coefficient de <Math>{"\\frac{(it)^k}{k!}"}</Math> est le moment non-centré d'ordre k.</p>
 
         <p className="mt-4 mb-2"><strong>Deuxième fonction caractéristique :</strong></p>
         <FormulaBox>{"\\psi_X(t) = \\ln(\\varphi_X(t))"}</FormulaBox>
-        <p className="text-sm text-slate-700">Utile quand φ se présente sous forme de produit ou puissance.</p>
+        <p className="text-sm text-[var(--color-text-secondary)]">Utile quand φ se présente sous forme de produit ou puissance.</p>
       </Section>
 
       <Section type="key" title="XI. Intégrales Eulériennes">
@@ -346,7 +346,7 @@ export function Chapter3() {
 
         <p className="mb-2"><strong>Forme alternative (Forme 2) :</strong></p>
         <FormulaBox>{"\\Gamma(a) = 2 \\int_0^{\\infty} x^{2a-1} e^{-x^2} dx"}</FormulaBox>
-        <p className="text-sm text-slate-700 mb-4">Obtenue par le changement de variable t = x²</p>
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4">Obtenue par le changement de variable t = x²</p>
 
         <p className="mb-2"><strong>Exemple d'application :</strong></p>
         <p className="pl-4 mb-4">

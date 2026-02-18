@@ -59,7 +59,7 @@ const stats: ModuleStats = {
 export function MicroHome() {
     return (
         <ModuleHub
-            title="Microéconomie S4"
+            title="Microéconomie"
             description="Cours et TD de microéconomie - Semestre 4"
             icon={<PieChart className="h-6 w-6" />}
             moduleId="micro"

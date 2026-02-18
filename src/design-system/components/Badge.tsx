@@ -27,20 +27,20 @@ const variantStyles: Record<BadgeVariant, string> = {
         text-[rgb(var(--text))]
     `,
     success: `
-        bg-[var(--color-success-subtle,rgba(34,197,94,0.1))]
+        bg-[var(--color-success-subtle)]
         text-[var(--color-success)]
     `,
     error: `
-        bg-[var(--color-error-subtle,rgba(239,68,68,0.1))]
+        bg-[var(--color-error-subtle)]
         text-[var(--color-destructive)]
     `,
     warning: `
-        bg-[var(--color-warning-subtle,rgba(245,158,11,0.1))]
+        bg-[var(--color-warning-subtle)]
         text-[var(--color-warning)]
     `,
     info: `
-        bg-[var(--color-info-subtle,rgba(59,130,246,0.1))]
-        text-[var(--color-info,#3b82f6)]
+        bg-[var(--color-info-subtle)]
+        text-[var(--color-info)]
     `,
     accent: `
         bg-[rgb(var(--accent)/0.1)]

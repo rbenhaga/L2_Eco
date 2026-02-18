@@ -395,9 +395,9 @@ export function Annales() {
     return (
       <main className="max-w-6xl px-6 pt-28 pb-12">
         <div className="text-center mb-12">
-          <p className="text-sm text-slate-600 mb-2">Mode Examen</p>
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">Annales</h1>
-          <p className="text-slate-700">Entraîne-toi en conditions réelles avec les sujets d'examen.</p>
+          <p className="text-sm text-[var(--color-text-secondary)] mb-2">Mode Examen</p>
+          <h1 className="text-4xl font-bold text-[var(--color-text-primary)] mb-4">Annales</h1>
+          <p className="text-[var(--color-text-secondary)]">Entraîne-toi en conditions réelles avec les sujets d'examen.</p>
         </div>
 
         <div className="space-y-4">
@@ -405,16 +405,16 @@ export function Annales() {
             <button
               key={exam.id}
               onClick={() => startExam(exam)}
-              className="w-full p-6 bg-white border border-slate-200 rounded-xl hover:border-gray-400 hover:shadow-md transition-all text-left group"
+              className="w-full p-6 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-xl hover:border-[var(--color-border-strong)] hover:shadow-md transition-all text-left group"
             >
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <FileText className="w-5 h-5 text-slate-500" />
-                    <span className="text-2xl font-bold text-slate-900">{exam.year}</span>
+                    <FileText className="w-5 h-5 text-[var(--color-text-muted)]" />
+                    <span className="text-2xl font-bold text-[var(--color-text-primary)]">{exam.year}</span>
                   </div>
-                  <p className="text-slate-700">{exam.title}</p>
-                  <div className="flex items-center gap-4 mt-2 text-sm text-slate-600">
+                  <p className="text-[var(--color-text-secondary)]">{exam.title}</p>
+                  <div className="flex items-center gap-4 mt-2 text-sm text-[var(--color-text-secondary)]">
                     <span className="flex items-center gap-1">
                       <Clock className="w-4 h-4" /> {exam.duration} min
                     </span>
@@ -422,7 +422,7 @@ export function Annales() {
                     <span>{exam.totalPoints} points</span>
                   </div>
                 </div>
-                <ArrowRight className="w-5 h-5 text-slate-500 group-hover:text-slate-700 transition-colors" />
+                <ArrowRight className="w-5 h-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-text-secondary)] transition-colors" />
               </div>
             </button>
           ))}
@@ -439,26 +439,26 @@ export function Annales() {
     return (
       <main className="max-w-6xl px-6 pt-28 pb-12">
         <div className="text-center mb-8">
-          <Trophy className={`w-16 h-16 mx-auto mb-4 ${percentage >= 50 ? 'text-yellow-500' : 'text-slate-500'}`} />
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Examen terminé !</h1>
-          <p className="text-slate-700">{selectedExam?.year} - {selectedExam?.title}</p>
+          <Trophy className={`w-16 h-16 mx-auto mb-4 ${percentage >= 50 ? 'text-[var(--color-warning)]' : 'text-[var(--color-text-muted)]'}`} />
+          <h1 className="text-3xl font-bold text-[var(--color-text-primary)] mb-2">Examen terminé !</h1>
+          <p className="text-[var(--color-text-secondary)]">{selectedExam?.year} - {selectedExam?.title}</p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-8 mb-8">
+        <div className="bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-xl p-8 mb-8">
           <div className="text-center mb-6">
-            <div className="text-5xl font-bold text-slate-900 mb-2">
+            <div className="text-5xl font-bold text-[var(--color-text-primary)] mb-2">
               {score.toFixed(1)} / {total}
             </div>
-            <div className={`text-lg font-medium ${percentage >= 50 ? 'text-green-600' : 'text-red-600'}`}>
+            <div className={`text-lg font-medium ${percentage >= 50 ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}`}>
               {percentage}% — {percentage >= 50 ? 'Admis' : 'Non admis'}
             </div>
           </div>
 
           <div className="space-y-3">
             {details.map((d, i) => (
-              <div key={i} className="flex items-center justify-between p-3 bg-slate-100/50 rounded-lg">
-                <span className="font-medium text-slate-800">{d.exercise}</span>
-                <span className="text-sm text-slate-700">
+              <div key={i} className="flex items-center justify-between p-3 bg-[var(--color-bg-overlay)]/50 rounded-lg">
+                <span className="font-medium text-[var(--color-text-primary)]">{d.exercise}</span>
+                <span className="text-sm text-[var(--color-text-secondary)]">
                   {d.correct}/{d.total} questions
                 </span>
               </div>
@@ -466,35 +466,35 @@ export function Annales() {
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-6 mb-8">
-          <h2 className="font-bold text-slate-900 mb-4">Correction détaillée</h2>
+        <div className="bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-xl p-6 mb-8">
+          <h2 className="font-bold text-[var(--color-text-primary)] mb-4">Correction détaillée</h2>
           {selectedExam?.exercises.map((ex) => (
             <div key={ex.id} className="mb-6">
-              <h3 className="font-semibold text-slate-900 mb-3">{ex.title} ({ex.points} pts)</h3>
-              {ex.context && <p className="text-sm text-slate-700 mb-3 p-3 bg-slate-100/50 rounded">{renderWithMath(ex.context)}</p>}
+              <h3 className="font-semibold text-[var(--color-text-primary)] mb-3">{ex.title} ({ex.points} pts)</h3>
+              {ex.context && <p className="text-sm text-[var(--color-text-secondary)] mb-3 p-3 bg-[var(--color-bg-overlay)]/50 rounded">{renderWithMath(ex.context)}</p>}
               {ex.questions.map((q) => {
                 const key = `${ex.id}-${q.id}`;
                 const userAnswer = answers[key];
                 const isCorrect = userAnswer === q.correct;
                 return (
-                  <div key={q.id} className={`p-4 mb-2 rounded-lg border ${isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                  <div key={q.id} className={`p-4 mb-2 rounded-lg border ${isCorrect ? 'bg-[var(--color-success-subtle)] border-[var(--color-success)]' : 'bg-[var(--color-error-subtle)] border-[var(--color-error)]'}`}>
                     <div className="flex items-start gap-2 mb-2">
-                      {isCorrect ? <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" /> : <XCircle className="w-5 h-5 text-red-600 mt-0.5" />}
+                      {isCorrect ? <CheckCircle className="w-5 h-5 text-[var(--color-success)] mt-0.5" /> : <XCircle className="w-5 h-5 text-[var(--color-error)] mt-0.5" />}
                       <div className="flex-1">
-                        <p className="text-slate-900">{renderWithMath(q.question)}</p>
+                        <p className="text-[var(--color-text-primary)]">{renderWithMath(q.question)}</p>
                         <p className="text-sm mt-1">
-                          <span className="text-slate-600">Ta réponse : </span>
-                          <span className={isCorrect ? 'text-green-700' : 'text-red-700'}>
+                          <span className="text-[var(--color-text-secondary)]">Ta réponse : </span>
+                          <span className={isCorrect ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}>
                             {userAnswer !== null && userAnswer !== undefined ? q.options[userAnswer] : 'Non répondu'}
                           </span>
                           {!isCorrect && (
                             <>
-                              <span className="text-slate-600"> — Bonne réponse : </span>
-                              <span className="text-green-700">{q.options[q.correct]}</span>
+                              <span className="text-[var(--color-text-secondary)]"> — Bonne réponse : </span>
+                              <span className="text-[var(--color-success)]">{q.options[q.correct]}</span>
                             </>
                           )}
                         </p>
-                        <p className="text-sm text-slate-700 mt-2">{renderWithMath(q.explanation)}</p>
+                        <p className="text-sm text-[var(--color-text-secondary)] mt-2">{renderWithMath(q.explanation)}</p>
                       </div>
                     </div>
                   </div>
@@ -505,10 +505,10 @@ export function Annales() {
         </div>
 
         <div className="flex gap-4">
-          <button onClick={() => startExam(selectedExam!)} className="flex-1 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+          <button onClick={() => startExam(selectedExam!)} className="flex-1 py-3 bg-[var(--color-text-primary)] text-[var(--color-bg-raised)] rounded-lg hover:bg-[var(--color-text-primary)] transition-colors flex items-center justify-center gap-2">
             <RotateCcw className="w-4 h-4" /> Recommencer
           </button>
-          <button onClick={() => setView('select')} className="flex-1 py-3 border border-slate-300 rounded-lg hover:bg-slate-100/50 transition-colors">
+          <button onClick={() => setView('select')} className="flex-1 py-3 border border-[var(--color-border-strong)] rounded-lg hover:bg-[var(--color-bg-overlay)]/50 transition-colors">
             Autres annales
           </button>
         </div>
@@ -520,21 +520,21 @@ export function Annales() {
   return (
     <main className="max-w-4xl mx-auto px-6 pt-24 pb-8">
       {/* Header avec timer */}
-      <div className="sticky top-16 bg-white border-b border-slate-200 -mx-6 px-6 py-4 mb-6 z-10">
+      <div className="sticky top-16 bg-[var(--color-bg-raised)] border-b border-[var(--color-border-default)] -mx-6 px-6 py-4 mb-6 z-10">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="font-bold text-slate-900">{selectedExam?.year}</h1>
-            <p className="text-sm text-slate-600">{answeredQuestions}/{totalQuestions} questions</p>
+            <h1 className="font-bold text-[var(--color-text-primary)]">{selectedExam?.year}</h1>
+            <p className="text-sm text-[var(--color-text-secondary)]">{answeredQuestions}/{totalQuestions} questions</p>
           </div>
           
           {showTimer && (
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${timeLeft < 600 ? 'bg-red-100 text-red-700' : 'bg-slate-100/80 text-slate-800'}`}>
+            <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${timeLeft < 600 ? 'bg-[var(--color-error-subtle)] text-[var(--color-error)]' : 'bg-[var(--color-bg-overlay)]/80 text-[var(--color-text-primary)]'}`}>
               <Clock className="w-4 h-4" />
               <span className="font-mono font-bold">{formatTime(timeLeft)}</span>
             </div>
           )}
           
-          <button onClick={() => setShowTimer(!showTimer)} className="text-sm text-slate-600 hover:text-slate-800">
+          <button onClick={() => setShowTimer(!showTimer)} className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">
             {showTimer ? 'Masquer' : 'Afficher'} timer
           </button>
         </div>
@@ -550,10 +550,10 @@ export function Annales() {
                 onClick={() => goToExercise(idx)}
                 className={`px-3 py-1.5 rounded-lg text-sm whitespace-nowrap transition-colors ${
                   idx === currentExercise
-                    ? 'bg-gray-900 text-white'
+                    ? 'bg-[var(--color-text-primary)] text-[var(--color-bg-raised)]'
                     : isComplete
-                    ? 'bg-green-100 text-green-700 border border-green-200'
-                    : 'bg-slate-100/80 text-slate-700 hover:bg-slate-200'
+                    ? 'bg-[var(--color-success-subtle)] text-[var(--color-success)] border border-[var(--color-success)]'
+                    : 'bg-[var(--color-bg-overlay)]/80 text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)]'
                 }`}
               >
                 Ex.{idx + 1} ({exAnswered}/{ex.questions.length})
@@ -565,29 +565,29 @@ export function Annales() {
 
       {/* Exercice courant */}
       {exercise && question && (
-        <div className="bg-white border border-slate-200 rounded-xl p-6 mb-6">
+        <div className="bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-xl p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-slate-900">
+            <h2 className="text-xl font-bold text-[var(--color-text-primary)]">
               Exercice {currentExercise + 1} : {exercise.title}
             </h2>
-            <span className="text-sm text-slate-600">{exercise.points} points</span>
+            <span className="text-sm text-[var(--color-text-secondary)]">{exercise.points} points</span>
           </div>
 
           {exercise.context && (
-            <div className="p-4 bg-slate-100/50 rounded-lg mb-6 text-sm text-slate-800">
+            <div className="p-4 bg-[var(--color-bg-overlay)]/50 rounded-lg mb-6 text-sm text-[var(--color-text-primary)]">
               {renderWithMath(exercise.context)}
             </div>
           )}
 
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-4">
-              <span className="px-2 py-1 bg-slate-100/80 rounded text-sm font-medium text-slate-700">
+              <span className="px-2 py-1 bg-[var(--color-bg-overlay)]/80 rounded text-sm font-medium text-[var(--color-text-secondary)]">
                 Q{currentQuestion + 1}/{exercise.questions.length}
               </span>
-              <span className="text-sm text-slate-600">({question.points} pt{question.points > 1 ? 's' : ''})</span>
+              <span className="text-sm text-[var(--color-text-secondary)]">({question.points} pt{question.points > 1 ? 's' : ''})</span>
             </div>
             
-            <p className="text-lg text-slate-900 mb-6">{renderWithMath(question.question)}</p>
+            <p className="text-lg text-[var(--color-text-primary)] mb-6">{renderWithMath(question.question)}</p>
 
             <div className="space-y-3">
               {question.options.map((option, idx) => {
@@ -598,8 +598,8 @@ export function Annales() {
                     onClick={() => handleAnswer(question.id, idx)}
                     className={`w-full p-4 text-left rounded-lg border transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-gray-900 bg-gray-900 text-white'
-                        : 'border-slate-200 hover:border-gray-400 text-slate-800'
+                        ? 'border-[var(--color-border-strong)] bg-[var(--color-text-primary)] text-[var(--color-bg-raised)]'
+                        : 'border-[var(--color-border-default)] hover:border-[var(--color-border-strong)] text-[var(--color-text-primary)]'
                     }`}
                   >
                     <span className="font-medium mr-2">{String.fromCharCode(65 + idx)}.</span>
@@ -617,21 +617,21 @@ export function Annales() {
         <button
           onClick={prevQuestion}
           disabled={currentExercise === 0 && currentQuestion === 0}
-          className="flex items-center gap-2 px-4 py-2 text-slate-700 hover:text-slate-900 disabled:opacity-30 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-4 py-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <ArrowLeft className="w-4 h-4" /> Précédent
         </button>
 
         <button
           onClick={() => { setTimerActive(false); setView('results'); }}
-          className="px-4 py-2 text-red-600 hover:text-red-700 text-sm"
+          className="px-4 py-2 text-[var(--color-error)] hover:text-[var(--color-error)] text-sm"
         >
           Terminer l'examen
         </button>
 
         <button
           onClick={nextQuestion}
-          className="flex items-center gap-2 px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+          className="flex items-center gap-2 px-6 py-2 bg-[var(--color-text-primary)] text-[var(--color-bg-raised)] rounded-lg hover:bg-[var(--color-text-primary)] transition-colors"
         >
           {currentExercise === selectedExam!.exercises.length - 1 && currentQuestion === exercise!.questions.length - 1
             ? 'Terminer'

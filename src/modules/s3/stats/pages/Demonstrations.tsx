@@ -38,9 +38,9 @@ export function Demonstrations() {
 
   const getCategoryIcon = (cat: string) => {
     switch (cat) {
-      case 'exigible': return <CheckCircle size={16} className="text-emerald-500" />;
-      case 'annale': return <Star size={16} className="text-amber-500" />;
-      case 'potentiel': return <AlertTriangle size={16} className="text-orange-500" />;
+      case 'exigible': return <CheckCircle size={16} className="text-[var(--color-success)]" />;
+      case 'annale': return <Star size={16} className="text-[var(--color-warning)]" />;
+      case 'potentiel': return <AlertTriangle size={16} className="text-[var(--color-warning)]" />;
       default: return null;
     }
   };
@@ -58,8 +58,8 @@ export function Demonstrations() {
     return (
       <div className="max-w-6xl pt-20 sm:pt-24 px-4 sm:px-6">
         <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-2xl sm:text-4xl font-semibold text-slate-900 mb-3">Démonstrations</h1>
-          <p className="text-slate-600 text-sm sm:text-base">Exigibles, tombées en annales, et potentielles</p>
+          <h1 className="text-2xl sm:text-4xl font-semibold text-[var(--color-text-primary)] mb-3">Démonstrations</h1>
+          <p className="text-[var(--color-text-secondary)] text-sm sm:text-base">Exigibles, tombées en annales, et potentielles</p>
         </div>
 
         <div className="flex flex-wrap gap-2 mb-6">
@@ -68,7 +68,7 @@ export function Demonstrations() {
               key={f}
               onClick={() => setFilter(f)}
               className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
-                filter === f ? 'bg-gray-900 text-white' : 'bg-slate-100/80 text-slate-700 hover:bg-slate-200'
+                filter === f ? 'bg-[var(--color-text-primary)] text-[var(--color-bg-raised)]' : 'bg-[var(--color-bg-overlay)]/80 text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)]'
               }`}
             >
               {f === 'all' ? 'Toutes' : getCategoryLabel(f)}
@@ -76,10 +76,10 @@ export function Demonstrations() {
           ))}
         </div>
 
-        <div className="flex flex-wrap gap-4 mb-6 text-xs text-slate-600">
-          <span className="flex items-center gap-1"><CheckCircle size={14} className="text-emerald-500" /> Exigible</span>
-          <span className="flex items-center gap-1"><Star size={14} className="text-amber-500" /> Tombée en annale</span>
-          <span className="flex items-center gap-1"><AlertTriangle size={14} className="text-orange-500" /> Potentielle</span>
+        <div className="flex flex-wrap gap-4 mb-6 text-xs text-[var(--color-text-secondary)]">
+          <span className="flex items-center gap-1"><CheckCircle size={14} className="text-[var(--color-success)]" /> Exigible</span>
+          <span className="flex items-center gap-1"><Star size={14} className="text-[var(--color-warning)]" /> Tombée en annale</span>
+          <span className="flex items-center gap-1"><AlertTriangle size={14} className="text-[var(--color-warning)]" /> Potentielle</span>
         </div>
 
         <div className="space-y-2">
@@ -87,50 +87,50 @@ export function Demonstrations() {
             <button
               key={demo.id}
               onClick={() => setSelectedDemo(demo.id)}
-              className="w-full p-4 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-100/50 transition-all text-left group flex items-center justify-between"
+              className="w-full p-4 rounded-xl border border-[var(--color-border-default)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-bg-overlay)]/50 transition-all text-left group flex items-center justify-between"
             >
               <div className="flex items-center gap-3">
-                <span className="text-sm text-slate-500 font-medium w-6">{String(idx + 1).padStart(2, '0')}</span>
+                <span className="text-sm text-[var(--color-text-muted)] font-medium w-6">{String(idx + 1).padStart(2, '0')}</span>
                 {getCategoryIcon(demo.category)}
                 <div>
-                  <h2 className="font-medium text-slate-900 group-hover:text-slate-800">{demo.title}</h2>
-                  {demo.year && <p className="text-xs text-amber-600">Partiel {demo.year}</p>}
+                  <h2 className="font-medium text-[var(--color-text-primary)] group-hover:text-[var(--color-text-primary)]">{demo.title}</h2>
+                  {demo.year && <p className="text-xs text-[var(--color-warning)]">Partiel {demo.year}</p>}
                 </div>
               </div>
               <div className="flex items-center gap-1">
                 {[1, 2, 3].map(i => (
-                  <div key={i} className={`w-2 h-2 rounded-full ${i <= demo.difficulty ? 'bg-gray-400' : 'bg-slate-200'}`} />
+                  <div key={i} className={`w-2 h-2 rounded-full ${i <= demo.difficulty ? 'bg-[var(--color-text-muted)]' : 'bg-[var(--color-surface-hover)]'}`} />
                 ))}
               </div>
             </button>
           ))}
         </div>
 
-        <div className="mt-12 p-4 bg-slate-100/50 rounded-xl">
-          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+        <div className="mt-12 p-4 bg-[var(--color-bg-overlay)]/50 rounded-xl">
+          <h3 className="font-semibold text-[var(--color-text-primary)] mb-3 flex items-center gap-2">
             <BookOpen size={18} /> Historique des partiels
           </h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-slate-600">
+                <tr className="text-left text-[var(--color-text-secondary)]">
                   <th className="p-2">Année</th>
                   <th className="p-2">Démo 1</th>
                   <th className="p-2">Démo 2</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t border-slate-200">
+                <tr className="border-t border-[var(--color-border-default)]">
                   <td className="p-2 font-medium">2022-2023</td>
                   <td className="p-2">E[X] Binomiale (φ)</td>
                   <td className="p-2">Mode Poisson</td>
                 </tr>
-                <tr className="border-t border-slate-200">
+                <tr className="border-t border-[var(--color-border-default)]">
                   <td className="p-2 font-medium">2023-2024</td>
                   <td className="p-2">E[X] Poisson (φ)</td>
                   <td className="p-2">Mode Binomiale</td>
                 </tr>
-                <tr className="border-t border-slate-200">
+                <tr className="border-t border-[var(--color-border-default)]">
                   <td className="p-2 font-medium">2024-2025</td>
                   <td className="p-2">Loi à partir des μ[k]</td>
                   <td className="p-2">V[X] Poisson (φ)</td>
@@ -145,7 +145,7 @@ export function Demonstrations() {
 
   return (
     <div className="max-w-6xl pt-20 sm:pt-24 px-4 sm:px-6 pb-16">
-      <button onClick={() => setSelectedDemo(null)} className="flex items-center gap-2 text-slate-500 hover:text-slate-700 mb-8 text-sm">
+      <button onClick={() => setSelectedDemo(null)} className="flex items-center gap-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] mb-8 text-sm">
         <ArrowLeft size={14} /> Retour aux démonstrations
       </button>
       
@@ -174,11 +174,11 @@ function DemoCroissante() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <CheckCircle size={18} className="text-emerald-500" />
-        <span className="text-sm text-emerald-600 font-medium">Démonstration exigible</span>
+        <CheckCircle size={18} className="text-[var(--color-success)]" />
+        <span className="text-sm text-[var(--color-success)] font-medium">Démonstration exigible</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">P est une fonction croissante</h1>
-      <p className="text-slate-600 mb-6">Si A ⊂ B alors P(A) ≤ P(B)</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">P est une fonction croissante</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">Si A ⊂ B alors P(A) ≤ P(B)</p>
 
       <Callout type="tip" title="Énoncé">
         <p>Démontrer que si A ⊂ B, alors P(A) ≤ P(B)</p>
@@ -190,7 +190,7 @@ function DemoCroissante() {
         
         <p><strong>Étape 1 :</strong> Décomposer B en parties disjointes</p>
         <div className="my-3 text-center"><M display>{"B = A \\cup (B \\cap \\bar{A})"}</M></div>
-        <p className="text-slate-700">Car tout élément de B est soit dans A, soit dans B mais pas dans A.</p>
+        <p className="text-[var(--color-text-secondary)]">Car tout élément de B est soit dans A, soit dans B mais pas dans A.</p>
         
         <p><strong>Étape 2 :</strong> Vérifier que ces parties sont disjointes</p>
         <div className="my-3 text-center"><M display>{"A \\cap (B \\cap \\bar{A}) = \\emptyset"}</M></div>
@@ -202,8 +202,8 @@ function DemoCroissante() {
         <p>Comme P(B ∩ Ā) ≥ 0 (axiome de positivité) :</p>
         <div className="my-3 text-center"><M display>{"P(B) = P(A) + P(B \\cap \\bar{A}) \\geq P(A)"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">Conclusion : P(A) ≤ P(B) ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">Conclusion : P(A) ≤ P(B) ∎</p>
         </div>
       </div>
     </div>
@@ -214,17 +214,17 @@ function DemoProbaTotales() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <CheckCircle size={18} className="text-emerald-500" />
-        <span className="text-sm text-emerald-600 font-medium">Démonstration exigible</span>
+        <CheckCircle size={18} className="text-[var(--color-success)]" />
+        <span className="text-sm text-[var(--color-success)] font-medium">Démonstration exigible</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">Théorème des probabilités totales</h1>
-      <p className="text-slate-600 mb-6">P(A ∪ B) = P(A) + P(B) - P(A ∩ B)</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">Théorème des probabilités totales</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">P(A ∪ B) = P(A) + P(B) - P(A ∩ B)</p>
 
       <h2 className="text-lg font-semibold mt-8 mb-4">Démonstration</h2>
       <div className="space-y-4 text-sm">
         <p><strong>Étape 1 :</strong> Décomposer A ∪ B</p>
         <div className="my-3 text-center"><M display>{"A \\cup B = A \\cup (B \\cap \\bar{A})"}</M></div>
-        <p className="text-slate-700">Avec A ∩ (B ∩ Ā) = ∅ (disjoints)</p>
+        <p className="text-[var(--color-text-secondary)]">Avec A ∩ (B ∩ Ā) = ∅ (disjoints)</p>
         
         <p><strong>Étape 2 :</strong> Appliquer l'additivité</p>
         <div className="my-3 text-center"><M display>{"P(A \\cup B) = P(A) + P(B \\cap \\bar{A})"}</M></div>
@@ -239,8 +239,8 @@ function DemoProbaTotales() {
         <p><strong>Étape 4 :</strong> Substituer</p>
         <div className="my-3 text-center"><M display>{"P(A \\cup B) = P(A) + P(B) - P(A \\cap B)"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">CQFD ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">CQFD ∎</p>
         </div>
       </div>
     </div>
@@ -251,11 +251,11 @@ function DemoEBinomialeDef() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <CheckCircle size={18} className="text-emerald-500" />
-        <span className="text-sm text-emerald-600 font-medium">Démonstration exigible</span>
+        <CheckCircle size={18} className="text-[var(--color-success)]" />
+        <span className="text-sm text-[var(--color-success)] font-medium">Démonstration exigible</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">E[X] d'une Binomiale (définition)</h1>
-      <p className="text-slate-600 mb-6">Si X ~ B(n,p), alors E[X] = np</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">E[X] d'une Binomiale (définition)</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">Si X ~ B(n,p), alors E[X] = np</p>
 
       <Callout type="tip" title="Rappel">
         <M>{"P(X = k) = C_n^k p^k q^{n-k} \\text{ avec } q = 1-p"}</M>
@@ -286,8 +286,8 @@ function DemoEBinomialeDef() {
         <p>Par linéarité de l'espérance :</p>
         <div className="my-3 text-center"><M display>{"E[X] = \\sum_{i=1}^{n} E[X_i] = \\sum_{i=1}^{n} p = np"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">E[X] = np ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">E[X] = np ∎</p>
         </div>
       </div>
     </div>
@@ -298,11 +298,11 @@ function DemoEPoissonDef() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <CheckCircle size={18} className="text-emerald-500" />
-        <span className="text-sm text-emerald-600 font-medium">Démonstration exigible</span>
+        <CheckCircle size={18} className="text-[var(--color-success)]" />
+        <span className="text-sm text-[var(--color-success)] font-medium">Démonstration exigible</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">E[X] d'une Poisson (définition)</h1>
-      <p className="text-slate-600 mb-6">Si X ~ P(λ), alors E[X] = λ</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">E[X] d'une Poisson (définition)</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">Si X ~ P(λ), alors E[X] = λ</p>
 
       <Callout type="tip" title="Rappel">
         <M>{"P(X = k) = e^{-\\lambda} \\frac{\\lambda^k}{k!}"}</M>
@@ -327,8 +327,8 @@ function DemoEPoissonDef() {
         <p>On reconnaît le développement de e<sup>λ</sup> :</p>
         <div className="my-3 text-center"><M display>{"E[X] = e^{-\\lambda} \\lambda \\cdot e^{\\lambda} = \\lambda"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">E[X] = λ ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">E[X] = λ ∎</p>
         </div>
       </div>
     </div>
@@ -339,11 +339,11 @@ function DemoVPoissonDef() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <CheckCircle size={18} className="text-emerald-500" />
-        <span className="text-sm text-emerald-600 font-medium">Démonstration exigible</span>
+        <CheckCircle size={18} className="text-[var(--color-success)]" />
+        <span className="text-sm text-[var(--color-success)] font-medium">Démonstration exigible</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">V[X] d'une Poisson (définition)</h1>
-      <p className="text-slate-600 mb-6">Si X ~ P(λ), alors V[X] = λ</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">V[X] d'une Poisson (définition)</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">Si X ~ P(λ), alors V[X] = λ</p>
 
       <h2 className="text-lg font-semibold mt-8 mb-4">Démonstration</h2>
       <div className="space-y-4 text-sm">
@@ -369,8 +369,8 @@ function DemoVPoissonDef() {
         <div className="my-3 text-center"><M display>{"m_2 = \\lambda^2 + \\lambda"}</M></div>
         <div className="my-3 text-center"><M display>{"V(X) = m_2 - m_1^2 = \\lambda^2 + \\lambda - \\lambda^2 = \\lambda"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">V[X] = λ ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">V[X] = λ ∎</p>
         </div>
       </div>
     </div>
@@ -382,11 +382,11 @@ function DemoApproxPoisson() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <CheckCircle size={18} className="text-emerald-500" />
-        <span className="text-sm text-emerald-600 font-medium">Démonstration exigible</span>
+        <CheckCircle size={18} className="text-[var(--color-success)]" />
+        <span className="text-sm text-[var(--color-success)] font-medium">Démonstration exigible</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">Approximation Binomiale → Poisson</h1>
-      <p className="text-slate-600 mb-6">B(n,p) → P(λ) quand n→∞, p→0, np=λ</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">Approximation Binomiale → Poisson</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">B(n,p) → P(λ) quand n→∞, p→0, np=λ</p>
 
       <h2 className="text-lg font-semibold mt-8 mb-4">Démonstration</h2>
       <div className="space-y-4 text-sm">
@@ -407,8 +407,8 @@ function DemoApproxPoisson() {
         <p><strong>Donc :</strong></p>
         <div className="my-3 text-center"><M display>{"P_x \\to \\frac{\\lambda^x e^{-\\lambda}}{x!}"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">C'est la loi de Poisson P(λ) ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">C'est la loi de Poisson P(λ) ∎</p>
         </div>
         
         <Callout type="warning" title="Règle pratique">
@@ -423,11 +423,11 @@ function DemoGammaRecurrence() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <CheckCircle size={18} className="text-emerald-500" />
-        <span className="text-sm text-emerald-600 font-medium">Démonstration exigible</span>
+        <CheckCircle size={18} className="text-[var(--color-success)]" />
+        <span className="text-sm text-[var(--color-success)] font-medium">Démonstration exigible</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">Récurrence de Γ(a)</h1>
-      <p className="text-slate-600 mb-6">Γ(a) = (a-1)·Γ(a-1)</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">Récurrence de Γ(a)</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">Γ(a) = (a-1)·Γ(a-1)</p>
 
       <Callout type="tip" title="Rappel">
         <M>{"\\Gamma(a) = \\int_0^{+\\infty} t^{a-1} e^{-t} dt"}</M>
@@ -452,8 +452,8 @@ function DemoGammaRecurrence() {
         <p>Donc le crochet vaut 0, et :</p>
         <div className="my-3 text-center"><M display>{"\\Gamma(a) = (a-1)\\int_0^{+\\infty} t^{a-2}e^{-t}dt = (a-1)\\Gamma(a-1)"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">Γ(a) = (a-1)·Γ(a-1) ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">Γ(a) = (a-1)·Γ(a-1) ∎</p>
         </div>
         
         <p className="mt-4"><strong>Conséquence :</strong> Pour n ∈ ℕ* : <M>{"\\Gamma(n) = (n-1)!"}</M></p>
@@ -467,11 +467,11 @@ function DemoEBinomialePhi() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <Star size={18} className="text-amber-500" />
-        <span className="text-sm text-amber-600 font-medium">Partiel 2022-2023</span>
+        <Star size={18} className="text-[var(--color-warning)]" />
+        <span className="text-sm text-[var(--color-warning)] font-medium">Partiel 2022-2023</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">E[X] Binomiale (fonction caractéristique)</h1>
-      <p className="text-slate-600 mb-6">Démontrer E[X] = np à partir de φ_X(t)</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">E[X] Binomiale (fonction caractéristique)</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">Démontrer E[X] = np à partir de φ_X(t)</p>
 
       <Callout type="tip" title="Rappel">
         <M>{"\\varphi_X(t) = (pe^{it}+q)^n"}</M>
@@ -493,8 +493,8 @@ function DemoEBinomialePhi() {
         
         <p>Par identification : m₁ = np = E[X]</p>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">E[X] = np ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">E[X] = np ∎</p>
         </div>
         
         <p className="mt-4"><strong>Bonus :</strong> V[X] = m₂ - m₁² = npq</p>
@@ -507,11 +507,11 @@ function DemoModePoisson() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <Star size={18} className="text-amber-500" />
-        <span className="text-sm text-amber-600 font-medium">Partiel 2022-2023</span>
+        <Star size={18} className="text-[var(--color-warning)]" />
+        <span className="text-sm text-[var(--color-warning)] font-medium">Partiel 2022-2023</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">Mode d'une Poisson</h1>
-      <p className="text-slate-600 mb-6">λ - 1 ≤ x_Mo ≤ λ</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">Mode d'une Poisson</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">λ - 1 ≤ x_Mo ≤ λ</p>
 
       <h2 className="text-lg font-semibold mt-8 mb-4">Démonstration</h2>
       <div className="space-y-4 text-sm">
@@ -527,7 +527,7 @@ function DemoModePoisson() {
           <li><M>{"\\frac{x_{Mo}+1}{\\lambda} \\geq 1 \\Rightarrow x_{Mo} \\geq \\lambda-1"}</M></li>
         </ul>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
           <M>{"\\boxed{\\lambda - 1 \\leq x_{Mo} \\leq \\lambda}"}</M>
         </div>
         
@@ -543,11 +543,11 @@ function DemoEPoissonPhi() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <Star size={18} className="text-amber-500" />
-        <span className="text-sm text-amber-600 font-medium">Partiel 2023-2024</span>
+        <Star size={18} className="text-[var(--color-warning)]" />
+        <span className="text-sm text-[var(--color-warning)] font-medium">Partiel 2023-2024</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">E[X] Poisson (fonction caractéristique)</h1>
-      <p className="text-slate-600 mb-6">Démontrer E[X] = λ à partir de φ_X(t)</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">E[X] Poisson (fonction caractéristique)</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">Démontrer E[X] = λ à partir de φ_X(t)</p>
 
       <Callout type="tip" title="Rappel">
         <M>{"\\varphi_X(t) = e^{\\lambda(e^{it}-1)}"}</M>
@@ -566,8 +566,8 @@ function DemoEPoissonPhi() {
         
         <p>Par identification : m₁ = λ = E[X]</p>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">E[X] = λ ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">E[X] = λ ∎</p>
         </div>
       </div>
     </div>
@@ -579,11 +579,11 @@ function DemoModeBinomiale() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <Star size={18} className="text-amber-500" />
-        <span className="text-sm text-amber-600 font-medium">Partiel 2023-2024</span>
+        <Star size={18} className="text-[var(--color-warning)]" />
+        <span className="text-sm text-[var(--color-warning)] font-medium">Partiel 2023-2024</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">Mode d'une Binomiale</h1>
-      <p className="text-slate-600 mb-6">np - q ≤ x_Mo ≤ np + p</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">Mode d'une Binomiale</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">np - q ≤ x_Mo ≤ np + p</p>
 
       <h2 className="text-lg font-semibold mt-8 mb-4">Démonstration</h2>
       <div className="space-y-4 text-sm">
@@ -598,7 +598,7 @@ function DemoModeBinomiale() {
         <p><strong>Condition 2 :</strong> <M>{"\\frac{(x+1)q}{(n-x)p} \\geq 1"}</M></p>
         <div className="my-3 text-center"><M display>{"(x+1)q \\geq (n-x)p \\Rightarrow x \\geq np-q"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
           <M>{"\\boxed{np - q \\leq x_{Mo} \\leq np + p}"}</M>
         </div>
         
@@ -614,11 +614,11 @@ function DemoLoiMomentsFact() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <Star size={18} className="text-amber-500" />
-        <span className="text-sm text-amber-600 font-medium">Partiel 2024-2025</span>
+        <Star size={18} className="text-[var(--color-warning)]" />
+        <span className="text-sm text-[var(--color-warning)] font-medium">Partiel 2024-2025</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">Identifier une loi à partir des μ[k]</h1>
-      <p className="text-slate-600 mb-6">Si μ[k] = m^k pour tout k, quelle est la loi de X ?</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">Identifier une loi à partir des μ[k]</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">Si μ[k] = m^k pour tout k, quelle est la loi de X ?</p>
 
       <h2 className="text-lg font-semibold mt-8 mb-4">Démonstration</h2>
       <div className="space-y-4 text-sm">
@@ -633,8 +633,8 @@ function DemoLoiMomentsFact() {
         
         <p><strong>Identification :</strong> g_X(u) = e<sup>λ(u-1)</sup> est la fonction génératrice de P(λ)</p>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">X ~ P(m) ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">X ~ P(m) ∎</p>
         </div>
       </div>
     </div>
@@ -645,11 +645,11 @@ function DemoVPoissonPhi() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <Star size={18} className="text-amber-500" />
-        <span className="text-sm text-amber-600 font-medium">Partiel 2024-2025</span>
+        <Star size={18} className="text-[var(--color-warning)]" />
+        <span className="text-sm text-[var(--color-warning)] font-medium">Partiel 2024-2025</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">V[X] Poisson (fonction caractéristique)</h1>
-      <p className="text-slate-600 mb-6">Démontrer V[X] = λ à partir de φ_X(t)</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">V[X] Poisson (fonction caractéristique)</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">Démontrer V[X] = λ à partir de φ_X(t)</p>
 
       <h2 className="text-lg font-semibold mt-8 mb-4">Démonstration</h2>
       <div className="space-y-4 text-sm">
@@ -661,8 +661,8 @@ function DemoVPoissonPhi() {
         <p><strong>Calcul de la variance :</strong></p>
         <div className="my-3 text-center"><M display>{"V(X) = m_2 - m_1^2 = (\\lambda + \\lambda^2) - \\lambda^2 = \\lambda"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">V[X] = λ ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">V[X] = λ ∎</p>
         </div>
       </div>
     </div>
@@ -674,11 +674,11 @@ function DemoVBinomialePhi() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <AlertTriangle size={18} className="text-orange-500" />
-        <span className="text-sm text-orange-600 font-medium">Potentielle - Jamais tombée</span>
+        <AlertTriangle size={18} className="text-[var(--color-warning)]" />
+        <span className="text-sm text-[var(--color-warning)] font-medium">Potentielle - Jamais tombée</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">V[X] Binomiale (fonction caractéristique)</h1>
-      <p className="text-slate-600 mb-6">Démontrer V[X] = npq à partir de φ_X(t)</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">V[X] Binomiale (fonction caractéristique)</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">Démontrer V[X] = npq à partir de φ_X(t)</p>
 
       <Callout type="warning" title="Pourquoi c'est probable ?">
         <p>E[X] Binomiale par φ est tombée en 2022-2023. La variance par φ serait une suite logique.</p>
@@ -695,8 +695,8 @@ function DemoVBinomialePhi() {
         <div className="my-3 text-center"><M display>{"V(X) = m_2 - m_1^2 = np + n(n-1)p^2 - n^2p^2"}</M></div>
         <div className="my-3 text-center"><M display>{"= np + n^2p^2 - np^2 - n^2p^2 = np - np^2 = np(1-p)"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">V[X] = npq ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">V[X] = npq ∎</p>
         </div>
       </div>
     </div>
@@ -707,11 +707,11 @@ function DemoBienayme() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <AlertTriangle size={18} className="text-orange-500" />
-        <span className="text-sm text-orange-600 font-medium">Potentielle - Jamais tombée</span>
+        <AlertTriangle size={18} className="text-[var(--color-warning)]" />
+        <span className="text-sm text-[var(--color-warning)] font-medium">Potentielle - Jamais tombée</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">Inégalité de Bienaymé-Tchebychev</h1>
-      <p className="text-slate-600 mb-6">P(|X - μ| ≥ ε) ≤ σ²/ε²</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">Inégalité de Bienaymé-Tchebychev</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">P(|X - μ| ≥ ε) ≤ σ²/ε²</p>
 
       <h2 className="text-lg font-semibold mt-8 mb-4">Démonstration (à partir de Markov)</h2>
       <div className="space-y-4 text-sm">
@@ -725,7 +725,7 @@ function DemoBienayme() {
         
         <div className="my-3 text-center"><M display>{"P(|X-E[X]| \\geq \\varepsilon) \\leq \\frac{V(X)}{\\varepsilon^2}"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
           <M>{"\\boxed{P(|X-\\mu| \\geq \\varepsilon) \\leq \\frac{\\sigma^2}{\\varepsilon^2}}"}</M>
         </div>
         
@@ -740,11 +740,11 @@ function DemoVarianceSomme() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <AlertTriangle size={18} className="text-orange-500" />
-        <span className="text-sm text-orange-600 font-medium">Potentielle - Classique</span>
+        <AlertTriangle size={18} className="text-[var(--color-warning)]" />
+        <span className="text-sm text-[var(--color-warning)] font-medium">Potentielle - Classique</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">Variance d'une somme</h1>
-      <p className="text-slate-600 mb-6">V[X+Y] = V[X] + V[Y] + 2Cov(X,Y)</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">Variance d'une somme</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">V[X+Y] = V[X] + V[Y] + 2Cov(X,Y)</p>
 
       <h2 className="text-lg font-semibold mt-8 mb-4">Démonstration</h2>
       <div className="space-y-4 text-sm">
@@ -759,8 +759,8 @@ function DemoVarianceSomme() {
         <p>On reconnaît les définitions :</p>
         <div className="my-3 text-center"><M display>{"= V[X] + V[Y] + 2Cov(X,Y)"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">V[X+Y] = V[X] + V[Y] + 2Cov(X,Y) ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">V[X+Y] = V[X] + V[Y] + 2Cov(X,Y) ∎</p>
         </div>
         
         <Callout type="tip" title="Cas particuliers">
@@ -779,11 +779,11 @@ function DemoCentreeReduite() {
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
-        <AlertTriangle size={18} className="text-orange-500" />
-        <span className="text-sm text-orange-600 font-medium">Potentielle - Classique</span>
+        <AlertTriangle size={18} className="text-[var(--color-warning)]" />
+        <span className="text-sm text-[var(--color-warning)] font-medium">Potentielle - Classique</span>
       </div>
-      <h1 className="text-2xl font-semibold text-slate-900 mb-2">Variable centrée réduite</h1>
-      <p className="text-slate-600 mb-6">Si Y = (X - μ)/σ, alors E[Y] = 0 et V[Y] = 1</p>
+      <h1 className="text-2xl font-semibold text-[var(--color-text-primary)] mb-2">Variable centrée réduite</h1>
+      <p className="text-[var(--color-text-secondary)] mb-6">Si Y = (X - μ)/σ, alors E[Y] = 0 et V[Y] = 1</p>
 
       <h2 className="text-lg font-semibold mt-8 mb-4">Démonstration</h2>
       <div className="space-y-4 text-sm">
@@ -797,8 +797,8 @@ function DemoCentreeReduite() {
         <p><strong>Calcul de V[Y] :</strong></p>
         <div className="my-3 text-center"><M display>{"V[Y] = V\\left[\\frac{X - \\mu}{\\sigma}\\right] = \\frac{1}{\\sigma^2}V[X] = \\frac{\\sigma^2}{\\sigma^2} = 1"}</M></div>
         
-        <div className="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
-          <p className="font-medium text-emerald-800">E[Y] = 0 et V[Y] = 1 ∎</p>
+        <div className="p-3 bg-[var(--color-success-subtle)] rounded-lg border-l-4 border-[var(--color-success)]">
+          <p className="font-medium text-[var(--color-success)]">E[Y] = 0 et V[Y] = 1 ∎</p>
         </div>
       </div>
     </div>

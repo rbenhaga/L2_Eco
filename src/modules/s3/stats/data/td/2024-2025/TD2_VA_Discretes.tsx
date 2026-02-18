@@ -85,9 +85,9 @@ export const TD2_2425: TDSheet = {
       content: (
         <div>
           <p>Loi de X (taux de croissance):</p>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">xi</th><th className="border border-slate-300 p-2">-2</th><th className="border border-slate-300 p-2">-1</th><th className="border border-slate-300 p-2">0</th><th className="border border-slate-300 p-2">1</th><th className="border border-slate-300 p-2">2</th><th className="border border-slate-300 p-2">3</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-2">Pi</td><td className="border border-slate-300 p-2">0.5a</td><td className="border border-slate-300 p-2">a</td><td className="border border-slate-300 p-2">4a</td><td className="border border-slate-300 p-2">3a</td><td className="border border-slate-300 p-2">a</td><td className="border border-slate-300 p-2">0.5a</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">xi</th><th className="border border-[var(--color-border-strong)] p-2">-2</th><th className="border border-[var(--color-border-strong)] p-2">-1</th><th className="border border-[var(--color-border-strong)] p-2">0</th><th className="border border-[var(--color-border-strong)] p-2">1</th><th className="border border-[var(--color-border-strong)] p-2">2</th><th className="border border-[var(--color-border-strong)] p-2">3</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-2">Pi</td><td className="border border-[var(--color-border-strong)] p-2">0.5a</td><td className="border border-[var(--color-border-strong)] p-2">a</td><td className="border border-[var(--color-border-strong)] p-2">4a</td><td className="border border-[var(--color-border-strong)] p-2">3a</td><td className="border border-[var(--color-border-strong)] p-2">a</td><td className="border border-[var(--color-border-strong)] p-2">0.5a</td></tr></tbody>
           </table>
           <ol className="list-decimal ml-6 mt-2">
             <li>Trouver a</li>
@@ -131,9 +131,9 @@ export const TD2_2425: TDSheet = {
       solution: (
         <div className="space-y-3">
           <p><strong>1. Loi de X:</strong> (Total: C₅² = 10 tirages)</p>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">X</th><th className="border border-slate-300 p-2">-4</th><th className="border border-slate-300 p-2">-2</th><th className="border border-slate-300 p-2">-1</th><th className="border border-slate-300 p-2">0</th><th className="border border-slate-300 p-2">2</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-2">P(X=x)</td><td className="border border-slate-300 p-2">1/10</td><td className="border border-slate-300 p-2">2/10</td><td className="border border-slate-300 p-2">1/10</td><td className="border border-slate-300 p-2">4/10</td><td className="border border-slate-300 p-2">2/10</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">X</th><th className="border border-[var(--color-border-strong)] p-2">-4</th><th className="border border-[var(--color-border-strong)] p-2">-2</th><th className="border border-[var(--color-border-strong)] p-2">-1</th><th className="border border-[var(--color-border-strong)] p-2">0</th><th className="border border-[var(--color-border-strong)] p-2">2</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-2">P(X=x)</td><td className="border border-[var(--color-border-strong)] p-2">1/10</td><td className="border border-[var(--color-border-strong)] p-2">2/10</td><td className="border border-[var(--color-border-strong)] p-2">1/10</td><td className="border border-[var(--color-border-strong)] p-2">4/10</td><td className="border border-[var(--color-border-strong)] p-2">2/10</td></tr></tbody>
           </table>
           
           <p><strong>2. Fonction de répartition:</strong></p>
@@ -166,9 +166,9 @@ export const TD2_2425: TDSheet = {
       solution: (
         <div className="space-y-3">
           <p><strong>1. Loi de X:</strong> X ~ B(3, 0.5)</p>
-          <table className="border-collapse border border-slate-300 text-sm">
-            <thead><tr><th className="border border-slate-300 p-2">X</th><th className="border border-slate-300 p-2">0</th><th className="border border-slate-300 p-2">1</th><th className="border border-slate-300 p-2">2</th><th className="border border-slate-300 p-2">3</th></tr></thead>
-            <tbody><tr><td className="border border-slate-300 p-2">P(X=x)</td><td className="border border-slate-300 p-2">1/8</td><td className="border border-slate-300 p-2">3/8</td><td className="border border-slate-300 p-2">3/8</td><td className="border border-slate-300 p-2">1/8</td></tr></tbody>
+          <table className="border-collapse border border-[var(--color-border-strong)] text-sm">
+            <thead><tr><th className="border border-[var(--color-border-strong)] p-2">X</th><th className="border border-[var(--color-border-strong)] p-2">0</th><th className="border border-[var(--color-border-strong)] p-2">1</th><th className="border border-[var(--color-border-strong)] p-2">2</th><th className="border border-[var(--color-border-strong)] p-2">3</th></tr></thead>
+            <tbody><tr><td className="border border-[var(--color-border-strong)] p-2">P(X=x)</td><td className="border border-[var(--color-border-strong)] p-2">1/8</td><td className="border border-[var(--color-border-strong)] p-2">3/8</td><td className="border border-[var(--color-border-strong)] p-2">3/8</td><td className="border border-[var(--color-border-strong)] p-2">1/8</td></tr></tbody>
           </table>
           
           <p><strong>2. Fonction de répartition:</strong></p>
@@ -181,7 +181,7 @@ export const TD2_2425: TDSheet = {
           <p><strong>4. Moments d'ordre 3:</strong></p>
           <M>{"m_3 = E(X^3) = 0 + \\frac{3}{8} + 3 + \\frac{27}{8} = \\boxed{6.75}"}</M>
           <M>{"\\mu_3 = E[(X - 1.5)^3] = \\boxed{0}"}</M>
-          <p className="text-slate-700 italic">(Distribution symétrique)</p>
+          <p className="text-[var(--color-text-secondary)] italic">(Distribution symétrique)</p>
         </div>
       ),
     },

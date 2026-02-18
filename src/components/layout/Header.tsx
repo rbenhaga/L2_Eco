@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bell, FileText, LogOut, User as UserIcon, GraduationCap, Sparkles, Menu, X } from "lucide-react";
+import { Bell, FileText, LogOut, User as UserIcon, GraduationCap, Sparkles, Menu, X, BookOpen } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { ThemeToggle } from "../ThemeToggle";
 
 const SITE_NAME = "Οἰκονομία";
 
@@ -28,7 +29,7 @@ export function Header() {
     const userMenuRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const { user, signOut } = useAuth();
+    const { user, loading, signOut } = useAuth();
 
     // Detect if we're in the app shell (not on public pages)
     const isInApp = location.pathname !== '/' && location.pathname !== '/login' && location.pathname !== '/pricing';
@@ -83,12 +84,9 @@ export function Header() {
 
     return (
         <header
-            className="sticky top-0 z-40 border-b"
+            className="sticky top-0 z-40 border-b glass-premium"
             style={{
-                background: 'rgba(255, 255, 255, 0.85)',
-                backdropFilter: 'blur(16px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-                borderColor: 'var(--color-border-default)',
+                borderColor: 'var(--glass-border)',
             }}
         >
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -134,7 +132,36 @@ export function Header() {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
+                        {/* Theme Toggle */}
+                        <ThemeToggle />
+
+                        {/* My Courses Button - only when logged in */}
+                        {user && (
+                            <button
+                                type="button"
+                                onClick={() => navigate('/macro')}
+                                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-150"
+                                style={{ 
+                                    color: 'var(--color-text-secondary)',
+                                    border: '1px solid var(--color-border-default)'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = 'var(--color-bg-overlay)';
+                                    e.currentTarget.style.color = 'var(--color-text-primary)';
+                                    e.currentTarget.style.borderColor = 'var(--color-border-strong)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = 'transparent';
+                                    e.currentTarget.style.color = 'var(--color-text-secondary)';
+                                    e.currentTarget.style.borderColor = 'var(--color-border-default)';
+                                }}
+                            >
+                                <BookOpen className="h-4 w-4" />
+                                Mes cours
+                            </button>
+                        )}
+
                         {/* Notification Bell — only in app */}
                         {isInApp && (
                             <div className="relative" ref={notifRef}>
@@ -220,7 +247,13 @@ export function Header() {
                         )}
 
                         {/* User Menu or Login */}
-                        {user ? (
+                        {loading ? (
+                            // Loading skeleton - avoid flash
+                            <div 
+                                className="h-8 w-8 rounded-full animate-pulse"
+                                style={{ background: 'var(--color-bg-overlay)' }}
+                            />
+                        ) : user ? (
                             <div className="relative" ref={userMenuRef}>
                                 <button
                                     type="button"
@@ -269,7 +302,7 @@ export function Header() {
                                             <button
                                                 onClick={() => {
                                                     setIsUserMenuOpen(false);
-                                                    navigate('/subscription');
+                                                    navigate(user.subscriptionTier === 'premium' ? '/subscription' : '/pricing');
                                                 }}
                                                 className="w-full p-3 border-b transition-colors duration-150 text-left group"
                                                 style={{ borderColor: 'var(--color-border-default)' }}
@@ -301,9 +334,10 @@ export function Header() {
                                                 {user.subscriptionTier !== 'premium' && (
                                                     <a
                                                         href="/pricing"
-                                                        className="w-full py-2 px-3 rounded-lg text-xs font-semibold text-white transition-all duration-150 flex items-center justify-center gap-2"
+                                                        className="w-full py-2 px-3 rounded-lg text-xs font-semibold transition-all duration-150 flex items-center justify-center gap-2"
                                                         style={{
-                                                            background: 'linear-gradient(to right, var(--color-accent), var(--color-micro))'
+                                                            background: 'linear-gradient(to right, var(--color-accent), var(--color-micro))',
+                                                            color: 'var(--color-accent-foreground)'
                                                         }}
                                                         onMouseEnter={(e) => e.currentTarget.style.filter = 'brightness(1.1)'}
                                                         onMouseLeave={(e) => e.currentTarget.style.filter = 'brightness(1)'}
@@ -339,9 +373,10 @@ export function Header() {
                             <button
                                 type="button"
                                 onClick={() => navigate('/login')}
-                                className="text-sm font-medium px-4 py-2 rounded-lg text-white active:scale-[0.98] transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                                className="text-sm font-medium px-4 py-2 rounded-lg active:scale-[0.98] transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                                 style={{
                                     background: 'var(--color-accent)',
+                                    color: 'var(--color-accent-foreground)',
                                     boxShadow: 'var(--shadow-sm)'
                                 }}
                                 onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-accent-hover)'}

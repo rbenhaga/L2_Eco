@@ -60,7 +60,7 @@ export default function NotFoundPage() {
               </button>
               <Link
                 to="/"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-white rounded-xl font-medium transition-all"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-[var(--color-bg-raised)] rounded-xl font-medium transition-all"
                 style={{ background: 'var(--color-accent)' }}
                 onMouseEnter={(e) => e.currentTarget.style.filter = 'brightness(1.1)'}
                 onMouseLeave={(e) => e.currentTarget.style.filter = 'brightness(1)'}

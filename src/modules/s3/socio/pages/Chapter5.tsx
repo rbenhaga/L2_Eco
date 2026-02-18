@@ -16,13 +16,13 @@ export default function Chapter5() {
       />
 
       {/* Toggle version */}
-      <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-slate-100 rounded-xl w-full sm:w-fit">
+      <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 p-1 bg-[var(--color-bg-overlay)] rounded-xl w-full sm:w-fit">
         <button
           onClick={() => setView('full')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
             view === 'full' 
-              ? 'bg-white text-slate-900 shadow-sm' 
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm' 
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
           }`}
         >
           <BookOpen className="w-4 h-4" />
@@ -33,8 +33,8 @@ export default function Chapter5() {
           onClick={() => setView('quick')}
           className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
             view === 'quick' 
-              ? 'bg-white text-slate-900 shadow-sm' 
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[var(--color-bg-raised)] text-[var(--color-text-primary)] shadow-sm' 
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
           }`}
         >
           <Zap className="w-4 h-4" />
@@ -46,14 +46,14 @@ export default function Chapter5() {
       {view === 'quick' && (
         <div className="space-y-5 sm:space-y-6">
           {/* Thèse centrale */}
-          <div className="p-5 sm:p-7 bg-linear-to-br from-indigo-50 via-violet-50/50 to-slate-50 rounded-2xl border border-indigo-100/80">
-            <h3 className="font-semibold text-slate-900 mb-4 sm:mb-5 flex items-center gap-2 text-base sm:text-lg">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          <div className="p-5 sm:p-7 bg-linear-to-br from-[var(--color-accent-subtle)] via-[var(--color-accent-subtle)] to-transparent rounded-2xl border border-[var(--color-accent)]">
+            <h3 className="font-semibold text-[var(--color-text-primary)] mb-4 sm:mb-5 flex items-center gap-2 text-base sm:text-lg">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-linear-to-br from-[var(--color-accent)] to-[var(--color-accent-hover)] flex items-center justify-center">
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-bg-raised)]" />
               </div>
               Thèse centrale du chapitre
             </h3>
-            <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+            <p className="text-[var(--color-text-secondary)] text-sm sm:text-base leading-relaxed">
               La sociologie française post-2GM est divisée entre <strong>Bourdieu</strong> (structures sociales, déterminisme, 
               habitus) et <strong>Boudon</strong> (choix individuels rationnels). <strong>Lahire</strong> propose une synthèse 
               nuancée avec l'<strong>homme pluriel</strong> et la diversité des contextes de socialisation.
@@ -61,25 +61,25 @@ export default function Chapter5() {
           </div>
 
           {/* Citation clé */}
-          <div className="p-4 sm:p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">💬</span> Citation clé pour la dissertation
             </h4>
-            <blockquote className="p-3 bg-linear-to-r from-violet-50 to-transparent rounded-xl border-l-3 border-violet-400 text-sm">
-              <p className="italic text-slate-700">"Structures structurées prédisposées à fonctionner comme des structures structurantes"</p>
-              <p className="text-xs text-violet-600 mt-1 font-medium">— Bourdieu (définition de l'habitus)</p>
+            <blockquote className="p-3 bg-linear-to-r from-[var(--color-accent-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-accent)] text-sm">
+              <p className="italic text-[var(--color-text-secondary)]">"Structures structurées prédisposées à fonctionner comme des structures structurantes"</p>
+              <p className="text-xs text-[var(--color-accent)] mt-1 font-medium">— Bourdieu (définition de l'habitus)</p>
             </blockquote>
           </div>
 
           {/* Opposition Bourdieu vs Boudon */}
-          <div className="p-4 sm:p-6 bg-linear-to-br from-rose-50/50 to-amber-50/30 border border-rose-100 rounded-2xl">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent border border-[var(--color-error)] rounded-2xl">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">⚔️</span> Opposition : Bourdieu vs Boudon
             </h4>
             <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="p-3 bg-white/80 rounded-xl">
-                <p className="font-semibold text-violet-700 mb-2">Bourdieu</p>
-                <ul className="text-xs text-slate-600 space-y-1">
+              <div className="p-3 bg-[var(--color-bg-raised)]/80 rounded-xl">
+                <p className="font-semibold text-[var(--color-accent)] mb-2">Bourdieu</p>
+                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                   <li>• <strong>Structuralisme</strong> / Holisme</li>
                   <li>• <strong>Déterminisme</strong> social</li>
                   <li>• Héritage <strong>marxiste</strong></li>
@@ -87,9 +87,9 @@ export default function Chapter5() {
                   <li>• Méthode <strong>quantitative</strong></li>
                 </ul>
               </div>
-              <div className="p-3 bg-white/80 rounded-xl">
-                <p className="font-semibold text-emerald-700 mb-2">Boudon</p>
-                <ul className="text-xs text-slate-600 space-y-1">
+              <div className="p-3 bg-[var(--color-bg-raised)]/80 rounded-xl">
+                <p className="font-semibold text-[var(--color-success)] mb-2">Boudon</p>
+                <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                   <li>• <strong>Individualisme</strong> méthodologique</li>
                   <li>• <strong>Autonomie</strong> de l'acteur</li>
                   <li>• Inspiration <strong>néoclassique</strong></li>
@@ -101,39 +101,39 @@ export default function Chapter5() {
           </div>
 
           {/* Concepts Bourdieu */}
-          <div className="p-4 sm:p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">🎯</span> Bourdieu : concepts à maîtriser
             </h4>
             <div className="space-y-3 text-sm">
-              <div className="p-3 sm:p-4 bg-linear-to-r from-violet-50 to-transparent rounded-xl border-l-3 border-violet-400">
-                <strong className="text-violet-700">3 types de capital</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1"><strong>Économique</strong> (ressources financières) • <strong>Culturel</strong> (connaissances, le + important) • <strong>Social</strong> (réseaux, contacts)</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-accent-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-accent)]">
+                <strong className="text-[var(--color-accent)]">3 types de capital</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1"><strong>Économique</strong> (ressources financières) • <strong>Culturel</strong> (connaissances, le + important) • <strong>Social</strong> (réseaux, contacts)</p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-sky-50 to-transparent rounded-xl border-l-3 border-sky-400">
-                <strong className="text-sky-700">Habitus</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Dispositions durables intériorisées par la socialisation • Agissent de manière <strong>inconsciente</strong> • Habitus de <strong>classe</strong></p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-info)]">
+                <strong className="text-[var(--color-info)]">Habitus</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Dispositions durables intériorisées par la socialisation • Agissent de manière <strong>inconsciente</strong> • Habitus de <strong>classe</strong></p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-amber-50 to-transparent rounded-xl border-l-3 border-amber-400">
-                <strong className="text-amber-700">Reproduction sociale</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">École = instrument de <strong>légitimation</strong> de la domination • Méritocratie = <strong>illusion</strong> • Capital culturel transmis avant l'école</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-warning-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-warning)]">
+                <strong className="text-[var(--color-warning)]">Reproduction sociale</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">École = instrument de <strong>légitimation</strong> de la domination • Méritocratie = <strong>illusion</strong> • Capital culturel transmis avant l'école</p>
               </div>
             </div>
           </div>
 
           {/* Lahire */}
-          <div className="p-4 sm:p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
-            <h4 className="font-semibold text-slate-900 mb-4 text-sm sm:text-base flex items-center gap-2">
+          <div className="p-4 sm:p-6 bg-[var(--color-bg-raised)] border border-[var(--color-border-default)] rounded-2xl shadow-sm">
+            <h4 className="font-semibold text-[var(--color-text-primary)] mb-4 text-sm sm:text-base flex items-center gap-2">
               <span className="text-lg">🔄</span> Lahire : vers une sociologie nuancée
             </h4>
             <div className="space-y-3 text-sm">
-              <div className="p-3 sm:p-4 bg-linear-to-r from-teal-50 to-transparent rounded-xl border-l-3 border-teal-400">
-                <strong className="text-teal-700">L'Homme Pluriel</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">Critique l'<strong>homogénéité</strong> de l'habitus • Multiplicité des influences sociales • <strong>Transfuges de classe</strong></p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border-l-3 border-[var(--color-success)]">
+                <strong className="text-[var(--color-success)]">L'Homme Pluriel</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">Critique l'<strong>homogénéité</strong> de l'habitus • Multiplicité des influences sociales • <strong>Transfuges de classe</strong></p>
               </div>
-              <div className="p-3 sm:p-4 bg-linear-to-r from-indigo-50 to-transparent rounded-xl border-l-3 border-indigo-400">
-                <strong className="text-indigo-700">Approche contextuelle</strong>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">L'individu adapte ses comportements selon les <strong>contextes</strong> • Pluralité de dispositions • École = <strong>ascension sociale</strong> possible</p>
+              <div className="p-3 sm:p-4 bg-linear-to-r from-[var(--color-accent-subtle)] to-transparent rounded-xl border-l-3 border-[var(--color-accent)]">
+                <strong className="text-[var(--color-accent)]">Approche contextuelle</strong>
+                <p className="text-[var(--color-text-secondary)] text-xs sm:text-sm mt-1">L'individu adapte ses comportements selon les <strong>contextes</strong> • Pluralité de dispositions • École = <strong>ascension sociale</strong> possible</p>
               </div>
             </div>
           </div>
@@ -147,7 +147,7 @@ export default function Chapter5() {
 
           <button
             onClick={() => setView('full')}
-            className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 text-sm font-medium transition-colors"
+            className="flex items-center gap-2 text-[var(--color-accent)] hover:text-[var(--color-accent)] text-sm font-medium transition-colors"
           >
             Voir le cours complet <ChevronRight className="w-4 h-4" />
           </button>
@@ -159,21 +159,21 @@ export default function Chapter5() {
       {view === 'full' && (
         <>
           <Section title="Introduction">
-            <p className="mb-4 text-slate-600">
+            <p className="mb-4 text-[var(--color-text-secondary)]">
               La sociologie française se développe après la 2GM. Elle est animée par le débat <strong>individus vs société</strong> 
               (structures sociales). Ce débat a aussi une dimension <strong>politique</strong> : libéral/droite (autonomie individuelle) 
               vs socialiste/gauche (contraintes sociales).
             </p>
             <div className="grid grid-cols-2 gap-3 mb-4">
-              <div className="p-3 bg-linear-to-br from-violet-50 to-fuchsia-50/30 rounded-xl border border-violet-100 text-center">
-                <p className="font-semibold text-violet-700">Bourdieu</p>
-                <p className="text-xs text-slate-600">Associé à <strong>Durkheim</strong></p>
-                <p className="text-xs text-slate-500">Structures sociales</p>
+              <div className="p-3 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)] text-center">
+                <p className="font-semibold text-[var(--color-accent)]">Bourdieu</p>
+                <p className="text-xs text-[var(--color-text-secondary)]">Associé à <strong>Durkheim</strong></p>
+                <p className="text-xs text-[var(--color-text-muted)]">Structures sociales</p>
               </div>
-              <div className="p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100 text-center">
-                <p className="font-semibold text-emerald-700">Boudon</p>
-                <p className="text-xs text-slate-600">Associé à <strong>Weber</strong></p>
-                <p className="text-xs text-slate-500">Individus</p>
+              <div className="p-3 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl border border-[var(--color-success)] text-center">
+                <p className="font-semibold text-[var(--color-success)]">Boudon</p>
+                <p className="text-xs text-[var(--color-text-secondary)]">Associé à <strong>Weber</strong></p>
+                <p className="text-xs text-[var(--color-text-muted)]">Individus</p>
               </div>
             </div>
           </Section>
@@ -191,20 +191,20 @@ export default function Chapter5() {
                 (dominante en France après la 2GM). 3 grands apports : sociologie de l'école, de la culture/art, des classes sociales.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-violet-50/50 to-fuchsia-50/30 rounded-xl border border-violet-100 mb-4">
-                <p className="font-medium text-violet-900 text-sm mb-2">Héritage marxiste : les 3 types de capital</p>
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-accent-subtle)]/50 to-transparent rounded-xl border border-[var(--color-accent)] mb-4">
+                <p className="font-medium text-[var(--color-accent)] text-sm mb-2">Héritage marxiste : les 3 types de capital</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  <div className="p-2 bg-white/60 rounded-lg">
-                    <p className="font-semibold text-amber-700 text-xs">Capital économique</p>
-                    <p className="text-xs text-slate-600">Ressources financières et patrimoniales</p>
+                  <div className="p-2 bg-[var(--color-bg-raised)]/60 rounded-lg">
+                    <p className="font-semibold text-[var(--color-warning)] text-xs">Capital économique</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Ressources financières et patrimoniales</p>
                   </div>
-                  <div className="p-2 bg-white/60 rounded-lg">
-                    <p className="font-semibold text-violet-700 text-xs">Capital culturel ⭐</p>
-                    <p className="text-xs text-slate-600">Connaissances, compétences (le + important)</p>
+                  <div className="p-2 bg-[var(--color-bg-raised)]/60 rounded-lg">
+                    <p className="font-semibold text-[var(--color-accent)] text-xs">Capital culturel ⭐</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Connaissances, compétences (le + important)</p>
                   </div>
-                  <div className="p-2 bg-white/60 rounded-lg">
-                    <p className="font-semibold text-sky-700 text-xs">Capital social</p>
-                    <p className="text-xs text-slate-600">Réseaux, contacts personnels/professionnels</p>
+                  <div className="p-2 bg-[var(--color-bg-raised)]/60 rounded-lg">
+                    <p className="font-semibold text-[var(--color-info)] text-xs">Capital social</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Réseaux, contacts personnels/professionnels</p>
                   </div>
                 </div>
               </div>
@@ -221,25 +221,25 @@ export default function Chapter5() {
               color="indigo"
               hideAvatar
             >
-              <blockquote className="text-sm sm:text-base italic text-slate-600 border-l-4 border-indigo-300 pl-4 mb-4">
+              <blockquote className="text-sm sm:text-base italic text-[var(--color-text-secondary)] border-l-4 border-[var(--color-accent)] pl-4 mb-4">
                 "Structures structurées prédisposées à fonctionner comme des structures structurantes"
-                <span className="block text-xs font-medium text-indigo-600 mt-1">— Bourdieu</span>
+                <span className="block text-xs font-medium text-[var(--color-accent)] mt-1">— Bourdieu</span>
               </blockquote>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-linear-to-br from-indigo-50 to-violet-50/30 rounded-xl border border-indigo-100">
-                  <p className="font-semibold text-indigo-700 text-sm mb-1">Structures structurées</p>
-                  <p className="text-xs text-slate-600">Famille, école, amis nous <strong>structurent</strong> via la socialisation</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)]">
+                  <p className="font-semibold text-[var(--color-accent)] text-sm mb-1">Structures structurées</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Famille, école, amis nous <strong>structurent</strong> via la socialisation</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-indigo-50 to-violet-50/30 rounded-xl border border-indigo-100">
-                  <p className="font-semibold text-indigo-700 text-sm mb-1">Structures structurantes</p>
-                  <p className="text-xs text-slate-600">Les habitus nous <strong>guident</strong> dans notre manière d'agir</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)]">
+                  <p className="font-semibold text-[var(--color-accent)] text-sm mb-1">Structures structurantes</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Les habitus nous <strong>guident</strong> dans notre manière d'agir</p>
                 </div>
               </div>
 
-              <div className="p-3 bg-linear-to-r from-slate-50 to-transparent rounded-xl border border-slate-200 mb-3">
-                <p className="font-medium text-slate-900 text-sm mb-2">Caractéristiques des habitus :</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-border-default)] mb-3">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Caractéristiques des habitus :</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• Dispositions <strong>durables</strong> intériorisées par la socialisation (primaire + secondaire)</li>
                   <li>• Fonctionnent de manière <strong>inconsciente</strong> (on n'est pas conscient d'être déterminé)</li>
                   <li>• Reflètent l'expérience passée et l'<strong>appartenance sociale</strong></li>
@@ -264,14 +264,14 @@ export default function Chapter5() {
                 Le monde social = imbrication de <strong>champs</strong> (sport, culture, économie...). 
                 Dans chaque champ, même <strong>hiérarchie sociale</strong> = <strong>homologie structurale</strong>.
               </p>
-              <div className="p-3 bg-linear-to-r from-rose-50/50 to-transparent rounded-xl border border-rose-100 mb-3">
-                <p className="text-xs sm:text-sm text-slate-600">
+              <div className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-error)] mb-3">
+                <p className="text-xs sm:text-sm text-[var(--color-text-secondary)]">
                   Les classes supérieures sont <strong>dominantes dans tous les champs</strong>. Les capitaux d'un champ 
                   peuvent être <strong>convertis</strong> dans un autre → transfert de domination. 
                   Mécanisme de <strong>reproduction des inégalités</strong>.
                 </p>
               </div>
-              <p className="text-xs text-slate-500 italic">
+              <p className="text-xs text-[var(--color-text-muted)] italic">
                 Position du sociologue : "tour d'ivoire", au-dessus de la mêlée → sociologie du <strong>dévoilement</strong>.
               </p>
             </AuthorCard>
@@ -290,15 +290,15 @@ export default function Chapter5() {
               </p>
 
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                  <p className="font-semibold text-amber-700 text-sm">Classes populaires</p>
-                  <p className="text-xs text-slate-600">"Franc manger" • Force, corpulence</p>
-                  <p className="text-xs text-slate-500">Travail physique → aliments nourrissants</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-warning)] text-sm">Classes populaires</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">"Franc manger" • Force, corpulence</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Travail physique → aliments nourrissants</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-violet-50 to-fuchsia-50/30 rounded-xl border border-violet-100">
-                  <p className="font-semibold text-violet-700 text-sm">Classes supérieures</p>
-                  <p className="text-xs text-slate-600">Alimentation raffinée • Finesse, minceur</p>
-                  <p className="text-xs text-slate-500">Travail intellectuel → aliments légers</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)]">
+                  <p className="font-semibold text-[var(--color-accent)] text-sm">Classes supérieures</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Alimentation raffinée • Finesse, minceur</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Travail intellectuel → aliments légers</p>
                 </div>
               </div>
 
@@ -320,9 +320,9 @@ export default function Chapter5() {
                 L'échec scolaire est corrélé aux classes sociales.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-sky-50/50 to-blue-50/30 rounded-xl border border-sky-100 mb-4">
-                <p className="font-medium text-slate-900 text-sm mb-2">Pourquoi les classes supérieures réussissent ?</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-info)] mb-4">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Pourquoi les classes supérieures réussissent ?</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• Socialisation familiale <strong>pré-ajustée</strong> aux attentes scolaires</li>
                   <li>• <strong>Capital culturel</strong> transmis avant l'école</li>
                   <li>• Habitués à travailler, être évalués dès l'enfance</li>
@@ -336,9 +336,9 @@ export default function Chapter5() {
                 "aveugle et hypocrite" : elle repose sur l'<strong>héritage</strong>, pas le mérite.
               </Callout>
 
-              <div className="mt-4 p-3 bg-linear-to-r from-amber-50/50 to-transparent rounded-xl border border-amber-100">
-                <p className="font-medium text-slate-900 text-sm mb-2">Actualisation de l'analyse :</p>
-                <p className="text-xs sm:text-sm text-slate-600">
+              <div className="mt-4 p-3 bg-linear-to-r from-[var(--color-warning-subtle)]/50 to-transparent rounded-xl border border-[var(--color-warning)]">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Actualisation de l'analyse :</p>
+                <p className="text-xs sm:text-sm text-[var(--color-text-secondary)]">
                   Le <strong>capital social</strong> est aussi important : 2 étudiants avec un capital scolaire équivalent 
                   mais différenciés par des <strong>CV différents</strong> expliqués par le capital social différent.
                 </p>
@@ -359,9 +359,9 @@ export default function Chapter5() {
                 et de l'<strong>individualisme méthodologique</strong>.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-emerald-50/50 to-teal-50/30 rounded-xl border border-emerald-100 mb-4">
-                <p className="font-medium text-emerald-900 text-sm mb-2">Critiques de Bourdieu :</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-success-subtle)]/50 to-transparent rounded-xl border border-[var(--color-success)] mb-4">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Critiques de Bourdieu :</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• Pas assez de place faite à l'<strong>acteur</strong></li>
                   <li>• L'individu est assimilé à un <strong>"idiot culturel"</strong> (Garfinkel)</li>
                   <li>• L'individu croit être libre mais ne l'est pas</li>
@@ -369,9 +369,9 @@ export default function Chapter5() {
                 </ul>
               </div>
 
-              <div className="p-3 bg-linear-to-r from-slate-50 to-transparent rounded-xl border border-slate-200 mb-4">
-                <p className="font-medium text-slate-900 text-sm mb-2">Facteur contextuel (années 90-2000) :</p>
-                <p className="text-xs sm:text-sm text-slate-600">
+              <div className="p-3 bg-linear-to-r from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-border-default)] mb-4">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Facteur contextuel (années 90-2000) :</p>
+                <p className="text-xs sm:text-sm text-[var(--color-text-secondary)]">
                   Montée en puissance de l'<strong>économie néoclassique</strong> dans toutes les sphères. 
                   Redonne un rôle central à l'<strong>individualisme méthodologique</strong> inspiré de la micro-économie.
                 </p>
@@ -396,18 +396,18 @@ export default function Chapter5() {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-linear-to-br from-emerald-50 to-teal-50/30 rounded-xl border border-emerald-100">
-                  <p className="font-semibold text-emerald-700 text-sm">Catégories supérieures</p>
-                  <ul className="text-xs text-slate-600 space-y-1">
+                <div className="p-3 bg-linear-to-br from-[var(--color-success-subtle)] to-transparent rounded-xl border border-[var(--color-success)]">
+                  <p className="font-semibold text-[var(--color-success)] text-sm">Catégories supérieures</p>
+                  <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                     <li>• Choix scolaires <strong>ambitieux</strong></li>
                     <li>• Plus informés</li>
                     <li>• Coûts du choix <strong>moindres</strong></li>
                     <li>• Risque d'échec <strong>faible</strong></li>
                   </ul>
                 </div>
-                <div className="p-3 bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl border border-amber-100">
-                  <p className="font-semibold text-amber-700 text-sm">Catégories populaires</p>
-                  <ul className="text-xs text-slate-600 space-y-1">
+                <div className="p-3 bg-linear-to-br from-[var(--color-warning-subtle)] to-transparent rounded-xl border border-[var(--color-warning)]">
+                  <p className="font-semibold text-[var(--color-warning)] text-sm">Catégories populaires</p>
+                  <ul className="text-xs text-[var(--color-text-secondary)] space-y-1">
                     <li>• Choix de filières <strong>courtes</strong></li>
                     <li>• Moins d'informations</li>
                     <li>• Coûts <strong>importants</strong></li>
@@ -427,7 +427,7 @@ export default function Chapter5() {
           </Section>
 
           <Section title="IV. Lahire : vers une sociologie plus nuancée">
-            <p className="mb-5 text-slate-600">
+            <p className="mb-5 text-[var(--color-text-secondary)]">
               La sociologie actuelle est moins clivée (Bourdieu vs Boudon) et plus <strong>diversifiée</strong>. 
               La société a changé (déclin du secteur ouvrier, développement des classes moyennes), les grands modèles 
               ont dû s'<strong>adoucir</strong>.
@@ -445,9 +445,9 @@ export default function Chapter5() {
                 des dispositions individuelles.
               </p>
 
-              <div className="p-3 sm:p-4 bg-linear-to-br from-teal-50/50 to-cyan-50/30 rounded-xl border border-teal-100 mb-4">
-                <p className="font-medium text-teal-900 text-sm mb-2">Multiplicité des influences sociales</p>
-                <p className="text-xs sm:text-sm text-slate-600">
+              <div className="p-3 sm:p-4 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-success)] mb-4">
+                <p className="font-medium text-[var(--color-success)] text-sm mb-2">Multiplicité des influences sociales</p>
+                <p className="text-xs sm:text-sm text-[var(--color-text-secondary)]">
                   L'individu est traversé par une multiplicité de logiques <strong>sociales, culturelles et professionnelles</strong>. 
                   Reproche à Bourdieu la <strong>généralisation</strong> qui entraîne une homogénéisation.
                 </p>
@@ -472,21 +472,21 @@ export default function Chapter5() {
               </p>
 
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-linear-to-br from-violet-50 to-fuchsia-50/30 rounded-xl border border-violet-100">
-                  <p className="font-semibold text-violet-700 text-sm">Bourdieu</p>
-                  <p className="text-xs text-slate-600">Importance centrale à l'appartenance à une <strong>classe</strong></p>
-                  <p className="text-xs text-slate-500">Une seule disposition de classe</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-accent-subtle)] to-transparent rounded-xl border border-[var(--color-accent)]">
+                  <p className="font-semibold text-[var(--color-accent)] text-sm">Bourdieu</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Importance centrale à l'appartenance à une <strong>classe</strong></p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Une seule disposition de classe</p>
                 </div>
-                <div className="p-3 bg-linear-to-br from-teal-50 to-cyan-50/30 rounded-xl border border-teal-100">
-                  <p className="font-semibold text-teal-700 text-sm">Lahire</p>
-                  <p className="text-xs text-slate-600">Diversité des <strong>contextes</strong> rencontrés</p>
-                  <p className="text-xs text-slate-500">Pluralité de dispositions</p>
+                <div className="p-3 bg-linear-to-br from-[var(--color-bg-overlay)] to-transparent rounded-xl border border-[var(--color-success)]">
+                  <p className="font-semibold text-[var(--color-success)] text-sm">Lahire</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Diversité des <strong>contextes</strong> rencontrés</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Pluralité de dispositions</p>
                 </div>
               </div>
 
-              <div className="p-3 bg-linear-to-r from-indigo-50/50 to-transparent rounded-xl border border-indigo-100">
-                <p className="font-medium text-slate-900 text-sm mb-2">Conséquences :</p>
-                <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
+              <div className="p-3 bg-linear-to-r from-[var(--color-accent-subtle)]/50 to-transparent rounded-xl border border-[var(--color-accent)]">
+                <p className="font-medium text-[var(--color-text-primary)] text-sm mb-2">Conséquences :</p>
+                <ul className="text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                   <li>• L'individu <strong>adapte</strong> ses comportements selon les contextes</li>
                   <li>• Pluralité de contextes → pluralité de comportements et goûts</li>
                   <li>• L'école peut permettre l'<strong>ascension sociale</strong> (≠ Bourdieu)</li>
@@ -500,37 +500,37 @@ export default function Chapter5() {
             <div className="overflow-x-auto mb-4">
               <table className="w-full text-sm border-collapse">
                 <thead>
-                  <tr className="bg-slate-100">
-                    <th className="p-3 text-left font-semibold text-slate-700 border border-slate-200"></th>
-                    <th className="p-3 text-left font-semibold text-violet-700 border border-slate-200">Bourdieu</th>
-                    <th className="p-3 text-left font-semibold text-emerald-700 border border-slate-200">Boudon</th>
-                    <th className="p-3 text-left font-semibold text-teal-700 border border-slate-200">Lahire</th>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <th className="p-3 text-left font-semibold text-[var(--color-text-secondary)] border border-[var(--color-border-default)]"></th>
+                    <th className="p-3 text-left font-semibold text-[var(--color-accent)] border border-[var(--color-border-default)]">Bourdieu</th>
+                    <th className="p-3 text-left font-semibold text-[var(--color-success)] border border-[var(--color-border-default)]">Boudon</th>
+                    <th className="p-3 text-left font-semibold text-[var(--color-success)] border border-[var(--color-border-default)]">Lahire</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="p-3 border border-slate-200 font-medium">Approche</td>
-                    <td className="p-3 border border-slate-200">Holisme</td>
-                    <td className="p-3 border border-slate-200">Individualisme</td>
-                    <td className="p-3 border border-slate-200">Contextuelle</td>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Approche</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Holisme</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Individualisme</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Contextuelle</td>
                   </tr>
-                  <tr className="bg-slate-50">
-                    <td className="p-3 border border-slate-200 font-medium">Vision</td>
-                    <td className="p-3 border border-slate-200">Déterminisme</td>
-                    <td className="p-3 border border-slate-200">Autonomie</td>
-                    <td className="p-3 border border-slate-200">Nuancée</td>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Vision</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Déterminisme</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Autonomie</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Nuancée</td>
                   </tr>
                   <tr>
-                    <td className="p-3 border border-slate-200 font-medium">Habitus</td>
-                    <td className="p-3 border border-slate-200">De classe</td>
-                    <td className="p-3 border border-slate-200">—</td>
-                    <td className="p-3 border border-slate-200">Pluriels</td>
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">Habitus</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">De classe</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">—</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Pluriels</td>
                   </tr>
-                  <tr className="bg-slate-50">
-                    <td className="p-3 border border-slate-200 font-medium">École</td>
-                    <td className="p-3 border border-slate-200">Reproduction</td>
-                    <td className="p-3 border border-slate-200">Stratégies</td>
-                    <td className="p-3 border border-slate-200">Ascension possible</td>
+                  <tr className="bg-[var(--color-bg-overlay)]">
+                    <td className="p-3 border border-[var(--color-border-default)] font-medium">École</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Reproduction</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Stratégies</td>
+                    <td className="p-3 border border-[var(--color-border-default)]">Ascension possible</td>
                   </tr>
                 </tbody>
               </table>

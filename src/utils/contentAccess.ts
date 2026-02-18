@@ -25,10 +25,12 @@
  * Map of subjects to their first (free) chapter patterns
  */
 const FIRST_CHAPTERS: Record<string, RegExp> = {
-    macro: /\/macro\/chapitre-1$/,
-    micro: /\/micro\/chapitre-0$/,
-    stats: /\/stats\/chapitre-1$/,
-    socio: /\/socio\/chapitre1$/,   // Note: no hyphen in socio URLs
+    macro: /^\/(?:s3\/|s4\/)?macro\/chapitre-1$/,
+    microS3: /^\/(?:s3\/)?micro\/chapitre-0$/,
+    microS4: /^\/s4\/micro\/chapitre-1$/,
+    stats: /^\/(?:s3\/|s4\/)?stats\/chapitre-1$/,
+    socio: /^\/(?:s3\/)?socio\/chapitre1$/, // Note: no hyphen in socio URLs
+    management: /^\/s4\/management\/chapitre-1$/,
 };
 
 /**
@@ -37,13 +39,17 @@ const FIRST_CHAPTERS: Record<string, RegExp> = {
 export function isFreeContent(pathname: string): boolean {
     const path = pathname.toLowerCase();
 
-    // Always free: home, login, subscription pages
-    if (path === '/' || path === '/login' || path === '/subscription') {
+    // Always free: home, login, pricing and subscription pages
+    if (path === '/' || path === '/login' || path === '/pricing' || path === '/subscription') {
         return true;
     }
 
     // Subject home pages are free
-    const subjectHomes = ['/macro', '/micro', '/stats', '/socio'];
+    const subjectHomes = [
+        '/macro', '/micro', '/stats', '/socio',
+        '/s3/macro', '/s3/micro', '/s3/stats', '/s3/socio',
+        '/s4/macro', '/s4/micro', '/s4/stats', '/s4/management',
+    ];
     if (subjectHomes.includes(path)) {
         return true;
     }
@@ -55,14 +61,16 @@ export function isFreeContent(pathname: string): boolean {
         }
     }
 
-    // Free content patterns
+    // Free content patterns: first revision and first TD correction only
     const freePatterns = [
-        /\/macro\/revision-ch1$/,   // Revision for first chapters
-        /\/micro\/revision-ch0$/,
-        /\/stats\/revision-ch1$/,
-        /\/socio\/revision-ch1$/,
-        /\/revision$/,              // Revision index page (shows all chapters)
-        /\/qcm$/,                   // QCM page (questions filtered separately)
+        /^\/(?:s3\/|s4\/)?macro\/revision-ch1$/,
+        /^\/(?:s3\/)?micro\/revision-ch0$/,
+        /^\/(?:s3\/|s4\/)?stats\/revision-ch1$/,
+        /^\/(?:s3\/)?socio\/revision-ch1$/,
+        /^\/(?:s3\/|s4\/)?management\/revision-ch1$/,
+        /^\/(?:s3\/|s4\/)?[^/]+\/correction-td-1$/,
+        /^\/(?:s3\/|s4\/)?[^/]+\/td-1$/,
+        /^\/(?:s3\/|s4\/)?[^/]+\/qcm$/,
     ];
 
     for (const pattern of freePatterns) {

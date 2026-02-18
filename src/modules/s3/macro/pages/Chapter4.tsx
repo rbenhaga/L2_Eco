@@ -317,7 +317,7 @@ export function Chapter4() {
           <TableRow><TableCell>10</TableCell><TableCell>4</TableCell><TableCell>216</TableCell><TableCell>240</TableCell><TableCell>216 + 24 = 240</TableCell></TableRow>
         </Table>
         
-        <p className="mt-2 text-sm text-slate-700">
+        <p className="mt-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
           <strong>Formule générale :</strong> <Math>{"\\pi_t = \\pi_{t-1} + 0.4 - 4 \\times 0.04 = \\pi_{t-1} + 0.24"}</Math><br/>
           L'inflation augmente de <strong>24 points de pourcentage chaque année</strong> !
         </p>

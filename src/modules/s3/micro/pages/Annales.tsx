@@ -450,27 +450,27 @@ export function Annales() {
     return (
       <main className="max-w-6xl px-6 pt-28 pb-12">
         <div className="text-center mb-12">
-          <p className="text-sm text-slate-600 mb-2">Mode Examen</p>
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">Annales</h1>
-          <p className="text-slate-700">Entraîne-toi en conditions réelles avec les sujets d'examen.</p>
+          <p className="text-sm mb-2" style={{ color: 'var(--color-text-secondary)' }}>Mode Examen</p>
+          <h1 className="text-4xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>Annales</h1>
+          <p style={{ color: 'var(--color-text-secondary)' }}>Entraîne-toi en conditions réelles avec les sujets d'examen.</p>
         </div>
         <div className="space-y-4">
           {exams.map((exam) => (
-            <button key={exam.id} onClick={() => startExam(exam)} className="w-full p-6 bg-white border border-slate-200 rounded-xl hover:border-gray-400 hover:shadow-md transition-all text-left group">
+            <button key={exam.id} onClick={() => startExam(exam)} className="w-full p-6 rounded-xl hover:border-[var(--color-border-strong)] transition-all text-left group" style={{ background: 'var(--color-bg-raised)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)', boxShadow: 'none' }} onMouseEnter={e => e.currentTarget.style.boxShadow = 'var(--shadow-md)'} onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}>
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <FileText className="w-5 h-5 text-slate-500" />
-                    <span className="text-2xl font-bold text-slate-900">{exam.year}</span>
+                    <FileText className="w-5 h-5" style={{ color: 'var(--color-text-muted)' }} />
+                    <span className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>{exam.year}</span>
                   </div>
-                  <p className="text-slate-700">{exam.title}</p>
-                  <div className="flex items-center gap-4 mt-2 text-sm text-slate-600">
+                  <p style={{ color: 'var(--color-text-secondary)' }}>{exam.title}</p>
+                  <div className="flex items-center gap-4 mt-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                     <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {exam.duration} min</span>
                     <span>{exam.exercises.length} exercices</span>
                     <span>{exam.totalPoints} points</span>
                   </div>
                 </div>
-                <ArrowRight className="w-5 h-5 text-slate-500 group-hover:text-slate-700 transition-colors" />
+                <ArrowRight className="w-5 h-5 transition-colors" style={{ color: 'var(--color-text-muted)' }} />
               </div>
             </button>
           ))}
@@ -485,55 +485,55 @@ export function Annales() {
     return (
       <main className="max-w-6xl px-6 pt-28 pb-12">
         <div className="text-center mb-8">
-          <Trophy className={`w-16 h-16 mx-auto mb-4 ${percentage >= 50 ? 'text-yellow-500' : 'text-slate-500'}`} />
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Examen terminé !</h1>
-          <p className="text-slate-700">{selectedExam?.year} - {selectedExam?.title}</p>
+          <Trophy className="w-16 h-16 mx-auto mb-4" style={{ color: percentage >= 50 ? 'var(--color-warning)' : 'var(--color-text-muted)' }} />
+          <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--color-text-primary)' }}>Examen terminé !</h1>
+          <p style={{ color: 'var(--color-text-secondary)' }}>{selectedExam?.year} - {selectedExam?.title}</p>
         </div>
-        <div className="bg-white border border-slate-200 rounded-xl p-8 mb-8">
+        <div className="rounded-xl p-8 mb-8" style={{ background: 'var(--color-bg-raised)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
           <div className="text-center mb-6">
-            <div className="text-5xl font-bold text-slate-900 mb-2">{score.toFixed(1)} / {total}</div>
-            <div className={`text-lg font-medium ${percentage >= 50 ? 'text-green-600' : 'text-red-600'}`}>
+            <div className="text-5xl font-bold mb-2" style={{ color: 'var(--color-text-primary)' }}>{score.toFixed(1)} / {total}</div>
+            <div className="text-lg font-medium" style={{ color: percentage >= 50 ? 'var(--color-success)' : 'var(--color-error)' }}>
               {percentage}% — {percentage >= 50 ? 'Admis' : 'Non admis'}
             </div>
           </div>
           <div className="space-y-3">
             {details.map((d, i) => (
-              <div key={i} className="flex items-center justify-between p-3 bg-slate-100/50 rounded-lg">
-                <span className="font-medium text-slate-800">{d.exercise}</span>
-                <span className="text-sm text-slate-700">{d.correct}/{d.total} questions</span>
+              <div key={i} className="flex items-center justify-between p-3 rounded-lg" style={{ background: 'var(--color-bg-overlay)' }}>
+                <span className="font-medium" style={{ color: 'var(--color-text-primary)' }}>{d.exercise}</span>
+                <span className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{d.correct}/{d.total} questions</span>
               </div>
             ))}
           </div>
         </div>
-        <div className="bg-white border border-slate-200 rounded-xl p-6 mb-8">
-          <h2 className="font-bold text-slate-900 mb-4">Correction détaillée</h2>
+        <div className="rounded-xl p-6 mb-8" style={{ background: 'var(--color-bg-raised)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
+          <h2 className="font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>Correction détaillée</h2>
           {selectedExam?.exercises.map((ex) => (
             <div key={ex.id} className="mb-6">
-              <h3 className="font-semibold text-slate-900 mb-3">{ex.title} ({ex.points} pts)</h3>
-              {ex.context && <p className="text-sm text-slate-700 mb-3 p-3 bg-slate-100/50 rounded">{renderWithMath(ex.context)}</p>}
+              <h3 className="font-semibold mb-3" style={{ color: 'var(--color-text-primary)' }}>{ex.title} ({ex.points} pts)</h3>
+              {ex.context && <p className="text-sm mb-3 p-3 rounded" style={{ color: 'var(--color-text-secondary)', background: 'var(--color-bg-overlay)' }}>{renderWithMath(ex.context)}</p>}
               {ex.questions.map((q) => {
                 const key = `${ex.id}-${q.id}`;
                 const userAnswer = answers[key];
                 const isCorrect = userAnswer === q.correct;
                 return (
-                  <div key={q.id} className={`p-4 mb-2 rounded-lg border ${isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                  <div key={q.id} className="p-4 mb-2 rounded-lg" style={{ background: isCorrect ? 'var(--color-success-subtle)' : 'var(--color-error-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: isCorrect ? 'var(--color-success)' : 'var(--color-error)' }}>
                     <div className="flex items-start gap-2 mb-2">
-                      {isCorrect ? <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" /> : <XCircle className="w-5 h-5 text-red-600 mt-0.5" />}
+                      {isCorrect ? <CheckCircle className="w-5 h-5 mt-0.5" style={{ color: 'var(--color-success)' }} /> : <XCircle className="w-5 h-5 mt-0.5" style={{ color: 'var(--color-error)' }} />}
                       <div className="flex-1">
-                        <p className="text-slate-900">{renderWithMath(q.question)}</p>
+                        <p style={{ color: 'var(--color-text-primary)' }}>{renderWithMath(q.question)}</p>
                         <p className="text-sm mt-1">
-                          <span className="text-slate-600">Ta réponse : </span>
-                          <span className={isCorrect ? 'text-green-700' : 'text-red-700'}>
+                          <span style={{ color: 'var(--color-text-secondary)' }}>Ta réponse : </span>
+                          <span style={{ color: isCorrect ? 'var(--color-success)' : 'var(--color-error)' }}>
                             {userAnswer !== null && userAnswer !== undefined ? q.options[userAnswer] : 'Non répondu'}
                           </span>
                           {!isCorrect && (
                             <>
-                              <span className="text-slate-600"> — Bonne réponse : </span>
-                              <span className="text-green-700">{q.options[q.correct]}</span>
+                              <span style={{ color: 'var(--color-text-secondary)' }}> — Bonne réponse : </span>
+                              <span style={{ color: 'var(--color-success)' }}>{q.options[q.correct]}</span>
                             </>
                           )}
                         </p>
-                        <p className="text-sm text-slate-700 mt-2">{renderWithMath(q.explanation)}</p>
+                        <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>{renderWithMath(q.explanation)}</p>
                       </div>
                     </div>
                   </div>
@@ -543,10 +543,10 @@ export function Annales() {
           ))}
         </div>
         <div className="flex gap-4">
-          <button onClick={() => startExam(selectedExam!)} className="flex-1 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+          <button onClick={() => startExam(selectedExam!)} className="flex-1 py-3 rounded-lg transition-colors flex items-center justify-center gap-2" style={{ background: 'var(--color-text-primary)', color: 'var(--color-bg-raised)' }}>
             <RotateCcw className="w-4 h-4" /> Recommencer
           </button>
-          <button onClick={() => setView('select')} className="flex-1 py-3 border border-slate-300 rounded-lg hover:bg-slate-100/50 transition-colors">
+          <button onClick={() => setView('select')} className="flex-1 py-3 rounded-lg transition-colors" style={{ borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
             Autres annales
           </button>
         </div>
@@ -556,16 +556,16 @@ export function Annales() {
 
   return (
     <main className="max-w-4xl mx-auto px-6 pt-24 pb-8">
-      <div className="sticky top-16 bg-white border-b border-slate-200 -mx-6 px-6 py-4 mb-6 z-10">
+      <div className="sticky top-16 -mx-6 px-6 py-4 mb-6 z-10" style={{ background: 'var(--color-bg-raised)', borderBottom: '1px solid var(--color-border-default)' }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="font-bold text-slate-900">{selectedExam?.year}</h1>
-            <p className="text-sm text-slate-600">{selectedExam?.title}</p>
+            <h1 className="font-bold" style={{ color: 'var(--color-text-primary)' }}>{selectedExam?.year}</h1>
+            <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{selectedExam?.title}</p>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-600">{answeredQuestions}/{totalQuestions} répondu</span>
+            <span className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{answeredQuestions}/{totalQuestions} répondu</span>
             {showTimer && (
-              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${timeLeft < 300 ? 'bg-red-100 text-red-700' : 'bg-slate-100/80 text-slate-800'}`}>
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg" style={{ background: timeLeft < 300 ? 'var(--color-error-subtle)' : 'var(--color-bg-overlay)', color: timeLeft < 300 ? 'var(--color-error)' : 'var(--color-text-primary)' }}>
                 <Clock className="w-4 h-4" />
                 <span className="font-mono font-medium">{formatTime(timeLeft)}</span>
               </div>
@@ -574,30 +574,30 @@ export function Annales() {
         </div>
         <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
           {selectedExam?.exercises.map((ex, idx) => (
-            <button key={ex.id} onClick={() => goToExercise(idx)} className={`px-3 py-1.5 text-sm rounded-lg whitespace-nowrap transition-colors ${currentExercise === idx ? 'bg-emerald-600 text-white' : 'bg-slate-100/80 text-slate-700 hover:bg-slate-200'}`}>
+            <button key={ex.id} onClick={() => goToExercise(idx)} className="px-3 py-1.5 text-sm rounded-lg whitespace-nowrap transition-colors" style={{ background: currentExercise === idx ? 'var(--color-success)' : 'var(--color-bg-overlay)', color: currentExercise === idx ? 'var(--color-bg-raised)' : 'var(--color-text-secondary)' }}>
               {ex.title.split(':')[0]}
             </button>
           ))}
         </div>
       </div>
       {exercise && question && (
-        <div className="bg-white border border-slate-200 rounded-xl p-6 mb-6">
+        <div className="rounded-xl p-6 mb-6" style={{ background: 'var(--color-bg-raised)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
           <div className="mb-4">
-            <span className="text-sm text-emerald-600 font-medium">{exercise.title}</span>
-            {exercise.context && <p className="text-sm text-slate-700 mt-2 p-3 bg-slate-100/50 rounded-lg">{renderWithMath(exercise.context)}</p>}
+            <span className="text-sm font-medium" style={{ color: 'var(--color-success)' }}>{exercise.title}</span>
+            {exercise.context && <p className="text-sm mt-2 p-3 rounded-lg" style={{ color: 'var(--color-text-secondary)', background: 'var(--color-bg-overlay)' }}>{renderWithMath(exercise.context)}</p>}
           </div>
           <div className="mb-6">
-            <p className="text-sm text-slate-600 mb-2">Question {currentQuestion + 1}/{exercise.questions.length} · {question.points} pt{question.points > 1 ? 's' : ''}</p>
-            <h2 className="text-lg font-medium text-slate-900">{renderWithMath(question.question)}</h2>
+            <p className="text-sm mb-2" style={{ color: 'var(--color-text-secondary)' }}>Question {currentQuestion + 1}/{exercise.questions.length} · {question.points} pt{question.points > 1 ? 's' : ''}</p>
+            <h2 className="text-lg font-medium" style={{ color: 'var(--color-text-primary)' }}>{renderWithMath(question.question)}</h2>
           </div>
           <div className="space-y-3">
             {question.options.map((option, idx) => (
-              <button key={idx} onClick={() => handleAnswer(question.id, idx)} className={`w-full p-4 text-left rounded-lg border-2 transition-all ${currentAnswer === idx ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 hover:border-slate-300'}`}>
+              <button key={idx} onClick={() => handleAnswer(question.id, idx)} className="w-full p-4 text-left rounded-lg transition-all" style={{ borderWidth: '2px', borderStyle: 'solid', borderColor: currentAnswer === idx ? 'var(--color-success)' : 'var(--color-border-default)', background: currentAnswer === idx ? 'var(--color-success-subtle)' : 'transparent' }}>
                 <span className="flex items-center gap-3">
-                  <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center text-sm font-medium ${currentAnswer === idx ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-slate-300 text-slate-600'}`}>
+                  <span className="w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium" style={{ borderWidth: '2px', borderStyle: 'solid', borderColor: currentAnswer === idx ? 'var(--color-success)' : 'var(--color-border-default)', background: currentAnswer === idx ? 'var(--color-success)' : 'transparent', color: currentAnswer === idx ? 'var(--color-bg-raised)' : 'var(--color-text-secondary)' }}>
                     {String.fromCharCode(65 + idx)}
                   </span>
-                  <span className="text-slate-800">{renderWithMath(option)}</span>
+                  <span style={{ color: 'var(--color-text-primary)' }}>{renderWithMath(option)}</span>
                 </span>
               </button>
             ))}
@@ -605,10 +605,10 @@ export function Annales() {
         </div>
       )}
       <div className="flex items-center justify-between">
-        <button onClick={prevQuestion} disabled={currentExercise === 0 && currentQuestion === 0} className="flex items-center gap-2 px-4 py-2 text-slate-700 hover:text-slate-900 disabled:opacity-50 disabled:cursor-not-allowed">
+        <button onClick={prevQuestion} disabled={currentExercise === 0 && currentQuestion === 0} className="flex items-center gap-2 px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed" style={{ color: 'var(--color-text-secondary)' }}>
           <ArrowLeft className="w-4 h-4" /> Précédent
         </button>
-        <button onClick={nextQuestion} className="flex items-center gap-2 px-6 py-2.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
+        <button onClick={nextQuestion} className="flex items-center gap-2 px-6 py-2.5 text-[var(--color-bg-raised)] rounded-lg transition-colors" style={{ background: 'var(--color-success)' }}>
           {currentExercise === selectedExam!.exercises.length - 1 && currentQuestion === exercise!.questions.length - 1 ? 'Terminer' : 'Suivant'} <ArrowRight className="w-4 h-4" />
         </button>
       </div>

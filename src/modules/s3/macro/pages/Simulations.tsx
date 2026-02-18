@@ -11,11 +11,11 @@ export function Simulations() {
       />
 
       {/* Mode d'emploi */}
-      <div className="mb-8 p-5 bg-slate-50 rounded-xl border border-slate-100">
-        <p className="text-sm text-slate-700 mb-3 font-medium">Comment utiliser les simulateurs</p>
-        <ul className="text-sm text-slate-600 space-y-1.5">
-          <li><span className="text-slate-400 mr-2">1.</span>Choisis un <span className="font-medium text-slate-800">événement</span> (ex: ↑G, ↑M) pour voir son effet sur les courbes</li>
-          <li><span className="text-slate-400 mr-2">2.</span>Clique sur <span className="font-medium text-slate-800">Intuition</span> pour comprendre pourquoi les courbes ont cette forme</li>
+      <div className="mb-8 p-5 rounded-xl" style={{ background: 'var(--color-bg-overlay)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
+        <p className="text-sm mb-3 font-medium" style={{ color: 'var(--color-text-secondary)' }}>Comment utiliser les simulateurs</p>
+        <ul className="text-sm space-y-1.5" style={{ color: 'var(--color-text-secondary)' }}>
+          <li><span className="mr-2" style={{ color: 'var(--color-text-muted)' }}>1.</span>Choisis un <span className="font-medium" style={{ color: 'var(--color-text-primary)' }}>événement</span> (ex: ↑G, ↑M) pour voir son effet sur les courbes</li>
+          <li><span className="mr-2" style={{ color: 'var(--color-text-muted)' }}>2.</span>Clique sur <span className="font-medium" style={{ color: 'var(--color-text-primary)' }}>Intuition</span> pour comprendre pourquoi les courbes ont cette forme</li>
         </ul>
       </div>
 

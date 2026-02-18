@@ -1,0 +1,775 @@
+MACROÉCONOMIE
+Chapitre 1
+De l'économie fermée à l'économie ouverte
+Balance des paiements et taux de change
+Université de Montpellier
+Licence 2 - Semestre 2
+Année 2025-2026
+ 
+TABLE DES MATIÈRES
+INTRODUCTION AU COURS	1
+SECTION 1 : ÉQUILIBRE EMPLOIS-RESSOURCES EN ÉCONOMIE OUVERTE	1
+1.1 Rappel : La contrainte de l'économie fermée	1
+1.1.1 L'identité comptable de départ	1
+1.1.2 La contrainte financière	1
+1.2 L'ouverture des économies	1
+1.2.1 Nouvelle identité ressources-emplois	1
+1.2.2 L'équation fondamentale du solde extérieur	1
+1.3 Point de vigilance : Solde Commercial vs Solde Extérieur	1
+1.3.1 Le cas de la France (2024)	1
+1.4 Les déséquilibres mondiaux	1
+1.4.1 Explications des principaux déséquilibres	1
+SECTION 2 : LA BALANCE DES PAIEMENTS	1
+2.1 Définition de la Balance des Paiements	1
+2.1.1 Le critère de résidence	1
+2.1.2 Le cas particulier du tourisme : une exportation 'immobile'	1
+2.2 Structure de la Balance des Paiements (Norme BPM6 du FMI)	1
+2.2.1 Le Compte des Transactions Courantes (SC)	1
+2.2.2 Le Compte de Capital (KA)	1
+2.2.3 Le Compte Financier (SF)	1
+2.3 Comprendre la mécanique du Compte Financier	1
+2.4 Focus sur le Solde Courant français (2024)	1
+2.5 L'identité comptable fondamentale	1
+2.5.1 La cohérence économique d'ensemble	1
+2.5.2 Erreurs et Omissions (EO)	1
+SECTION 3 : LE TAUX DE CHANGE	1
+3.1 Le problème monétaire de l'économie ouverte	1
+3.2 Comment lire le taux de change ?	1
+3.2.1 La cotation au certain (Zone Euro, UK)	1
+3.2.2 La cotation à l'incertain (USA, Japon)	1
+3.3 Notation technique : Comment lire E_{A/B} ?	1
+3.4 Qui gagne, qui perd quand l'Euro s'apprécie ?	1
+3.5 Les forces du marché des changes (Forex)	1
+3.5.1 La Demande d'Euros (De)	1
+3.5.2 L'Offre d'Euros (Oe)	1
+3.6 Choix institutionnel : Flexible ou Fixe ?	1
+3.6.1 Changes flexibles (flottants)	1
+3.6.2 Changes fixes (ancrage/peg)	1
+3.7 Le système de changes flottants (le marché libre)	1
+3.8 L'instabilité des changes flottants : le risque de change	1
+3.9 Le système de changes fixes	1
+3.10 Mécanisme de défense de la parité	1
+3.11 Le changement de parité	1
+3.11.1 La dévaluation	1
+3.11.2 La réévaluation	1
+3.12 L'asymétrie de l'intervention dans un système de change fixe	1
+3.12.1 Contre une pression à la hausse ↗	1
+3.12.2 Contre une pression à la baisse ↘	1
+3.13 Illustration historique : Le 'Mercredi Noir' (1992)	1
+3.14 La mécanique du gain de Soros	1
+3.15 Synthèse : Quel ajustement à une hausse de la demande de monnaie nationale ?	1
+3.16 Changes fixes ou flexibles ?	1
+3.17 Le Triangle d'incompatibilité (Mundell)	1
+3.18 Repères historiques : l'évolution du système monétaire	1
+3.19 En 2026 : le change fixe est-il de l'histoire ancienne ?	1
+SECTION 4 : LA PARITÉ DE POUVOIR D'ACHAT (PPA)	1
+4.1 Au-delà du nominal : Le taux de change réel (ε)	1
+4.2 Interprétation : Le lien avec la compétitivité-prix	1
+4.3 Application : La compétitivité 'pure' (Comparaison Hors Taxes)	1
+4.4 Diagnostic : 2 causes d'une perte de compétitivité-prix	1
+4.5 Fondement théorique : La Loi du Prix Unique (LPU)	1
+4.6 L'Indice Big Mac : La PPA à l'épreuve des faits	1
+4.6.1 Calcul du Taux PPA ('Taux Burger')	1
+4.6.2 Verdict (Marché vs Réalité)	1
+4.7 Agence de Voyages Fac d'éco (Janvier 2026) : Où partir grâce à la PPA ?	1
+4.8 Le puzzle empirique : Le lien richesse / niveau des prix	1
+4.9 L'explication : L'effet Balassa-Samuelson	1
+4.10 Les conséquences de l'effet Balassa-Samuelson sur le change	1
+4.11 Les limites de l'indice Big Mac	1
+4.12 Le biais de mesure induit par le taux de change nominal	1
+CONCLUSION DU CHAPITRE 1	1
+
+ 
+INTRODUCTION AU COURS
+Ce cours de macroéconomie (30h CM + 15h TD) porte sur l'économie ouverte et la macroéconomie financière. Il représente un coefficient 6 et la note finale est calculée selon la formule :
+Note totale = (2/3) × Note de Partiel + (1/3) × Note de TD
+Les modalités de contrôle des connaissances (MCC) sont les suivantes :
+•	Partiel : 1h30 d'exercices et de réflexions intenses
+•	TD : Modalités à préciser par l'enseignant
+Le cours est organisé en deux grandes parties :
+•	Partie 1 : Macroéconomie ouverte (Chapitres 1 et 2)
+•	Partie 2 : Macroéconomie financière (Chapitres 3 et 4)
+ 
+SECTION 1 : ÉQUILIBRE EMPLOIS-RESSOURCES EN ÉCONOMIE OUVERTE
+1.1 Rappel : La contrainte de l'économie fermée
+En économie fermée (autarcie), l'identité comptable fondamentale repose sur l'égalité entre les ressources et les emplois.
+1.1.1 L'identité comptable de départ
+En autarcie, tout ce qui est produit est soit consommé, soit investi, soit dépensé par l'État :
+Y ≡ C + G + I
+Où :
+•	Y = Production nationale (PIB)
+•	C = Consommation privée
+•	G = Dépenses publiques
+•	I = Investissement (FBCF + variation de stocks)
+1.1.2 La contrainte financière
+L'Épargne Nationale (Snat) est ce qui reste du revenu national une fois les dépenses de consommation (privées et publiques) effectuées :
+Snat = Y - C - G
+En économie fermée, cette épargne doit nécessairement financer l'investissement :
+Snat ≡ I
+💡 Intuition économique
+Le financement est un jeu à somme nulle. Pour construire une usine (I↑), la société doit nécessairement renoncer à une consommation immédiate (C↓) pour dégager de l'épargne. Les ressources disponibles étant limitées, tout investissement se fait au détriment de la consommation présente.
+1.2 L'ouverture des économies
+Dans la réalité, les économies interagissent sur trois marchés principaux :
+•	Le marché des biens et services : Exportations (X) et Importations (M)
+•	Le marché des capitaux : Actifs financiers, obligations, actions
+•	Le marché du travail : Migrations de main-d'œuvre
+1.2.1 Nouvelle identité ressources-emplois
+En économie ouverte, l'identité comptable devient :
+Y ≡ C + I + G + (X - M)
+Ou encore :
+Y ≡ A + NX
+Où :
+•	A = C + I + G = Demande Intérieure (Absorption)
+•	NX = X - M = Solde Extérieur (Net Exports)
+⚠️ Précision comptable
+L'investissement I inclut la variation de stocks (I = FBCF + ΔStocks). Une production non vendue est considérée comme investie en stocks, ce qui garantit l'égalité comptable.
+1.2.2 L'équation fondamentale du solde extérieur
+On peut réécrire l'égalité pour isoler le Solde Extérieur :
+NX ≡ Y - A
+Cette équation révèle trois situations possibles :
+•	Déficit (NX < 0) : A > Y → On consomme plus qu'on ne produit
+•	Excédent (NX > 0) : A < Y → On produit plus qu'on ne consomme
+•	Équilibre (NX = 0) : A = Y → Situation analogue à l'autarcie
+1.3 Point de vigilance : Solde Commercial vs Solde Extérieur
+⚠️ ATTENTION : Ne confondez pas !
+Beaucoup d'étudiants font cette erreur. Soyez précis :
+•	Solde Commercial = Uniquement les Marchandises (Biens)
+•	Solde Extérieur (NX) = Marchandises + Services
+1.3.1 Le cas de la France (2024)
+Selon l'INSEE, les données pour 2024 sont les suivantes :
+•	Balance Commerciale : ≈ -60 Mds € (Lourd Déficit)
+•	Balance des Services : ≈ +56,6 Mds € (Excédent record)
+•	Solde Extérieur : ≈ -3,4 Mds € (Le déficit est bien moindre !)
+Ce cas illustre parfaitement l'importance de la distinction : la France affiche un lourd déficit commercial sur les marchandises, mais son excédent dans les services (tourisme, luxe, transports) compense en grande partie ce déficit.
+1.4 Les déséquilibres mondiaux
+Le tableau suivant présente les principaux excédents et déficits mondiaux (estimations 2024, en milliards de dollars, source : Banque Mondiale) :
+
+Pays (Excédent)	Montant (Mds $)	Pays (Déficit)	Montant (Mds $)
+1. Chine	+533	1. États-Unis	-906
+2. Irlande*	+254	2. Inde	-91
+3. Singapour	+192	3. Philippines	-66
+4. Allemagne	+177	4. Ukraine	-36
+5. Pays-Bas	+134	5. Japon	-35
+
+1.4.1 Explications des principaux déséquilibres
+États-Unis : Le déficit massif s'explique par des taux d'épargne bas, une forte dépendance énergétique et le statut du dollar comme monnaie de réserve mondiale.
+Chine / Allemagne : Ces pays présentent des modèles économiques tirés par l'export, avec une forte compétitivité industrielle.
+*Le cas irlandais : Un 'mirage statistique' dû à la domiciliation des GAFAM (voir encadré 'Leprechaun Economics').
+📚 Cas d'étude : Leprechaun Economics
+L'Irlande présente un solde extérieur de +254 Mds € en raison de la domiciliation des GAFAM (Google, Apple, Meta) et des grandes entreprises pharmaceutiques. Ces entreprises exportent des services informatiques et des brevets facturés au monde entier depuis l'Irlande.
+Cependant, le Solde des Revenus Primaires est de -230 Mds €. Pourquoi ? Car ces entreprises appartiennent à des actionnaires américains, et les profits repartent immédiatement en dividendes vers les USA.
+Solde Courant réel : +254 - 230 = +24 Mds €
+→ Leçon : Ne jamais juger la richesse d'un pays ouvert à son seul PIB ou ses exportations.
+ 
+SECTION 2 : LA BALANCE DES PAIEMENTS
+2.1 Définition de la Balance des Paiements
+📖 Définition
+La Balance des Paiements (BdP) est un état statistique retraçant les flux économiques et financiers entre résidents et non-résidents au cours d'une période donnée.
+Trois propriétés essentielles :
+•	C'est un FLUX (mesuré par an)
+•	Le critère est la RÉSIDENCE, pas la nationalité
+•	Comptabilité en PARTIE DOUBLE (comme en comptabilité d'entreprise)
+2.1.1 Le critère de résidence
+Règle générale : Un agent est considéré comme résident s'il a une présence ou une intention de rester supérieure à 1 an.
+
+Situation	Résident ?	Explication
+Filiale Google à Paris	OUI	Activité sur le territoire
+Touriste américain (2 mois)	NON	Séjour < 1 an
+Étudiant étranger (Master)	OUI	Présence durable (> 1 an)
+Frontalier (Vit en Belgique)	NON	Centre d'intérêt = Domicile
+
+2.1.2 Le cas particulier du tourisme : une exportation 'immobile'
+💡 Principe comptable
+La RÉSIDENCE prime sur le TERRITOIRE
+Toute dépense effectuée sur le sol français par un non-résident est une EXPORTATION de service.
+Exemple concret : Un touriste américain achète une baguette à Montpellier.
+•	Le pain ne quitte pas la France (pas d'exportation physique)
+•	MAIS des devises étrangères sont entrées dans l'économie française
+•	⇒ Comptablement, c'est une EXPORTATION
+Comment mesurer ces flux invisibles aux douanes ? La Banque de France croise trois sources :
+•	Flux financiers : Données agrégées des paiements par cartes bancaires étrangères
+•	Enquêtes : Sondages aux frontières (aéroports/gares) pour estimer les dépenses en espèces
+•	Big Data : Données de téléphonie mobile (Roaming) pour la durée des séjours
+2.2 Structure de la Balance des Paiements (Norme BPM6 du FMI)
+La balance se divise en 3 grands comptes :
+2.2.1 Le Compte des Transactions Courantes (SC)
+C'est l'économie RÉELLE. Il comprend :
+•	Biens (Balance commerciale) : Exportations - Importations de marchandises
+•	Services : Tourisme, transports, services financiers, etc.
+•	Revenus primaires : Dividendes, intérêts, salaires transfrontaliers
+•	Revenus secondaires : Transferts sans contrepartie (envois de fonds, aides)
+SC = (Biens + Services) + (Revenus Primaires + Revenus Secondaires)
+💡 Note importante
+Solde Extérieur (NX) = Biens + Services uniquement
+Le Solde Courant (SC) est plus large car il inclut les revenus
+2.2.2 Le Compte de Capital (KA)
+⚠️ ATTENTION à la confusion !
+Ce compte ne recense PAS les flux boursiers ou bancaires (qui vont au Compte Financier).
+Il enregistre les transferts de patrimoine exceptionnels (sans contrepartie).
+Deux composantes majeures :
+➣ Transferts de capital :
+•	Aides à l'investissement (Fonds structurels européens)
+•	Remises de dettes (Créancier → Débiteur)
+➣ Actifs non financiers :
+•	Achat/Vente de brevets (propriété intellectuelle)
+•	Quotas d'émission CO2
+•	Terrains d'ambassades
+Le cas de la France (2024) : Solde +5,4 Mds €
+Pourquoi un excédent ? Les versements du plan européen NextGenerationEU pour financer la relance et la transition écologique.
+En général, le compte de capital est négligeable pour les pays développés.
+2.2.3 Le Compte Financier (SF)
+C'est la contrepartie FINANCIÈRE de l'économie réelle. Il enregistre la variation du patrimoine financier national (= propriété des actifs).
+SF = ΔAvoirs - ΔEngagements
+Où :
+•	Avoirs : Actifs financiers détenus par les résidents à l'étranger
+•	Engagements : Actifs domestiques détenus par des étrangers
+Interprétation :
+•	SF > 0 : Capacité de financement → Sorties nettes de capitaux → On achète plus d'actifs étrangers qu'ils ne nous en achètent → La France prête au monde
+•	SF < 0 : Besoin de financement → Entrées nettes de capitaux → On vend nos actifs ou on s'endette auprès de l'étranger → La France emprunte au monde
+Les 2 postes principaux à retenir :
+1. Investissements Directs à l'Étranger (IDE)
+•	Seuil : > 10% du capital
+•	Logique : Industrielle (Contrôle, création de filiales, long terme)
+•	Exemple : Renault ouvre une usine en Chine
+2. Investissements de Portefeuille
+•	Seuil : Actions < 10% ou Obligations
+•	Logique : Financière (Rendement pur, arbitrage, pas de gestion)
+•	Exemple : Un Français achète des actions Apple
++ Autres postes : Dérivés, Prêts bancaires, Réserves de change
+2.3 Comprendre la mécanique du Compte Financier
+Cas pratique : Un concessionnaire français achète une BMW en Allemagne pour 30 000 €.
+Analyse des flux :
+1️⃣ Compte Courant : La France reçoit un bien (Import) → Débit (-)
+2️⃣ Compte Financier : La France livre de la monnaie en contrepartie
+•	La monnaie est un Actif financier
+•	La France cède (exporte) cet actif à l'Allemagne
+•	Une cession d'actif s'enregistre au Crédit (+)
+
+Opération (Vue de la France)	Débit (-)	Crédit (+)
+Compte Courant (Import Marchandise)	30 000 €	
+Compte Financier (Baisse des Avoirs)		30 000 €
+2.4 Focus sur le Solde Courant français (2024)
+SC = (Biens + Services) + Revenus (Primaires + Secondaires)
+Décomposition France (2024) selon la Banque de France :
+•	➥ Biens (Commercial) : ≈ -60 Mds € (Poids de la facture énergétique & industrie)
+•	➥ Services : ≈ +56,6 Mds € (Tourisme, Luxe, Transports)
+•	➥ Revenus nets : ≈ +6,1 Mds € (Dividendes reçus des filiales du CAC40 à l'étranger)
+🔍 Le Paradoxe Français
+Résultat final (SC) : +2,7 Mds €
+➜ Malgré un déficit commercial lourd, la France dégage une Capacité de Financement (S > I).
+➜ Le déficit des échanges physiques est compensé par la rente financière de ses multinationales.
+2.5 L'identité comptable fondamentale
+Comptablement, la Balance des Paiements est toujours à l'équilibre :
+SC + KA - SF + EO ≡ 0
+Où :
+•	SC + KA = Compte Réel (Économie réelle)
+•	SF = Compte Financier (Contrepartie financière)
+•	EO = Erreurs et Omissions (Résidu statistique)
+2.5.1 La cohérence économique d'ensemble
+Le Compte Financier est le miroir de l'économie réelle :
+➜ Si Capacité de Financement (SC + KA) > 0 :
+•	Le pays gagne plus qu'il ne dépense
+•	Il utilise cet excédent pour acheter des actifs étrangers
+•	Conséquence : ΔAvoirs ↗ ⇒ Solde Financier Positif
+➜ Si Besoin de Financement (SC + KA) < 0 :
+•	Le pays dépense plus qu'il ne gagne
+•	Il doit trouver de l'argent (s'endetter) auprès de l'étranger
+•	Conséquence : ΔEngagements ↗ ⇒ Solde Financier Négatif
+💡 Principe fondamental
+(SC + KA) et SF ont (théoriquement) le même signe !
+Tout flux réel est compensé par un flux financier en sens inverse.
+2.5.2 Erreurs et Omissions (EO)
+Cas de la France 2024 :
+•	Théorie : SC + KA = +2,7 + 5,4 = +8,1 Mds €
+•	Réalité statistique : SF = -6,9 Mds €
+•	Écart : EO = SF - (SC + KA) = -6,9 - 8,1 = -15,0 Mds €
+D'où vient EO ? Le poste Erreurs et Omissions n'est pas une variable économique réelle. C'est un résidu statistique nécessaire pour faire 'tomber juste' l'égalité comptable.
+Les 3 causes structurelles des écarts :
+•	✎ Le Timing : Douanes, banques et entreprises n'enregistrent pas les opérations exactement au même moment (Décalages de dates)
+•	✍ Les Sources : On mélange des données hétérogènes (relevés bancaires précis vs enquêtes ou estimations pour le tourisme)
+•	❍ La Couverture : Certains flux échappent aux radars (économie souterraine, actifs numériques)
+📌 Message à retenir
+EO ne change pas la réalité économique, il change la mesure.
+C'est la 'variable d'ajustement' qui permet de boucler la comptabilité.
+ 
+SECTION 3 : LE TAUX DE CHANGE
+3.1 Le problème monétaire de l'économie ouverte
+Le constat : La double transaction
+Les flux de la Balance des Paiements (Biens, Services, Capitaux) se heurtent à une frontière monétaire.
+💡 Exemple concret
+Pour acheter un bien américain, je ne peux pas payer en Euros.
+Conséquence : Je dois d'abord vendre mes Euros pour acheter des Dollars.
+Cette incompatibilité monétaire crée une tension :
+•	L'Euro n'a pas cours légal aux USA
+•	⇓ Nécessité de Vendre des € pour Acheter des $
+•	⇓ Cette confrontation Offre/Demande engendre une tension sur la valeur relative des monnaies
+📖 Définition : Le taux de change
+C'est le prix qui résout cette tension.
+C'est la valeur relative d'une monnaie par rapport à une autre, déterminée par la rareté créée par ces échanges.
+3.2 Comment lire le taux de change ?
+Il existe deux conventions de marché. Exemple au 05/01/2026 :
+3.2.1 La cotation au certain (Zone Euro, UK)
+On fixe 1 unité nationale :
+1 € = 1,17 $
+➜ Avec 1 euro (certain), j'obtiens 1,17 dollars.
+3.2.2 La cotation à l'incertain (USA, Japon)
+On fixe 1 unité étrangère :
+1 $ = 0,86 €
+➜ Il me faut 0,86 euros (incertain) pour avoir 1 dollar.
+💡 Relation mathématique
+Cotation incertain = 1 / Cotation certain
+3.3 Notation technique : Comment lire E_{A/B} ?
+E_{$/€} = 1,17
+Décomposition :
+•	Le dénominateur (€) : C'est la base fixe (= 1)
+•	Le numérateur ($) : C'est le prix variable
+Lecture : '1 unité de dénominateur (€) vaut 1,17 unités de numérateur ($)'
+Pour un Européen :
+•	Notre monnaie (€) est au dénominateur
+•	On exprime ce qu'on obtient pour 1 €
+•	➜ C'est une cotation au CERTAIN
+Pour un Américain :
+•	Leur monnaie ($) est au numérateur
+•	Ils expriment combien de $ il faut pour acheter 1 €
+•	➜ C'est une cotation à l'INCERTAIN
+3.4 Qui gagne, qui perd quand l'Euro s'apprécie ?
+
+Agent (Zone Euro)	Mécanisme	Effet
+Exportateurs (Airbus, LVMH)	Les prix français convertis en dollars augmentent. Baisse des volumes.	✘ Négatif
+Consommateurs (Importations)	Le pétrole et les iPhone coûtent moins d'euros.	✔ Positif
+Touristes (Voyage aux USA)	Gain de pouvoir d'achat à New York.	✔ Positif
+Épargnants (Actions US)	La valeur des actions US diminue une fois convertie en euros.	✘ Négatif
+3.5 Les forces du marché des changes (Forex)
+Le Forex (Foreign Exchange Market) est le marché mondial des devises.
+3.5.1 La Demande d'Euros (De)
+Qui achète de l'Euro ? (Flux entrants)
+1️⃣ Motif Commercial (SC + KA) :
+•	Non-résidents achetant nos Biens/Services ou transférant des revenus
+2️⃣ Motif Financier (SF hors réserves) :
+•	Non-résidents investissant chez nous (Entrées de capitaux)
+3.5.2 L'Offre d'Euros (Oe)
+Qui vend de l'Euro ? (Flux sortants)
+1️⃣ Motif Commercial (SC + KA) :
+•	Résidents achetant des importations ou envoyant des revenus
+2️⃣ Motif Financier (SF hors réserves) :
+•	Résidents investissant à l'étranger (Sorties de capitaux)
+💡 Bilan
+La tension sur la monnaie dépend du solde net de ces flux privés (avant intervention de la BC).
+Si Solde Global > 0 (Excédent Courant OU Financier net) : ⇒ De > Oe : La monnaie est rare → Tension haussière
+Si Solde Global < 0 (Déficit Courant OU Financier net) : ⇒ Oe > De : La monnaie est abondante → Tension baissière
+3.6 Choix institutionnel : Flexible ou Fixe ?
+3.6.1 Changes flexibles (flottants)
+Exemples : Euro, Dollar, Yen
+➢ Mécanisme : L'offre et la demande fixent le prix. La BC n'intervient pas (ou peu).
+⊕ Avantages :
+•	Autonomie : La politique monétaire est libre pour gérer l'inflation/chômage interne
+⊖ Inconvénients :
+•	Incertitude : Le risque de change freine les échanges internationaux
+3.6.2 Changes fixes (ancrage/peg)
+Exemples : Franc CFA (sur Euro), Danemark
+➢ Mécanisme : La BC garantit une parité via ses réserves de change.
+⊕ Avantages :
+•	Stabilité : Favorise le commerce et importe la crédibilité de la monnaie d'ancrage
+⊖ Inconvénients :
+•	Mains liées : Perte de l'instrument monétaire (on subit les chocs)
+⚖️ Le verdict théorique
+Il faut choisir entre stabilité du change (Fixe) et l'indépendance monétaire (Flottant).
+3.7 Le système de changes flottants (le marché libre)
+Contexte : Les Jeux Olympiques en France attirent les capitaux américains.
+1. Les acteurs du marché :
+•	La Demande (De) : Ce sont les Américains qui veulent acheter des euros pour faire des achats en France
+•	L'Offre (Oe) : Ce sont les Européens qui vendent leurs euros pour acheter des dollars
+2. Le mécanisme (Choc) :
+•	Hausse de l'attractivité de la France
+•	La demande se déplace vers la droite (D0 → D1)
+•	Résultat : Le prix de l'euro monte → C'est une appréciation
+3.8 L'instabilité des changes flottants : le risque de change
+Cas pratique : Une PME française vend du vin aux USA avec un délai de paiement de 3 mois.
+Le contrat (montant fixé en dollars) :
+•	Montant de la facture : 1 000 $
+•	Date T0 (signature) : 1 € = 1 $
+•	Recette prévue : 1 000 €
+La surprise à T1 (paiement) :
+•	Le taux change brutalement : 1 € = 1,50 $ (L'euro s'est apprécié / Le dollar a faibli)
+•	Recette réelle convertie : 1 000 $ ÷ 1,50 = 666,67 €
+⚠️ Pourquoi est-ce un problème ?
+➥ Ici, l'entreprise subit une perte de change massive (-33%)
+➥ Si sa marge bénéficiaire était de 20%, cette opération devient déficitaire
+Le risque de change : L'incertitude sur la valeur future de la monnaie peut négativement impacter le commerce international.
+3.9 Le système de changes fixes
+Contexte : Reprenons l'exemple de l'organisation des JO par la France en imaginant (cas hypothétique) que nous soyons dans un régime où la Banque Centrale (BCE) s'engage à défendre une parité officielle.
+1. La règle du jeu (Le Peg) :
+•	La BCE fixe un prix intangible : Ē_{$/€} = 1,05 (→ 1 € = 1,05 $)
+•	➜ Elle s'interdit de laisser le cours monter au-dessus (ou descendre en-dessous)
+2. Le choc :
+•	Même scénario : les JO attirent les capitaux américains
+•	La demande privée d'Euros explose (D → D')
+•	Pression : Le marché veut aller à 1,20$
+•	→ Il y a une pénurie d'Euros au cours officiel de 1,05$
+3. L'intervention de la BC :
+•	La BC agit comme un barrage
+•	Elle doit contenir la pression pour maintenir le niveau constant
+3.10 Mécanisme de défense de la parité
+Temps 1 : La situation initiale
+•	Le marché (O, D) est à l'équilibre sur la cible de la BC (Ē)
+Temps 2 : Le choc de demande
+•	La demande augmente (D → Dchoc)
+•	Pression à la hausse
+•	À 1,05$, D > O : Pénurie
+Temps 3 : L'intervention BC
+•	La BC vend des Euros (création monétaire)
+•	L'offre se déplace (O → OInterv)
+•	Retour à la cible
+•	Création Monétaire (ΔM > 0)
+3.11 Le changement de parité
+📖 Point de vocabulaire
+En changes flottants : Dépréciation (Baisse) / Appréciation (Hausse)
+En changes fixes : Dévaluation (Décision de baisser) / Réévaluation (Décision de monter)
+3.11.1 La dévaluation
+Impacts :
+•	⊕ Compétitivité-prix : Nos produits deviennent moins chers à l'export → Relance les ventes
+•	⊖ Inflation importée : Le carburant et les produits importés coûtent plus cher
+3.11.2 La réévaluation
+Impacts :
+•	⊕ Désinflation : Les importations coûtent moins cher → Hausse du pouvoir d'achat
+•	⊖ Compétitivité-prix : Nos exportations deviennent trop chères pour le reste du monde
+3.12 L'asymétrie de l'intervention dans un système de change fixe
+La Banque Centrale n'est pas omnipotente. Défendre la monnaie n'a pas le même coût selon qu'elle subisse des pressions à la hausse ou à la baisse.
+3.12.1 Contre une pression à la hausse ↗
+Le marché veut acheter la monnaie.
+•	➜ Action : La BC vend sa propre monnaie pour inonder le marché et empêcher le prix de monter
+•	➜ Munitions : Illimitées (Elle a le pouvoir de création monétaire)
+3.12.2 Contre une pression à la baisse ↘
+Le marché vend massivement la monnaie.
+•	➜ Action : La BC doit racheter sa monnaie pour soutenir le cours (empêcher la chute)
+•	➜ Munitions : Limitées ! (Elle doit payer avec ses réserves de change, qui sont épuisables)
+⚖️ Conclusion
+Un régime de change fixe ne peut pas être maintenu quand la BC n'a plus de réserves.
+3.13 Illustration historique : Le 'Mercredi Noir' (1992)
+Georges Soros (Hedge Fund) vs Banque d'Angleterre (BOE)
+1️⃣ Le contexte :
+•	La Livre Sterling (£) est liée au Mark allemand par un taux fixe
+•	L'économie britannique va mal, la livre est surévaluée
+•	Le marché sent que la baisse est inévitable
+2️⃣ L'attaque spéculative :
+•	Soros sait que les réserves anglaises sont faibles
+•	Il emprunte et vend massivement des Livres (10 Milliards £)
+3️⃣ La défense de la BOE :
+•	La Banque d'Angleterre dépense 27 Mds$ de réserves (de Marks allemands) en quelques heures pour racheter les Livres vendues par Soros
+4️⃣ Le K.O. (16 septembre à 19h) :
+•	Les coffres sont vides
+•	Le Royaume-Uni annonce la sortie du change fixe
+•	La livre s'effondre de 10% instantanément
+•	(L'Italie se retire le lendemain ! c'est le début de la crise du SME)
+💰 Bilan
+En pariant sur l'épuisement des réserves, Soros gagne 1 milliard de dollars... en un jour.
+3.14 La mécanique du gain de Soros
+1. Avant la chute - L'attaque (Short) :
+•	Soros emprunte 10 Mds £
+•	Il les vend contre des Marks (DM)
+•	Taux fixe : 1 £ = 2,78 DM
+•	Caisse : 27,8 Mds DM
+2. Le 16 Septembre 1992 - La dévaluation :
+•	La Livre sort du SME
+•	Elle s'effondre face au Mark (environ -10%)
+•	Nouveau Taux : 1 £ ≈ 2,50 DM
+•	(Soros possède toujours ses 27,8 Mds DM)
+3. Le dénouement - Le remboursement :
+•	Il doit rendre les 10 Mds £
+•	Il rachète les 10 Mds Livres avec ses Marks au nouveau taux de change
+•	10 × 2,50 = 25 Mds DM
+•	Il reste donc un petit pécule : Gain Brut : +2,8 Mds DM
+Du gain brut au gain net (En USD) :
+•	1. Conversion (Taux 1992 : 1 DM ≈ 0,60 $) : 2,8 Mds DM × 0,60 = 1,68 Mds $
+•	2. Coûts déduits (≈ 600 Millions$) : Intérêts de l'emprunt, Frais de transaction etc.
+•	Gain Net Final ≈ 1 Milliard de Dollars
+3.15 Synthèse : Quel ajustement à une hausse de la demande de monnaie nationale ?
+📌 Ce qu'il faut retenir
+Face à un choc positif de demande (les investisseurs veulent plus de notre monnaie) :
+
+Système flottant	Système fixe
+Ajustement par le PRIX
+➥ Le taux de change augmente (Appréciation)
+➥ La Banque Centrale ne fait rien
+➥ Les réserves de change sont stables
+→ Le marché décide du prix	Ajustement par la QUANTITÉ
+➥ Le taux de change ne bouge pas
+➥ La Banque Centrale intervient (vend monnaie)
+➥ Les réserves de change augmentent
+→ La BC impose le prix
+3.16 Changes fixes ou flexibles ?
+
+1. Changes flottants (USA, Zone Euro)	2. Changes fixes (CFA, Danemark)
+→ Le marché décide
+
+Les forces ✔
+➜ Autonomie monétaire : La BC est libre de fixer ses taux pour gérer le chômage ou l'inflation interne
+➜ Stabilisateur automatique : Le taux absorbe les chocs externes sans épuiser les réserves
+
+Les faiblesses ✘
+➜ Volatilité : L'incertitude du change freine le commerce et l'investissement de long terme	→ La Banque Centrale décide
+
+Les forces ✔
+➜ Certitude : Booste le commerce international (zéro risque de change)
+➜ Discipline : Importe la crédibilité de la monnaie d'ancrage (lutte contre l'inflation)
+
+Les faiblesses ✘
+➜ Mains liées : On importe la politique monétaire du voisin, même si elle ne nous convient pas
+
+⚖️ Le verdict théorique
+Il faut choisir entre stabilité du change (Fixe) et l'indépendance monétaire (Flottant).
+3.17 Le Triangle d'incompatibilité (Mundell)
+📐 L'incompatibilité
+Un pays ne peut atteindre que 2 objectifs sur 3 simultanément :
+Les trois objectifs incompatibles :
+•	Autonomie Monétaire
+•	Liberté des Capitaux
+•	Stabilité du Change
+Option 1 (Flottant - Euro, USA) :
+•	On garde l'autonomie et les capitaux
+•	=⇒ On sacrifie la stabilité
+•	✗ Changes Flottants
+Option 2 (Fixe - Zone CFA) :
+•	On a la stabilité et les capitaux
+•	=⇒ On sacrifie l'autonomie
+•	✗ Changes Fixes
+Option 3 (Contrôle des capitaux - Chine) :
+•	On veut la stabilité du change ET l'autonomie monétaire
+•	=⇒ On renonce à la libre circulation des capitaux
+•	✗ Contrôle des capitaux
+3.18 Repères historiques : l'évolution du système monétaire
+1870-1914 : L'Étalon-Or (FIXE)
+•	L'âge d'or. Parités fixes en or. Stabilité parfaite et commerce florissant.
+1918-1939 : Le chaos de l'entre-deux-guerres
+•	Fin de la coopération. Dévaluations compétitives (chacun pour soi) et protectionnisme.
+1944-1971 : Le système de Bretton Woods (FIXE)
+•	Gold Exchange Standard. Le $ est la seule monnaie convertible en or. Retour à la stabilité pour la reconstruction.
+1976 (Jamaïque) : Le basculement vers le marché (FLOTTANT)
+•	Officialisation des changes flottants. L'offre et la demande fixent les cours.
+1979-1999 : La réponse européenne (SME → Euro)
+•	L'Europe refuse l'instabilité des changes flottants.
+•	=⇒ Création d'une zone de stabilité monétaire.
+3.19 En 2026 : le change fixe est-il de l'histoire ancienne ?
+❌ NON !
+Le change fixe est toujours bien vivant en 2026.
+
+1. FIXE	2. INTERMÉDIAIRE	3. FLOTTANT
+Franc CFA (Ancré sur €)
+
+Danemark (±2,25% vs €)
+
+Hong Kong & Arabie S. (Ancrés sur $)	Chine (CNY)
+
+'Flottement impur'
+
+(Panier de devises)
+
+La BC intervient pour limiter la volatilité	Euro (€)
+
+Dollar ($US)
+
+Yen
+
+Livre Sterling
+
+Pourquoi rester fixe en 2026 ?
+Le Danemark maintient un ancrage strict de la couronne (DKK) à l'€, avec un taux central de 1 EUR = 7,46038 DKK et une marge de fluctuation de ±2,25 %.
+Depuis 1986, l'Arabie Saoudite s'ancre au $ pour sécuriser ses revenus pétroliers (1$=3,75 riyals saoudiens).
+🇨🇳 Le cas particulier de la Chine
+La Chine n'est ni tout à fait fixe, ni tout à fait flottante.
+C'est un 'flottement impur'.
+La BC laisse le cours bouger... mais intervient si ça bouge trop !
+ 
+SECTION 4 : LA PARITÉ DE POUVOIR D'ACHAT (PPA)
+4.1 Au-delà du nominal : Le taux de change réel (ε)
+Le constat : Le taux de change nominal (E) offre une vision incomplète.
+💡 Exemple
+Si l'Euro baisse (dépréciation), on pense être plus compétitifs...
+... mais si dans le même temps, l'inflation en France double, cet avantage est annulé !
+📖 Définition : Le taux de change réel
+Il mesure le prix relatif des biens nationaux par rapport aux biens étrangers, exprimés dans la même monnaie.
+C'est le vrai indicateur de la compétitivité-prix.
+ε_{$/€} = (E_{$/€} × P) / P*
+Où :
+•	E_{$/€} : Taux nominal (ex : 1,10 $ pour 1 €)
+•	P : Niveau des prix en France (en €)
+•	P* : Niveau des prix à l'étranger (en $)
+4.2 Interprétation : Le lien avec la compétitivité-prix
+On va se servir de ε_{$/€} = 1 comme point de comparaison :
+
+Situation	Interprétation
+Si ε < 1	Nos produits sont 'bon marché'
+Le prix français (converti en $) est inférieur au prix américain
+➜ Forte compétitivité-prix
+Si ε = 1	Parité parfaite
+Le prix français (converti en $) est identique au prix américain
+➜ Compétitivité neutre
+Si ε > 1	Nos produits sont 'chers'
+Le prix français (converti en $) est supérieur au prix américain
+➜ Faible compétitivité-prix
+4.3 Application : La compétitivité 'pure' (Comparaison Hors Taxes)
+Contexte B2B : Pour mesurer la capacité de la France à exporter, comparons un produit Made in France avec son équivalent américain, en prix Hors Taxes (car la TVA ne s'applique pas à l'export).
+Le marché du vin (Hypothèse : qualité homogène)
+•	Produit : Bouteille de vin rouge standard
+•	Vin du bordelais, France (P) : 20 € (HT)
+•	Vin de la Napa Valley, USA (P*) : 30 $ (HT)
+•	Taux nominal (E_{$/€}) : 1,17 $
+Calcul du taux de change réel :
+Comparons le prix français converti au prix local US :
+ε_{$/€} = (1,17 × 20) / 30 = 23,40 / 30 ≈ 0,78
+🔍 Interprétation (ε = 0,78 < 1)
+Constat : Une fois converti en dollars, le vin français coûte 23,40 $, contre 30 $ pour son concurrent américain.
+Donc :
+Le vin français est sous-évalué (moins cher).
+➜ La France dispose ici d'une forte compétitivité-prix.
+4.4 Diagnostic : 2 causes d'une perte de compétitivité-prix
+Une hausse du taux de change réel peut venir de deux facteurs :
+ε_{$/€} = (E_{$/€} × P) / P*
+1. La cause monétaire (E_{$/€})
+•	Analyse : L'Euro s'apprécie face au Dollar (ex : politique de taux élevés de la BCE)
+•	Effet : Le prix converti augmente mécaniquement
+2. Les causes structurelles (P, P*)
+•	➜ Inflation interne : P ↗ → Nos coûts de production dérapent (salaires, taxes...)
+•	➜ Déflation externe : P* ↘ → Nos concurrents américains baissent leurs prix
+☞ Le change fixe ne protège donc pas de tout
+Même si le taux nominal est bloqué (E_{$/€} fixe), un pays perd sa compétitivité s'il a plus d'inflation que ses voisins.
+4.5 Fondement théorique : La Loi du Prix Unique (LPU)
+📖 Le principe
+En l'absence de frictions (douanes, transport), un même bien doit se vendre au même prix partout, une fois converti dans la même monnaie.
+Prix France converti en $ = Prix USA
+E_{$/€} × P = P*
+Pourquoi ? Le mécanisme d'arbitrage (si déséquilibre) :
+Si l'iPhone est moins cher à Paris... (E_{$/€} × P < P*)
+•	⇒ On achète à Paris (Demande ↗ ⇒ P ↗)
+•	⇒ On revend à NY (Offre ↗ ⇒ P* ↘)
+•	⇒ Les prix s'égalisent par la confrontation O/D
+E^{PPA} = P* / P
+4.6 L'Indice Big Mac : La PPA à l'épreuve des faits
+L'idéal théorique : Pour comparer la vraie valeur de deux monnaies, il faudrait comparer les prix de l'intégralité des biens et services vendus dans chaque pays (un 'super-panier' P exhaustif).
+Problèmes :
+•	Il y a trop de biens et services
+•	Les biens et services ne sont pas toujours identiques (ex : un logement à Paris ≠ un logement à NY)
+La solution de The Economist (1986) : Le Big Mac
+Le Big Mac est le candidat parfait pour servir de 'proxy' (raccourci) à ce panier global :
+•	Homogène : Il est produit exactement de la même façon dans 120 pays
+•	Mixte : Il contient des ingrédients (biens échangeables) et du service/immobilier (non-échangeables)
+Ici, le Big Mac remplace le panier P dans la formule E^{PPA} = P*/P.
+4.6.1 Calcul du Taux PPA ('Taux Burger')
+Données (Janvier 2026) :
+•	Prix France (P) : 5,50 €
+•	Prix USA (P*) : 5,79 $
+Quel devrait être le taux pour égaliser les prix ?
+E^{PPA} = 5,79 / 5,50 ≈ 1,05 $
+4.6.2 Verdict (Marché vs Réalité)
+On compare ce taux théorique au taux réel du Forex :
+•	Taux PPA (Burger) : 1,05 $
+•	Taux Marché (Forex) : 1,17 $
+Conclusion : L'Euro est surévalué.
+Écart = (1,17 - 1,05) / 1,05 ≈ +11,4 %
+🔍 Interprétation de marché
+Actuellement, l'Euro est 'trop cher'.
+Selon la théorie PPA, il devrait se déprécier (baisser vers 1,05$) pour rétablir l'équilibre des prix.
+4.7 Agence de Voyages Fac d'éco (Janvier 2026) : Où partir grâce à la PPA ?
+Le principe : Ciblez les pays où la devise est sous-évaluée par rapport à l'Euro.
+
+Destination : Asie du Sud-Est	Destination : Suisse / Norvège
+Monnaies Sous-évaluées
+
+Prix Big Mac (local) : ≈ 2,50 € (converti)
+Prix Big Mac (France) : 5,50 €
+Écart PPA : ≈ -55%
+
+➜ Votre pouvoir d'achat double !
+Hôtels et restaurants bon marché.	Monnaies Surévaluées
+
+Prix Big Mac (Suisse) : ≈ 7,80 € (converti)
+Prix Big Mac (France) : 5,50 €
+Écart PPA : ≈ +40%
+
+➜ Votre pouvoir d'achat fond !
+Tout vous semblera hors de prix.
+
+🌍 Règle d'or du touriste économiste
+Voyagez dans les pays où le niveau des prix (P*) est bas par rapport à la force de votre monnaie (E).
+4.8 Le puzzle empirique : Le lien richesse / niveau des prix
+🔍 Le constat
+Contrairement à la théorie, les économies à faible revenu affichent un niveau général des prix systématiquement inférieur à celui prédit par la parité de change.
+→ Une fois converti en euros, le Big Mac indien coûte beaucoup moins cher que le Big Mac européen.
+Question : Pourquoi la vie est-elle structurellement 'moins chère' dans les pays pauvres ?
+4.9 L'explication : L'effet Balassa-Samuelson
+La cause : La dynamique des prix résulte d'un déséquilibre sectoriel. Imaginons un pays constitué de deux secteurs :
+1. Secteur exposé au Commerce International (Biens)
+•	Automobile, Tech, Industrie
+•	Pays à haut revenu : Productivité très forte (PmL ↗)
+•	Pays à faible revenu : Productivité plus faible
+•	➜ Les hauts salaires sont financés par la haute productivité
+2. Secteur abrité du Commerce International (Services)
+•	Coiffeurs, Restauration, BTP
+•	Productivité : Identique partout
+•	Salaires : S'alignent sur l'industrie par concurrence sur le marché du travail
+•	➜ Hausse des salaires sans hausse de productivité
+Intuition Micro pour le secteur des services (abrité du CI) :
+P · PmL = w  ⇔  P = w↗ (Contagion) / PmL→ (Stable)  ⇒  P↗
+💡 Conclusion
+La forte productivité industrielle impose des salaires élevés à toute l'économie.
+Cela renchérit mécaniquement les services et fait donc augmenter le niveau général des prix (P) dans les pays riches.
+4.10 Les conséquences de l'effet Balassa-Samuelson sur le change
+Le constat : Le taux de change nominal E est déterminé exclusivement par le secteur exposé (biens échangeables). Il ne reflète donc que la compétitivité industrielle.
+1. L'omission du secteur abrité par le taux nominal
+•	Le taux E assure l'unicité du prix des biens échangeables, mais ignore les services non échangeables
+•	➥ Dans les PED, les services sont structurellement moins chers (salaires indexés sur une faible productivité industrielle)
+•	➥ E ne prend pas en compte ce faible niveau de prix interne des services
+2. L'écart à la PPA
+Si l'on compare les indices de prix globaux incluant les services :
+ε_{$/€} = (E_{$/€} × P) / P*
+Implication :
+•	Si le pays national est à haut revenu, sa monnaie paraît systématiquement surévaluée par rapport à sa PPA
+•	Ce n'est pas un déséquilibre, mais un effet de structure
+📌 Conclusion générale
+Il existe une corrélation positive entre le PIB par habitant et le niveau général des prix exprimé en monnaie commune.
+4.11 Les limites de l'indice Big Mac
+Pourquoi le 'Big Mac' n'est-il pas l'étalon parfait ?
+Bien qu'excellent proxy, l'indice souffre de trois biais majeurs qui empêchent la convergence parfaite vers la PPA :
+1. Coûts non-échangeables
+•	L'effet Balassa-Samuelson : Le prix du burger inclut le loyer du restaurant, le salaire local des équipiers, l'électricité
+•	Ces services ne s'échangent pas. Leurs prix sont structurellement bas dans les économies en développement
+2. Fiscalité et barrières
+•	TVA : Très variable d'un pays à l'autre
+•	Barrières douanières : Certains pays taxent lourdement l'importation de viande de bœuf pour protéger leur agriculture
+3. Stratégie de marque
+•	Économies à haut revenu : Produit de consommation courante, prix basés sur le volume
+•	Économies à faible revenu : Parfois perçu comme un produit 'premium'
+•	La marge de McDonald's varie selon le consentement à payer local
+📌 Conclusion
+L'indice Big Mac mesure autant les écarts de productivité et les politiques fiscales que la sous/surévaluation monétaire.
+4.12 Le biais de mesure induit par le taux de change nominal
+Le taux de change de marché, parce qu'il est 'surévalué' pour les pays à haut revenu, ne permet pas une comparaison fidèle des richesses réelles.
+1. Le problème de la sous-estimation : L'illusion du PIB nominal
+•	En utilisant le taux E, on convertit la production locale à un prix 'export' trop élevé
+•	✘ Conséquence : Le poids économique des pays en développement est massivement écrasé
+•	✘ On ignore que le pouvoir d'achat interne y est bien supérieur
+2. La correction par la PPA : La réalité du poids économique
+•	Le taux de Parité de pouvoir d'achat (PPA) élimine le biais du taux de change nominal
+•	✔ Objectif : Comparer ce que les revenus permettent réellement d'acheter dans chaque pays
+•	✔ On neutralise l'effet Balassa-Samuelson
+La correction du biais : l'exemple de l'Inde (2025)
+
+Indicateur	Valeur (Mds $)	Rang mondial
+PIB nominal	≈ 4 300	5e
+PIB PPA	≈ 16 500	3e
+
+CONCLUSION DU CHAPITRE 1
+Ce premier chapitre a posé les fondations de la macroéconomie ouverte en établissant plusieurs concepts clés :
+1. L'ouverture des économies transforme l'identité comptable fondamentale : le solde extérieur (NX) devient une variable essentielle de l'équilibre macroéconomique.
+2. La Balance des Paiements offre un cadre comptable rigoureux pour enregistrer tous les flux entre résidents et non-résidents, avec trois comptes principaux : transactions courantes, capital, et financier.
+3. Le taux de change émerge comme le prix qui résout la tension entre l'offre et la demande de monnaies sur le marché des changes. Le choix entre changes fixes et flexibles implique des arbitrages fondamentaux entre stabilité, autonomie monétaire et mobilité des capitaux.
+4. La Parité de Pouvoir d'Achat révèle que le taux de change nominal ne suffit pas pour mesurer la compétitivité réelle. L'effet Balassa-Samuelson explique pourquoi les pays riches ont structurellement des niveaux de prix plus élevés.
+🔑 Points clés à retenir
+•	L'équation fondamentale : NX ≡ Y - A
+•	L'identité de la BdP : SC + KA - SF + EO ≡ 0
+•	Le triangle d'incompatibilité de Mundell
+•	Le taux de change réel : ε = (E × P) / P*
+•	La formule de la PPA : E^{PPA} = P* / P
+Ces concepts seront approfondis dans le Chapitre 2 avec l'étude du modèle Mundell-Fleming et l'analyse de l'efficacité des politiques économiques en économie ouverte.
+
+———————— FIN DU CHAPITRE 1 ————————

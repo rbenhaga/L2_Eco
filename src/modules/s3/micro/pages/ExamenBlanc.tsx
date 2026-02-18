@@ -26,8 +26,8 @@ function QCMSection({ title, points, questions, answers, onAnswer }: QCMSectionP
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-slate-900">{title}</h2>
-        <span className="text-sm text-slate-600 bg-slate-100/80 px-3 py-1 rounded-full">{points} points</span>
+        <h2 className="text-xl font-bold" style={{ color: 'var(--color-text-primary)' }}>{title}</h2>
+        <span className="text-sm px-3 py-1 rounded-full" style={{ color: 'var(--color-text-secondary)', background: 'var(--color-bg-overlay)' }}>{points} points</span>
       </div>
       <div className="space-y-6">
         {questions.map((q, idx) => {
@@ -36,9 +36,9 @@ function QCMSection({ title, points, questions, answers, onAnswer }: QCMSectionP
           const hasAnswered = userAnswer !== undefined;
           
           return (
-            <div key={q.id} className="p-4 bg-white border border-slate-200 rounded-xl">
-              <p className="font-medium text-slate-900 mb-3">
-                <span className="text-blue-600">{idx + 1}.</span> {q.question.includes('$') ? (
+            <div key={q.id} className="p-4 rounded-xl" style={{ background: 'var(--color-bg-raised)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-border-default)' }}>
+              <p className="font-medium mb-3" style={{ color: 'var(--color-text-primary)' }}>
+                <span style={{ color: 'var(--color-info)' }}>{idx + 1}.</span> {q.question.includes('$') ? (
                   q.question.split(/(\$[^$]+\$)/g).map((part, i) => 
                     part.startsWith('$') && part.endsWith('$') 
                       ? <M key={i}>{part.slice(1, -1)}</M> 
@@ -51,17 +51,18 @@ function QCMSection({ title, points, questions, answers, onAnswer }: QCMSectionP
                   const isSelected = userAnswer === optIdx;
                   const isCorrectOption = optIdx === q.correct;
                   
-                  let optionClass = "p-3 rounded-lg border transition-all ";
+                  const optionClass = "p-3 rounded-lg border transition-all ";
+                  let optionStyle: React.CSSProperties = {};
                   if (hasAnswered) {
                     if (isCorrectOption) {
-                      optionClass += "bg-emerald-50 border-emerald-300 text-emerald-800";
+                      optionStyle = { background: 'var(--color-success-subtle)', borderColor: 'var(--color-success)', color: 'var(--color-success)' };
                     } else if (isSelected && !isCorrect) {
-                      optionClass += "bg-red-50 border-red-300 text-red-800";
+                      optionStyle = { background: 'var(--color-error-subtle)', borderColor: 'var(--color-error)', color: 'var(--color-error)' };
                     } else {
-                      optionClass += "bg-slate-100/50 border-slate-200 text-slate-600";
+                      optionStyle = { background: 'var(--color-bg-overlay)', borderColor: 'var(--color-border-default)', color: 'var(--color-text-secondary)' };
                     }
                   } else {
-                    optionClass += "bg-slate-100/50 border-slate-200 hover:bg-slate-100/80 text-slate-800 cursor-pointer";
+                    optionStyle = { background: 'var(--color-bg-overlay)', borderColor: 'var(--color-border-default)', color: 'var(--color-text-primary)', cursor: 'pointer' };
                   }
                   
                   return (
@@ -70,6 +71,7 @@ function QCMSection({ title, points, questions, answers, onAnswer }: QCMSectionP
                       onClick={() => !hasAnswered && onAnswer(q.id, optIdx)}
                       disabled={hasAnswered}
                       className={optionClass + " w-full text-left flex items-center gap-3"}
+                      style={optionStyle}
                     >
                       <span className="w-6 h-6 rounded-full border flex items-center justify-center text-sm font-medium shrink-0">
                         {String.fromCharCode(97 + optIdx)}
@@ -84,17 +86,17 @@ function QCMSection({ title, points, questions, answers, onAnswer }: QCMSectionP
                         ) : opt}
                       </span>
                       {hasAnswered && isCorrectOption && (
-                        <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
+                        <CheckCircle className="w-5 h-5 shrink-0" style={{ color: 'var(--color-success)' }} />
                       )}
                       {hasAnswered && isSelected && !isCorrect && (
-                        <XCircle className="w-5 h-5 text-red-600 shrink-0" />
+                        <XCircle className="w-5 h-5 shrink-0" style={{ color: 'var(--color-error)' }} />
                       )}
                     </button>
                   );
                 })}
               </div>
               {hasAnswered && (
-                <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+                <div className="mt-3 p-3 rounded-lg text-sm" style={{ background: 'var(--color-info-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-info)', color: 'var(--color-info)' }}>
                   <strong>Explication :</strong> {q.explanation.includes('$') ? (
                     q.explanation.split(/(\$[^$]+\$)/g).map((part, i) => 
                       part.startsWith('$') && part.endsWith('$') 
@@ -159,23 +161,23 @@ export function ExamenBlanc() {
     <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-12">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 text-sm text-red-600 mb-3 font-medium">
+        <div className="inline-flex items-center gap-2 text-sm mb-3 font-medium" style={{ color: 'var(--color-error)' }}>
           <Clock className="w-4 h-4" />
           <span>EXAMEN BLANC - FORMAT QCM</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Examen Blanc</h1>
-        <p className="text-slate-700 max-w-2xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>Examen Blanc</h1>
+        <p className="max-w-2xl mx-auto" style={{ color: 'var(--color-text-secondary)' }}>
           Examen type CM de Microéconomie L2 - Format QCM comme les vrais examens de Montpellier. Durée : 1h30.
         </p>
       </div>
 
       {/* Consignes */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-6">
+      <div className="rounded-xl p-5 mb-6" style={{ background: 'var(--color-warning-subtle)', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--color-warning)' }}>
         <div className="flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+          <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" style={{ color: 'var(--color-warning)' }} />
           <div>
-            <h3 className="font-semibold text-amber-800 mb-2">Consignes</h3>
-            <ul className="text-sm text-amber-900 space-y-1">
+            <h3 className="font-semibold mb-2" style={{ color: 'var(--color-warning)' }}>Consignes</h3>
+            <ul className="text-sm space-y-1" style={{ color: 'var(--color-text-primary)' }}>
               <li>• Durée : 1h30</li>
               <li>• Documents autorisés : Aucun</li>
               <li>• Calculatrice non programmable autorisée</li>
@@ -190,7 +192,8 @@ export function ExamenBlanc() {
       <div className="flex justify-end mb-6">
         <button
           onClick={resetExam}
-          className="py-2 px-4 bg-slate-100/80 text-slate-800 rounded-lg font-medium hover:bg-slate-200 flex items-center gap-2"
+          className="py-2 px-4 rounded-lg font-medium flex items-center gap-2"
+          style={{ background: 'var(--color-bg-overlay)', color: 'var(--color-text-primary)' }}
         >
           <RotateCcw className="w-4 h-4" />
           Recommencer

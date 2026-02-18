@@ -182,7 +182,7 @@ export function Chapter1() {
         <Callout type="warning" title="À quoi sert le multiplicateur ?">
           <Math>{"\\Delta Y = k \\times \\Delta G"}</Math><br/><br/>
           Si <Math>{"c_1 = 0.8"}</Math> → <Math>{"k = 5"}</Math><br/>
-          Une hausse de G de 100 → hausse de Y de 500
+          Une hausse de <Math>{"G"}</Math> de 100 <Math>{"\\Rightarrow"}</Math> hausse de <Math>{"Y"}</Math> de 500
         </Callout>
 
         <p className="mt-4"><strong>Propriétés de IS :</strong></p>
@@ -259,7 +259,7 @@ export function Chapter1() {
         />
         
         <Callout type="insight" title="Question classique QCM">
-          "Quelle politique pour maximiser l'efficacité d'une hausse de G ?" → <strong>Politique monétaire expansionniste</strong> pour compenser l'effet d'éviction.
+          "Quelle politique pour maximiser l'efficacité d'une hausse de <Math>{'G'}</Math> ?" <Math>{"\\Rightarrow"}</Math> <strong>Politique monétaire expansionniste</strong> pour compenser l'effet d'éviction.
         </Callout>
       </Section>
 
@@ -273,9 +273,9 @@ export function Chapter1() {
       <Section type="warning" title="Les erreurs classiques">
         <ul className="list-disc pl-6 space-y-2">
           <li><strong>Confondre nominal et réel</strong> — Toujours raisonner en termes réels</li>
-          <li><strong>Oublier le multiplicateur</strong> — ΔG = 100 → ΔY = 100 × k, pas 100</li>
+          <li><strong>Oublier le multiplicateur</strong> — <Math>{"\\Delta G = 100 \\Rightarrow \\Delta Y = 100 \\times k"}</Math>, pas 100</li>
           <li><strong>Inverser les pentes</strong> — IS décroissante, LM croissante</li>
-          <li><strong>Négliger l'éviction</strong> — ↑G → ↑i → ↓I</li>
+          <li><strong>Négliger l'éviction</strong> — <Math>{"G \\uparrow \\Rightarrow i \\uparrow \\Rightarrow I \\downarrow"}</Math></li>
           <li><strong>Multiplicateur</strong> — C'est <Math>{"\\frac{1}{1-c}"}</Math> et non <Math>{"\\frac{1}{c}"}</Math></li>
         </ul>
       </Section>

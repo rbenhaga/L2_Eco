@@ -1,60 +1,112 @@
-# 🎓 RevP2 - Plateforme de Révision Économie
+# 🎓 RevP2 - Plateforme de Révision L2 Économie
 
-Plateforme d'apprentissage pour étudiants L1-L2 Économie avec cours, exercices, assistant IA et audio TTS.
+Plateforme web de révision study-grade pour étudiants en L2 Économie : cours interactifs, QCM, chatbot IA, et suivi de progression.
 
-## Stack
-
-- **Frontend** : React 19 + TypeScript + Vite + Tailwind CSS
-- **Backend** : Node.js + Express + SQLite
-- **Auth** : Firebase (Google OAuth)
-- **Paiements** : Stripe
-- **IA** : Groq / Gemini (multi-provider avec fallback)
-- **TTS** : Azure Cognitive Services
-
-## Démarrage
-
-```bash
-# Frontend
-cd home-site
-npm install
-cp .env.example .env  # Configurer les variables
-npm run dev           # http://localhost:5173
-
-# Backend (terminal séparé)
-cd backend
-npm install
-cp .env.example .env  # Configurer les variables
-npm start             # http://localhost:3001
-```
-
-## Structure
+## Architecture Monorepo
 
 ```
 RevP2/
-├── home-site/          # Frontend React
+├── home-site/          # Frontend React 19 + TypeScript + Vite
 │   ├── src/
-│   │   ├── pages/      # Pages (Home, Pricing, Legal, FAQ, Contact, 404)
-│   │   ├── modules/    # Modules pédagogiques (macro, micro, stats, socio)
-│   │   ├── features/   # Fonctionnalités (QCM, Audio, Chat IA)
-│   │   ├── components/ # Composants UI
-│   │   └── content/    # Cours en Markdown
-│   └── package.json
+│   │   ├── modules/    # Modules de cours (S3/S4: macro, micro, stats, socio, management)
+│   │   ├── components/ # Composants UI réutilisables
+│   │   ├── features/   # Features isolées (QCM, AI chat, audio)
+│   │   └── content/    # Contenu brut des cours
+│   └── public/         # Assets statiques
 │
-├── backend/            # Backend Node.js
-│   ├── routes/         # API (Stripe, IA, TTS)
-│   ├── ai/             # Système IA multi-provider
-│   ├── tts/            # Text-to-Speech Azure
-│   └── package.json
+├── backend/            # API Node.js + Express
+│   ├── routes/         # Endpoints API (ai, tts, checkout, progress)
+│   ├── ai/             # Système AI multi-provider (Groq, Gemini, OpenRouter)
+│   ├── db/             # Base de données SQLite + migrations
+│   └── tts/            # Service Text-to-Speech Azure
 │
-└── README.md
+├── .kiro/              # Configuration Kiro (steering, specs)
+└── .claude/            # Documentation de conception
 ```
 
-## Matières disponibles (S2 L1)
+## Installation & Développement
 
-- Macroéconomie (10 chapitres)
-- Microéconomie (8 chapitres + annexes)
-- Statistiques (6 chapitres)
-- Sociologie (5 chapitres)
+### Prérequis
+- Node.js 18+
+- npm ou pnpm
+
+### Frontend
+```bash
+cd home-site
+npm install
+npm run dev          # Dev server sur http://localhost:5173
+npm run build        # Build production
+npm run lint         # Linter ESLint
+```
+
+### Backend
+```bash
+cd backend
+cp .env.example .env # Configurer les variables d'environnement
+npm install
+npm run init-db      # Initialiser la base de données
+npm run dev          # API sur http://localhost:3001
+```
+
+## Stack Technique
+
+### Frontend
+- React 19 + TypeScript 5.9
+- Vite 7 (build)
+- Tailwind CSS 4 (design tokens CSS custom properties)
+- Framer Motion (animations)
+- KaTeX (formules mathématiques)
+- Firebase Auth
+
+### Backend
+- Node.js + Express
+- SQLite (base de données)
+- AI multi-provider (Groq, Gemini, OpenRouter)
+- Azure Speech TTS
+- Stripe (paiements)
+- Upstash Vector (cache sémantique)
+
+## Design System
+
+Le projet utilise un système de tokens CSS strict :
+- Couleurs via `var(--color-*)` uniquement
+- Spacing multiples de 8px
+- 4 radius autorisés (8/12/16/full)
+- Shadows custom Keynote-style
+
+Voir `.kiro/steering/design-contract.md` pour les règles complètes.
+
+## Matières disponibles
+
+### Semestre 3 (S3)
+- Macroéconomie (4 chapitres)
+- Microéconomie (8 chapitres)
+- Statistiques (5 chapitres)
+- Sociologie (10 chapitres)
+
+### Semestre 4 (S4)
+- Macroéconomie (4 chapitres)
+- Microéconomie (4 chapitres)
+- Statistiques (11 chapitres)
+- Management (4 chapitres)
+
+## Documentation
+
+- [Frontend README](./home-site/README.md)
+- [Backend README](./backend/README.md)
+- [Design Contract](./.kiro/steering/design-contract.md)
+- [Product Steering](./.kiro/steering/product.md)
+- [Quality Gates](./.kiro/steering/quality-gates.md)
+- [Workflow](./.kiro/steering/workflow.md)
+
+## Sécurité
+
+Les fichiers sensibles sont exclus du repo :
+- `.env` (clés API)
+- `*-adminsdk-*.json` (Firebase credentials)
+- `*.db` (bases de données)
+
+Voir `.gitignore` pour la liste complète.
 
 ## Tarifs
 

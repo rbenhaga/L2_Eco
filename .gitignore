@@ -64,3 +64,16 @@ backend/database/*.db
 # Uncomment if needed:
 # home-site/public/assets/**/*.png
 # home-site/public/audio/generated/
+
+# Kiro & Claude config (local only)
+.kiro/
+.claude/
+
+# Documentation (local only, except content and asset docs)
+*.md
+*.MD
+!README.md
+!home-site/src/content/**/*.md
+!home-site/src/content/**/*.MD
+!home-site/public/assets/**/*.md
+!home-site/public/assets/**/*.MD

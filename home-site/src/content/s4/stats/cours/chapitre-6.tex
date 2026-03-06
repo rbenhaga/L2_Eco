@@ -1,0 +1,853 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+% ENCODAGE & POLICES
+% ============================================================
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}          % Palatino (elegant, lisible)
+\usepackage[scaled=0.88]{helvet} % Helvetica pour sans-serif
+\usepackage{microtype}         % Optimisation typographique
+
+% ============================================================
+% MISE EN PAGE
+% ============================================================
+\usepackage[
+  top=2.8cm, bottom=2.8cm,
+  left=2.5cm, right=2.5cm,
+  headheight=14pt
+]{geometry}
+\usepackage{parskip}           % Espacement entre paragraphes
+\usepackage{setspace}
+\setstretch{1.15}              % Interligne agreable
+
+% ============================================================
+% COULEURS (palette sobre et moderne)
+% ============================================================
+\usepackage[dvipsnames,svgnames]{xcolor}
+\definecolor{deepblue}{HTML}{1D3557}    % Bleu profond (titres)
+\definecolor{accent}{HTML}{457B9D}      % Bleu moyen (sous-titres)
+\definecolor{lightblue}{HTML}{A8DADC}   % Bleu clair (fond boites)
+\definecolor{warmgray}{HTML}{F1FAEE}    % Gris chaud (fond def)
+\definecolor{alertred}{HTML}{E63946}    % Rouge alerte
+\definecolor{softgreen}{HTML}{2D6A4F}   % Vert methode
+\definecolor{lightgreen}{HTML}{D8F3DC}  % Vert clair fond
+\definecolor{lightyellow}{HTML}{FFF8E7} % Jaune clair fond
+\definecolor{lightred}{HTML}{FFE8E8}    % Rouge clair fond
+\definecolor{textmain}{HTML}{2B2D42}    % Texte principal
+\definecolor{textlight}{HTML}{6C757D}   % Texte secondaire
+
+% ============================================================
+% EN-TETE & PIED DE PAGE
+% ============================================================
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{lightblue}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\small\sffamily\color{textlight}Chapitre 6}
+\fancyhead[R]{\small\sffamily\color{textlight}Tables statistiques : lois continues}
+\fancyfoot[C]{\small\sffamily\color{textlight}\thepage}
+
+% ============================================================
+% TITRES (design epure)
+% ============================================================
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\sffamily\color{deepblue}}
+  {\thesection.}{0.6em}{}
+  [\vspace{-0.3em}{\color{lightblue}\rule{\textwidth}{1.5pt}}]
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\sffamily\color{accent}}
+  {\thesubsection.}{0.5em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{textmain}}
+  {\thesubsubsection.}{0.5em}{}
+
+\titlespacing*{\section}{0pt}{2em}{1em}
+\titlespacing*{\subsection}{0pt}{1.5em}{0.6em}
+\titlespacing*{\subsubsection}{0pt}{1em}{0.4em}
+
+% ============================================================
+% BOITES (tcolorbox -- design minimal)
+% ============================================================
+\usepackage[most]{tcolorbox}
+
+% Definition
+\newtcolorbox{defbox}[1][]{%
+  enhanced, breakable,
+  colback=warmgray,
+  colframe=deepblue,
+  boxrule=0pt, leftrule=3pt,
+  arc=0pt, outer arc=0pt,
+  fonttitle=\bfseries\sffamily\color{deepblue},
+  title={#1},
+  top=8pt, bottom=8pt, left=12pt, right=12pt,
+  before skip=10pt, after skip=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+}
+
+% Theoreme
+\newtcolorbox{thmbox}[1][]{%
+  enhanced, breakable,
+  colback=white,
+  colframe=accent,
+  boxrule=0.6pt,
+  arc=3pt, outer arc=3pt,
+  fonttitle=\bfseries\sffamily\color{accent},
+  title={#1},
+  top=8pt, bottom=8pt, left=12pt, right=12pt,
+  before skip=10pt, after skip=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+}
+
+% Methode
+\newtcolorbox{methbox}[1][]{%
+  enhanced, breakable,
+  colback=lightgreen,
+  colframe=softgreen,
+  boxrule=0pt, leftrule=3pt,
+  arc=0pt, outer arc=0pt,
+  fonttitle=\bfseries\sffamily\color{softgreen},
+  title={#1},
+  top=8pt, bottom=8pt, left=12pt, right=12pt,
+  before skip=10pt, after skip=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+}
+
+% Attention / piege
+\newtcolorbox{alertbox}[1][]{%
+  enhanced, breakable,
+  colback=lightred,
+  colframe=alertred,
+  boxrule=0pt, leftrule=3pt,
+  arc=0pt, outer arc=0pt,
+  fonttitle=\bfseries\sffamily\color{alertred},
+  title={#1},
+  top=8pt, bottom=8pt, left=12pt, right=12pt,
+  before skip=10pt, after skip=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+}
+
+% Exemple
+\newtcolorbox{exbox}[1][]{%
+  enhanced, breakable,
+  colback=lightyellow,
+  colframe=orange!60!yellow,
+  boxrule=0pt, leftrule=3pt,
+  arc=0pt, outer arc=0pt,
+  fonttitle=\bfseries\sffamily\color{orange!70!black},
+  title={#1},
+  top=8pt, bottom=8pt, left=12pt, right=12pt,
+  before skip=10pt, after skip=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+}
+
+% ============================================================
+% MATHS
+% ============================================================
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+
+% ============================================================
+% TABLEAUX
+% ============================================================
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+% ============================================================
+% LISTES
+% ============================================================
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.2em, label={\color{accent}\textbullet}, itemsep=3pt}
+\setlist[enumerate]{leftmargin=1.5em, itemsep=3pt}
+
+% ============================================================
+% LIENS
+% ============================================================
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  urlcolor=accent,
+  citecolor=accent,
+  pdfauthor={},
+  pdftitle={Chapitre 6 -- Tables statistiques : lois continues},
+}
+
+% ============================================================
+% COMMANDES PERSO
+% ============================================================
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\P}{\Prob}
+
+% ============================================================
+\begin{document}
+
+% ============================================================
+% PAGE DE TITRE
+% ============================================================
+\thispagestyle{empty}
+\begin{center}
+\vspace*{4cm}
+
+{\fontsize{72}{80}\selectfont\sffamily\bfseries\color{deepblue}6}
+
+\vspace{0.5cm}
+{\color{lightblue}\rule{8cm}{2pt}}
+\vspace{0.6cm}
+
+{\LARGE\sffamily\bfseries\color{deepblue}Tables statistiques :}\\[0.3cm]
+{\LARGE\sffamily\bfseries\color{deepblue}lois continues}
+
+\vspace{1.5cm}
+
+{\large\sffamily\color{textlight}%
+Loi Normale\quad$\cdot$\quad Khi-deux\quad$\cdot$\quad Student\quad$\cdot$\quad Fisher-Snedecor}
+
+\vspace{2.5cm}
+
+{\sffamily\color{textlight}Cours complet -- L2 \'Economie\\[0.3cm]
+Statistiques -- Semestre 2}
+
+\vfill
+
+{\small\sffamily\color{textlight}\today}
+\end{center}
+
+\newpage
+
+% ============================================================
+% TABLE DES MATI\`ERES
+% ============================================================
+\thispagestyle{empty}
+{\hypersetup{linkcolor=textmain}
+\tableofcontents}
+\newpage
+
+% ============================================================
+% INTRODUCTION
+% ============================================================
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+Ce chapitre porte sur la \textbf{construction des lois continues} et la \textbf{lecture de leurs tables statistiques}. Les quatre lois \'etudi\'ees sont : la loi Normale, la loi du Khi-deux, la loi de Student et la loi de Fisher-Snedecor.
+
+L'int\'er\^et de ce chapitre est double :
+\begin{enumerate}
+\item La construction de lois statistiques est utile pour la d\'etermination de \textbf{lois d'\'echantillonnage} (\textit{cf.} Chapitre~8).
+\item Les lectures de tables permettent de trouver des probabilit\'es, de d\'eterminer des \textbf{intervalles de confiance} et des \textbf{intervalles d'acceptation} dans le cadre de la th\'eorie des tests (\textit{cf.} Chapitre~11).
+\end{enumerate}
+
+\begin{thmbox}[Fiche de synth\`ese -- Constructions de lois]
+\textbf{Khi-deux :}\quad Soient $U_1,\ldots,U_n$ i.i.d. $\sim \N(0;1)$. Alors :
+$$K = \sum_{i=1}^{n} U_i^2 \;\sim\; \chi^2(n).$$
+
+\textbf{Student :}\quad Soient $U \sim \N(0;1)$ et $K \sim \chi^2(\nu)$ ind\'ependantes. Alors :
+$$T = \frac{U}{\sqrt{K/\nu}} \;\sim\; t(\nu).$$
+
+\textbf{Fisher-Snedecor :}\quad Soient $K_1 \sim \chi^2(\nu_1)$ et $K_2 \sim \chi^2(\nu_2)$ ind\'ependantes. Alors :
+$$F = \frac{K_1/\nu_1}{K_2/\nu_2} \;\sim\; F(\nu_1;\nu_2).$$
+\end{thmbox}
+
+% ============================================================
+% I. LOI NORMALE
+% ============================================================
+\section{La loi Normale}
+
+\subsection{D\'efinition et param\`etres}
+
+\begin{defbox}[D\'efinition -- Loi normale]
+Une variable al\'eatoire $X$ suit une \textbf{loi normale} de param\`etres $m$ (esp\'erance) et $\sigma$ (\'ecart-type), not\'ee $X \sim \N(m;\sigma)$, si sa densit\'e de probabilit\'e est :
+$$f_X(x) = \frac{1}{\sigma\sqrt{2\pi}}\,\exp\!\left(-\frac{1}{2}\left(\frac{x-m}{\sigma}\right)^{\!2}\right), \qquad x \in \R.$$
+On a alors $\E(X)=m$, $\Var(X)=\sigma^2$, et la courbe de $f_X$ est la \og{}courbe en cloche\fg{} sym\'etrique autour de $m$.
+\end{defbox}
+
+\subsection{Centrage et r\'eduction}
+
+Pour utiliser une \textbf{unique table} quelle que soit la loi $\N(m;\sigma)$, on effectue le changement de variable :
+
+\begin{defbox}[Changement de variable fondamental]
+$$U = \frac{X - m}{\sigma} \qquad\Longrightarrow\qquad U \sim \N(0;1).$$
+La variable $U$ est appel\'ee \textbf{variable normale centr\'ee r\'eduite}. Sa densit\'e est :
+$$f_U(u) = \frac{1}{\sqrt{2\pi}}\,\exp\!\left(-\frac{u^2}{2}\right).$$
+Et on a la relation : $f_X(x) = \dfrac{1}{\sigma}\,f_U\!\left(\dfrac{x-m}{\sigma}\right)$.
+\end{defbox}
+
+\begin{alertbox}[Attention]
+La notation $\N(m;\sigma)$ utilise l'\textbf{\'ecart-type} $\sigma$, pas la variance $\sigma^2$. V\'erifier syst\'ematiquement ce que donne l'\'enonc\'e.
+\end{alertbox}
+
+\subsection{Table 1 -- Densit\'e de la loi $\N(0;1)$}
+
+La Table~1 donne directement $f_U(u)$ pour $u \geq 0$. Gr\^ace \`a la propri\'et\'e de sym\'etrie $f_U(-u) = f_U(u)$, une seule colonne suffit.
+
+\begin{exbox}[Exemple de lecture]
+\textbf{Donn\'ee :} $X \sim \N(1{,}75\;;\;0{,}1)$. Calculer $\P(X = 2)$, i.e. $f_X(2)$.
+
+\textbf{M\'ethode :} On centre et r\'eduit : $u = \dfrac{2-1{,}75}{0{,}1} = 2{,}5$.
+
+On lit dans la Table~1 : $f_U(2{,}5) = 0{,}0175$.
+
+Donc : $f_X(2) = \dfrac{1}{\sigma}\,f_U(u) = \dfrac{1}{0{,}1}\times 0{,}0175 = 0{,}175.$
+\end{exbox}
+
+\subsection{Table 2 -- Fonction de r\'epartition $F_U(u) = \P(U \leq u)$}
+
+\begin{defbox}[Fonction de r\'epartition]
+$$F_U(u) = \P(U \leq u) = \int_{-\infty}^{u} f_U(t)\,dt.$$
+La table donne $F_U(u)$ pour $u \geq 0$ avec deux d\'ecimales en ligne et la troisi\`eme en colonne.
+\end{defbox}
+
+\subsubsection{Propri\'et\'es fondamentales}
+
+\begin{thmbox}[Propri\'et\'es de $F_U$]
+\begin{enumerate}
+\item \textbf{Sym\'etrie :}\quad $F_U(-u) = 1 - F_U(u)$\qquad (\textit{ne pas confondre avec} $f(-u) = f(u)$).
+\item \textbf{Compl\'ementaire :}\quad $\P(U > u) = 1 - F_U(u)$.
+\item \textbf{Intervalle :}\quad $\P(a < U \leq b) = F_U(b) - F_U(a)$.
+\item \textbf{Continuit\'e :}\quad $\P(a < U < b) = \P(a \leq U \leq b) = F_U(b) - F_U(a)$.
+\end{enumerate}
+\end{thmbox}
+
+\begin{exbox}[Exemples de lecture]
+\begin{enumerate}
+\item $F_U(0{,}22) = \P(U \leq 0{,}22) = 0{,}58706$.
+\item $F_U(-0{,}32) = 1 - F_U(0{,}32) = 1 - 0{,}62552 = 0{,}37448$.
+\item $F_U(-1{,}5) = 1 - F_U(1{,}5) = 1 - 0{,}93319 = 0{,}06681$.
+\item $\P(-1{,}48 < U < 1{,}80) = F_U(1{,}80) - F_U(-1{,}48) = 0{,}9641 - (1 - 0{,}9306) = 0{,}8947$.
+\end{enumerate}
+\end{exbox}
+
+\begin{exbox}[Exemple avec changement de variable]
+$X \sim \N(1;6)$. Calculer $\P(X \leq 4)$.
+
+Centrage-r\'eduction : $u = \dfrac{4-1}{6} = 0{,}5$.
+
+$\P(X \leq 4) = \P\!\left(U \leq 0{,}5\right) = F_U(0{,}5) = 0{,}6915.$
+\end{exbox}
+
+\subsection{Table 3 -- Fractiles (quantiles) de la loi $\N(0;1)$}
+
+La Table~3 est la \textbf{table inverse} : on entre avec une probabilit\'e et on obtient le fractile $u$.
+
+\begin{defbox}[Notations des fractiles]
+On note $u_{1-P}$ (ou $U_{1-P}$) le fractile tel que :
+$$\P(U > u_{1-P}) = P \qquad\Longleftrightarrow\qquad \P(U \leq u_{1-P}) = 1-P = Q.$$
+L'indice fait r\'ef\'erence \`a la valeur de la fonction de r\'epartition $Q$, \textbf{pas} \`a $P$.
+\end{defbox}
+
+\subsubsection{Lecture unilatérale}
+
+\begin{exbox}[Exemples]
+\begin{itemize}
+\item $\P(U > u) = 0{,}05$ : on lit $u_{0{,}95} = 1{,}6449$.
+\item $\P(U > u) = 0{,}025$ : on lit $u_{0{,}975} = 1{,}96$.
+\item Pour $Q < 0{,}5$ (fractile n\'egatif) : $u_Q = -u_{1-Q}$.\\ Exemple : $u_{0{,}05} = -u_{0{,}95} = -1{,}6449$.
+\end{itemize}
+\end{exbox}
+
+\subsubsection{Lecture bilat\'erale sym\'etrique}
+
+Pour un intervalle $\P(-u < U < u) = 1 - P$, on r\'epartit $P/2$ de chaque c\^ot\'e :
+
+\begin{methbox}[R\`egle de lecture bilat\'erale]
+\textbf{Lire la Table~3 \`a $P/2$ au lieu de $P$.}
+\begin{itemize}
+\item $P = 5\%$ : lire \`a $P/2 = 0{,}025$ $\Rightarrow$ $u = u_{0{,}975} = 1{,}96$.\\ Bornes : $-1{,}96$ et $+1{,}96$.
+\item $P = 10\%$ : lire \`a $P/2 = 0{,}05$ $\Rightarrow$ $u = u_{0{,}95} = 1{,}6449$.\\ Bornes : $-1{,}6449$ et $+1{,}6449$.
+\item $P = 1\%$ : lire \`a $P/2 = 0{,}005$ $\Rightarrow$ $u = u_{0{,}995} = 2{,}5758$.\\ Bornes : $-2{,}5758$ et $+2{,}5758$.
+\end{itemize}
+\end{methbox}
+
+\subsection{Th\'eor\`emes d'additivit\'e}
+
+\begin{thmbox}[Th\'eor\`eme d'additivit\'e des lois normales]
+\textbf{Hypoth\`eses :} $X_i \sim \N(m_i;\sigma_i)$, $i=1,\ldots,n$, mutuellement ind\'ependantes.
+
+\textbf{R\'esultat :}
+$$\sum_{i=1}^{n} X_i \;\sim\; \N\!\left(\sum_{i=1}^{n} m_i\;;\;\sqrt{\sum_{i=1}^{n} \sigma_i^2}\right).$$
+\end{thmbox}
+
+\begin{alertbox}[Rappel]
+L'\'ecart-type de la somme est $\sqrt{\sum \sigma_i^2}$, \textbf{pas} $\sum \sigma_i$. Les variances s'additionnent, pas les \'ecarts-types.
+\end{alertbox}
+
+% ============================================================
+% II. LOI DU KHI-DEUX
+% ============================================================
+\newpage
+\section{La loi du Khi-deux}
+
+\subsection{Construction}
+
+\begin{defbox}[D\'efinition -- Loi du Khi-deux]
+Soient $U_1,\ldots,U_n$ des variables al\'eatoires ind\'ependantes suivant chacune $\N(0;1)$. La variable al\'eatoire :
+$$K = \sum_{i=1}^{n} U_i^2 \;\sim\; \chi^2(n)$$
+suit une \textbf{loi du Khi-deux \`a $n$ degr\'es de libert\'e}.
+
+Le \textbf{degr\'e de libert\'e} $\nu = n$ indique le nombre de $U_i^2$ somm\'ees. Par convention, on note le degr\'e de libert\'e $\nu$.
+\end{defbox}
+
+\textbf{Contexte d'utilisation :} la loi du Khi-deux intervient naturellement pour les indicateurs de dispersion (variance). En \'economie, elle permet de tester si la variabilit\'e d'un processus de production reste dans les limites du cahier des charges.
+
+\subsection{Lecture de la Table 4}
+
+\begin{defbox}[Notation des fractiles du Khi-deux]
+La Table~4 donne le fractile $\chi^2_{1-P}(\nu)$ tel que :
+$$\P\!\left(K > \chi^2_{1-P}(\nu)\right) = P.$$
+On lit \`a la colonne $P$ et \`a la ligne $\nu$.
+\end{defbox}
+
+\subsubsection{Lecture unilatérale}
+
+\begin{exbox}[Exemples]
+\begin{itemize}
+\item $\chi^2_{0{,}975}(18) = 31{,}53$ : lire colonne $P = 0{,}025$, ligne $\nu = 18$.
+\item $\chi^2_{0{,}10}(9) = 4{,}168$ : lire colonne $P = 0{,}9$, ligne $\nu = 9$.
+\item $\chi^2_{0{,}99}(30) = 50{,}892$ : lire colonne $P = 0{,}01$, ligne $\nu = 30$.
+\end{itemize}
+\end{exbox}
+
+\subsubsection{Lecture bilat\'erale sym\'etrique}
+
+Pour un intervalle $\P\!\left(\chi^2_{P/2} < K \leq \chi^2_{1-P/2}\right) = 1-P$, on r\'epartit $P/2$ de chaque c\^ot\'e.
+
+\begin{exbox}[Exemples bilat\'eraux]
+\begin{itemize}
+\item $P=5\%$, $\nu=18$ : lire \`a $1-P/2 = 0{,}975$ et $P/2 = 0{,}025$.\\
+$\chi^2_{0{,}025}(18) = 8{,}23$ \quad et \quad $\chi^2_{0{,}975}(18) = 31{,}53$.
+\item $P=10\%$, $\nu=1$ : lire \`a $0{,}95$ et $0{,}05$.\\
+$\chi^2_{0{,}05}(1) = 0{,}0039$ \quad et \quad $\chi^2_{0{,}95}(1) = 3{,}841$.
+\end{itemize}
+\end{exbox}
+
+\subsection{Th\'eor\`eme d'additivit\'e}
+
+\begin{thmbox}[Additivit\'e des lois de Khi-deux]
+\textbf{Hypoth\`eses :} $K_i \sim \chi^2(\nu_i)$, $i=1,\ldots,n$, mutuellement ind\'ependantes.
+
+\textbf{R\'esultat :}
+$$\sum_{i=1}^{n} K_i \;\sim\; \chi^2\!\left(\sum_{i=1}^{n} \nu_i\right).$$
+Les degr\'es de libert\'e s'additionnent.
+\end{thmbox}
+
+\subsection{Convergence vers la loi normale ($\nu > 30$)}
+
+Lorsque $\nu > 30$, la loi du Khi-deux converge vers la loi normale. Plus pr\'ecis\'ement :
+$$\sqrt{2K} - \sqrt{2\nu-1} \;\overset{\text{approx.}}{\sim}\; \N(0;1).$$
+
+On peut alors approcher le fractile :
+$$\chi^2_{1-P}(\nu) \;\approx\; \frac{\left(u_{1-P} + \sqrt{2\nu-1}\right)^2}{2}.$$
+
+\begin{exbox}[Exemple]
+$\chi^2_{0{,}90}(70)$ (probabilit\'e $P=10\%$ d'\^etre d\'epass\'ee) :
+$$\chi^2_{0{,}90}(70) \approx \frac{(1{,}2816 + \sqrt{139})^2}{2} = \frac{(1{,}2816 + 11{,}79)^2}{2} \approx 85{,}43.$$
+\end{exbox}
+
+% ============================================================
+% III. LOI DE STUDENT
+% ============================================================
+\newpage
+\section{La loi de Student}
+
+\subsection{Construction}
+
+\begin{defbox}[D\'efinition -- Loi de Student]
+Soient $U \sim \N(0;1)$ et $K \sim \chi^2(\nu)$ \textbf{ind\'ependantes}. La variable al\'eatoire :
+$$T = \frac{U}{\sqrt{K/\nu}} \;\sim\; t(\nu)$$
+suit une \textbf{loi de Student \`a $\nu$ degr\'es de libert\'e}.
+\end{defbox}
+
+\textbf{Propri\'et\'es cl\'es :}
+\begin{itemize}
+\item La densit\'e de Student est \textbf{sym\'etrique en 0}, comme la loi normale.
+\item Queues plus \'epaisses que la normale (plus de valeurs extr\^emes).
+\item Quand $\nu \to \infty$, $t(\nu) \to \N(0;1)$.
+\end{itemize}
+
+\subsection{Lecture de la Table 5}
+
+\begin{defbox}[Convention de la Table de Student]
+La Table~5 est directement pr\'evue pour des \textbf{intervalles bilat\'eraux sym\'etriques}. Elle donne le fractile $T_{1-P}(\nu)$ tel que :
+$$\P\!\left(|T| > T_{1-P}(\nu)\right) = P.$$
+Autrement dit, $\P\!\left(-T_{1-P} < T < T_{1-P}\right) = 1-P$.
+
+Par sym\'etrie : $T_P(\nu) = -T_{1-P}(\nu)$.
+\end{defbox}
+
+\begin{alertbox}[Diff\'erence cl\'e avec les autres tables]
+Contrairement aux tables de la loi normale et du Khi-deux, la Table de Student est con\c{c}ue pour une lecture bilat\'erale directe. Pour un intervalle \textbf{unilat\'eral} \`a risque $P$, il faut lire \`a la colonne $2P$ (on double $P$).
+\end{alertbox}
+
+\begin{exbox}[Exemples de lecture]
+\begin{itemize}
+\item $T_{0{,}80}(29) = 1{,}3114$ (bilat\'eral) : lire colonne $P=0{,}2$, ligne $\nu=29$.
+\item $T_{0{,}70}(2)$ (bilat\'eral) : lire colonne $P = 0{,}30$, ligne $\nu=2$ $\Rightarrow$ $1{,}3862$.\\
+Par sym\'etrie : $T_{0{,}30}(2) = -1{,}3862$.
+\item Unilat\'eral \`a $P=5\%$ avec $\nu=10$ : lire colonne $2P = 0{,}10$ $\Rightarrow$ $T_{0{,}90}(10)$.
+\end{itemize}
+\end{exbox}
+
+\subsection{Convergence vers la loi normale ($\nu > 30$)}
+
+\begin{thmbox}[Convergence]
+Pour $\nu > 30$, la loi de Student converge vers la loi normale centr\'ee r\'eduite :
+$$T \;\overset{\nu > 30}{\approx}\; U \sim \N(0;1).$$
+Les fractiles de Student sont alors remplac\'es par ceux de la loi normale :
+\begin{itemize}
+\item $T_{0{,}95}(\nu) \approx u_{0{,}95} = 1{,}96$ (bilat\'eral sym\'etrique, $P=5\%$).
+\item $T_{0{,}90}(\nu) \approx u_{0{,}90} = 1{,}6449$ (bilat\'eral sym\'etrique, $P=10\%$).
+\item $T_{0{,}95}(120) = u_{0{,}95} = 1{,}2886$ (le fractile exact est tr\`es proche de la normale).
+\end{itemize}
+\end{thmbox}
+
+% ============================================================
+% IV. LOI DE FISHER-SNEDECOR
+% ============================================================
+\newpage
+\section{La loi de Fisher-Snedecor}
+
+\subsection{Construction}
+
+\begin{defbox}[D\'efinition -- Loi de Fisher-Snedecor]
+Soient $K_1 \sim \chi^2(\nu_1)$ et $K_2 \sim \chi^2(\nu_2)$ \textbf{ind\'ependantes}. La variable al\'eatoire :
+$$F = \frac{K_1/\nu_1}{K_2/\nu_2} \;\sim\; F(\nu_1;\nu_2)$$
+suit une \textbf{loi de Fisher-Snedecor} \`a $\nu_1$ et $\nu_2$ degr\'es de libert\'e.
+\end{defbox}
+
+\textbf{Propri\'et\'es :}
+\begin{itemize}
+\item $F$ est \`a valeurs \textbf{positives} (rapport de deux quantit\'es positives).
+\item La loi n'est \textbf{pas sym\'etrique} : l'ordre $(\nu_1;\nu_2)$ compte.
+\end{itemize}
+
+\subsection{Lecture de la Table 6}
+
+\begin{defbox}[Convention de la Table de Fisher]
+La Table~6 donne le fractile $F_{1-P}(\nu_1;\nu_2)$ tel que :
+$$\P\!\left(F > F_{1-P}(\nu_1;\nu_2)\right) = P = 5\%.$$
+On lit $\nu_1$ en \textbf{colonne} et $\nu_2$ en \textbf{ligne}.
+\end{defbox}
+
+\begin{exbox}[Exemples unilatéraux]
+\begin{itemize}
+\item $F_{0{,}95}(3;5) \Leftrightarrow \P(F > F_{0{,}95}(3;5)) = 5\%$ : lire colonne $\nu_1=3$, ligne $\nu_2=5$.\\
+On trouve $F_{0{,}95}(3;5) = 5{,}41$.
+\item $F_{0{,}95}(\infty;100) = 1{,}30$ : colonne $\infty$, ligne $100$.
+\end{itemize}
+\end{exbox}
+
+\subsection{Propri\'et\'e fondamentale : inversion des degr\'es de libert\'e}
+
+\begin{thmbox}[Formule des queues gauches]
+Pour un risque $P < 50\%$ :
+$$\boxed{F_P(\nu_1;\nu_2) = \frac{1}{F_{1-P}(\nu_2;\nu_1)}.}$$
+Cette formule permet de trouver les fractiles des queues \textbf{gauches} \`a partir d'une table qui ne donne que les queues droites.
+\end{thmbox}
+
+\begin{exbox}[Exemples]
+\begin{itemize}
+\item $F_{0{,}05}(5;3) = \dfrac{1}{F_{0{,}95}(3;5)} = \dfrac{1}{5{,}41} \approx 0{,}18$.\\ Et : $F_{0{,}95}(5;3) = 9{,}01$.
+\item $F_{0{,}01}(50;100) = \dfrac{1}{F_{0{,}99}(100;50)} = \dfrac{1}{1{,}82} \approx 0{,}55$.
+\end{itemize}
+\end{exbox}
+
+\subsection{Lien Student -- Fisher}
+
+\begin{thmbox}[Propri\'et\'e]
+Si $T \sim t(\nu)$, alors :
+$$T^2 \;\sim\; F(1;\nu).$$
+\end{thmbox}
+
+% ============================================================
+% V. FICHE DE SYNTHESE
+% ============================================================
+\newpage
+\section{Fiche de synth\`ese}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\sffamily\small
+\begin{tabular}{>{\bfseries}p{2.5cm} p{3.8cm} p{2.5cm} p{4.2cm}}
+\toprule
+\textbf{Loi} & \textbf{Construction} & \textbf{Param\`etre} & \textbf{Lecture de table} \\
+\midrule
+Normale $\N(0;1)$ &
+Centrage-r\'eduction : $U = \frac{X-m}{\sigma}$ &
+$m$, $\sigma$ &
+Table 2 : $F_U(u)$\newline Table 3 : fractiles $u_{1-P}$ \\
+\addlinespace
+Khi-deux $\chi^2(\nu)$ &
+$K = \sum U_i^2$ &
+$\nu$ (ddl) &
+Table 4 : $\P(K > \chi^2_{1-P}) = P$\newline Colonne $P$, ligne $\nu$ \\
+\addlinespace
+Student $t(\nu)$ &
+$T = \frac{U}{\sqrt{K/\nu}}$ &
+$\nu$ (ddl) &
+Table 5 : bilat\'eral direct\newline $\P(|T| > T_{1-P}) = P$ \\
+\addlinespace
+Fisher $F(\nu_1;\nu_2)$ &
+$F = \frac{K_1/\nu_1}{K_2/\nu_2}$ &
+$\nu_1$, $\nu_2$ (ddl) &
+Table 6 : $\nu_1$ en colonne, $\nu_2$ en ligne\newline Queue gauche : $F_P = 1/F_{1-P}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{methbox}[Fractiles \`a m\'emoriser]
+\renewcommand{\arraystretch}{1.3}
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+$P$ (bilat\'eral) & $10\%$ & $5\%$ & $2\%$ & $1\%$ \\
+\midrule
+$u_{1-P/2}$ & $1{,}6449$ & $1{,}96$ & $2{,}3263$ & $2{,}5758$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{methbox}
+
+% ============================================================
+% VI. METHODES INDISPENSABLES
+% ============================================================
+\newpage
+\section{M\'ethodes indispensables au TD / partiel}
+
+\begin{methbox}[M\'ethode 1 -- Calculer $\P(a < X < b)$ avec $X \sim \N(m;\sigma)$]
+\begin{enumerate}
+\item Centrer-r\'eduire les bornes : $u_a = \dfrac{a-m}{\sigma}$, $u_b = \dfrac{b-m}{\sigma}$.
+\item Lire dans la Table~2 : $F_U(u_b)$ et $F_U(u_a)$.
+\item Si $u < 0$ : $F_U(u) = 1 - F_U(-u)$.
+\item R\'esultat : $\P(a < X < b) = F_U(u_b) - F_U(u_a)$.
+\end{enumerate}
+\end{methbox}
+
+\begin{methbox}[M\'ethode 2 -- Trouver un fractile (table inverse)]
+\begin{enumerate}
+\item Identifier la probabilit\'e donn\'ee et le type d'intervalle (unilat\'eral/bilat\'eral).
+\item Si bilat\'eral : diviser $P$ par $2$ avant de lire.
+\item Lire le fractile dans la Table~3 (normale), Table~4 (khi-deux) ou Table~5 (Student).
+\item Si fractile n\'egatif (normale) : $u_Q = -u_{1-Q}$.
+\end{enumerate}
+\end{methbox}
+
+\begin{methbox}[M\'ethode 3 -- Construire une loi \`a partir de l'\'enonc\'e]
+\begin{enumerate}
+\item Identifier les variables al\'eatoires en jeu et leurs lois.
+\item V\'erifier l'ind\'ependance (hypoth\`ese toujours n\'ecessaire).
+\item Reconna\^itre la structure :
+    \begin{itemize}
+    \item Somme de $\N(0;1)^2$ $\Rightarrow$ Khi-deux.
+    \item Rapport $\N(0;1)/\sqrt{\chi^2/\nu}$ $\Rightarrow$ Student.
+    \item Rapport de deux $\chi^2$ normalis\'es $\Rightarrow$ Fisher.
+    \end{itemize}
+\item D\'eterminer les degr\'es de libert\'e.
+\end{enumerate}
+\end{methbox}
+
+\begin{methbox}[M\'ethode 4 -- Convergence ($\nu > 30$)]
+Quand le degr\'e de libert\'e d\'epasse 30 :
+\begin{itemize}
+\item \textbf{Student :} remplacer $T_{1-P}(\nu)$ par $u_{1-P}$ (fractile de la normale).
+\item \textbf{Khi-deux :} utiliser $\chi^2_{1-P}(\nu) \approx \dfrac{(u_{1-P} + \sqrt{2\nu-1})^2}{2}$.
+\end{itemize}
+\end{methbox}
+
+% ============================================================
+% VII. EXERCICES CORRIGES
+% ============================================================
+\newpage
+\section{Exercices corrig\'es}
+
+% --- Exercice 1 ---
+\begin{thmbox}[Exercice 1 -- Lecture de table de la loi normale]
+Soit $X \sim \N(100;15)$.
+\begin{enumerate}[label=\alph*)]
+\item Calculer $\P(X \leq 120)$.
+\item Calculer $\P(85 < X < 130)$.
+\item Trouver $x$ tel que $\P(X > x) = 0{,}05$.
+\end{enumerate}
+\end{thmbox}
+
+\textbf{Correction :}
+
+\textbf{a)} Centrage-r\'eduction : $u = \dfrac{120-100}{15} = \dfrac{20}{15} = 1{,}33$.
+
+$\P(X \leq 120) = F_U(1{,}33) = 0{,}90824.$
+
+\medskip
+\textbf{b)} On centre : $u_1 = \dfrac{85-100}{15} = -1$ et $u_2 = \dfrac{130-100}{15} = 2$.
+
+$\P(85 < X < 130) = F_U(2) - F_U(-1) = 0{,}97725 - (1-0{,}84134) = 0{,}97725 - 0{,}15866 = 0{,}81859.$
+
+\medskip
+\textbf{c)} $\P(X > x) = 0{,}05$ signifie $\P(U > u) = 0{,}05$, donc $u = u_{0{,}95} = 1{,}6449$.
+
+$x = m + \sigma \cdot u = 100 + 15 \times 1{,}6449 = 124{,}67.$
+
+% --- Exercice 2 ---
+\bigskip
+\begin{thmbox}[Exercice 2 -- Additivit\'e et loi du Khi-deux]
+Soient $U_1, U_2, U_3$ i.i.d. $\sim \N(0;1)$. On pose $K = U_1^2 + U_2^2 + U_3^2$.
+\begin{enumerate}[label=\alph*)]
+\item Donner la loi de $K$.
+\item Calculer $\P(K > 7{,}815)$.
+\item D\'eterminer $k$ tel que $\P(K \leq k) = 0{,}95$.
+\end{enumerate}
+\end{thmbox}
+
+\textbf{Correction :}
+
+\textbf{a)} $K = \sum_{i=1}^{3} U_i^2 \sim \chi^2(3)$ (somme de 3 carr\'es de NCR ind\'ependantes).
+
+\medskip
+\textbf{b)} Table~4, ligne $\nu=3$, on cherche 7,815. On lit $\chi^2_{0{,}95}(3) = 7{,}815$ \`a la colonne $P=0{,}05$.
+
+Donc $\P(K > 7{,}815) = 0{,}05$.
+
+\medskip
+\textbf{c)} $\P(K \leq k) = 0{,}95 \Leftrightarrow \P(K > k) = 0{,}05$.
+
+On lit $k = \chi^2_{0{,}95}(3) = 7{,}815$.
+
+% --- Exercice 3 ---
+\bigskip
+\begin{thmbox}[Exercice 3 -- Construction d'une loi de Student]
+Soient $U \sim \N(0;1)$, $K_1 \sim \chi^2(4)$ et $K_2 \sim \chi^2(6)$, toutes ind\'ependantes.
+\begin{enumerate}[label=\alph*)]
+\item Donner la loi de $K = K_1 + K_2$.
+\item Donner la loi de $T = \dfrac{U}{\sqrt{K/10}}$.
+\item D\'eterminer $t$ tel que $\P(|T| > t) = 0{,}05$.
+\end{enumerate}
+\end{thmbox}
+
+\textbf{Correction :}
+
+\textbf{a)} Par additivit\'e : $K = K_1 + K_2 \sim \chi^2(4+6) = \chi^2(10)$.
+
+\medskip
+\textbf{b)} $T = \dfrac{U}{\sqrt{K/10}}$ avec $U \sim \N(0;1)$, $K \sim \chi^2(10)$ ind\'ependantes et $\nu = 10$.
+
+Donc $T \sim t(10)$.
+
+\medskip
+\textbf{c)} La Table~5 de Student est directement bilat\'erale. Lire colonne $P=0{,}05$, ligne $\nu=10$ :
+
+$t = T_{0{,}95}(10) = 2{,}2281.$
+
+Les bornes sont $-2{,}2281$ et $+2{,}2281$.
+
+% --- Exercice 4 ---
+\bigskip
+\begin{thmbox}[Exercice 4 -- Fisher-Snedecor]
+Soient $K_1 \sim \chi^2(3)$ et $K_2 \sim \chi^2(5)$ ind\'ependantes. On pose $F = \dfrac{K_1/3}{K_2/5}$.
+\begin{enumerate}[label=\alph*)]
+\item Donner la loi de $F$.
+\item D\'eterminer $F_{0{,}95}(3;5)$.
+\item D\'eterminer $F_{0{,}05}(3;5)$ (queue gauche).
+\item Trouver les bornes de l'intervalle bilat\'eral \`a $90\%$.
+\end{enumerate}
+\end{thmbox}
+
+\textbf{Correction :}
+
+\textbf{a)} $F \sim F(3;5)$ par d\'efinition.
+
+\medskip
+\textbf{b)} Table~6, colonne $\nu_1=3$, ligne $\nu_2=5$ : $F_{0{,}95}(3;5) = 5{,}41$.
+
+\medskip
+\textbf{c)} Formule d'inversion : $F_{0{,}05}(3;5) = \dfrac{1}{F_{0{,}95}(5;3)} = \dfrac{1}{9{,}01} \approx 0{,}111$.
+
+\medskip
+\textbf{d)} Intervalle bilat\'eral \`a $90\%$ signifie $P=10\%$, soit $5\%$ de chaque c\^ot\'e.
+\begin{itemize}
+\item Borne sup\'erieure : $F_{0{,}95}(3;5) = 5{,}41$.
+\item Borne inf\'erieure : $F_{0{,}05}(3;5) = 1/F_{0{,}95}(5;3) = 1/9{,}01 \approx 0{,}111$.
+\end{itemize}
+$\P(0{,}111 < F \leq 5{,}41) = 90\%.$
+
+% --- Exercice 5 ---
+\bigskip
+\begin{thmbox}[Exercice 5 -- Synth\`ese (trouver les fractiles)]
+D\'eterminer les fractiles suivants :
+\begin{enumerate}
+\item $u_{0{,}144}$
+\item $\chi^2_{0{,}90}(14)$
+\item $T_{0{,}70}(2)$ (intervalle bilat\'eral sym\'etrique)
+\item $F_{0{,}01}(3;1)$
+\item $u_{0{,}601}$
+\end{enumerate}
+\end{thmbox}
+
+\textbf{Correction :}
+
+\textbf{1)} $u_{0{,}144}$ : comme $Q = 0{,}144 < 0{,}5$, on a $u_{0{,}144} = -u_{0{,}856}$. Lire dans la Table~3 \`a $Q = 0{,}856$ : $u_{0{,}856} = 1{,}0625$. Donc $u_{0{,}144} = -1{,}0625$.
+
+\medskip
+\textbf{2)} $\chi^2_{0{,}90}(14)$ : Table~4, colonne $P=0{,}1$, ligne $\nu=14$ $\Rightarrow$ $\chi^2_{0{,}90}(14) = 21{,}064$.
+
+\medskip
+\textbf{3)} $T_{0{,}70}(2)$ (bilat\'eral) : lire colonne $P=0{,}30$, ligne $\nu=2$ $\Rightarrow$ $T_{0{,}70}(2) = 1{,}3862$.
+
+Par sym\'etrie : $T_{0{,}30}(2) = -1{,}3862$.
+
+\medskip
+\textbf{4)} $F_{0{,}01}(3;1)$ : queue gauche $\Rightarrow$ $F_{0{,}01}(3;1) = \dfrac{1}{F_{0{,}99}(1;3)}$.
+
+Table~6, colonne $\nu_1=1$, ligne $\nu_2=3$ \`a $P=1\%$ : $F_{0{,}99}(1;3) = 34{,}12$.
+
+$F_{0{,}01}(3;1) = 1/34{,}12 \approx 0{,}0293$.
+
+\medskip
+\textbf{5)} $u_{0{,}601}$ : comme $Q = 0{,}601 > 0{,}5$, lecture directe Table~3 \`a $Q = 0{,}601$ $\Rightarrow$ $u_{0{,}601} = 0{,}2559$.
+
+% ============================================================
+% VIII. PIEGES CLASSIQUES
+% ============================================================
+\newpage
+\section{Pi\`eges classiques}
+
+\begin{alertbox}[Pi\`ege 1 -- Confondre $\sigma$ et $\sigma^2$]
+$\N(m;\sigma)$ : le deuxi\`eme param\`etre est l'\textbf{\'ecart-type}, pas la variance. Certains manuels utilisent $\N(m;\sigma^2)$. V\'erifier syst\'ematiquement la convention de l'\'enonc\'e.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 2 -- Confondre $f(-u) = f(u)$ et $F(-u) = 1-F(u)$]
+La \textbf{densit\'e} est sym\'etrique : $f(-u) = f(u)$.\\
+La \textbf{fonction de r\'epartition} v\'erifie : $F(-u) = 1 - F(u)$.\\
+Ne \textbf{jamais} \'ecrire $F(-u) = F(u)$.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 3 -- Oublier de diviser $P$ par 2 en bilat\'eral (Normale et Khi-deux)]
+Pour les tables de la loi normale et du Khi-deux, un intervalle bilat\'eral sym\'etrique \`a risque $P$ se lit \`a $P/2$. Seule la table de Student est \textbf{d\'ej\`a bilat\'erale}.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 4 -- Table de Student : unilat\'eral vs bilat\'eral]
+La Table~5 est pr\'evue pour le bilat\'eral. Pour un test \textbf{unilat\'eral} \`a risque $P$, il faut lire \`a la colonne $2P$.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 5 -- Inverser $\nu_1$ et $\nu_2$ dans Fisher]
+$F(\nu_1;\nu_2) \neq F(\nu_2;\nu_1)$ en g\'en\'eral. Toujours respecter : $\nu_1$ = ddl du num\'erateur, $\nu_2$ = ddl du d\'enominateur. Dans la table : $\nu_1$ en \textbf{colonne}, $\nu_2$ en \textbf{ligne}.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 6 -- Oublier l'hypoth\`ese d'ind\'ependance]
+Les constructions $\chi^2$, Student et Fisher \textbf{exigent} l'ind\'ependance entre les variables al\'eatoires. Sans ind\'ependance, les lois ne sont pas valides.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 7 -- Additivit\'e des \'ecarts-types]
+Ce sont les \textbf{variances} qui s'additionnent, pas les \'ecarts-types.
+$$\sigma_{X+Y} = \sqrt{\sigma_X^2 + \sigma_Y^2} \;\neq\; \sigma_X + \sigma_Y.$$
+\end{alertbox}
+
+\end{document}

@@ -1,0 +1,344 @@
+﻿.pricing-min-main {
+  --header-height: 56px;
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 1rem calc(1rem + env(safe-area-inset-left, 0px))
+    calc(2.5rem + env(safe-area-inset-bottom, 0px)) calc(1rem + env(safe-area-inset-right, 0px));
+  min-height: calc(100dvh - var(--header-height));
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-min-hero {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.1rem 0 1rem;
+}
+
+.pricing-min-alert {
+  margin-top: 0.8rem;
+  border-radius: 10px;
+  padding: 0.68rem 0.78rem;
+  font-size: 0.86rem;
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-overlay);
+  color: var(--color-text-secondary);
+}
+
+.pricing-min-alert[data-state="success"] {
+  color: var(--color-success);
+  border-color: color-mix(in srgb, var(--color-success) 35%, transparent);
+  background: var(--color-success-subtle);
+}
+
+.pricing-min-alert[data-state="warn"] {
+  color: var(--color-warning);
+  border-color: color-mix(in srgb, var(--color-warning) 35%, transparent);
+  background: var(--color-warning-subtle);
+}
+
+.pricing-min-alert[data-state="error"] {
+  color: var(--color-error);
+  border-color: color-mix(in srgb, var(--color-error) 35%, transparent);
+  background: var(--color-error-subtle);
+}
+
+.pricing-min-grid {
+  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: stretch;
+  flex: 1;
+}
+
+.pricing-min-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-raised);
+  border-radius: 16px;
+  padding: 1.2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.pricing-min-card:not(.pricing-min-card-semester):not(.pricing-min-card-annual) {
+  opacity: 1;
+}
+
+.pricing-min-card-semester {
+  border-color: color-mix(in srgb, var(--color-text-primary) 20%, var(--color-border-default));
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+}
+
+.pricing-min-card-annual {
+  border: 2px solid color-mix(in srgb, var(--color-accent) 85%, var(--color-border-default));
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-accent) 13%, transparent);
+  z-index: 2;
+}
+
+.pricing-min-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.69rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  padding: 0.22rem 0.5rem;
+  border-radius: 999px;
+  background: var(--color-text-primary);
+  color: var(--color-canvas);
+}
+
+.pricing-min-badge-accent {
+  background: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+.pricing-min-card-name {
+  margin: 0;
+  font-size: 1.22rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.pricing-min-card-sub {
+  margin: 0.14rem 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.pricing-min-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.pricing-min-title-discount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.2rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-accent-foreground);
+  background: var(--color-accent);
+}
+
+.pricing-min-price {
+  margin-top: 0.82rem;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.pricing-min-price-row {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.pricing-min-price-row .pricing-min-price {
+  margin-top: 0;
+}
+
+.pricing-min-price-strike {
+  font-size: 0.92rem;
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+.pricing-min-rate {
+  margin: 0.18rem 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.pricing-min-list {
+  margin: 0.72rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.36rem;
+}
+
+.pricing-min-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.42rem;
+  font-size: 0.9rem;
+  line-height: 1.38;
+  color: var(--color-text-secondary);
+}
+
+.pricing-min-list li svg {
+  margin-top: 0.1rem;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.pricing-min-btn {
+  margin-top: auto;
+  width: 100%;
+  min-height: 3rem;
+}
+
+.pricing-min-card-semester .pricing-min-price,
+.pricing-min-card-annual .pricing-min-price {
+  font-size: 2.15rem;
+}
+
+.pricing-min-card-semester .pricing-min-rate,
+.pricing-min-card-annual .pricing-min-rate {
+  font-size: 0.92rem;
+}
+
+.pricing-min-carousel-nav {
+  margin-top: 0.8rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.pricing-min-carousel-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--color-border-strong);
+  transition: width 140ms ease, background-color 140ms ease;
+}
+
+.pricing-min-carousel-dot[data-active="true"] {
+  width: 20px;
+  background: var(--color-accent);
+}
+
+@media (max-width: 767px) {
+  .pricing-min-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0.75rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.25rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .pricing-min-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pricing-min-card {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-height: 430px;
+    padding: 1.1rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .pricing-min-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .pricing-min-card-annual {
+    grid-column: 1 / -1;
+  }
+
+  .pricing-min-carousel-nav {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pricing-min-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.15rem;
+  }
+
+  .pricing-min-card {
+    min-height: 430px;
+  }
+
+  .pricing-min-card-annual {
+    box-shadow: 0 14px 36px color-mix(in srgb, var(--color-accent) 20%, transparent);
+  }
+
+  .pricing-min-carousel-nav {
+    display: none;
+  }
+}
+
+html.dark .pricing-min-card,
+html[data-theme="dark"] .pricing-min-card,
+[data-theme="dark"] .pricing-min-card {
+  background: color-mix(in srgb, var(--color-bg-raised) 78%, var(--color-bg-overlay) 22%);
+  border-color: var(--color-border-strong);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--color-canvas) 55%, transparent);
+}
+
+html.dark .pricing-min-card:not(.pricing-min-card-semester):not(.pricing-min-card-annual),
+html[data-theme="dark"] .pricing-min-card:not(.pricing-min-card-semester):not(.pricing-min-card-annual),
+[data-theme="dark"] .pricing-min-card:not(.pricing-min-card-semester):not(.pricing-min-card-annual) {
+  opacity: 1;
+}
+
+html.dark .pricing-min-card-semester,
+html[data-theme="dark"] .pricing-min-card-semester,
+[data-theme="dark"] .pricing-min-card-semester {
+  border-color: color-mix(in srgb, var(--color-accent) 26%, var(--color-border-strong));
+}
+
+html.dark .pricing-min-card-annual,
+html[data-theme="dark"] .pricing-min-card-annual,
+[data-theme="dark"] .pricing-min-card-annual {
+  border-color: var(--color-accent);
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--color-accent) 34%, transparent);
+}
+
+html.dark .pricing-min-card-sub,
+html.dark .pricing-min-list li,
+html.dark .pricing-min-rate,
+html.dark .pricing-min-price-strike,
+html[data-theme="dark"] .pricing-min-card-sub,
+html[data-theme="dark"] .pricing-min-list li,
+html[data-theme="dark"] .pricing-min-rate,
+html[data-theme="dark"] .pricing-min-price-strike,
+[data-theme="dark"] .pricing-min-card-sub,
+[data-theme="dark"] .pricing-min-list li,
+[data-theme="dark"] .pricing-min-rate,
+[data-theme="dark"] .pricing-min-price-strike {
+  color: var(--color-text-secondary);
+}
+
+html.dark .pricing-min-list li svg,
+html[data-theme="dark"] .pricing-min-list li svg,
+[data-theme="dark"] .pricing-min-list li svg {
+  color: var(--color-accent);
+}
+
+html.dark .pricing-min-badge,
+html[data-theme="dark"] .pricing-min-badge,
+[data-theme="dark"] .pricing-min-badge {
+  background: var(--color-accent);
+  color: var(--color-accent-foreground);
+}

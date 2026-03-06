@@ -1,0 +1,1119 @@
+\documentclass[11pt,a4paper]{article}
+
+% ════════════════════════════════════════════════════════════════
+% ENCODAGE & POLICES
+% ════════════════════════════════════════════════════════════════
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\usepackage[scaled=0.86]{helvet}
+\usepackage{microtype}
+
+% ════════════════════════════════════════════════════════════════
+% MISE EN PAGE
+% ════════════════════════════════════════════════════════════════
+\usepackage[
+  top=2.6cm, bottom=2.6cm,
+  left=2.8cm, right=2.8cm,
+  headheight=20pt
+]{geometry}
+\usepackage{parskip}
+\usepackage{setspace}
+\setstretch{1.13}
+
+% ════════════════════════════════════════════════════════════════
+% COULEURS — palette sobre et professionnelle
+% ════════════════════════════════════════════════════════════════
+\usepackage[dvipsnames,svgnames]{xcolor}
+
+% Primaire — bleu ardoise profond
+\definecolor{navydark}{HTML}{1E3557}
+\definecolor{navymid}{HTML}{2D5F8F}
+\definecolor{navylight}{HTML}{E8EFF8}
+% Accent — or ambré
+\definecolor{amber}{HTML}{C47E1A}
+\definecolor{amberlight}{HTML}{FDF4E3}
+% Succès — vert forêt
+\definecolor{forest}{HTML}{1A5C3A}
+\definecolor{forestlight}{HTML}{E6F4EE}
+% Alerte — cramoisi
+\definecolor{crimson}{HTML}{9B1C1C}
+\definecolor{crimsonlight}{HTML}{FDE8E8}
+% Démonstration — violet profond
+\definecolor{violet}{HTML}{4A148C}
+\definecolor{violetlight}{HTML}{F0E6FB}
+% Texte
+\definecolor{textprimary}{HTML}{1C2333}
+\definecolor{textsecondary}{HTML}{5A6475}
+% Règles / séparateurs
+\definecolor{rulecol}{HTML}{BDD0E8}
+
+% ════════════════════════════════════════════════════════════════
+% EN-TÊTE & PIED DE PAGE
+% ════════════════════════════════════════════════════════════════
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{%
+  \begin{tikzpicture}[baseline=-0.5ex]
+    \fill[navydark] (0,0) rectangle (0.22,0.22);
+  \end{tikzpicture}\;%
+  \small\sffamily\color{navydark}\textbf{Chapitre 8}\;\textcolor{rulecol}{|}\;%
+  \small\sffamily\color{textsecondary}Distributions d'\'echantillonnage%
+}
+\fancyhead[R]{\small\sffamily\color{textsecondary}L2 \'Economie --- Statistiques}
+\fancyfoot[C]{%
+  \small\sffamily\color{textsecondary}---\;\thepage\,/\,\pageref{LastPage}\;---
+}
+% Ligne de pied de page
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrule}{{\color{rulecol}\hrule width\headwidth height0.4pt}}
+
+% ════════════════════════════════════════════════════════════════
+% TITRES — numéro dans un carré coloré
+% ════════════════════════════════════════════════════════════════
+\usepackage{titlesec}
+\usepackage{tikz}
+
+\titleformat{\section}{%
+  \Large\bfseries\sffamily\color{navydark}}{%
+  \tikz[baseline=(n.base)]{%
+    \fill[navydark] (0,0) rectangle (0.6em,0.6em);%
+    \node[inner sep=0,anchor=base] (n) at (0.3em,0.13em)
+      {\color{white}\footnotesize\sffamily\thesection};}%
+  \;}{0em}{}[\vspace{2pt}{\color{rulecol}\hrule height 1.2pt}\vspace{-4pt}]
+
+\titleformat{\subsection}{%
+  \large\bfseries\sffamily\color{navymid}}{%
+  \thesubsection.}{0.5em}{}
+
+\titleformat{\subsubsection}{%
+  \normalsize\bfseries\color{textprimary}}{%
+  \thesubsubsection.}{0.5em}{}
+
+\titlespacing*{\section}{0pt}{2.2em}{1em}
+\titlespacing*{\subsection}{0pt}{1.6em}{0.6em}
+\titlespacing*{\subsubsection}{0pt}{1.1em}{0.4em}
+
+% ════════════════════════════════════════════════════════════════
+% BOÎTES tcolorbox
+% ════════════════════════════════════════════════════════════════
+\usepackage[most]{tcolorbox}
+
+% Définition (bleu ardoise, bandeau coloré en haut)
+\newtcolorbox{defbox}[1][]{%
+  enhanced, breakable,
+  colback=navylight,
+  colframe=navydark,
+  boxrule=0pt, leftrule=4pt,
+  arc=2pt, outer arc=2pt,
+  fonttitle=\bfseries\sffamily\color{navydark}\small,
+  title={\textcolor{navydark}{\sffamily\bfseries #1}},
+  attach boxed title to top left={xshift=8pt, yshift=-4pt},
+  boxed title style={colback=navylight, colframe=navydark, boxrule=0pt,
+    leftrule=0pt, arc=0pt, outer arc=0pt, top=2pt, bottom=2pt,
+    left=4pt, right=4pt},
+  coltitle=navydark,
+  top=10pt, bottom=8pt, left=10pt, right=10pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% Théorème (cadre bleu moyen, fond blanc, coins arrondis)
+\newtcolorbox{thmbox}[1][]{%
+  enhanced, breakable,
+  colback=white,
+  colframe=navymid,
+  boxrule=1pt,
+  arc=4pt, outer arc=4pt,
+  fonttitle=\bfseries\sffamily\color{navymid}\small,
+  title={#1},
+  attach boxed title to top left={xshift=10pt, yshift=-5pt},
+  boxed title style={colback=white, colframe=navymid, boxrule=1pt,
+    arc=3pt, outer arc=3pt, top=2pt, bottom=2pt, left=6pt, right=6pt},
+  top=10pt, bottom=8pt, left=10pt, right=10pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% Méthode (vert forêt)
+\newtcolorbox{methbox}[1][]{%
+  enhanced, breakable,
+  colback=forestlight,
+  colframe=forest,
+  boxrule=0pt, leftrule=4pt,
+  arc=2pt, outer arc=2pt,
+  fonttitle=\bfseries\sffamily\color{forest}\small,
+  title={#1},
+  attach boxed title to top left={xshift=8pt, yshift=-4pt},
+  boxed title style={colback=forestlight, colframe=forest, boxrule=0pt,
+    leftrule=0pt, arc=0pt, outer arc=0pt, top=2pt, bottom=2pt,
+    left=4pt, right=4pt},
+  top=10pt, bottom=8pt, left=10pt, right=10pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% Alerte (cramoisi)
+\newtcolorbox{alertbox}[1][]{%
+  enhanced, breakable,
+  colback=crimsonlight,
+  colframe=crimson,
+  boxrule=0pt, leftrule=4pt,
+  arc=2pt, outer arc=2pt,
+  fonttitle=\bfseries\sffamily\color{crimson}\small,
+  title={#1},
+  attach boxed title to top left={xshift=8pt, yshift=-4pt},
+  boxed title style={colback=crimsonlight, colframe=crimson, boxrule=0pt,
+    leftrule=0pt, arc=0pt, outer arc=0pt, top=2pt, bottom=2pt,
+    left=4pt, right=4pt},
+  top=10pt, bottom=8pt, left=10pt, right=10pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% Exemple (ambré doré)
+\newtcolorbox{exbox}[1][]{%
+  enhanced, breakable,
+  colback=amberlight,
+  colframe=amber,
+  boxrule=0pt, leftrule=4pt,
+  arc=2pt, outer arc=2pt,
+  fonttitle=\bfseries\sffamily\color{amber}\small,
+  title={#1},
+  attach boxed title to top left={xshift=8pt, yshift=-4pt},
+  boxed title style={colback=amberlight, colframe=amber, boxrule=0pt,
+    leftrule=0pt, arc=0pt, outer arc=0pt, top=2pt, bottom=2pt,
+    left=4pt, right=4pt},
+  top=10pt, bottom=8pt, left=10pt, right=10pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% Démonstration (violet)
+\newtcolorbox{demobox}[1][]{%
+  enhanced, breakable,
+  colback=violetlight,
+  colframe=violet,
+  boxrule=0pt, leftrule=4pt,
+  arc=2pt, outer arc=2pt,
+  fonttitle=\bfseries\sffamily\color{violet}\small,
+  title={#1},
+  attach boxed title to top left={xshift=8pt, yshift=-4pt},
+  boxed title style={colback=violetlight, colframe=violet, boxrule=0pt,
+    leftrule=0pt, arc=0pt, outer arc=0pt, top=2pt, bottom=2pt,
+    left=4pt, right=4pt},
+  top=10pt, bottom=8pt, left=10pt, right=10pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% Exercice numéroté (fond léger avec ligne de titre pleine)
+\newtcolorbox[auto counter, number within=section]{exercice}[2][]{%
+  enhanced, breakable,
+  colback=white,
+  colframe=navydark,
+  boxrule=0.8pt,
+  arc=4pt, outer arc=4pt,
+  title={\sffamily\bfseries Exercice \thetcbcounter{} \textendash{} #2},
+  fonttitle=\bfseries\sffamily\color{white}\small,
+  attach boxed title to top left={xshift=0pt, yshift=0pt},
+  boxed title style={colback=navydark, colframe=navydark, boxrule=0pt,
+    arc=0pt, outer arc=0pt, top=5pt, bottom=5pt, left=10pt, right=10pt},
+  top=10pt, bottom=8pt, left=10pt, right=10pt,
+  before skip=14pt, after skip=14pt,
+  #1
+}
+
+% ════════════════════════════════════════════════════════════════
+% MATHS
+% ════════════════════════════════════════════════════════════════
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+
+% ════════════════════════════════════════════════════════════════
+% TABLEAUX & LISTES
+% ════════════════════════════════════════════════════════════════
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.4em,
+  label={\color{navymid}\rule[0.35ex]{0.55ex}{0.55ex}},
+  itemsep=4pt, topsep=3pt}
+\setlist[enumerate]{leftmargin=1.6em, itemsep=4pt, topsep=3pt}
+
+% ════════════════════════════════════════════════════════════════
+% LIENS
+% ════════════════════════════════════════════════════════════════
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=navydark,
+  urlcolor=navymid,
+  pdftitle={Chapitre 8 --- Distributions d'échantillonnage},
+}
+
+% ════════════════════════════════════════════════════════════════
+% COMMANDES PERSONNALISÉES
+% ════════════════════════════════════════════════════════════════
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\iid}{\overset{\text{i.i.d.}}{\sim}}
+\newcommand{\appN}{\overset{c}{\approx}}
+\renewcommand{\P}{\Prob}
+
+% Commande pour les statistiques population/échantillon
+\newcommand{\pop}[1]{\textbf{#1}}   % gras pour population
+\newcommand{\ech}[1]{\textit{#1}}   % italique pour échantillon
+
+% Filet de séparation dans les exercices
+\newcommand{\corrsep}{\vspace{4pt}{\color{rulecol}\hrule height 0.6pt}\vspace{6pt}}
+
+% ════════════════════════════════════════════════════════════════
+\begin{document}
+\thispagestyle{empty}
+
+% ════════════════════════════════════════════════════════════════
+% PAGE DE TITRE
+% ════════════════════════════════════════════════════════════════
+\begin{tikzpicture}[remember picture, overlay]
+  % Bande latérale gauche
+  \fill[navydark] (current page.north west)
+    rectangle ([xshift=1.6cm] current page.south west);
+  % Bandeau supérieur
+  \fill[navydark] (current page.north west)
+    rectangle ([yshift=-3.2cm] current page.north east);
+  % Petite bande dorée sous le bandeau
+  \fill[amber] ([yshift=-3.2cm] current page.north west)
+    rectangle ([yshift=-3.45cm] current page.north east);
+\end{tikzpicture}
+
+\vspace*{0.4cm}
+\hspace*{2.2cm}%
+\begin{minipage}[t]{0.85\textwidth}
+  \vspace{1.5cm}
+  {\fontsize{120}{120}\selectfont\sffamily\bfseries\color{white}8}
+
+  \vspace{0.1cm}
+  {\color{amber}\rule{10cm}{2.5pt}}
+
+  \vspace{0.5cm}
+  {\fontsize{22}{26}\selectfont\sffamily\bfseries\color{white}%
+    Distributions\\[0.1cm]d'\'echantillonnage}
+
+  \vspace{1cm}
+  {\large\sffamily\color{white!70!navydark}%
+    Lois de la moyenne\quad$\cdot$\quad
+    Student\quad$\cdot$\quad
+    Khi-deux\quad$\cdot$\quad
+    Fisher}
+\end{minipage}
+
+\vspace{3.6cm}
+
+\hspace*{2.2cm}%
+\begin{minipage}[t]{0.85\textwidth}
+  % Tableau récapitulatif de contexte
+  \begin{tcolorbox}[
+    enhanced, colback=navylight, colframe=navydark,
+    boxrule=0pt, leftrule=4pt, arc=2pt,
+    top=10pt, bottom=10pt, left=12pt, right=12pt
+  ]
+  \sffamily\color{textprimary}
+  \textbf{Objectifs du chapitre}
+
+  \smallskip
+  Ce chapitre d\'ecrit les lois de probabilit\'e suivies par les statistiques
+  d'\'echantillon (moyenne $\bar{X}$, proportion $F$, variance $S^2$) construites
+  \`a partir d'une population normale. Il pose les bases th\'eoriques indispensables
+  aux tests d'hypoth\`eses (chapitres 10--12).
+
+  \medskip
+  \begin{tabular}{@{}ll@{}}
+  \textbf{Pr\'erequis :} & Chapitres 2, 6, 7 \\
+  \textbf{Lois mobilis\'ees :} & $\N$, $\chi^2$, Student, Fisher-Snedecor \\
+  \textbf{Outils :} & Studentisation, additivit\'e, convergence \\
+  \end{tabular}
+  \end{tcolorbox}
+
+  \vfill
+  \textcolor{textsecondary}{\sffamily\small L2 \'Economie\quad$\cdot$\quad
+    Statistiques --- Semestre 2\quad$\cdot$\quad \today}
+\end{minipage}
+
+\newpage
+
+% ════════════════════════════════════════════════════════════════
+% TABLE DES MATIÈRES
+% ════════════════════════════════════════════════════════════════
+\thispagestyle{empty}
+{\hypersetup{linkcolor=textprimary}
+\tableofcontents}
+\newpage
+
+% ════════════════════════════════════════════════════════════════
+% INTRODUCTION
+% ════════════════════════════════════════════════════════════════
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+Ce chapitre porte sur les \textbf{distributions d'\'echantillonnage}, c'est-\`a-dire sur les lois de probabilit\'e suivies par certaines quantit\'es calcul\'ees \`a partir d'un \'echantillon issu d'une population m\`ere. Ces quantit\'es~--- appel\'ees \textbf{statistiques}~--- comprennent la moyenne empirique~$\bar{X}$, la proportion empirique~$F$ et la variance empirique~$S^2$.
+
+La question centrale est la suivante~: \emph{si l'on pr\'el\`eve un \'echantillon al\'eatoire d'une population normale, quelle loi suit la moyenne de cet \'echantillon~?} La r\'eponse d\'epend cructialement de la connaissance ou non de l'\'ecart-type de la population, ce qui d\'etermine le recours \`a la loi Normale ou \`a la loi de Student.
+
+L'utilit\'e pratique est double~: (1)~d\'eterminer des probabilit\'es li\'ees \`a la variabilit\'e d'un \'echantillon~; (2)~poser les bases des intervalles de confiance (Ch.~9) et des tests d'hypoth\`eses (Ch.~10--12).
+
+\begin{defbox}[Vocabulaire fondamental : population vs.\ \'echantillon]
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\linewidth}{lXX}
+\toprule
+\textbf{Caract\'eristique} & \textbf{Population} (param\`etre exact) & \textbf{\'Echantillon} (statistique estim\'ee) \\
+\midrule
+Moyenne & $m = \E[X]$ & $\bar{x}$ \quad [\,variable al\'eatoire $\bar{X}$\,] \\
+\'Ecart-type & $\sigma$ & $s$ \quad [\,$S$\,] \\
+Variance & $\sigma^2 = \Var(X)$ & $s^2$ \quad [\,$S^2$\,] \\
+Proportion & $p$ & $f$ \quad [\,$F$\,] \\
+Individu~$i$ & -- & $x_i$ \quad [\,$X_i$\,] \\
+Taille & -- & $n$ \\
+\bottomrule
+\end{tabularx}
+
+\smallskip
+\textit{Convention~: la lettre majuscule (ex.\ $\bar{X}$, $S^2$, $F$) d\'esigne la variable al\'eatoire correspondante (valeurs th\'eoriques sur tous les \'echantillons possibles). La lettre minuscule (ex.\ $\bar{x}$, $s^2$, $f$) d\'esigne la valeur observ\'ee sur un \'echantillon particulier.}
+\end{defbox}
+
+\begin{alertbox}[Pourquoi ne pas travailler directement sur la population~?]
+Deux raisons justifient l'\'echantillonnage~: (1)~les statistiques exhaustives de la population ne sont pas toujours disponibles~; (2)~collecter des informations sur un \'echantillon de taille $n$ est bien moins co\^uteux et plus rapide que sur l'ensemble de la population.
+\end{alertbox}
+
+% ════════════════════════════════════════════════════════════════
+\section{Fiche de synth\`ese --- Distributions d'\'echantillonnage}
+% ════════════════════════════════════════════════════════════════
+
+\subsection{D\'efinition de l'\'echantillon}
+
+\begin{defbox}[\'Echantillon i.i.d.]
+Un \textbf{$n$-\'echantillon th\'eorique al\'eatoire} de $X$ est un vecteur $(X_1,\ldots,X_n)$ o\`u les $X_i$ sont \textbf{ind\'ependantes} et suivent \textbf{toutes la m\^eme loi} que~$X$.
+
+On dit que les $X_i$ sont \textbf{i.i.d.} (\textit{ind\'ependantes et identiquement distribu\'ees}).
+
+L'\'echantillon \textbf{empirique ou observ\'e} est l'ensemble des $n$ valeurs num\'eriques $(x_1,\ldots,x_n)$.
+\end{defbox}
+
+\subsection{Statistiques d'\'echantillon : d\'efinitions}
+
+Les statistiques fondamentales calcul\'ees sur un $n$-\'echantillon $(X_1,\ldots,X_n)$ sont~:
+
+\begin{defbox}[Statistiques d'\'echantillon]
+\begin{align*}
+\textbf{Moyenne empirique} &\quad \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i \\[6pt]
+\textbf{Variance empirique} &\quad S^2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2 \\[6pt]
+\textbf{Variance corrig\'ee} &\quad \hat{S}^2 = \frac{n}{n-1}S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2 \\[6pt]
+\textbf{Proportion empirique} &\quad F = \frac{X}{n}
+  \quad \text{(o\`u $X$ = nombre d'individus v\'erifiant la caract\'eristique)}
+\end{align*}
+\end{defbox}
+
+\begin{alertbox}[Convention sur $S^2$ vs $\hat{S}^2$]
+Le cours utilise la \textbf{variance empirique non corrig\'ee} $S^2 = \frac{1}{n}\sum(X_i-\bar{X})^2$ (diviseur $n$). La variance corrig\'ee $\hat{S}^2$ utilise le diviseur $(n-1)$ et v\'erifie $\hat{S}^2 = \frac{n}{n-1}S^2$. Les deux formules sont utilis\'ees dans les r\'esultats ci-dessous~: \textbf{v\'erifier l'\'enonc\'e}.
+\end{alertbox}
+
+\subsection{Distributions d'\'echantillonnage --- \'Echantillon issu de $\N(m;\sigma)$}
+
+\subsubsection{Cas 1 --- \'Ecart-type de la population $\sigma$ connu}
+
+\begin{thmbox}[Lois d'\'echantillonnage ($\sigma$ connu)]
+Soit $X \sim \N(m;\sigma)$ et $(X_1,\ldots,X_n)$ un $n$-\'echantillon i.i.d. Alors~:
+
+\medskip
+\textbf{Loi de la moyenne}
+$$\boxed{\bar{X} \sim \N\!\left(m\,;\,\frac{\sigma}{\sqrt{n}}\right)}$$
+
+\textbf{Loi de la proportion} \hfill (si $X_i \sim \B(1;p)$, approximation normale)
+$$\boxed{F \sim \N\!\left(p\,;\,\sqrt{\frac{pq}{n}}\right)} \qquad q=1-p$$
+
+\textbf{Loi de la variance empirique} \hfill (Th\'eor\`eme de Fisher)
+$$\boxed{\frac{nS^2}{\sigma^2} = \frac{(n-1)\hat{S}^2}{\sigma^2} \sim \chi^2(n-1)}$$
+
+avec $K = nS^2/\sigma^2$ \textbf{ind\'ependante} de $\bar{X}$ (propri\'et\'e cruciale).
+\end{thmbox}
+
+\begin{demobox}[D\'emonstration~: loi de $\bar{X}$]
+On utilise deux propri\'et\'es~:
+\begin{enumerate}
+  \item Toute combinaison lin\'eaire de variables normales ind\'ependantes est normale.
+  \item $\bar{X} = \frac{1}{n}\sum X_i$ est une combinaison lin\'eaire des $X_i$.
+\end{enumerate}
+
+\textbf{Esp\'erance~:}
+$$\E[\bar{X}] = \E\!\left[\frac{1}{n}\sum_{i=1}^n X_i\right]
+  = \frac{1}{n}\sum_{i=1}^n \E[X_i] = \frac{1}{n}\cdot nm = m.$$
+
+\textbf{Variance~:} (les $X_i$ sont ind\'ependantes, donc les variances s'additionnent)
+$$\Var(\bar{X}) = \Var\!\left(\frac{1}{n}\sum_{i=1}^n X_i\right)
+  = \frac{1}{n^2}\sum_{i=1}^n \Var(X_i) = \frac{1}{n^2}\cdot n\sigma^2 = \frac{\sigma^2}{n}.$$
+
+D'o\`u $\bar{X} \sim \N\!\bigl(m\,;\,\sigma/\sqrt{n}\bigr)$.\hfill$\square$
+\end{demobox}
+
+\subsubsection{Cas 2 --- \'Ecart-type de la population $\sigma$ inconnu}
+
+Lorsque $\sigma$ est inconnu, on ne peut pas former la variable centr\'ee r\'eduite $U = (\bar{X}-m)/(\sigma/\sqrt{n})$ car $\sigma$ est une inconnue. La technique de \textbf{Studentisation} consiste \`a remplacer $\sigma$ par son estimateur empirique.
+
+\begin{thmbox}[Studentisation --- Loi de Student (Th\'eor\`eme de Fisher-Student)]
+Sous les m\^emes hypoth\`eses, si $\sigma$ est inconnu, la statistique~:
+$$\boxed{T = \frac{\bar{X}-m}{S/\sqrt{n-1}} = \frac{\bar{X}-m}{\hat{S}/\sqrt{n}} \;\sim\; T(n-1)}$$
+suit une loi de Student \`a $(n-1)$ degr\'es de libert\'e.
+\end{thmbox}
+
+\begin{demobox}[Construction de la variable $T$]
+On dispose de~:
+\begin{itemize}
+  \item $U = \dfrac{\bar{X}-m}{\sigma/\sqrt{n}} \sim \N(0;1)$
+  \item $K = \dfrac{nS^2}{\sigma^2} \sim \chi^2(n-1)$, \textbf{ind\'ependante de $U$}.
+\end{itemize}
+
+Par d\'efinition de la loi de Student (rappel Ch.~6)~:
+$$T = \frac{U}{\sqrt{K/(n-1)}} \sim T(n-1).$$
+
+On remplace $U$ et $K$ par leurs expressions~:
+\begin{align*}
+T &= \frac{U}{\sqrt{K/(n-1)}}
+  = \frac{\dfrac{\bar{X}-m}{\sigma/\sqrt{n}}}{\sqrt{\dfrac{nS^2/\sigma^2}{n-1}}}
+  = \frac{(\bar{X}-m)\sqrt{n}/\sigma}{\sqrt{n}\,S/(\sigma\sqrt{n-1})}
+  = \frac{\bar{X}-m}{S/\sqrt{n-1}}.
+\end{align*}
+
+Ainsi $\sigma$ se simplifie, et on obtient une statistique qui ne d\'epend que de $\bar{X}$, $S$ (observables) et $m$ (hypoth\`ese).\hfill$\square$
+\end{demobox}
+
+\begin{alertbox}[Subtil\'et\'e : $T = (\bar{X}-m)/(S/\sqrt{n-1})$]
+Attention \`a ne pas \'ecrire $S/\sqrt{n}$. Le d\'enominateur est $S/\sqrt{n-1}$ (ou de fa\c{c}on \'equivalente $\hat{S}/\sqrt{n}$ car $\hat{S}=S\sqrt{n/(n-1)}$). C'est le diviseur $(n-1)$ qui appara\^it dans la variable de khi-deux $K = nS^2/\sigma^2 \sim \chi^2(n-1)$.
+\end{alertbox}
+
+\subsection{Distributions d'\'echantillonnage --- Deux \'echantillons ind\'ependants}
+
+On dispose de deux populations normales \textbf{ind\'ependantes}~:
+$$X_1 \sim \N(m_1;\sigma_1), \qquad X_2 \sim \N(m_2;\sigma_2),$$
+et de deux \'echantillons de tailles $n_1$ et $n_2$.
+
+\subsubsection{Cas 1 --- $\sigma_1$, $\sigma_2$ connus}
+
+\begin{thmbox}[Lois de deux \'echantillons ($\sigma_i$ connus)]
+\textbf{Diff\'erence de moyennes~:}
+$$\bar{X}_1 - \bar{X}_2 \;\sim\; \N\!\left(m_1-m_2\;;\;
+  \sqrt{\frac{\sigma_1^2}{n_1}+\frac{\sigma_2^2}{n_2}}\right)$$
+
+\textbf{Diff\'erence de proportions~:}
+$$F_1 - F_2 \;\sim\; \N\!\left(p_1-p_2\;;\;
+  \sqrt{\frac{p_1q_1}{n_1}+\frac{p_2q_2}{n_2}}\right)$$
+
+\textbf{Rapport de variances (Fisher-Snedecor)~:}
+$$\frac{\hat{S}_1^2/\hat{S}_2^2}{\sigma_1^2/\sigma_2^2}
+  = \frac{n_1S_1^2}{n_1-1}\cdot\frac{n_2-1}{n_2S_2^2}\cdot\frac{\sigma_2^2}{\sigma_1^2}
+  \;\sim\; F(n_1-1\,;\,n_2-1)$$
+\end{thmbox}
+
+\subsubsection{Cas 2 --- $\sigma_1$, $\sigma_2$ inconnus et \'egaux ($\sigma_1=\sigma_2=\sigma$)}
+
+\begin{thmbox}[Diff\'erence de deux moyennes ($\sigma$ inconnu, \'egalit\'e suppos\'ee)]
+Sous l'hypoth\`ese $\sigma_1=\sigma_2=\sigma$ (inconnu)~:
+$$T = \frac{(\bar{X}_1-\bar{X}_2)-(m_1-m_2)}{%
+  \sqrt{\dfrac{1}{n_1}+\dfrac{1}{n_2}}\;\cdot\;
+  \sqrt{\dfrac{n_1S_1^2+n_2S_2^2}{n_1+n_2-2}}} \;\sim\; T(n_1+n_2-2)$$
+\end{thmbox}
+
+\begin{demobox}[Construction de $T$ \`a deux \'echantillons]
+On part de~:
+$$U = \frac{(\bar{X}_1-\bar{X}_2)-(m_1-m_2)}{\sigma\sqrt{1/n_1+1/n_2}} \sim \N(0;1)$$
+
+Et de deux statistiques de khi-deux (ind\'ependantes par hypoth\`ese d'ind\'ependance des \'echantillons)~:
+$$K_i = \frac{n_iS_i^2}{\sigma^2} \sim \chi^2(n_i-1), \quad i\in\{1,2\}.$$
+
+Par additivit\'e des khi-deux~: $K = K_1+K_2 = \dfrac{n_1S_1^2+n_2S_2^2}{\sigma^2} \sim \chi^2(n_1+n_2-2)$.
+
+Enfin~:
+$$T = \frac{U}{\sqrt{K/(n_1+n_2-2)}} \sim T(n_1+n_2-2),$$
+et $\sigma$ se simplifie num\'erateur/d\'enominateur, donnant la formule ci-dessus.\hfill$\square$
+\end{demobox}
+
+\begin{alertbox}[Hypoth\`ese $\sigma_1=\sigma_2$ : condition n\'ecessaire mais forte]
+L'\'egalit\'e des \'ecarts-types est une \textbf{condition n\'ecessaire} \`a l'application de la loi de Student dans le cas \`a deux \'echantillons. En pratique, cette hypoth\`ese devra \^etre test\'ee (Chapitre~12 --- test de Fisher). Sans elle, on ne peut pas construire la statistique de khi-deux commune~$K$.
+\end{alertbox}
+
+% Fiche de synthèse globale
+\newpage
+\subsection{Tableau de synth\`ese}
+
+\begin{defbox}[R\'ecapitulatif --- Quelle loi utiliser ?]
+\renewcommand{\arraystretch}{1.9}
+\small\sffamily
+\begin{tabularx}{\linewidth}{@{}p{3.8cm} p{4.2cm} X@{}}
+\toprule
+\textbf{Situation} & \textbf{Statistique} & \textbf{Loi} \\
+\midrule
+\multicolumn{3}{@{}l@{}}{\textit{Un \'echantillon}} \\
+\quad$\sigma$ connu & $U = \dfrac{\bar{X}-m}{\sigma/\sqrt{n}}$
+  & $\N(0;1)$ \\
+\quad$\sigma$ inconnu & $T = \dfrac{\bar{X}-m}{S/\sqrt{n-1}}$
+  & $T(n-1)$ \\
+\quad Proportion & $F = X/n$, $U = \dfrac{F-p}{\sqrt{pq/n}}$
+  & $\N(0;1)$ \\
+\quad Variance & $K = \dfrac{nS^2}{\sigma^2}$
+  & $\chi^2(n-1)$ \\
+\midrule
+\multicolumn{3}{@{}l@{}}{\textit{Deux \'echantillons ind\'ependants}} \\
+\quad$\sigma_1,\sigma_2$ connus & $U = \dfrac{(\bar{X}_1-\bar{X}_2)-(m_1-m_2)}{\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}}$
+  & $\N(0;1)$ \\
+\quad$\sigma_1=\sigma_2$ inconnus & $T = \dfrac{(\bar{X}_1-\bar{X}_2)-(m_1-m_2)}{%
+    \sqrt{(1/n_1+1/n_2)\cdot(n_1S_1^2+n_2S_2^2)/(n_1+n_2-2)}}$
+  & $T(n_1+n_2-2)$ \\
+\quad Diff.\ proportions & $U = \dfrac{(F_1-F_2)-(p_1-p_2)}{\sqrt{p_1q_1/n_1+p_2q_2/n_2}}$
+  & $\N(0;1)$ \\
+\quad Rapport variances & $\hat{S}_1^2/\hat{S}_2^2 \cdot \sigma_2^2/\sigma_1^2$
+  & $F(n_1-1;n_2-1)$ \\
+\bottomrule
+\end{tabularx}
+\end{defbox}
+
+\begin{methbox}[Convergence Student $\to$ Normale]
+Lorsque le degr\'e de libert\'e d\'epasse 30, la loi de Student converge vers la loi normale centr\'ee r\'eduite~: $T(\nu) \approxN \N(0;1)$. On remplace alors $F_T$ par $F_U$ dans les calculs de probabilit\'e.
+\end{methbox}
+
+% ════════════════════════════════════════════════════════════════
+\newpage
+\section{Exercices corrig\'es}
+% ════════════════════════════════════════════════════════════════
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Loi de la moyenne --- $\sigma$ connu puis inconnu}
+
+Une \'etude statistique effectu\'ee \`a l'Arena de Montpellier montre que l'affluence des
+spectateurs est une variable al\'eatoire $X$ suivant une loi normale d'esp\'erance $m=13\,500$.
+
+\begin{enumerate}[label=\textbf{\alph*)}]
+  \item Si l'on choisit al\'eatoirement un \'echantillon de 50 spectacles sur ces vingt derni\`eres
+    ann\'ees, quelle est la probabilit\'e pour que l'affluence moyenne soit strictement
+    sup\'erieure \`a $13\,500$ spectateurs, sachant que $\sigma = 1\,000$~?
+  \item D\'eterminer cette m\^eme probabilit\'e dans le cas o\`u $\sigma$ est inconnu,
+    mais l'\'ecart-type empirique est $s = 990$.
+\end{enumerate}
+\end{exercice}
+
+\corrsep
+
+\textbf{Identification.} $X \sim \N(13\,500\,;\,1\,000)$, \'echantillon i.i.d. de taille $n=50$.
+
+On distingue soigneusement~:
+\begin{itemize}
+  \item $\sigma = 1\,000$~: \'ecart-type de la \textbf{population} (param\`etre exact, connu en a)).
+  \item $s = 990$~: \'ecart-type \textbf{empirique} mesur\'e sur l'\'echantillon (valeur observ\'ee de~$S$, utilis\'e en b)).
+\end{itemize}
+
+\textbf{a) $\sigma = 1\,000$ connu.}
+
+La normalit\'e de $X$ entra\^ine celle de $\bar{X}$ (combinaison lin\'eaire de normales ind\'ependantes)~:
+$$\bar{X} \sim \N\!\left(m\,;\,\frac{\sigma}{\sqrt{n}}\right) = \N\!\left(13\,500\,;\,\frac{1\,000}{\sqrt{50}}\right).$$
+
+Centrage-r\'eduction~:
+$$U = \frac{\bar{X} - m}{\sigma/\sqrt{n}} = \frac{\bar{X}-13\,500}{1\,000/\sqrt{50}} \sim \N(0;1).$$
+
+Question~: $\P(\bar{X} > 13\,500) = \P\!\left(U > \dfrac{13\,500-13\,500}{1\,000/\sqrt{50}}\right) = \P(U>0) = 1 - F_U(0) = \mathbf{0{,}5}.$
+
+\smallskip
+\textit{Ce r\'esultat est attendu~: la loi normale est sym\'etrique autour de son esp\'erance, donc la probabilit\'e d'\^etre au-dessus de $m$ vaut exactement 50\,\%.}
+
+\medskip
+\textbf{b) $\sigma$ inconnu, $s = 990$.}
+
+On ne peut plus former $U$ car $\sigma$ est inconnu. On utilise la Studentisation~:
+$$T = \frac{\bar{X}-m}{S/\sqrt{n-1}} \sim T(n-1) = T(49).$$
+
+La valeur num\'erique du d\'enominateur est~:
+$$\frac{s}{\sqrt{n-1}} = \frac{990}{\sqrt{49}} = \frac{990}{7} = 141{,}43.$$
+
+$$\P(\bar{X}>13\,500) = \P\!\left(T > \frac{13\,500-13\,500}{141{,}43}\right) = \P(T>0).$$
+
+Par sym\'etrie de la loi de Student~: $\P(T>0) = 0{,}5$.
+
+\begin{methbox}[Convergence]
+$n-1=49>30$ donc $T(49)\appN\N(0;1)$, et $\P(T>0) = \P(U>0) = \mathbf{0{,}5}$.
+\end{methbox}
+
+\textit{Remarque~: les questions a) et b) donnent le m\^eme r\'esultat car l'on cherche la probabilit\'e d'\^etre au-dessus de la moyenne, et toute loi sym\'etrique donne 0,5 en ce point. La distinction $\sigma$ connu/$\sigma$ inconnu affecte la loi (Normale vs Student) mais pas ce calcul particulier.}
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Loi de la moyenne --- $\sigma$ inconnu}
+
+Le CROUS estime que l'affluence hebdomadaire des \'etudiants au restaurant universitaire
+est une variable al\'eatoire $X \sim \N(2\,000\,;\,\sigma)$. Un \'echantillon de 52 semaines
+est choisi~; l'\'ecart-type empirique est $s=500$. Calculer $\P(\bar{X} > 2\,050)$.
+\end{exercice}
+
+\corrsep
+
+$n=52$, $\sigma$ inconnu, $s=500$. Studentisation avec $T \sim T(n-1)=T(51)$~:
+$$T = \frac{\bar{X}-m}{S/\sqrt{n-1}} = \frac{\bar{X}-2\,000}{500/\sqrt{51}} \sim T(51).$$
+
+Centrage~:
+$$\P(\bar{X}>2\,050) = \P\!\left(T > \frac{2\,050-2\,000}{500/\sqrt{51}}\right)
+  = \P\!\left(T > \frac{50\sqrt{51}}{500}\right) = \P(T > 0{,}71).$$
+
+\begin{methbox}[Convergence]
+$\nu = 51>30$~: $T(51)\appN\N(0;1)$.
+$$\P(T>0{,}71) = 1-F_U(0{,}71) = 1 - 0{,}76115 = \mathbf{0{,}23885}.$$
+\end{methbox}
+
+Il y a donc environ 23,9\,\% de chances d'observer une affluence hebdomadaire moyenne sup\'erieure \`a 2\,050 \'etudiants.
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Diff\'erence de VA normales et de proportions}
+
+Une firme sous-traite sa production d'aspirateurs autoguid\'es \`a deux fabricants. Le taux de d\'efectuosit\'e est de 6\,\% chez~$A$ et de 5\,\% chez~$B$. On pr\'el\`eve 500 aspirateurs chez chacun.
+
+\begin{enumerate}
+  \item Quelles sont les lois de probabilit\'e du nombre d'aspirateurs d\'efectueux $X_A$ et $X_B$ dans chaque \'echantillon~?
+  \item Probabilit\'e que $A$ produise au moins 1 aspirateur d\'efectueux de plus que~$B$.
+  \item Probabilit\'e que le \textbf{taux} de d\'efectuosit\'e de $A$ soit sup\'erieur de plus de 2\,\% strictement \`a celui de~$B$.
+\end{enumerate}
+\end{exercice}
+
+\corrsep
+
+\textbf{1) Identification des lois.}
+
+\'Epreuve~: choisir un aspirateur dans l'\'echantillon de $n_i=500$ de l'usine $i$.
+\begin{itemize}
+  \item P1~: ind\'ependance des \'epreuves (anomalies ind\'ependantes). \checkmark
+  \item P2~: deux \'ev\'enements mutuellement exclusifs (d\'efectueux / conforme). \checkmark
+\end{itemize}
+
+$$X_A \sim \B(500\,;\,0{,}06), \qquad X_B \sim \B(500\,;\,0{,}05).$$
+
+\textbf{Convergence~:} $n=500>50$ et $np_A=30>18$, $np_B=25>18$. Convergence vers la normale~:
+$$X_A \appN \N\!\left(np_A\,;\,\sqrt{np_A(1-p_A)}\right) = \N(30\,;\,5{,}31),$$
+$$X_B \appN \N(25\,;\,4{,}87).$$
+
+\medskip
+\textbf{2) Probabilit\'e $\P(X_A - X_B \geq 1)$.}
+
+$X_A$ et $X_B$ suivent des lois normales et sont \textbf{ind\'ependantes}~: leur diff\'erence est normale.
+
+\textbf{Esp\'erance~:} $\E[X_A-X_B] = 30-25 = 5$.
+
+\textbf{Variance~:} $\Var(X_A-X_B) = \Var(X_A)+\Var(X_B) = 5{,}31^2+4{,}87^2 = 28{,}20+23{,}72 = 51{,}92$.
+
+D'o\`u $X_A-X_B \sim \N(5\,;\,7{,}21)$.
+
+$$\P(X_A-X_B \geq 1) = \P\!\left(U \geq \frac{1-5}{7{,}21}\right) = \P(U \geq -0{,}55).$$
+
+Par sym\'etrie de la loi normale~: $\P(U\geq -0{,}55) = \P(U\leq 0{,}55) = F_U(0{,}55) = \mathbf{0{,}70884}$.
+
+Il y a 70,88\,\% de chances que $A$ produise au moins 1 aspirateur d\'efectueux de plus que $B$.
+
+\medskip
+\textbf{3) Loi des proportions et probabilit\'e $\P(F_A - F_B > 0{,}02)$.}
+
+Les proportions empiriques sont $F_i = X_i/n_i$, $i\in\{A,B\}$.
+
+\textbf{Loi de $F_A$~:}
+\begin{align*}
+\E[F_A] &= \E[X_A]/n_A = np_A/n = p_A = 0{,}06. \\
+\Var(F_A) &= \Var(X_A)/n_A^2 = \frac{np_A(1-p_A)}{n^2} = \frac{p_A(1-p_A)}{n} = \frac{0{,}06\times0{,}94}{500} = 0{,}0001128.
+\end{align*}
+$$F_A \sim \N(0{,}06\,;\,0{,}01062) \qquad [\,\sigma_{F_A}=\sqrt{0{,}0001128}\approx 0{,}0106\,].$$
+
+\textbf{Loi de $F_B$~:} de m\^eme, $\sigma_{F_B} = \sqrt{0{,}05\times0{,}95/500} = \sqrt{0{,}000095} \approx 0{,}00975$.
+
+$$F_B \sim \N(0{,}05\,;\,0{,}00975).$$
+
+\textbf{Loi de $F_A-F_B$~:} ($F_A$ et $F_B$ ind\'ependantes car \'echantillons ind\'ependants)
+$$\E[F_A-F_B] = p_A-p_B = 0{,}01.$$
+$$\Var(F_A-F_B) = \Var(F_A)+\Var(F_B) = 0{,}0001128+0{,}000095 = 0{,}0002078.$$
+$$F_A-F_B \sim \N(0{,}01\,;\,0{,}0144) \qquad [\,\sigma=\sqrt{0{,}0002078}\approx 0{,}0144\,].$$
+
+Centrage-r\'eduction~:
+$$\P(F_A-F_B>0{,}02) = \P\!\left(U>\frac{0{,}02-0{,}01}{0{,}0144}\right) = \P(U>0{,}69)
+  = 1-F_U(0{,}69) = 1-0{,}7549 = \mathbf{0{,}2451}.$$
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Diff\'erence de deux moyennes ($\sigma_i$ connus puis inconnus)}
+
+Les habitants de la r\'egion~$A$ ont un revenu moyen de 2\,500~\euro\ et un \'ecart-type de 1\,100~\euro.
+La r\'egion~$B$ enregistre un revenu moyen de 3\,200~\euro\ et un \'ecart-type de 1\,000~\euro.
+Les revenus sont i.i.d. Des \'echantillons de taille $n_A=n_B=62$ sont pr\'elev\'es.
+
+\begin{enumerate}
+  \item Probabilit\'e que le revenu moyen de l'\'echantillon~$B$ exc\`ede celui de l'\'echantillon~$A$ d'au moins 900~\euro.
+  \item M\^eme question si les \'ecarts-types des populations sont inconnus et les \'ecarts-types empiriques valent $s_A=s_B=1\,000$.
+\end{enumerate}
+\end{exercice}
+
+\corrsep
+
+\textbf{Identification.} $X_A \sim \N(2\,500\,;\,1\,100)$, $X_B \sim \N(3\,200\,;\,1\,000)$, i.i.d., ind\'ependantes. Le TCL donne~:
+$$\bar{X}_A \sim \N\!\left(m_A\,;\,\frac{\sigma_A}{\sqrt{n_A}}\right), \qquad
+  \bar{X}_B \sim \N\!\left(m_B\,;\,\frac{\sigma_B}{\sqrt{n_B}}\right).$$
+
+\textbf{1) $\sigma_i$ connus.}
+
+La question~: $\P(\bar{X}_B - \bar{X}_A > 900)$.
+
+Loi de $\bar{X}_B - \bar{X}_A$ (diff\'erence de deux normales ind\'ependantes)~:
+$$\E[\bar{X}_B-\bar{X}_A] = m_B-m_A = 700.$$
+$$\Var(\bar{X}_B-\bar{X}_A) = \frac{\sigma_B^2}{n_B}+\frac{\sigma_A^2}{n_A}
+  = \frac{1\,000^2}{62}+\frac{1\,100^2}{62} = \frac{1\,210\,000}{62}+\frac{1\,000\,000}{62}
+  = 35\,645{,}16.$$
+$$\bar{X}_B-\bar{X}_A \sim \N(700\,;\,188{,}8).$$
+
+Centrage~:
+$$\P(\bar{X}_B-\bar{X}_A>900) = \P\!\left(U > \frac{900-700}{188{,}8}\right)
+  = \P(U>1{,}06) = 1-F_U(1{,}06) = 1-0{,}85543 = \mathbf{0{,}1446}.$$
+
+La probabilit\'e que le revenu moyen de l'\'echantillon $B$ d\'epasse celui de l'\'echantillon $A$ d'au moins 900~\euro{} est de 14,46\,\%.
+
+\medskip
+\textbf{2) $\sigma_A=\sigma_B=\sigma$ inconnus, $s_A=s_B=1\,000$.}
+
+On suppose $\sigma_A=\sigma_B$ (condition n\'ecessaire). Studentisation \`a deux \'echantillons~:
+$$T = \frac{(\bar{X}_B-\bar{X}_A)-(m_B-m_A)}{%
+  \sqrt{\dfrac{1}{n_A}+\dfrac{1}{n_B}}\;\cdot\;
+  \sqrt{\dfrac{n_AS_A^2+n_BS_B^2}{n_A+n_B-2}}} \sim T(n_A+n_B-2)=T(122).$$
+
+Calcul du d\'enominateur num\'erique~:
+$$\sqrt{\frac{1}{62}+\frac{1}{62}} = \sqrt{\frac{2}{62}} = 0{,}1796.$$
+$$\sqrt{\frac{62\times1\,000^2+62\times1\,000^2}{122}} = \sqrt{\frac{124\,000\,000}{122}} = \sqrt{1\,016\,393} \approx 1\,008{,}2.$$
+$$\text{D\'enominateur} = 0{,}1796 \times 1\,008{,}2 \approx 181{,}07.$$
+
+Formalisation~:
+$$\P(\bar{X}_B-\bar{X}_A>900) = \P\!\left(T > \frac{900-700}{181{,}07}\right) = \P(T>1{,}10).$$
+
+\begin{methbox}[Convergence]
+$\nu = 122 > 30$~: $T(122)\appN\N(0;1)$.
+$$\P(T>1{,}10) = 1-F_U(1{,}10) = 1-0{,}86433 = \mathbf{0{,}13567}.$$
+\end{methbox}
+
+\textit{Comparaison~: 14,46\,\% (question 1, $\sigma$ connus) vs 13,57\,\% (question 2, $\sigma$ inconnus). L'\'ecart-type de la population est la valeur exacte~; l'estimation par l'\'ecart-type empirique est l\'eg\`erement moins pr\'ecise mais reste tr\`es proche pour de grands \'echantillons.}
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Loi d'une proportion et diff\'erence de deux proportions}
+
+Deux usines $A$ et $B$ fabriquent des voitures de m\^eme marque. L'usine~$A$ produit 4\,\% de voitures d\'efectueuses~; un concessionnaire re\c{c}oit 600 voitures de~$A$.
+\begin{enumerate}[label=\textbf{\arabic*)}]
+  \item Probabilit\'e de moins de 1\,\% de voitures d\'efectueuses.
+  \item Probabilit\'e de plus de 5\,\% de voitures d\'efectueuses.
+  \item Le concessionnaire commande en plus 500 voitures \`a l'usine~$B$ (taux de d\'efectuosit\'e~: 11\,\%). Probabilit\'e que le taux de d\'efectueux de~$B$ soit strictement sup\'erieur \`a celui de~$A$ de 10 points.
+\end{enumerate}
+\end{exercice}
+
+\corrsep
+
+\textbf{Identification.} Pour l'usine~$A$~: $X_A \sim \B(600\,;\,0{,}04)$, et pour $B$~: $X_B \sim \B(500\,;\,0{,}11)$.
+
+\textbf{Convergence~:}
+\begin{itemize}
+  \item $A$~: $n=600>50$ et $np_A=24>18$ $\Rightarrow$ convergence normale. $F_A = X_A/n_A$.
+  \item $B$~: $n=500>50$ et $np_B=55>18$ $\Rightarrow$ convergence normale. $F_B = X_B/n_B$.
+\end{itemize}
+
+Lois des proportions empiriques~:
+$$F_A \sim \N\!\left(p_A\,;\,\sqrt{\frac{p_Aq_A}{n_A}}\right)
+  = \N\!\left(0{,}04\,;\,\sqrt{\frac{0{,}04\times0{,}96}{600}}\right) = \N(0{,}04\,;\,0{,}00800).$$
+$$F_B \sim \N\!\left(0{,}11\,;\,\sqrt{\frac{0{,}11\times0{,}89}{500}}\right) = \N(0{,}11\,;\,0{,}01399).$$
+
+\medskip
+\textbf{1)} $\P(F_A < 0{,}01)$.
+$$\P(F_A<0{,}01) = \P\!\left(U < \frac{0{,}01-0{,}04}{0{,}00800}\right) = \P(U < -3{,}75)
+  = 1-F_U(3{,}75) = 1-0{,}99991 \approx \mathbf{0}.$$
+
+\textbf{2)} $\P(F_A > 0{,}05)$.
+$$\P(F_A>0{,}05) = \P\!\left(U > \frac{0{,}05-0{,}04}{0{,}00800}\right) = \P(U>1{,}25)
+  = 1-F_U(1{,}25) = 1-0{,}89435 = \mathbf{0{,}10565}.$$
+
+\textbf{3)} $\P(F_B-F_A > 0{,}10)$.
+
+Loi de $F_B-F_A$ (ind\'ependance des deux \'echantillons)~:
+$$\E[F_B-F_A] = p_B-p_A = 0{,}07.$$
+$$\Var(F_B-F_A) = \frac{p_Aq_A}{n_A}+\frac{p_Bq_B}{n_B}
+  = \frac{0{,}04\times0{,}96}{600}+\frac{0{,}11\times0{,}89}{500} = 6{,}4\times10^{-5}+1{,}958\times10^{-4} = 2{,}598\times10^{-4}.$$
+$$F_B-F_A \sim \N(0{,}07\,;\,0{,}01612).$$
+
+$$\P(F_B-F_A>0{,}10) = \P\!\left(U>\frac{0{,}10-0{,}07}{0{,}01612}\right)
+  = \P(U>1{,}861) = 1-F_U(1{,}861) \approx 1-0{,}96686 = \mathbf{0{,}0331}.$$
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Diff\'erence de deux moyennes --- ampoules}
+
+Un fabricant~$A$ annonce une dur\'ee de vie moyenne de 2\,300~h avec $\sigma_A=40$~h~; un fabricant~$B$ annonce 2\,310~h avec $\sigma_B=50$~h. Des \'echantillons de $n=200$ ampoules sont pr\'elev\'es chez chacun. La dur\'ee de vie suit une loi normale.
+
+\begin{enumerate}
+  \item Probabilit\'e que la dur\'ee de vie moyenne des ampoules de~$A$ soit sup\'erieure \`a celle de~$B$ ($\sigma_i$ connus).
+  \item M\^eme question si $\sigma_i$ inconnus, avec $s_A=30$~h et $s_B=40$~h.
+\end{enumerate}
+\end{exercice}
+
+\corrsep
+
+\textbf{Identification.} $X_A\sim\N(2\,300\,;\,40)$, $X_B\sim\N(2\,310\,;\,50)$, $n=n_A=n_B=200$.
+
+$$\bar{X}_A\sim\N\!\left(2\,300\,;\,\frac{40}{\sqrt{200}}\right)=\N(2\,300\,;\,2{,}83),\qquad
+  \bar{X}_B\sim\N(2\,310\,;\,3{,}54).$$
+
+\textbf{1) $\sigma_i$ connus.}
+
+$$\P(\bar{X}_A\geq\bar{X}_B) = \P(\bar{X}_A-\bar{X}_B\geq0).$$
+
+Loi de $\bar{X}_A-\bar{X}_B$~:
+$$\E[\bar{X}_A-\bar{X}_B] = 2\,300-2\,310 = -10.$$
+$$\sigma_{\bar{X}_A-\bar{X}_B} = \sqrt{\frac{\sigma_A^2}{n}+\frac{\sigma_B^2}{n}}
+  = \sqrt{\frac{40^2+50^2}{200}} = \sqrt{\frac{4100}{200}} = \sqrt{20{,}5} = 4{,}528.$$
+$$\bar{X}_A-\bar{X}_B\sim\N(-10\,;\,4{,}528).$$
+
+$$\P(\bar{X}_A-\bar{X}_B\geq 0) = \P\!\left(U\geq\frac{0-(-10)}{4{,}528}\right)
+  = \P(U\geq 2{,}21) = 1-F_U(2{,}21) = 1-0{,}98645 = \mathbf{0{,}01355}.$$
+
+\textbf{2) $\sigma_i$ inconnus, $s_A=30$, $s_B=40$. Hypoth\`ese~: $\sigma_A=\sigma_B$.}
+
+$$T = \frac{(\bar{X}_A-\bar{X}_B)-(m_A-m_B)}{%
+  \sqrt{\dfrac{1}{n_A}+\dfrac{1}{n_B}}\;\cdot\;
+  \sqrt{\dfrac{n_AS_A^2+n_BS_B^2}{n_A+n_B-2}}} \sim T(n_A+n_B-2)=T(398).$$
+
+Calcul du d\'enominateur~:
+$$\sqrt{\frac{1}{200}+\frac{1}{200}} = \sqrt{\frac{2}{200}} = \frac{1}{\sqrt{100}} = 0{,}1.$$
+$$\sqrt{\frac{200\times30^2+200\times40^2}{398}} = \sqrt{\frac{200(900+1\,600)}{398}}
+  = \sqrt{\frac{500\,000}{398}} = \sqrt{1\,256{,}28} = 35{,}44.$$
+$$\text{D\'enominateur} = 0{,}1\times 35{,}44 = 3{,}544.$$
+
+$$\P(\bar{X}_A-\bar{X}_B\geq0) = \P\!\left(T\geq\frac{0-(-10)}{3{,}544}\right)
+  = \P(T\geq2{,}82).$$
+
+\begin{methbox}[Convergence]
+$\nu=398>30$~: $T(398)\appN\N(0;1)$.
+$$\P(T\geq2{,}82) = 1-F_U(2{,}82) = 1-0{,}99767 = \mathbf{0{,}00233}.$$
+\end{methbox}
+
+\textit{La probabilit\'e chute de 1,36\,\% (cas 1, $\sigma$ connus exacts) \`a 0,23\,\% (cas 2, $\sigma$ inconnus, estim\'es par des \'ecart-types empiriques plus petits). Les \'ecart-types empiriques ($s_A=30$, $s_B=40$) sont inf\'erieurs aux vraies valeurs ($\sigma_A=40$, $\sigma_B=50$), ce qui r\'eduit la dispersion estim\'ee et donne un signal statistique plus fort.}
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Loi du Khi-deux --- variance empirique}
+
+Un gouvernement souhaite \'evaluer les in\'egalit\'es de salaires dans le secteur priv\'e. Il pr\'el\`eve un \'echantillon de $n=30$ salari\'es (moyenne~: 1\,700~\euro\,, variance empirique $s^2=1\,000$~\euro$^2$~;
+variance de la population~: $\sigma^2=1\,334{,}81$~\euro$^2$). Il interviendra en faveur des bas salaires si la probabilit\'e que la variance empirique d\'epasse 1\,000~\euro$^2$ est au moins de 20\,\%.
+Le gouvernement interviendra-t-il~?
+\end{exercice}
+
+\corrsep
+
+\textbf{Formulation.} On cherche $\P(S^2 \geq 1\,000)$.
+
+\textbf{Loi de $S^2$.} On suppose la normalit\'e des revenus $X_i$ (n\'ecessaire pour construire~$K$). D'apr\`es le th\'eor\`eme de Fisher~:
+$$K = \frac{nS^2}{\sigma^2} \sim \chi^2(n-1).$$
+
+\begin{alertbox}[Remarque importante sur la normalit\'e]
+Le Th\'eor\`eme Central Limite garantit la normalit\'e de $\bar{X}$, mais \textbf{pas} celle de $S^2$. La construction du khi-deux $K = \sum U_i^2$ n\'ecessite que les $X_i$ eux-m\^emes soient normaux. On suppose donc ici la normalit\'e des revenus individuels.
+\end{alertbox}
+
+\textbf{Calcul.} On transforme la condition~:
+$$\P(S^2\geq1\,000) = \P\!\left(\frac{nS^2}{\sigma^2}\geq\frac{30\times1\,000}{1\,334{,}81}\right)
+  = \P(K\geq22{,}475).$$
+
+$K\sim\chi^2(29)$. Dans la table du khi-deux (ligne $\nu=29$), le fractile 22,475 correspond \`a une probabilit\'e de queue droite de 0,8~:
+
+$$\P(S^2\geq1\,000) = \mathbf{0{,}8}.$$
+
+\textbf{D\'ecision.} $0{,}8 > 0{,}2$ (seuil de 20\,\%)~: le gouvernement \textbf{interviendra} en faveur des bas salaires.
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Loi du Khi-deux --- variance de la population}
+
+Des chercheurs de la NASA observent $n=20$ m\'et\'eorites et mesurent une variance de $s^2=74$~dam$^2$. On suppose que la taille suit une loi normale. Quelle est la probabilit\'e que la variance de la \textbf{population} soit inf\'erieure \`a 107,9~dam$^2$~?
+\end{exercice}
+
+\corrsep
+
+\textbf{Formulation.} On cherche $\P(\sigma^2 \leq 107{,}9)$.
+
+\textbf{Difficult\'e.} La variance de la population $\sigma^2$ est \textbf{al\'eatoire} du point de vue de l'observateur~; $s^2=74$ est la r\'ealisation observ\'ee de~$S^2$.
+
+\textbf{Astuce d'inversion.} On utilise $K = nS^2/\sigma^2 \sim \chi^2(n-1)$, et on exprime l'\'ev\'enement $\{\sigma^2\leq 107{,}9\}$ en termes de $K$~:
+
+$$\sigma^2 \leq 107{,}9
+  \iff \frac{1}{\sigma^2} \geq \frac{1}{107{,}9}
+  \iff \frac{nS^2}{\sigma^2} \geq \frac{nS^2}{107{,}9}
+  \iff K \geq \frac{nS^2}{107{,}9}.$$
+
+On substitue les valeurs observ\'ees $n=20$ et $s^2=74$~:
+$$\P(\sigma^2\leq107{,}9) = \P\!\left(K \geq \frac{20\times74}{107{,}9}\right) = \P(K\geq13{,}716).$$
+
+$K\sim\chi^2(n-1)=\chi^2(19)$. Dans la table (ligne $\nu=19$), le fractile 13,716 correspond \`a $\P=0{,}8$~:
+
+$$\P(\sigma^2\leq107{,}9) = \mathbf{0{,}8}.$$
+
+La taille des m\'et\'eorites a une variance de population inf\'erieure \`a 107,9~dam$^2$ avec une probabilit\'e de 80\,\%.
+
+% ════════════════════════════════════════════════════════════════
+\newpage
+\section{Conseils m\'ethodologiques}
+% ════════════════════════════════════════════════════════════════
+
+\begin{methbox}[D\'emarche g\'en\'erale pour un exercice de distributions d'\'echantillonnage]
+\begin{enumerate}
+  \item \textbf{D\'efinir la variable al\'eatoire} sous-jacente \`a la question.
+  \item \textbf{Distinguer} population (param\`etres exacts~: $m$, $\sigma$, $p$) et \'echantillon (\'ecart-type empirique $s$, proportion observ\'ee $f$, etc.).
+  \item \textbf{D\'eterminer la loi} de la statistique d'int\'er\^et~:
+    \begin{itemize}
+      \item $\sigma$ connu $\Rightarrow$ Normale centr\'ee r\'eduite.
+      \item $\sigma$ inconnu $\Rightarrow$ Student $T(n-1)$ (puis convergence si $n-1>30$).
+      \item Variance $S^2$ $\Rightarrow$ Khi-deux $\chi^2(n-1)$ (normalit\'e de la population requise).
+    \end{itemize}
+  \item \textbf{Formaliser} la question en in\'egalit\'e ($\P(\cdot > a)$, etc.).
+  \item \textbf{Centrer-r\'eduire} pour se ramener \`a une variable pivot ($U$, $T$, $K$, $F$).
+  \item \textbf{Lire} la probabilit\'e dans la table appropri\'ee.
+\end{enumerate}
+\end{methbox}
+
+\begin{methbox}[Identifier $\sigma$ connu vs $\sigma$ inconnu dans l'\'enonc\'e]
+\begin{itemize}
+  \item $\sigma$ \textbf{connu}~: l'\'enonc\'e dit <<~\'ecart-type de la population est $\sigma$~>> ou <<~\'ecart-type historique~>>.
+  \item $\sigma$ \textbf{inconnu}~: l'\'enonc\'e dit <<~\'ecart-type \textbf{empirique}~>> ou <<~\'ecart-type \textbf{mesur\'e sur l'\'echantillon}~>>.
+  \item En cas de doute~: si la valeur d'\'ecart-type est issue d'une enqu\^ete ou d'une mesure, c'est l'\'ecart-type empirique~; si elle est donn\'ee comme un param\`etre fixe de la population, c'est $\sigma$.
+\end{itemize}
+\end{methbox}
+
+\begin{methbox}[TCL et distributions d'\'echantillonnage]
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\linewidth}{lX}
+\toprule
+\textbf{Statistique} & \textbf{Application du TCL} \\
+\midrule
+$\bar{X}$ & $\bar{X}\sim\N(m\,;\,\sigma/\sqrt{n})$ si $X_i$ normaux, ou par TCL si $n$ grand. \\
+$F$ & $F\sim\N(p\,;\,\sqrt{pq/n})$ par convergence binomiale (si $np>18$, $n>50$). \\
+$S^2$ & Pas de TCL utile~: on utilise $K=nS^2/\sigma^2\sim\chi^2(n-1)$, qui \textbf{n\'ecessite} la normalit\'e des $X_i$. \\
+\bottomrule
+\end{tabularx}
+\end{methbox}
+
+% ════════════════════════════════════════════════════════════════
+\newpage
+\section{Pi\`eges classiques}
+% ════════════════════════════════════════════════════════════════
+
+\begin{alertbox}[Pi\`ege 1 --- Confondre $\sigma$ (population) et $s$ (\'echantillon)]
+Un \'enonc\'e peut donner les deux valeurs. Par exemple~: <<~la variance de la population est $\sigma^2=1\,334{,}81$~\euro$^2$ et la variance empirique est $s^2=1\,000$~\euro$^2$~>>. La variable de khi-deux utilise $\sigma^2$ (population)~:
+$$K = \frac{nS^2}{\sigma^2} \sim \chi^2(n-1).$$
+Utiliser $s^2$ au num\'erateur et $s^2$ au d\'enominateur est une erreur~: $K$ serait toujours \'egal \`a~$n$.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 2 --- Oublier la normalit\'e pour le khi-deux]
+Le TCL garantit la normalit\'e de $\bar{X}$ (sum = normale en grande taille), mais \textbf{pas} la normalit\'e de $S^2$. La construction $K=nS^2/\sigma^2\sim\chi^2(n-1)$ n\'ecessite que les $X_i$ eux-m\^emes suivent une loi normale. Sans cette hypoth\`ese, le khi-deux n'est pas valide pour~$S^2$.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 3 --- D\'enominateur de la statistique de Student]
+$$T = \frac{\bar{X}-m}{S/\sqrt{n-1}} \neq \frac{\bar{X}-m}{S/\sqrt{n}}.$$
+Le d\'enominateur est $S/\sqrt{n-1}$ (ou \'equivalemment $\hat{S}/\sqrt{n}$, avec $\hat{S}^2=nS^2/(n-1)$).\\
+\textit{M\'emoire~: la khi-deux a degr\'e $n-1$, donc le Student a degr\'e $n-1$, donc le d\'enominateur contient $\sqrt{n-1}$.}
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 4 --- Hypoth\`ese $\sigma_1=\sigma_2$ oubli\'ee pour le Student \`a 2 \'echantillons]
+La formule de Student \`a deux \'echantillons
+$$T \sim T(n_1+n_2-2)$$
+n'est valide que si $\sigma_1=\sigma_2$ (\'ecarts-types \'egaux). Sans cette hypoth\`ese, on ne peut pas fusionner les deux statistiques de khi-deux. En pratique, cette \'egalit\'e se teste via Fisher (Chapitre~12).
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 5 --- Inversion de l'\'ev\'enement pour la variance de la population]
+Dans l'exercice~8, la difficult\'e est d'exprimer $\{\sigma^2\leq c\}$ en fonction de $K=nS^2/\sigma^2$. L'in\'egalit\'e \textbf{s'inverse} quand on multiplie par $1/\sigma^2$~:
+$$\sigma^2 \leq c \iff \frac{1}{\sigma^2}\geq\frac{1}{c} \iff \frac{nS^2}{\sigma^2}\geq\frac{nS^2}{c} = K \geq \frac{ns^2}{c}.$$
+Ne pas confondre avec $\P(S^2\geq c) = \P(K\geq nc/\sigma^2)$, o\`u l'in\'egalit\'e ne s'inverse pas.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 6 --- Convergence Student \`a deux \'echantillons]
+Le degr\'e de libert\'e est $\nu = n_1+n_2-2$, pas $\min(n_1,n_2)-1$. La convergence vers la normale s'applique quand $\nu>30$, c'est-\`a-dire \`a partir de $n_1+n_2>32$ (soit deux \'echantillons de taille modeste), ce qui est souvent satisfait en pratique.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 7 --- Variance de la somme/diff\'erence (rappel)]
+Pour $\bar{X}_A-\bar{X}_B$ (\'echantillons \textbf{ind\'ependants})~:
+$$\Var(\bar{X}_A-\bar{X}_B) = \Var(\bar{X}_A)+\Var(\bar{X}_B) = \frac{\sigma_A^2}{n_A}+\frac{\sigma_B^2}{n_B}.$$
+L'erreur classique est d'\'ecrire $\Var(\bar{X}_A-\bar{X}_B) = \Var(\bar{X}_A)-\Var(\bar{X}_B)$ (n\'egation de la variance)~: la variance est toujours positive et la variance de la diff\'erence est la \textbf{somme} des variances (sous ind\'ependance).
+\end{alertbox}
+
+% ════════════════════════════════════════════════════════════════
+\newpage
+\section*{Fiche de synth\`ese finale}
+\addcontentsline{toc}{section}{Fiche de synth\`ese finale}
+% ════════════════════════════════════════════════════════════════
+
+\begin{defbox}[Arbre de d\'ecision --- Quelle statistique et quelle loi~?]
+\centering
+\renewcommand{\arraystretch}{1.8}
+\small\sffamily
+\begin{tabularx}{\linewidth}{@{}p{2.5cm} p{2.5cm} p{4.2cm} X@{}}
+\toprule
+\textbf{Contexte} & \textbf{Information} & \textbf{Statistique pivot} & \textbf{Loi} \\
+\midrule
+\multirow{2}{2.5cm}{1 \'echantillon\\(moyenne)} &
+  $\sigma$ connu &
+  $U = \dfrac{\bar{X}-m}{\sigma/\sqrt{n}}$ &
+  $\N(0;1)$ \\[4pt]
+& $\sigma$ inconnu &
+  $T = \dfrac{\bar{X}-m}{S/\sqrt{n-1}}$ &
+  $T(n-1)$ \\
+\midrule
+1 \'echantillon (proportion) &
+  $n>50$, $np>18$ &
+  $U = \dfrac{F-p}{\sqrt{pq/n}}$ &
+  $\N(0;1)$ \\
+\midrule
+1 \'echantillon (variance) &
+  $X_i$ normaux &
+  $K = \dfrac{nS^2}{\sigma^2}$ &
+  $\chi^2(n-1)$ \\
+\midrule
+\multirow{2}{2.5cm}{2 \'echantillons\\(moyennes)} &
+  $\sigma_i$ connus &
+  $U = \dfrac{(\bar{X}_1-\bar{X}_2)-(m_1-m_2)}{\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}}$ &
+  $\N(0;1)$ \\[4pt]
+& $\sigma_1=\sigma_2$ inconnus &
+  $T = \dfrac{(\bar{X}_1-\bar{X}_2)-(m_1-m_2)}{%
+    \sqrt{(1/n_1+1/n_2)\cdot(n_1S_1^2+n_2S_2^2)/(n_1+n_2-2)}}$ &
+  $T(n_1+n_2-2)$ \\
+\midrule
+2 \'echantillons (proportions) &
+  $n_i>50$, $n_ip_i>18$ &
+  $U = \dfrac{(F_1-F_2)-(p_1-p_2)}{\sqrt{p_1q_1/n_1+p_2q_2/n_2}}$ &
+  $\N(0;1)$ \\
+\midrule
+2 \'echantillons (variances) &
+  $X_i$ normaux &
+  $\hat{S}_1^2\sigma_2^2/(\hat{S}_2^2\sigma_1^2)$ &
+  $F(n_1-1;n_2-1)$ \\
+\bottomrule
+\end{tabularx}
+\end{defbox}
+
+\begin{methbox}[Quantiles \`a retenir (convergence Student vers Normale, $\nu>30$)]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcccc}
+\toprule
+Risque bilateral $P$ & 10\,\% & 5\,\% & 2\,\% & 1\,\% \\
+\midrule
+Quantile $u_{1-P/2}$ & 1,6449 & 1,96 & 2,3263 & 2,5758 \\
+\bottomrule
+\end{tabular}
+\end{methbox}
+
+\begin{methbox}[Formulaire --- D\'enominateurs num\'eriques des statistiques de Student]
+\begin{align*}
+\text{1 \'echantillon~:} &\quad \frac{S}{\sqrt{n-1}} = \frac{\hat{S}}{\sqrt{n}}
+  \qquad [\,\hat{S}^2 = nS^2/(n-1)\,] \\[6pt]
+\text{2 \'echantillons \'egaux ($n_1=n_2=n$)~:} &\quad
+  \sqrt{\frac{2}{n}}\cdot\sqrt{\frac{S_1^2+S_2^2}{2}\cdot\frac{n}{n-1}} \\[6pt]
+\text{2 \'echantillons quelconques~:} &\quad
+  \sqrt{\frac{1}{n_1}+\frac{1}{n_2}}\cdot
+  \sqrt{\frac{n_1S_1^2+n_2S_2^2}{n_1+n_2-2}}
+\end{align*}
+\end{methbox}
+
+\end{document}

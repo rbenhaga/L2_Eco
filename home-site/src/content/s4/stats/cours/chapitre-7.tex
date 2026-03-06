@@ -1,0 +1,907 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+% ENCODAGE & POLICES
+% ============================================================
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\usepackage[scaled=0.88]{helvet}
+\usepackage{microtype}
+
+% ============================================================
+% MISE EN PAGE
+% ============================================================
+\usepackage[
+  top=2.8cm, bottom=2.8cm,
+  left=2.5cm, right=2.5cm,
+  headheight=22pt
+]{geometry}
+\usepackage{parskip}
+\usepackage{setspace}
+\setstretch{1.15}
+
+% ============================================================
+% COULEURS
+% ============================================================
+\usepackage[dvipsnames,svgnames]{xcolor}
+\definecolor{deepblue}{HTML}{1D3557}
+\definecolor{accent}{HTML}{457B9D}
+\definecolor{lightblue}{HTML}{A8DADC}
+\definecolor{warmgray}{HTML}{F1FAEE}
+\definecolor{alertred}{HTML}{E63946}
+\definecolor{softgreen}{HTML}{2D6A4F}
+\definecolor{lightgreen}{HTML}{D8F3DC}
+\definecolor{lightyellow}{HTML}{FFF8E7}
+\definecolor{lightred}{HTML}{FFE8E8}
+\definecolor{textmain}{HTML}{2B2D42}
+\definecolor{textlight}{HTML}{6C757D}
+\definecolor{violetdark}{HTML}{4A0E8F}
+\definecolor{violetlight}{HTML}{EDE7F6}
+
+% ============================================================
+% EN-TÊTE & PIED DE PAGE
+% ============================================================
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{lightblue}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\small\sffamily\color{textlight}Chapitre 7}
+\fancyhead[R]{\small\sffamily\color{textlight}Convergence en loi}
+\fancyfoot[C]{\small\sffamily\color{textlight}\thepage\ /\ \pageref{LastPage}}
+
+% ============================================================
+% TITRES
+% ============================================================
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\sffamily\color{deepblue}}
+  {\thesection.}{0.6em}{}
+  [\vspace{-0.3em}{\color{lightblue}\rule{\textwidth}{1.5pt}}]
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\sffamily\color{accent}}
+  {\thesubsection.}{0.5em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{textmain}}
+  {\thesubsubsection.}{0.5em}{}
+
+\titlespacing*{\section}{0pt}{2em}{1em}
+\titlespacing*{\subsection}{0pt}{1.5em}{0.6em}
+\titlespacing*{\subsubsection}{0pt}{1em}{0.4em}
+
+% ============================================================
+% BOÎTES TCOLORBOX
+% ============================================================
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{defbox}[1][]{%
+  enhanced, breakable,
+  colback=warmgray, colframe=deepblue,
+  boxrule=0pt, leftrule=3pt,
+  arc=0pt, outer arc=0pt,
+  fonttitle=\bfseries\sffamily\color{deepblue},
+  title={#1},
+  top=8pt, bottom=8pt, left=12pt, right=12pt,
+  before skip=10pt, after skip=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+}
+
+\newtcolorbox{thmbox}[1][]{%
+  enhanced, breakable,
+  colback=white, colframe=accent,
+  boxrule=0.6pt, arc=3pt, outer arc=3pt,
+  fonttitle=\bfseries\sffamily\color{accent},
+  title={#1},
+  top=8pt, bottom=8pt, left=12pt, right=12pt,
+  before skip=10pt, after skip=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+}
+
+\newtcolorbox{methbox}[1][]{%
+  enhanced, breakable,
+  colback=lightgreen, colframe=softgreen,
+  boxrule=0pt, leftrule=3pt,
+  arc=0pt, outer arc=0pt,
+  fonttitle=\bfseries\sffamily\color{softgreen},
+  title={#1},
+  top=8pt, bottom=8pt, left=12pt, right=12pt,
+  before skip=10pt, after skip=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+}
+
+\newtcolorbox{alertbox}[1][]{%
+  enhanced, breakable,
+  colback=lightred, colframe=alertred,
+  boxrule=0pt, leftrule=3pt,
+  arc=0pt, outer arc=0pt,
+  fonttitle=\bfseries\sffamily\color{alertred},
+  title={#1},
+  top=8pt, bottom=8pt, left=12pt, right=12pt,
+  before skip=10pt, after skip=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+}
+
+\newtcolorbox{exbox}[1][]{%
+  enhanced, breakable,
+  colback=lightyellow, colframe=orange!60!yellow,
+  boxrule=0pt, leftrule=3pt,
+  arc=0pt, outer arc=0pt,
+  fonttitle=\bfseries\sffamily\color{orange!70!black},
+  title={#1},
+  top=8pt, bottom=8pt, left=12pt, right=12pt,
+  before skip=10pt, after skip=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+}
+
+% Boîte violet pour les éléments de démonstration
+\newtcolorbox{demobox}[1][]{%
+  enhanced, breakable,
+  colback=violetlight, colframe=violetdark,
+  boxrule=0pt, leftrule=3pt,
+  arc=0pt, outer arc=0pt,
+  fonttitle=\bfseries\sffamily\color{violetdark},
+  title={#1},
+  top=8pt, bottom=8pt, left=12pt, right=12pt,
+  before skip=10pt, after skip=10pt,
+  toptitle=4pt, bottomtitle=4pt,
+}
+
+% ============================================================
+% MATHS
+% ============================================================
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+
+% ============================================================
+% TABLEAUX & LISTES
+% ============================================================
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.2em, label={\color{accent}\textbullet}, itemsep=3pt}
+\setlist[enumerate]{leftmargin=1.5em, itemsep=3pt}
+
+% ============================================================
+% LIENS
+% ============================================================
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  urlcolor=accent,
+  pdftitle={Chapitre 7 -- Convergence en loi},
+}
+
+% ============================================================
+% COMMANDES PERSONNALISÉES
+% ============================================================
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\Po}{\mathcal{P}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\xrightarrowD}{\xrightarrow{\;\mathcal{L}\;}}
+\newcommand{\approxN}{\approxN}
+
+% ============================================================
+\begin{document}
+
+% ============================================================
+% PAGE DE TITRE
+% ============================================================
+\thispagestyle{empty}
+\begin{center}
+\vspace*{4cm}
+
+{\fontsize{72}{80}\selectfont\sffamily\bfseries\color{deepblue}7}
+
+\vspace{0.5cm}
+{\color{lightblue}\rule{8cm}{2pt}}
+\vspace{0.6cm}
+
+{\LARGE\sffamily\bfseries\color{deepblue}Convergence en loi}
+
+\vspace{1.5cm}
+
+{\large\sffamily\color{textlight}%
+$\mathcal{B}(n;p) \to \mathcal{P}(\lambda)$\quad$\cdot$\quad
+$\mathcal{B}(n;p) \to \mathcal{N}$\quad$\cdot$\quad
+$\mathcal{P}(\lambda) \to \mathcal{N}$}
+
+\vspace{2.5cm}
+
+{\sffamily\color{textlight}Cours complet avec exercices corrig\'es -- L2 \'Economie\\[0.3cm]
+Statistiques -- Semestre 2}
+
+\vfill
+
+{\small\sffamily\color{textlight}\today}
+\end{center}
+
+\newpage
+
+% ============================================================
+% TABLE DES MATIÈRES
+% ============================================================
+\thispagestyle{empty}
+{\hypersetup{linkcolor=textmain}
+\tableofcontents}
+\newpage
+
+% ============================================================
+% INTRODUCTION
+% ============================================================
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+Ce chapitre est consacr\'e aux \textbf{approximations de lois de probabilit\'e} par d'autres lois, lorsque les param\`etres tendent vers des valeurs limites. Ces approximations sont fondamentales en statistique appliqu\'ee, car elles permettent de remplacer des calculs exacts (souvent inextricables pour de grandes valeurs de $n$ ou $\lambda$) par des calculs approch\'es via la loi normale, dont les tables sont universellement disponibles.
+
+Trois convergences sont au programme~:
+\begin{enumerate}
+  \item $\mathcal{B}(n;p) \to \mathcal{P}(\lambda)$ \quad lorsque $n\to+\infty$, $p\to 0$ et $np\to\lambda$ (\'ev\'enements \textbf{rares}).
+  \item $\mathcal{B}(n;p) \to \mathcal{N}$ \quad lorsque $n$ est grand et $np$ n'est pas n\'egligeable (\'ev\'enements \textbf{fr\'equents}).
+  \item $\mathcal{P}(\lambda) \to \mathcal{N}$ \quad lorsque $\lambda\to+\infty$ (fr\'equence d'occurrence \'elev\'ee).
+\end{enumerate}
+
+\begin{thmbox}[Fiche de synth\`ese des convergences]
+\renewcommand{\arraystretch}{1.8}
+\begin{tabularx}{\linewidth}{lXl}
+\toprule
+\textbf{Convergence} & \textbf{Conditions (th\'eoriques)} & \textbf{Conditions (pratiques)} \\
+\midrule
+$\mathcal{B}(n;p) \to \mathcal{P}(np)$ &
+  $n\to+\infty$, $p\to 0$, $np\to\lambda$ &
+  $n > 50$,\; $p < 10\,\%$,\; $np < 18$ \\
+$\mathcal{B}(n;p) \to \mathcal{N}\!\left(np;\sqrt{np(1-p)}\right)$ &
+  $n\to+\infty$, $p$ fix\'e &
+  $n > 50$,\; $np > 18$ \\
+$\mathcal{P}(\lambda) \to \mathcal{N}\!\left(\lambda;\sqrt{\lambda}\right)$ &
+  $\lambda\to+\infty$ &
+  $\lambda > 18$ \\
+\bottomrule
+\end{tabularx}
+\end{thmbox}
+
+% ============================================================
+% SECTION 1 : NOTION DE CONVERGENCE EN LOI
+% ============================================================
+\section{Notion de convergence en loi}
+
+\subsection{D\'efinition formelle}
+
+\begin{defbox}[D\'efinition -- Convergence en loi (convergence en distribution)]
+Soit $(X_n)_{n\geq 1}$ une suite de variables al\'eatoires et $X$ une variable al\'eatoire. On dit que $(X_n)$ \textbf{converge en loi vers $X$}, et on note :
+$$X_n \xrightarrow{\;\mathcal{L}\;} X \qquad\text{ou}\qquad X_n \xrightarrow{\;(d)\;} X,$$
+si pour tout point $x$ de continuit\'e de la fonction de r\'epartition $F_X$ :
+$$\lim_{n\to+\infty} F_{X_n}(x) = F_X(x).$$
+\end{defbox}
+
+\textbf{Interpr\'etation.} Converger en loi signifie que les fonctions de r\'epartition convergent point \`a point. Concr\`etement, pour $n$ assez grand, les probabilit\'es calcul\'ees avec la loi de $X_n$ sont bien approch\'ees par les probabilit\'es calcul\'ees avec la loi de $X$.
+
+\subsection{Outil : fonctions g\'en\'eratrices et fonctions caract\'eristiques}
+
+La m\'ethode standard pour prouver une convergence en loi consiste \`a montrer la convergence des \textbf{fonctions g\'en\'eratrices} (pour les lois discr\`etes) ou des \textbf{fonctions caract\'eristiques} (en g\'en\'eral).
+
+\begin{defbox}[D\'efinition -- Fonction g\'en\'eratrice des probabilit\'es]
+Pour une variable discr\`ete $X$ \`a valeurs dans $\mathbb{N}$, la \textbf{fonction g\'en\'eratrice} est :
+$$G_X(z) = \E\!\left[z^X\right] = \sum_{k=0}^{+\infty} \P(X=k)\,z^k, \qquad z\in[-1;1].$$
+\textbf{Propri\'et\'e cl\'e :} si $G_{X_n}(z) \to G_X(z)$ pour tout $z$, alors $X_n \xrightarrow{\mathcal{L}} X$.
+\end{defbox}
+
+\begin{defbox}[D\'efinition -- Fonction caract\'eristique]
+Pour une variable $X$ quelconque, la \textbf{fonction caract\'eristique} est :
+$$\phi_X(t) = \E\!\left[e^{\,\mathrm{i}\,tX}\right], \qquad t\in\R.$$
+\textbf{Th\'eor\`eme de L\'evy :} $X_n \xrightarrow{\mathcal{L}} X$ si et seulement si $\phi_{X_n}(t) \to \phi_X(t)$ pour tout $t\in\R$.
+\end{defbox}
+
+% ============================================================
+% SECTION 2 : BINOMIALE → POISSON
+% ============================================================
+\section{Convergence de la loi Binomiale vers la loi de Poisson}
+
+\subsection{\'Enonc\'e du th\'eor\`eme}
+
+\begin{thmbox}[Th\'eor\`eme de Poisson (loi des \'ev\'enements rares)]
+\textbf{Hypoth\`eses :} $X_n \sim \mathcal{B}(n;p_n)$ avec $n\to+\infty$, $p_n\to 0$, et $np_n \to \lambda > 0$.
+
+\textbf{R\'esultat :}
+$$X_n \xrightarrow{\;\mathcal{L}\;} X \sim \mathcal{P}(\lambda).$$
+En pratique (conditions suffisantes) :
+$$n > 50, \qquad p < 10\,\%, \qquad np < 18.$$
+L'approximation donne $\mathcal{B}(n;p) \approx \mathcal{P}(\lambda)$ avec $\lambda = np$.
+\end{thmbox}
+
+\subsection{D\'emonstration par les fonctions g\'en\'eratrices}
+
+\begin{demobox}[\'El\'ements de d\'emonstration]
+La fonction g\'en\'eratrice de $X_n \sim \mathcal{B}(n;p_n)$ est :
+$$G_{X_n}(z) = \left(1 - p_n + p_n z\right)^n = \left(1 + \frac{\lambda_n(z-1)}{n}\right)^n, \qquad \lambda_n = np_n.$$
+Quand $n\to+\infty$ avec $\lambda_n \to \lambda$ :
+$$G_{X_n}(z) = \left(1 + \frac{\lambda_n(z-1)}{n}\right)^n \xrightarrow{n\to+\infty} e^{\,\lambda(z-1)}.$$
+Or, la fonction g\'en\'eratrice de $\mathcal{P}(\lambda)$ est pr\'ecis\'ement $G(z) = e^{\lambda(z-1)}$.
+
+Comme $G_{X_n}(z) \to G(z)$ pour tout $z$, on conclut que $X_n \xrightarrow{\mathcal{L}} \mathcal{P}(\lambda)$.\hfill$\square$
+\end{demobox}
+
+\textbf{Interpr\'etation.} On peut v\'erifier terme \`a terme que $\binom{n}{k}p_n^k(1-p_n)^{n-k} \to e^{-\lambda}\lambda^k/k!$ quand $n\to\infty$, $p_n=\lambda/n$ :
+\begin{align*}
+\binom{n}{k}p_n^k(1-p_n)^{n-k}
+&= \frac{n(n-1)\cdots(n-k+1)}{k!} \cdot \frac{\lambda^k}{n^k}\cdot\left(1-\frac{\lambda}{n}\right)^{n-k}\\[4pt]
+&\xrightarrow{n\to\infty} \frac{1}{k!}\cdot \lambda^k \cdot e^{-\lambda}
+= \frac{e^{-\lambda}\lambda^k}{k!}.
+\end{align*}
+
+\subsection{Quand utiliser l'approximation de Poisson ?}
+
+\begin{methbox}[R\`egle de d\'ecision -- Binomiale vers Poisson]
+\begin{enumerate}
+  \item V\'erifier que $n > 50$ \textbf{et} $p < 0{,}10$ \textbf{et} $np < 18$.
+  \item Poser $\lambda = np$.
+  \item Remplacer $\mathcal{B}(n;p)$ par $\mathcal{P}(\lambda)$.
+  \item Lire les probabilit\'es dans la \textbf{Table de Poisson} (table 16/18 du cours).
+\end{enumerate}
+La formule exacte de Poisson est~: $\displaystyle\P(X=k) = \frac{e^{-\lambda}\lambda^k}{k!}$.
+\end{methbox}
+
+% ============================================================
+% SECTION 3 : BINOMIALE → NORMALE
+% ============================================================
+\section{Convergence de la loi Binomiale vers la loi Normale}
+
+\subsection{Th\'eor\`eme Central Limite (cas Binomial)}
+
+\begin{thmbox}[Th\'eor\`eme Central Limite -- Cas $\mathcal{B}(n;p)$]
+\textbf{Hypoth\`eses :} $X \sim \mathcal{B}(n;p)$ avec $n$ grand et $p$ fix\'e.
+
+\textbf{R\'esultat :}
+$$\frac{X - np}{\sqrt{np(1-p)}} \xrightarrow{\;\mathcal{L}\;} U \sim \mathcal{N}(0;1).$$
+Autrement dit, en pratique (avec les conditions suffisantes $n>50$ et $np>18$) :
+$$\boxed{X \approxN \mathcal{N}\!\left(m = np\;;\;\sigma = \sqrt{np(1-p)}\right).}$$
+\end{thmbox}
+
+\subsection{Intuition et d\'emonstration}
+
+\begin{demobox}[Esquisse de d\'emonstration -- Via le TCL g\'en\'eral]
+Soit $X \sim \mathcal{B}(n;p)$. On peut \'ecrire $X = X_1 + \cdots + X_n$ o\`u les $X_i$ sont i.i.d. de Bernoulli $\mathcal{B}(1;p)$, avec $\E[X_i]=p$ et $\Var(X_i)=p(1-p)$.
+
+Par le \textbf{Th\'eor\`eme Central Limite} (Lindeberg-L\'evy)~: si $(X_i)$ est une suite i.i.d. avec $\E[X_i]=\mu$ et $\Var(X_i)=\sigma^2<+\infty$, alors~:
+$$\frac{S_n - n\mu}{\sigma\sqrt{n}} \xrightarrow{\;\mathcal{L}\;} \mathcal{N}(0;1).$$
+Ici, $S_n = X$, $n\mu = np$, $\sigma\sqrt{n}=\sqrt{np(1-p)}$, d'o\`u le r\'esultat. \hfill$\square$
+\end{demobox}
+
+\subsection{Quand utiliser l'approximation normale pour Binomiale ?}
+
+\begin{methbox}[R\`egle de d\'ecision -- Binomiale vers Normale]
+\begin{enumerate}
+  \item V\'erifier que $n > 50$ \textbf{et} $np > 18$.
+  \item Calculer $m = np$ et $\sigma = \sqrt{np(1-p)}$.
+  \item Standardiser~: $U = \dfrac{X - m}{\sigma} \sim \mathcal{N}(0;1)$.
+  \item Lire les probabilit\'es dans la \textbf{Table de la loi normale}.
+\end{enumerate}
+\end{methbox}
+
+\subsection{Correction de continuit\'e}
+
+\begin{alertbox}[Correction de continuit\'e (compl\'ement de rigueur)]
+La loi binomiale est \textbf{discr\`ete} ($X$ prend des valeurs enti\`eres) tandis que la loi normale est \textbf{continue}. Une approximation plus pr\'ecise consiste \`a appliquer la \textbf{correction de continuit\'e de Yates}, qui consiste \`a d\'ecaler les bornes de $\pm\,0{,}5$~:
+
+$$\P(X \leq k) \approx \P\!\left(Y \leq k + 0{,}5\right) \qquad Y\sim\mathcal{N}(np;\sqrt{np(1-p)}).$$
+$$\P(X = k) \approx \P\!\left(k - 0{,}5 \leq Y \leq k + 0{,}5\right).$$
+
+\textbf{Au niveau L2}, cette correction n'est g\'en\'eralement pas exig\'ee sauf mention expresse. Les calculs du cours s'en passent. Elle am\'eliore cependant l'approximation pour des $n$ mod\'er\'es.
+\end{alertbox}
+
+% ============================================================
+% SECTION 4 : POISSON → NORMALE
+% ============================================================
+\section{Convergence de la loi de Poisson vers la loi Normale}
+
+\subsection{\'Enonc\'e du th\'eor\`eme}
+
+\begin{thmbox}[Convergence $\mathcal{P}(\lambda) \to \mathcal{N}(\lambda;\sqrt{\lambda})$]
+\textbf{Hypoth\`ese :} $X \sim \mathcal{P}(\lambda)$ avec $\lambda$ grand.
+
+\textbf{R\'esultat :}
+$$\frac{X - \lambda}{\sqrt{\lambda}} \xrightarrow[\lambda\to+\infty]{\;\mathcal{L}\;} \mathcal{N}(0;1).$$
+En pratique ($\lambda > 18$) :
+$$\boxed{X \approxN \mathcal{N}\!\left(m = \lambda\;;\;\sigma = \sqrt{\lambda}\right).}$$
+\end{thmbox}
+
+\subsection{Justification}
+
+\begin{demobox}[Esquisse de d\'emonstration]
+Si $X \sim \mathcal{P}(\lambda)$ avec $\lambda$ entier, on peut \'ecrire $X = X_1 + \cdots + X_\lambda$ o\`u les $X_i$ sont i.i.d. $\sim \mathcal{P}(1)$ (par additivit\'e de Poisson).
+
+Comme $\E[X_i]=1$ et $\Var(X_i)=1$, le TCL donne~:
+$$\frac{X - \lambda}{\sqrt{\lambda}} = \frac{\sum_{i=1}^\lambda X_i - \lambda}{\sqrt{\lambda}} \xrightarrow{\;\mathcal{L}\;} \mathcal{N}(0;1). \qquad\square$$
+
+Plus g\'en\'eralement (pour $\lambda$ r\'eel), la d\'emonstration passe par les fonctions caract\'eristiques~: $\phi_X(t) = e^{\lambda(e^{\mathrm{i}t}-1)}$, et on montre que $\phi_{(X-\lambda)/\sqrt{\lambda}}(t)\to e^{-t^2/2}$.
+\end{demobox}
+
+\subsection{Additivit\'e de la loi de Poisson (rappel utile)}
+
+\begin{thmbox}[Additivit\'e de Poisson]
+Si $X_1 \sim \mathcal{P}(\lambda_1)$ et $X_2 \sim \mathcal{P}(\lambda_2)$ sont \textbf{ind\'ependantes}, alors~:
+$$X_1 + X_2 \sim \mathcal{P}(\lambda_1 + \lambda_2).$$
+Plus g\'en\'eralement, si $X_i \sim \mathcal{P}(\lambda_i)$ sont mutuellement ind\'ependantes~:
+$$\sum_{i=1}^n X_i \sim \mathcal{P}\!\left(\sum_{i=1}^n \lambda_i\right).$$
+Cette propri\'et\'e est fr\'equemment utilis\'ee pour changer l'\'echelle de temps ou agr\'eger des processus de Poisson.
+\end{thmbox}
+
+% ============================================================
+% SECTION 5 : DÉMARCHE STANDARD
+% ============================================================
+\section{D\'emarche standard d'identification et d'approximation}
+
+\begin{methbox}[M\'ethode -- Identifier la loi et l'approximation]
+Face \`a une variable al\'eatoire discr\`ete~:
+\begin{enumerate}
+  \item \textbf{Identifier la loi exacte}~: recenser les \'epreuves, v\'erifier l'ind\'ependance (P1) et la dichotomie (P2). Conclure \`a $\mathcal{B}(n;p)$ ou $\mathcal{P}(\lambda)$ selon le contexte.
+
+  \item \textbf{V\'erifier les conditions de convergence}~:
+  \begin{center}
+  \begin{tabular}{lll}
+  \toprule
+  Loi exacte & Conditions & Loi approch\'ee \\
+  \midrule
+  $\mathcal{B}(n;p)$ & $n\leq 50$ ou $p\geq 10\,\%$ ou $np\geq 18$ & Pas d'approximation \\
+  $\mathcal{B}(n;p)$ & $n>50$, $p<10\,\%$, $np<18$ & $\mathcal{P}(np)$ \\
+  $\mathcal{B}(n;p)$ & $n>50$, $np>18$ & $\mathcal{N}(np;\sqrt{np(1-p)})$ \\
+  $\mathcal{P}(\lambda)$ & $\lambda > 18$ & $\mathcal{N}(\lambda;\sqrt{\lambda})$ \\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+
+  \item \textbf{Calculer les param\`etres} de la loi approch\'ee ($m$, $\sigma$).
+
+  \item \textbf{Centrer et r\'eduire} pour se ramener \`a $\mathcal{N}(0;1)$~:
+  $$U = \frac{X - m}{\sigma}.$$
+
+  \item \textbf{Lire la probabilit\'e} dans la table de la loi normale centr\'ee r\'eduite.
+\end{enumerate}
+\end{methbox}
+
+\begin{alertbox}[Ordre de priorit\'e des convergences]
+Quand $\mathcal{B}(n;p)$ v\'erifie \`a la fois les conditions Poisson ($p<10\,\%$, $np<18$) et normale ($np>18$), les conditions sont \textbf{incompatibles}~: $np<18$ et $np>18$ ne peuvent pas \^etre vrais simultan\'ement.
+
+En pratique, les conditions se distinguent naturellement~:
+\begin{itemize}
+  \item Si $np < 18$ et $p < 10\,\%$ et $n > 50$ : utiliser $\mathcal{P}(np)$.
+  \item Si $np > 18$ et $n > 50$ : utiliser $\mathcal{N}(np\,;\,\sqrt{np(1-p)})$.
+  \item Si aucune condition n'est satisfaite~: calculer exactement avec la formule binomiale et les tables.
+\end{itemize}
+\end{alertbox}
+
+% ============================================================
+% SECTION 6 : EXERCICES CORRIGÉS
+% ============================================================
+\newpage
+\section{Exercices corrig\'es}
+
+% ── EXERCICE 1 ───────────────────────────────────────────────────────────────
+\subsection{Exercice 1 -- Efficacit\'e d'une tisane (Binomiale $\to$ Normale)}
+
+\begin{exbox}[\'Enonc\'e]
+L'entreprise Bourbon S.A. teste l'efficacit\'e d'une tisane contre le chikungunya. Dans 7\,\% des cas, la tisane est inefficace.
+
+\textbf{Partie 1 -- \'Echantillon de 15 personnes.} Soit $X$ : <<~{}nombre de malades pour lesquels la tisane est inefficace~>>.
+\begin{enumerate}[label=\alph*)]
+  \item Quelle est la loi de $X$ ? Y a-t-il convergence en loi ?
+  \item Calculer $\P(X \geq 6)$.
+  \item Calculer $\P(X \leq 4)$.
+  \item Calculer $\P(1 \leq X \leq 3)$.
+\end{enumerate}
+
+\textbf{Partie 2 -- \'Echantillon de 500 personnes.} Soit $Y$ : m\^eme variable sur 500 personnes.
+\begin{enumerate}[label=\alph*)]
+  \item Quelle loi proposer pour $Y$ ?
+  \item Calculer $\P(Y \geq 50)$.
+  \item Calculer $\P(Y \leq 25)$.
+\end{enumerate}
+\end{exbox}
+
+\textbf{Correction.}
+
+\textbf{Partie 1.}
+
+\textbf{a) Identification de la loi.}
+
+\begin{itemize}
+  \item \'Epreuve al\'eatoire~: choisir un individu parmi 15.
+  \item \'Ev\'enement $A$ : <<~{}la tisane est inefficace~>>, $p = \P(A) = 0{,}07$.
+  \item $\bar{A}$~: <<~{}la tisane est efficace~>>, $q = 1-p = 0{,}93$.
+  \item P1~: ind\'ependance des \'epreuves (l'efficacit\'e de la tisane varie ind\'ependamment entre individus). \checkmark
+  \item P2~: deux \'ev\'enements mutuellement exclusifs $A$ et $\bar{A}$. \checkmark
+\end{itemize}
+$$X \sim \mathcal{B}(15\,;\,0{,}07).$$
+
+\textbf{Convergence~:}
+\begin{itemize}
+  \item Vers Poisson~? $n=15 \not> 50$ : condition $n>50$ non satisfaite.
+  \item Vers Normale~? $n=15 \not> 50$ : idem.
+\end{itemize}
+\textbf{Pas de convergence.} On utilise la loi binomiale exacte et les tables.
+
+\textbf{b)} $\P(X \geq 6) = 1 - \P(X \leq 5) = 1 - F(5)$.
+
+Table binomiale $\mathcal{B}(15\,;\,0{,}07)$~: $F(5) = 0{,}9997$.
+$$\P(X \geq 6) = 1 - 0{,}9997 = \mathbf{0{,}0003}.$$
+
+\textbf{c)} $\P(X \leq 4) = F(4) = \mathbf{0{,}9972}$.
+
+\textbf{d)} $\P(1 \leq X \leq 3) = F(3) - F(0) = 0{,}9825 - 0{,}3367 = \mathbf{0{,}6458}$.
+
+\medskip
+\textbf{Partie 2.}
+
+\textbf{a)} M\^eme raisonnement~: $Y \sim \mathcal{B}(500\,;\,0{,}07)$.
+
+Conditions de convergence~:
+\begin{itemize}
+  \item $n = 500 > 50$ \checkmark
+  \item $np = 500 \times 0{,}07 = 35 > 18$ \checkmark
+\end{itemize}
+La loi binomiale converge vers la loi normale~:
+$$Y \approxN \mathcal{N}(np\,;\,\sqrt{np(1-p)}) = \mathcal{N}\!\left(35\,;\,\sqrt{35\times 0{,}93}\right) = \mathcal{N}(35\,;\,5{,}70).$$
+
+\textbf{b)} $\P(Y \geq 50)$.
+
+$$\P(Y \geq 50) = 1 - \P(Y < 50) = 1 - \P\!\left(U < \frac{50 - 35}{5{,}70}\right) = 1 - \P(U < 2{,}63).$$
+
+Table 2 (loi normale)~: $F_U(2{,}63) = 0{,}99573$.
+
+$$\P(Y \geq 50) = 1 - 0{,}99573 = \mathbf{0{,}0043}.$$
+
+\textbf{c)} $\P(Y \leq 25)$.
+
+$$\P(Y \leq 25) = \P\!\left(U \leq \frac{25 - 35}{5{,}70}\right) = \P(U \leq -1{,}75) = 1 - F_U(1{,}75) = 1 - 0{,}95994 = \mathbf{0{,}0400}.$$
+
+% ── EXERCICE 2 ───────────────────────────────────────────────────────────────
+\subsection{Exercice 2 -- Surr\'eservation de la SNCF (inversion du probl\`eme)}
+
+\begin{exbox}[\'Enonc\'e]
+Un TGV comporte 394 places. Le taux d'annulation est estim\'e \`a $5\,\%$. La SNCF a ouvert 410 r\'eservations.
+
+\begin{enumerate}
+  \item Quelle est la probabilit\'e qu'il y ait des clients sans place ?
+  \item Le directeur souhaite ramener cette probabilit\'e \`a $2{,}5\,\%$. En d\'eduire le nombre de r\'eservations \`a ouvrir (en supposant le taux d'annulation constant et l'\'ecart-type constant).
+\end{enumerate}
+\end{exbox}
+
+\textbf{Correction.}
+
+\textbf{1) Identification et approximation.}
+
+Soit $X$~: <<~{}nombre de passagers qui ne cancellent pas parmi 410~>>.
+$$X \sim \mathcal{B}(410\,;\,0{,}95).$$
+
+Conditions~: $n=410>50$ et $np = 410\times 0{,}95 = 389{,}5 > 18$. Convergence vers la normale~:
+$$X \approxN \mathcal{N}(389{,}5\,;\,\sqrt{389{,}5\times 0{,}05}) = \mathcal{N}(389{,}5\,;\,4{,}413).$$
+
+Il y a des passagers sans place si et seulement si plus de 394 personnes ne cancellent pas~:
+$$\P(\text{sans place}) = \P(X > 394) = 1 - \P(X \leq 394).$$
+
+Centrage-r\'eduction~:
+$$u = \frac{394 - 389{,}5}{4{,}413} = \frac{4{,}5}{4{,}413} \approx 1{,}020.$$
+
+$$\P(X \leq 394) = F_U(1{,}020) = 0{,}84614.$$
+
+$$\P(\text{sans place}) = 1 - 0{,}84614 = \mathbf{0{,}154 \approx 15{,}4\,\%}.$$
+
+\textbf{2) Trouver le nombre de r\'eservations $n^*$ pour r\'eduire le risque \`a $2{,}5\,\%$.}
+
+On cherche $n^*$ tel que $\P(X^* > 394) = 2{,}5\,\%$, o\`u $X^* \sim \mathcal{B}(n^*\,;\,0{,}95)$.
+
+En supposant $\sigma = 4{,}413$ constant (approximation de l'\'enonc\'e) et $p=0{,}95$~:
+$$\P\!\left(U \leq \frac{394 - n^*\times 0{,}95}{4{,}413}\right) = 1 - 0{,}025 = 0{,}975.$$
+
+Le quantile $u_{0{,}975} = 1{,}96$~:
+$$\frac{394 - 0{,}95\,n^*}{4{,}413} = 1{,}96 \quad\Longrightarrow\quad 394 - 0{,}95\,n^* = 8{,}65 \quad\Longrightarrow\quad n^* = \frac{394 - 8{,}65}{0{,}95} \approx \mathbf{406}.$$
+
+En ouvrant 406 r\'eservations au lieu de 410, le risque de surcharge passe de $15{,}4\,\%$ \`a $2{,}5\,\%$.
+
+\begin{alertbox}[Remarque sur l'hypoth\`ese $\sigma$ constant]
+Si l'on ne fixe pas $\sigma$, l'\'equation devient~:
+$$\frac{394 - 0{,}95\,n^*}{\sqrt{0{,}95 \times 0{,}05 \times n^*}} = 1{,}96,$$
+qui est un polyn\^ome de degr\'e $3/2$ en $\sqrt{n^*}$, sans solution physiquement coh\'erente pour ce probl\`eme. L'hypoth\`ese $\sigma$ constant est donc n\'ecessaire pour obtenir un r\'esultat utilisable.
+\end{alertbox}
+
+% ── EXERCICE 3 ───────────────────────────────────────────────────────────────
+\subsection{Exercice 3 -- Affluence d'un hypermarch\'e (Poisson $\to$ Normale)}
+
+\begin{exbox}[\'Enonc\'e]
+Dans un hypermarch\'e, un client entre toutes les 2 minutes en moyenne (matin).
+\begin{enumerate}
+  \item Quelle est la probabilit\'e qu'aucun client ne se pr\'esente entre 10h00 et 10h50 ?
+  \item Quelle est la probabilit\'e que plus de 20 clients entrent sur cette p\'eriode ?
+  \item Quelle est la probabilit\'e qu'aucun client n'entre dans les 6 minutes suivant la sortie d'un client ?
+\end{enumerate}
+\end{exbox}
+
+\textbf{Correction.}
+
+\textbf{Identification de la loi~:} Le contexte (arrivals al\'eatoires dans le temps, ind\'ependance, stationnarit\'e, impossibilit\'e de deux arriv\'ees simultan\'ees) v\'erifie les hypoth\`eses d'un processus de Poisson.
+
+Param\`etre~: $p = 1$ client/2 min, $T = 50$ min. Donc $\lambda = pT = 25$.
+
+$$X \sim \mathcal{P}(25).$$
+
+\textbf{Convergence~:} $\lambda = 25 > 18$, donc~:
+$$X \approxN \mathcal{N}(25\,;\,\sqrt{25}) = \mathcal{N}(25\,;\,5).$$
+
+\textbf{1)} $\P(X = 0)$.
+
+Via l'approximation normale~:
+$$\P(X=0) = \P\!\left(U = \frac{0-25}{5}\right) = \P(U = -5) = \frac{1}{\sigma}f_U(-5) = \frac{1}{5}f_U(5).$$
+
+Or $f_U(5) \approx 0{,}0001$, donc $\P(X=0) \approx \frac{0{,}0001}{5} \approx 0$.
+
+\textbf{2)} $\P(X > 20)$.
+
+$$\P(X > 20) = \P\!\left(U > \frac{20-25}{5}\right) = \P(U > -1) = \P(U < 1) = F_U(1) = \mathbf{0{,}8413}.$$
+
+\textbf{3)} Ici, l'intervalle de temps est de 6 minutes~: $\lambda' = 1/2 \times 6 = 3$.
+
+Soit $Y \sim \mathcal{P}(3)$ ($\lambda' = 3 < 18$~: pas de convergence, calcul exact).
+
+$$\P(Y = 0) = e^{-3}\,\frac{3^0}{0!} = e^{-3} = \mathbf{0{,}0498}.$$
+
+% ── EXERCICE 4 ───────────────────────────────────────────────────────────────
+\subsection{Exercice 4 -- Abonnements au magazine <<~{}Stat~>> (double convergence)}
+
+\begin{exbox}[\'Enonc\'e]
+Un foyer bénéficiaire d'une offre promotionnelle sur 50 s'abonne. Taux d'abonnement~: $p = 2\,\%$.
+
+\begin{enumerate}
+  \item Sur un \'echantillon de $n=15$ foyers~: identifier la loi de $X$. Calculer $\P(X\geq 3)$, $\P(X\leq 4)$, $\P(2<X<6)$.
+  \item Sur $n=100$ foyers~: quelle approximation pour $Y$ ? Calculer $\P(Y\geq 120)$, $\P(Y\leq 85)$, $\P(90<Y<100)$.
+  \item Sur $n=1\,000$ foyers~: quelle loi pour $Z$ ?
+\end{enumerate}
+\end{exbox}
+
+\textbf{Correction.}
+
+\textbf{1) $n=15$, $p=0{,}02$.}
+
+$X \sim \mathcal{B}(15\,;\,0{,}02)$. Convergence~? $n=15 \not> 50$~: aucune convergence. Calcul exact (tables binomiales).
+
+$$\P(X\geq 3) = 1 - \P(X\leq 2) = 1 - F(2) = 1 - 0{,}997 = \mathbf{0{,}003}.$$
+$$\P(X \leq 4) = F(4) \approx \mathbf{1}.$$
+$$\P(2 < X < 6) = \P(3 \leq X \leq 5) = F(5) - F(2) = 1 - 0{,}997 = \mathbf{0{,}003}.$$
+
+\textbf{2) $n=100$, $p=0{,}02$.}
+
+$Y \sim \mathcal{B}(100\,;\,0{,}02)$. Conditions~:
+\begin{itemize}
+  \item $n=100>50$ \checkmark, $p=0{,}02<10\,\%$ \checkmark, $np=2<18$ \checkmark.
+\end{itemize}
+Convergence vers Poisson~: $Y \approx \mathcal{P}(\lambda=2)$.
+
+Le support de $\mathcal{P}(2)$ est $\mathbb{N}$. Or $120$, $85$ et $[90;100]$ sont des valeurs tr\`es loin du centre ($\lambda=2$)~:
+
+$$\P(Y \geq 120) = 1 - F(119) \approx \mathbf{0}.$$
+$$\P(Y \leq 85) \approx \mathbf{1}.$$
+$$\P(90 < Y < 100) \approx \mathbf{0}.$$
+
+\textbf{3) $n=1\,000$, $p=0{,}02$.}
+
+$Z \sim \mathcal{B}(1\,000\,;\,0{,}02)$. Conditions~: $n=1\,000>50$ \checkmark et $np = 20 > 18$ \checkmark.
+
+Convergence vers la normale~:
+$$Z \approxN \mathcal{N}\!\left(20\,;\,\sqrt{1\,000\times 0{,}02\times 0{,}98}\right) = \mathcal{N}(20\,;\,4{,}43).$$
+
+% ── EXERCICE 5 ───────────────────────────────────────────────────────────────
+\subsection{Exercice 5 -- Station-service Cassandra66 (Poisson $\to$ Normale)}
+
+\begin{exbox}[\'Enonc\'e]
+La station Cassandra66 comporte 4 pompes. En 2011, 2 v\'ehicules s'arr\^etent en moyenne \`a une pompe par tranche de 5 mn (18h--19h).
+
+\begin{enumerate}
+  \item[1a)] $\P(\text{au plus 6 v\'ehicules s'arr\^etent \`a Cassandra66})$.
+  \item[1b)] $\P(10 < Y < 13)$ (nombre de v\'ehicules \`a Cassandra66 sur 5 mn).
+\end{enumerate}
+
+En 2012~: 10 v\'ehicules par pompe en moyenne (sur 5 mn).
+
+\begin{enumerate}
+  \item[2a)] $\P(\text{plus de 50 v\'ehicules \`a Cassandra66 sur 5 mn})$.
+  \item[2b)] $\P(50 < Z < 70)$ (m\^eme tranche horaire).
+\end{enumerate}
+\end{exbox}
+
+\textbf{Correction.}
+
+\textbf{En 2011.}
+
+Soit $X \sim \mathcal{P}(\lambda=2)$ (v\'ehicules par pompe par 5 mn). Les 4 pompes~:
+$$Y = X_1+X_2+X_3+X_4 \sim \mathcal{P}(4\times 2) = \mathcal{P}(8).$$
+
+$\lambda=8 < 18$~: pas de convergence. Calcul exact (tables de Poisson).
+
+\textbf{1a)} $\P(Y \leq 6) = F_{\mathcal{P}(8)}(6) = \mathbf{0{,}3134}$.
+
+\textbf{1b)}
+$$\P(10 < Y < 13) = \P(11 \leq Y \leq 12) = F(12) - F(10) = 0{,}9362 - 0{,}8159 = \mathbf{0{,}1203}.$$
+
+\textbf{En 2012.}
+
+Par pompe~: $X \sim \mathcal{P}(10)$. \'Echelle des 4 pompes~:
+$$Z \sim \mathcal{P}(4\times 10) = \mathcal{P}(40).$$
+
+$\lambda=40 > 18$~: convergence vers la normale~:
+$$Z \approxN \mathcal{N}(40\,;\,\sqrt{40}) = \mathcal{N}(40\,;\,6{,}32).$$
+
+\textbf{2a)} $\P(Z > 50)$.
+
+$$u = \frac{50-40}{6{,}32} = \frac{10}{6{,}32} \approx 1{,}581.$$
+$$\P(Z > 50) = 1 - F_U(1{,}581) = 1 - 0{,}9430 = \mathbf{0{,}0570}.$$
+
+\textbf{2b)} $\P(50 < Z < 70)$.
+
+$$u_1 = \frac{50-40}{6{,}32} = 1{,}581, \qquad u_2 = \frac{70-40}{6{,}32} = \frac{30}{6{,}32} \approx 4{,}75.$$
+
+$F_U(4{,}75) \approx 1$~:
+$$\P(50 < Z < 70) = F_U(4{,}75) - F_U(1{,}581) \approx 1 - 0{,}9430 = \mathbf{0{,}0570}.$$
+
+\begin{alertbox}[Remarque]
+$F_U(4{,}75) \approx 1$ car la probabilit\'e d'obtenir une valeur centr\'ee r\'eduite aussi grande est n\'egligeable. On en d\'eduit que presque toute la probabilit\'e $\P(Z>50)$ est concentr\'ee dans l'intervalle $[50;70]$ (les valeurs sup\'erieures \`a 70 ont une probabilit\'e pratiquement nulle).
+\end{alertbox}
+
+% ── EXERCICE 6 ───────────────────────────────────────────────────────────────
+\subsection{Exercice 6 -- Pi\`eces de monnaie non conformes (normal $\to$ binomiale $\to$ normale)}
+
+\begin{exbox}[\'Enonc\'e]
+Une entreprise fabrique des pi\`eces de 1 euro pesant th\'eoriquement 7{,}5\,g. Le poids $Z$ est tel que $Z \sim \mathcal{N}(7{,}501\,;\,0{,}0005)$. Une pi\`ece est non conforme si $Z < 7{,}5$\,g. L'entreprise produit 100\,000 pi\`eces/semaine.
+
+\begin{enumerate}
+  \item Quelle est la probabilit\'e $p$ qu'une pi\`ece soit non conforme ?
+  \item Soit $Y$ le nombre de pi\`eces non conformes par semaine. Quelle est la loi de $Y$ ? L'approximer.
+  \begin{enumerate}[label=\alph*)]
+    \item $\P(Y=12\,000)$ (88\,000 pi\`eces conformes).
+    \item $\P(Y \leq 1\,000)$ (au moins 99\,000 pi\`eces conformes).
+    \item $\P(0 \leq Y \leq 1\,950)$.
+  \end{enumerate}
+\end{enumerate}
+\end{exbox}
+
+\textbf{Correction.}
+
+\textbf{1) Probabilit\'e de non-conformit\'e.}
+
+$$p = \P(Z < 7{,}5) = \P\!\left(U < \frac{7{,}5 - 7{,}501}{0{,}0005}\right) = \P(U < -2) = 1 - F_U(2) = 1 - 0{,}97725 = 0{,}02275.$$
+
+Pour la suite, on arrondit \`a $p = 0{,}02$ (2\,\%).
+
+\textbf{2) Loi de $Y$ et approximation.}
+
+$Y \sim \mathcal{B}(100\,000\,;\,0{,}02)$.
+
+Conditions~: $n=100\,000>50$ \checkmark et $np = 2\,000>18$ \checkmark. Convergence vers la normale~:
+$$Y \approxN \mathcal{N}(2\,000\,;\,\sqrt{100\,000\times 0{,}02\times 0{,}98}) = \mathcal{N}(2\,000\,;\,44{,}27).$$
+
+\textbf{a)} $\P(Y = 12\,000)$. Via la loi normale, une variable continue donne une probabilit\'e nulle en un point~:
+
+$$u = \frac{12\,000 - 2\,000}{44{,}27} = \frac{10\,000}{44{,}27} \approx 225{,}9.$$
+
+$$\P(Y=12\,000) = \frac{1}{\sigma}f_U(225{,}9) \approx \mathbf{0}.$$
+
+\textit{Interpr\'etation~:} 88\,000 pi\`eces conformes signifie 12\,000 non conformes, soit 225 \'ecarts-types au-dessus de la moyenne. C'est un \'ev\'enement pratiquement impossible.
+
+\textbf{b)} $\P(Y \leq 1\,000)$ (au moins 99\,000 conformes $\Leftrightarrow$ au plus 1\,000 non conformes).
+
+$$u = \frac{1\,000 - 2\,000}{44{,}27} \approx -22{,}59.$$
+
+$$\P(Y \leq 1\,000) = F_U(-22{,}59) = 1 - F_U(22{,}59) \approx \mathbf{0}.$$
+
+\textit{Interpr\'etation~:} Avoir moins de 1\,000 pi\`eces non conformes est \`a plus de 22 \'ecarts-types \`a gauche de la moyenne. Pratiquement impossible.
+
+\textbf{c)} $\P(0 \leq Y \leq 1\,950)$.
+
+$$u_1 = \frac{0 - 2\,000}{44{,}27} \approx -45{,}18, \qquad u_2 = \frac{1\,950 - 2\,000}{44{,}27} = \frac{-50}{44{,}27} \approx -1{,}13.$$
+
+$$\P(0 \leq Y \leq 1\,950) = F_U(-1{,}13) - F_U(-45{,}18) = (1 - F_U(1{,}13)) - 0 = 1 - 0{,}87076 = \mathbf{0{,}1292}.$$
+
+% ============================================================
+% SECTION 7 : PIÈGES CLASSIQUES
+% ============================================================
+\newpage
+\section{Pi\`eges classiques}
+
+\begin{alertbox}[Pi\`ege 1 -- Confondre $\mathcal{P}(\lambda)$ et $\mathcal{N}(\lambda;\sqrt{\lambda})$]
+L'approximation $\mathcal{P}(\lambda) \approx \mathcal{N}(\lambda;\sqrt{\lambda})$ n'est valable que pour $\lambda > 18$. Pour $\lambda \leq 18$, utiliser directement la table de Poisson. Prendre $\sigma = \sqrt{\lambda}$, pas $\lambda$.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 2 -- Oublier de v\'erifier les conditions de convergence]
+Il faut syst\'ematiquement v\'erifier \textbf{toutes} les conditions. Exemple pi\'egeux~:
+\begin{itemize}
+  \item $\mathcal{B}(100\,;\,0{,}02)$~: $n=100>50$ \checkmark, $p=0{,}02<10\,\%$ \checkmark, $np=2<18$ \checkmark $\Rightarrow$ \textbf{Poisson}, \emph{pas} Normale.
+  \item $\mathcal{B}(100\,;\,0{,}5)$~: $n=100>50$ \checkmark, $p=50\,\%>10\,\%$ $\Rightarrow$ conditions Poisson non v\'erifi\'ees. $np=50>18$ \checkmark $\Rightarrow$ \textbf{Normale}.
+\end{itemize}
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 3 -- Se tromper de variable ou de param\`etre $p$]
+Dans un probl\`eme de surr\'eservation, on peut raisonner sur <<~{}nombre de passagers qui ne cancellent pas~>> ($p_{\text{voyage}} = 1 - p_{\text{annulation}}$) ou sur <<~{}nombre d'annulations~>>. Les deux sont corrects mais donnent des probabilit\'es l\'eg\`erement diff\'erentes si $np$ est proche de 18 (approximation moins bonne). Choisir la variable qui donne $np$ le plus \'eloign\'e de 18 pour une meilleure approximation.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 4 -- Oublier l'additivit\'e de Poisson pour changer l'\'echelle]
+Un processus de Poisson de taux $\lambda_1$ sur une pompe implique un taux $n\lambda_1$ sur $n$ pompes (par additivit\'e). De m\^eme, passer d'une p\'eriode $T_1$ \`a une p\'eriode $T_2$ donne $\lambda_2 = \lambda_1 \times (T_2/T_1)$.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 5 -- Probabilit\'e de Poisson pour des valeurs extr\^emes avec $n$ grand]
+Avec $Y \approx \mathcal{P}(2)$ (faible $\lambda$), les probabilit\'es $\P(Y>20)$ ou $\P(Y<0)$ sont pratiquement nulles. Ne pas confondre la valeur approch\'ee de la variable \textit{($np$)} avec les r\'ealisations extr\^emes du support.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 6 -- Probabilit\'e ponctuelle $\P(X=k)$ via la loi normale]
+Pour une variable continue, $\P(X=k)=0$ au sens strict. Si l'on demande $\P(Y=k)$ avec $Y$ discret approch\'e par la normale, la r\'eponse est~:
+$$\P(Y=k) \approx \frac{1}{\sigma}f_U\!\left(\frac{k-m}{\sigma}\right).$$
+Cette valeur est souvent extr\^emement petite (voire $\approx 0$) quand $k$ est loin de $m$. Ne pas confondre avec $F_U$ (fonction de r\'epartition).
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 7 -- Ne pas chercher de convergence quand $n$ est petit]
+Les th\'eor\`emes de convergence sont des r\'esultats \textbf{asymptotiques}. Pour $n \leq 50$, aucune approximation n'est justifi\'ee (sauf parfois Poisson si $n$ est assez grand et $p$ tr\`es petit). La loi exacte $\mathcal{B}(n;p)$ avec ses tables est la seule r\'ef\'erence.
+\end{alertbox}
+
+% ============================================================
+% FICHE DE SYNTHÈSE
+% ============================================================
+\newpage
+\section*{Fiche de synth\`ese finale}
+\addcontentsline{toc}{section}{Fiche de synth\`ese finale}
+
+\begin{methbox}[Arbre de d\'ecision -- Quelle loi utiliser ?]
+\begin{center}
+\begin{tabular}{p{3.5cm}p{3.5cm}p{3.5cm}p{3cm}}
+\toprule
+\textbf{Loi exacte} & \textbf{Conditions} & \textbf{Approximation} & \textbf{Param\`etres} \\
+\midrule
+$\mathcal{B}(n;p)$ &
+  $n \leq 50$ & Aucune -- table exacte & $n$, $p$ \\
+\addlinespace
+$\mathcal{B}(n;p)$ &
+  $n>50$\newline $p<0{,}10$\newline $np<18$ &
+  $\mathcal{P}(\lambda)$ &
+  $\lambda = np$ \\
+\addlinespace
+$\mathcal{B}(n;p)$ &
+  $n>50$\newline $np>18$ &
+  $\mathcal{N}(m;\sigma)$ &
+  $m=np$\newline $\sigma=\sqrt{np(1-p)}$ \\
+\addlinespace
+$\mathcal{P}(\lambda)$ &
+  $\lambda \leq 18$ & Aucune -- table exacte & $\lambda$ \\
+\addlinespace
+$\mathcal{P}(\lambda)$ &
+  $\lambda > 18$ &
+  $\mathcal{N}(m;\sigma)$ &
+  $m=\lambda$\newline $\sigma=\sqrt{\lambda}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{methbox}
+
+\begin{methbox}[Formule de centrage-r\'eduction (toujours la m\^eme !)]
+Quelle que soit l'approximation normale utilis\'ee, la proc\'edure est identique~:
+$$U = \frac{X - m}{\sigma} \;\sim\; \mathcal{N}(0;1), \qquad\text{puis lire la Table~2.}$$
+\begin{itemize}
+  \item $\mathcal{B}(n;p) \approx \mathcal{N}$~: $m = np$, $\sigma = \sqrt{np(1-p)}$.
+  \item $\mathcal{P}(\lambda) \approx \mathcal{N}$~: $m = \lambda$, $\sigma = \sqrt{\lambda}$.
+\end{itemize}
+\end{methbox}
+
+\begin{methbox}[Valeurs de $\sigma$ \`a calculer soigneusement]
+\begin{itemize}
+  \item $\sigma = \sqrt{np(1-p)}$~: ne pas oublier le facteur $(1-p)$. Pour $p$ proche de 0, $(1-p)\approx 1$ et $\sigma \approx \sqrt{np} = \sqrt{\lambda}$, ce qui est coh\'erent avec $\sigma_{\mathcal{P}} = \sqrt{\lambda}$.
+  \item Pour $p$ proche de $0{,}5$, la variance $np(1-p) \approx n/4$ est maximale~: la loi normale est la plus <<~{}\'etalée~>>.
+\end{itemize}
+\end{methbox}
+
+\end{document}

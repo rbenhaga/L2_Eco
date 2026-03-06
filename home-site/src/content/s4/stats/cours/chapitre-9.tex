@@ -1,0 +1,1023 @@
+\documentclass[11pt,a4paper]{article}
+
+% ════════════════════════════════════════════════════════════════
+% ENCODAGE & POLICES
+% ════════════════════════════════════════════════════════════════
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\usepackage[scaled=0.86]{helvet}
+\usepackage{microtype}
+
+% ════════════════════════════════════════════════════════════════
+% MISE EN PAGE
+% ════════════════════════════════════════════════════════════════
+\usepackage[
+  top=2.6cm, bottom=2.6cm,
+  left=2.8cm, right=2.8cm,
+  headheight=20pt
+]{geometry}
+\usepackage{parskip}
+\usepackage{setspace}
+\setstretch{1.13}
+
+% ════════════════════════════════════════════════════════════════
+% COULEURS
+% ════════════════════════════════════════════════════════════════
+\usepackage[dvipsnames,svgnames]{xcolor}
+
+\definecolor{navydark}{HTML}{1E3557}
+\definecolor{navymid}{HTML}{2D5F8F}
+\definecolor{navylight}{HTML}{E8EFF8}
+\definecolor{amber}{HTML}{C47E1A}
+\definecolor{amberlight}{HTML}{FDF4E3}
+\definecolor{forest}{HTML}{1A5C3A}
+\definecolor{forestlight}{HTML}{E6F4EE}
+\definecolor{crimson}{HTML}{9B1C1C}
+\definecolor{crimsonlight}{HTML}{FDE8E8}
+\definecolor{violet}{HTML}{4A148C}
+\definecolor{violetlight}{HTML}{F0E6FB}
+\definecolor{textprimary}{HTML}{1C2333}
+\definecolor{textsecondary}{HTML}{5A6475}
+\definecolor{rulecol}{HTML}{BDD0E8}
+
+% ════════════════════════════════════════════════════════════════
+% EN-TÊTE & PIED DE PAGE
+% ════════════════════════════════════════════════════════════════
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tikz}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{%
+  \begin{tikzpicture}[baseline=-0.5ex]
+    \fill[navydark] (0,0) rectangle (0.22,0.22);
+  \end{tikzpicture}\;%
+  \small\sffamily\color{navydark}\textbf{Chapitre 9}\;\textcolor{rulecol}{|}\;%
+  \small\sffamily\color{textsecondary}Estimation ponctuelle%
+}
+\fancyhead[R]{\small\sffamily\color{textsecondary}L2 \'Economie --- Statistiques}
+\fancyfoot[C]{\small\sffamily\color{textsecondary}---\;\thepage\,/\,\pageref{LastPage}\;---}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrule}{{\color{rulecol}\hrule width\headwidth height0.4pt}}
+
+% ════════════════════════════════════════════════════════════════
+% TITRES
+% ════════════════════════════════════════════════════════════════
+\usepackage{titlesec}
+
+\titleformat{\section}{%
+  \Large\bfseries\sffamily\color{navydark}}{%
+  \tikz[baseline=(n.base)]{%
+    \fill[navydark] (0,0) rectangle (0.6em,0.6em);%
+    \node[inner sep=0,anchor=base] (n) at (0.3em,0.13em)
+      {\color{white}\footnotesize\sffamily\thesection};}%
+  \;}{0em}{}[\vspace{2pt}{\color{rulecol}\hrule height 1.2pt}\vspace{-4pt}]
+
+\titleformat{\subsection}{%
+  \large\bfseries\sffamily\color{navymid}}{%
+  \thesubsection.}{0.5em}{}
+
+\titleformat{\subsubsection}{%
+  \normalsize\bfseries\color{textprimary}}{%
+  \thesubsubsection.}{0.5em}{}
+
+\titlespacing*{\section}{0pt}{2.2em}{1em}
+\titlespacing*{\subsection}{0pt}{1.6em}{0.6em}
+\titlespacing*{\subsubsection}{0pt}{1.1em}{0.4em}
+
+% ════════════════════════════════════════════════════════════════
+% BOÎTES tcolorbox
+% ════════════════════════════════════════════════════════════════
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{defbox}[1][]{%
+  enhanced, breakable, colback=navylight, colframe=navydark,
+  boxrule=0pt, leftrule=4pt, arc=2pt, outer arc=2pt,
+  fonttitle=\bfseries\sffamily\color{navydark}\small,
+  title={#1},
+  attach boxed title to top left={xshift=8pt,yshift=-4pt},
+  boxed title style={colback=navylight,colframe=navydark,boxrule=0pt,
+    leftrule=0pt,arc=0pt,outer arc=0pt,top=2pt,bottom=2pt,left=4pt,right=4pt},
+  top=10pt,bottom=8pt,left=10pt,right=10pt,
+  before skip=12pt,after skip=12pt}
+
+\newtcolorbox{thmbox}[1][]{%
+  enhanced, breakable, colback=white, colframe=navymid,
+  boxrule=1pt, arc=4pt, outer arc=4pt,
+  fonttitle=\bfseries\sffamily\color{navymid}\small,
+  title={#1},
+  attach boxed title to top left={xshift=10pt,yshift=-5pt},
+  boxed title style={colback=white,colframe=navymid,boxrule=1pt,
+    arc=3pt,outer arc=3pt,top=2pt,bottom=2pt,left=6pt,right=6pt},
+  top=10pt,bottom=8pt,left=10pt,right=10pt,
+  before skip=12pt,after skip=12pt}
+
+\newtcolorbox{methbox}[1][]{%
+  enhanced, breakable, colback=forestlight, colframe=forest,
+  boxrule=0pt, leftrule=4pt, arc=2pt, outer arc=2pt,
+  fonttitle=\bfseries\sffamily\color{forest}\small,
+  title={#1},
+  attach boxed title to top left={xshift=8pt,yshift=-4pt},
+  boxed title style={colback=forestlight,colframe=forest,boxrule=0pt,
+    leftrule=0pt,arc=0pt,outer arc=0pt,top=2pt,bottom=2pt,left=4pt,right=4pt},
+  top=10pt,bottom=8pt,left=10pt,right=10pt,
+  before skip=12pt,after skip=12pt}
+
+\newtcolorbox{alertbox}[1][]{%
+  enhanced, breakable, colback=crimsonlight, colframe=crimson,
+  boxrule=0pt, leftrule=4pt, arc=2pt, outer arc=2pt,
+  fonttitle=\bfseries\sffamily\color{crimson}\small,
+  title={#1},
+  attach boxed title to top left={xshift=8pt,yshift=-4pt},
+  boxed title style={colback=crimsonlight,colframe=crimson,boxrule=0pt,
+    leftrule=0pt,arc=0pt,outer arc=0pt,top=2pt,bottom=2pt,left=4pt,right=4pt},
+  top=10pt,bottom=8pt,left=10pt,right=10pt,
+  before skip=12pt,after skip=12pt}
+
+\newtcolorbox{exbox}[1][]{%
+  enhanced, breakable, colback=amberlight, colframe=amber,
+  boxrule=0pt, leftrule=4pt, arc=2pt, outer arc=2pt,
+  fonttitle=\bfseries\sffamily\color{amber}\small,
+  title={#1},
+  attach boxed title to top left={xshift=8pt,yshift=-4pt},
+  boxed title style={colback=amberlight,colframe=amber,boxrule=0pt,
+    leftrule=0pt,arc=0pt,outer arc=0pt,top=2pt,bottom=2pt,left=4pt,right=4pt},
+  top=10pt,bottom=8pt,left=10pt,right=10pt,
+  before skip=12pt,after skip=12pt}
+
+\newtcolorbox{demobox}[1][]{%
+  enhanced, breakable, colback=violetlight, colframe=violet,
+  boxrule=0pt, leftrule=4pt, arc=2pt, outer arc=2pt,
+  fonttitle=\bfseries\sffamily\color{violet}\small,
+  title={#1},
+  attach boxed title to top left={xshift=8pt,yshift=-4pt},
+  boxed title style={colback=violetlight,colframe=violet,boxrule=0pt,
+    leftrule=0pt,arc=0pt,outer arc=0pt,top=2pt,bottom=2pt,left=4pt,right=4pt},
+  top=10pt,bottom=8pt,left=10pt,right=10pt,
+  before skip=12pt,after skip=12pt}
+
+\newtcolorbox[auto counter,number within=section]{exercice}[2][]{%
+  enhanced, breakable, colback=white, colframe=navydark,
+  boxrule=0.8pt, arc=4pt, outer arc=4pt,
+  title={\sffamily\bfseries Exercice \thetcbcounter{} \textendash{} #2},
+  fonttitle=\bfseries\sffamily\color{white}\small,
+  attach boxed title to top left={xshift=0pt,yshift=0pt},
+  boxed title style={colback=navydark,colframe=navydark,boxrule=0pt,
+    arc=0pt,outer arc=0pt,top=5pt,bottom=5pt,left=10pt,right=10pt},
+  top=10pt,bottom=8pt,left=10pt,right=10pt,
+  before skip=14pt,after skip=14pt,#1}
+
+% ════════════════════════════════════════════════════════════════
+% MATHS & TABLEAUX
+% ════════════════════════════════════════════════════════════════
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs,array,tabularx,multirow}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.4em,
+  label={\color{navymid}\rule[0.35ex]{0.55ex}{0.55ex}},
+  itemsep=4pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=4pt,topsep=3pt}
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=navydark,urlcolor=navymid,
+  pdftitle={Chapitre 9 --- Estimation ponctuelle}}
+
+% ════════════════════════════════════════════════════════════════
+% COMMANDES
+% ════════════════════════════════════════════════════════════════
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\P}{\Prob}
+\newcommand{\corrsep}{\vspace{4pt}{\color{rulecol}\hrule height 0.6pt}\vspace{6pt}}
+% Biais
+\newcommand{\biais}[1]{\mathrm{Biais}(#1)}
+
+% ════════════════════════════════════════════════════════════════
+\begin{document}
+\thispagestyle{empty}
+
+% ════════════════════════════════════════════════════════════════
+% PAGE DE TITRE
+% ════════════════════════════════════════════════════════════════
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[navydark] (current page.north west)
+    rectangle ([xshift=1.6cm] current page.south west);
+  \fill[navydark] (current page.north west)
+    rectangle ([yshift=-3.2cm] current page.north east);
+  \fill[amber] ([yshift=-3.2cm] current page.north west)
+    rectangle ([yshift=-3.45cm] current page.north east);
+\end{tikzpicture}
+
+\vspace*{0.4cm}
+\hspace*{2.2cm}%
+\begin{minipage}[t]{0.85\textwidth}
+  \vspace{1.5cm}
+  {\fontsize{120}{120}\selectfont\sffamily\bfseries\color{white}9}
+
+  \vspace{0.1cm}
+  {\color{amber}\rule{10cm}{2.5pt}}
+
+  \vspace{0.5cm}
+  {\fontsize{22}{26}\selectfont\sffamily\bfseries\color{white}%
+    Estimation\\[0.1cm]ponctuelle}
+
+  \vspace{1cm}
+  {\large\sffamily\color{white!70!navydark}%
+    Maximum de vraisemblance\quad$\cdot$\quad
+    Propri\'et\'es\quad$\cdot$\quad
+    Biais}
+\end{minipage}
+
+\vspace{3.6cm}
+\hspace*{2.2cm}%
+\begin{minipage}[t]{0.85\textwidth}
+  \begin{tcolorbox}[enhanced,colback=navylight,colframe=navydark,
+    boxrule=0pt,leftrule=4pt,arc=2pt,top=10pt,bottom=10pt,left=12pt,right=12pt]
+  \sffamily\color{textprimary}
+  \textbf{Objectifs du chapitre}
+
+  \smallskip
+  Ce chapitre introduit la m\'ethode du \textbf{maximum de vraisemblance} (MV) pour
+  estimer les param\`etres inconnus d'une loi de probabilit\'e \`a partir d'un \'echantillon.
+  Il couvre la construction de l'estimateur et la v\'erification des quatre propri\'et\'es
+  d\'esirables : sans biais, efficacit\'e, convergence, exhaustivit\'e.
+
+  \medskip
+  \begin{tabular}{@{}ll@{}}
+  \textbf{Pr\'erequis :} & Chapitres 2, 3, 8 \\
+  \textbf{Lois mobilis\'ees :} & Bernoulli, Binomiale, Exponentielle, Normale \\
+  \textbf{Outils :} & D\'erivation, fonction Gamma, information de Fisher \\
+  \end{tabular}
+  \end{tcolorbox}
+
+  \vfill
+  \textcolor{textsecondary}{\sffamily\small L2 \'Economie\quad$\cdot$\quad
+    Statistiques --- Semestre 2\quad$\cdot$\quad \today}
+\end{minipage}
+
+\newpage
+
+\thispagestyle{empty}
+{\hypersetup{linkcolor=textprimary}
+\tableofcontents}
+\newpage
+
+% ════════════════════════════════════════════════════════════════
+% INTRODUCTION
+% ════════════════════════════════════════════════════════════════
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+Au chapitre pr\'ec\'edent, nous avons constat\'e que le calcul de probabilit\'es \'etait d\'ependant de certains param\`etres. Par exemple, pour une loi normale $X\sim\N(m;\sigma)$, il est n\'ecessaire de conna\^itre $m$ et $\sigma$. Jusqu'ici, ces param\`etres de la population ont \'et\'e consid\'er\'es comme connus. Or en r\'ealit\'e, les populations ont des tailles parfois trop grandes et les enqu\^etes trop co\^uteuses pour permettre un sondage exhaustif.
+
+Il est donc possible d'approcher certains param\`etres en recourant aux informations relatives \`a l'\'echantillon. La m\'ethode du \textbf{maximum de vraisemblance} permet pr\'ecis\'ement de trouver des \textbf{estimateurs} (qui fournissent des \textbf{estimations ponctuelles} et non des intervalles comme au Chapitre 11).
+
+\begin{defbox}[Estimation ponctuelle vs.\ par intervalle]
+\begin{itemize}
+  \item \textbf{Estimation ponctuelle} (ce chapitre) : on assigne \textbf{une valeur unique} au param\`etre inconnu~$\theta$. L'estimateur est une statistique $\hat\theta(X_1,\ldots,X_n)$ dont la valeur observ\'ee $\hat\theta(x_1,\ldots,x_n)$ est l'estimation.
+  \item \textbf{Estimation par intervalle} (Chapitre 11) : on d\'etermine un intervalle $[a\,;\,b]$ dans lequel le param\`etre a une forte probabilit\'e de se trouver.
+\end{itemize}
+\end{defbox}
+
+La m\'ethode est intuitive~: on cherche le param\`etre $\hat\theta$ qui maximise la probabilit\'e d'observer l'\'echantillon que l'on a effectivement observ\'e. Cette probabilit\'e s'appelle la \textbf{vraisemblance}.
+
+% ════════════════════════════════════════════════════════════════
+\section{Fiche de synth\`ese --- La m\'ethode du maximum de vraisemblance}
+% ════════════════════════════════════════════════════════════════
+
+\subsection{\'Etape 1 --- La fonction de vraisemblance}
+
+\begin{defbox}[Fonction de vraisemblance $L$]
+Soit $\theta$ un param\`etre inconnu d'une loi de probabilit\'e et $(x_1,\ldots,x_n)$ un \'echantillon \textbf{empirique} observ\'e. La \textbf{fonction de vraisemblance} est d\'efinie par le produit des densit\'es (cas continu) ou des probabilit\'es individuelles (cas discret)~:
+
+\medskip
+\textbf{Cas continu} ($f$ densit\'e de probabilit\'e)~:
+$$L(x_1,\ldots,x_n\,;\,\theta) = \prod_{i=1}^{n} f(x_i\,;\,\theta)$$
+
+\textbf{Cas discret} ($p(\cdot)$ fonction de probabilit\'e)~:
+$$L(x_1,\ldots,x_n\,;\,\theta) = \prod_{i=1}^{n} \P(X=x_i\,;\,\theta)$$
+\end{defbox}
+
+\begin{exbox}[Interpr\'etation]
+$L(x_1,\ldots,x_n\,;\,\theta)$ mesure la probabilit\'e (la \emph{vraisemblance}) d'observer simultan\'ement les valeurs $(x_1,\ldots,x_n)$ sous l'hypoth\`ese que le param\`etre est $\theta$. On cherche le $\theta$ qui rend cette probabilit\'e maximale, d'o\`u le nom de la m\'ethode.
+\end{exbox}
+
+\subsection{\'Etape 2 --- La fonction de log-vraisemblance}
+
+\begin{defbox}[Log-vraisemblance $\ln L$]
+Le produit de l'\'etape 1 est difficile \`a maximiser directement. On prend le \textbf{logarithme naturel} (qui est une fonction croissante, donc le maximum est pr\'eserv\'e)~:
+
+$$\ln L(x_1,\ldots,x_n\,;\,\theta) = \sum_{i=1}^{n} \ln f(x_i\,;\,\theta)
+\qquad\text{(cas continu)}$$
+
+$$\ln L(x_1,\ldots,x_n\,;\,\theta) = \sum_{i=1}^{n} \ln \P(X=x_i\,;\,\theta)
+\qquad\text{(cas discret)}$$
+
+Le produit devient une \textbf{somme} : la maximisation est ainsi beaucoup plus maniable.
+\end{defbox}
+
+\subsection{\'Etape 3 --- Maximisation et conditions d'ordre}
+
+\begin{thmbox}[Estimateur du maximum de vraisemblance (EMV)]
+L'\textbf{estimateur du maximum de vraisemblance} $\hat\theta$ est la valeur de $\theta$ qui maximise $\ln L$~:
+
+\medskip
+\textbf{Condition du premier ordre (CPO)}~:
+$$\left.\frac{\partial}{\partial\theta}\ln L(x_1,\ldots,x_n\,;\,\theta)\right|_{\theta=\hat\theta} = 0$$
+
+\textbf{Condition du second ordre (CSO)}~:
+$$\left.\frac{\partial^2}{\partial\theta^2}\ln L(x_1,\ldots,x_n\,;\,\theta)\right|_{\theta=\hat\theta} \leq 0$$
+
+La CSO garantit que l'on est bien en pr\'esence d'un \textbf{maximum} (et non d'un minimum ou d'un point d'inflexion).
+
+\medskip
+\textbf{Cas \`a plusieurs param\`etres} (ex.~$\theta_1,\theta_2$)~: on \'ecrit un syst\`eme de deux \'equations, une par param\`etre, et on r\'esout simultan\'ement.
+\end{thmbox}
+
+\begin{alertbox}[\'Echantillon empirique vs.\ th\'eorique]
+L'EMV $\hat\theta(x_1,\ldots,x_n)$ est calcul\'e sur l'\textbf{\'echantillon empirique} (valeurs observ\'ees, lettres minuscules). Les \textbf{propri\'et\'es} de cet estimateur sont ensuite v\'erifi\'ees sur l'\textbf{\'echantillon th\'eorique} $(X_1,\ldots,X_n)$ (variables al\'eatoires, lettres majuscules). Ne pas m\'elanger les deux.
+\end{alertbox}
+
+\subsection{Propri\'et\'es d\'esirables d'un estimateur}
+
+\begin{defbox}[Les quatre propri\'et\'es fondamentales]
+Soit $\hat\theta = \hat\theta(X_1,\ldots,X_n)$ un estimateur de $\theta$.
+
+\medskip
+\textbf{(a) Sans biais (ESB)~:} $\E[\hat\theta] = \theta$.
+
+\medskip
+\textbf{(b) Efficace~:} $\hat\theta$ est sans biais \textit{et} sa variance est minimale, c'est-\`a-dire \'egale \`a la borne inf\'erieure de l'in\'egalit\'e de Fr\'echet--Rao--Cram\'er--Darmois (FRCD)~:
+$$\Var(\hat\theta) = \frac{1}{I(\theta)}, \qquad
+  I(\theta) = -\E\!\left[\frac{\partial^2\ln L(\cdot)}{\partial\theta^2}\right].$$
+$I(\theta)$ est appel\'ee \textbf{information de Fisher}.
+
+\medskip
+\textbf{(c) Convergent~:} $\displaystyle\lim_{n\to\infty}\P(|\hat\theta-\theta|>\varepsilon) = 0$ pour tout $\varepsilon>0$.
+
+Pour un ESB, il suffit de montrer $\displaystyle\lim_{n\to\infty}\Var(\hat\theta) = 0$ pour conclure \`a la convergence \textbf{absolue}.
+
+\medskip
+\textbf{(d) Exhaustif~:} $\hat\theta$ appartient \`a la famille des estimateurs exhaustifs, d\'efinie par d\'ecomposition exponentielle de la densit\'e~:
+$$\exp(\ln f(x\,;\,\theta)) = \exp\!\bigl(\alpha(x)\,A(\theta)+\beta(x)+B(\theta)\bigr)$$
+La famille des estimateurs exhaustifs est alors~:
+$$\theta^* = c\cdot\frac{1}{n}\sum_{i=1}^n \alpha(X_i).$$
+\end{defbox}
+
+\begin{methbox}[Strat\'egie pour v\'erifier les propri\'et\'es]
+\begin{enumerate}
+  \item Calculer $\E[\hat\theta]$ avec les formules connues ($\E[K_i]$, $\E[X_i]$, etc.). Si $\E[\hat\theta]=\theta$~: sans biais.
+  \item Calculer $\Var(\hat\theta)$ par lin\'earit\'e (sous i.i.d.). Tendre vers 0~: convergence.
+  \item Calculer $I(\theta) = -\E[\partial^2\ln L/\partial\theta^2]$. Si $\Var(\hat\theta)=1/I(\theta)$~: efficace.
+  \item Identifier $\alpha(x)$ dans la d\'ecomposition exponentielle de $\ln f$. Si $\hat\theta \propto \sum\alpha(X_i)$~: exhaustif.
+\end{enumerate}
+\end{methbox}
+
+% Rappel fonction Gamma
+\begin{defbox}[Rappel --- Fonction Gamma]
+$$\Gamma(n) = (n-1)! \qquad \text{pour }n\in\mathbb{N}^*$$
+
+En particulier~:
+\begin{itemize}
+  \item $\Gamma(1) = 0! = 1$, \quad $\Gamma(2) = 1! = 1$, \quad $\Gamma(3) = 2! = 2$.
+  \item Changement de variable utile~: si $u = x/\theta$, alors
+    $\displaystyle\int_0^\infty x^k \frac{1}{\theta}e^{-x/\theta}\,dx = \theta^k\Gamma(k+1)$.
+  \item Plus g\'en\'eralement~: $\displaystyle\int_0^\infty x^{2k}\frac{2}{\theta}xe^{-x^2/\theta}\,dx = \theta^k\Gamma(k+1)$.
+\end{itemize}
+\end{defbox}
+
+% ════════════════════════════════════════════════════════════════
+\newpage
+\section{Exercices corrig\'es}
+% ════════════════════════════════════════════════════════════════
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Maximum de vraisemblance pour une loi binomiale}
+On \'etudie les entreprises fran\c{c}aises de 10 salari\'es. La variable $X_i$ vaut 1 si le $i$-\`eme
+salari\'e gagne plus de 3\,000~\euro\ nets/mois et 0 sinon. On pose $K=\sum_{i=1}^{10}X_i$.
+On observe $m$ entreprises et un \'echantillon empirique $(k_1,\ldots,k_m)$ de la variable $K$.
+
+\begin{enumerate}[label=\textbf{\arabic*)}]
+  \item Quelle est la loi de $X_i$~? Quelle est celle de $K$~? Justifier.
+  \item D\'eterminer l'EMV de $p$.
+  \item D\'emontrer les propri\'et\'es de cet estimateur.
+\end{enumerate}
+\end{exercice}
+
+\corrsep
+
+\textbf{1) Lois de $X_i$ et $K$.}
+
+\'Epreuve~: choisir un salari\'e au hasard. Deux issues mutuellement exclusives (gagne $\geq 3\,000$~\euro\ ou non), une seule \'epreuve~:
+$$X_i \sim \B(1\,;\,p), \qquad \P(X_i=x_i)=p^{x_i}(1-p)^{1-x_i}.$$
+
+$K=\sum_{i=1}^{10}X_i$ est la somme de 10 variables de Bernoulli i.i.d. de param\`etre $p$~:
+$$K \sim \B(10\,;\,p), \qquad \P(K=k)=\binom{10}{k}p^k(1-p)^{10-k}.$$
+
+On rappelle~: $\E(K_i)=10p$ et $\Var(K_i)=10p(1-p)$.
+
+\medskip
+\textbf{2) EMV de $p$.}
+
+L'\'echantillon $(k_1,\ldots,k_m)$ est la r\'ealisation de $(K_1,\ldots,K_m)$ i.i.d. $\B(10\,;\,p)$.
+
+\textbf{Vraisemblance~:}
+$$L(k_1,\ldots,k_m\,;\,p) = \prod_{i=1}^m\binom{10}{k_i}p^{k_i}(1-p)^{10-k_i}.$$
+
+\textbf{Log-vraisemblance~:}
+$$\ln L(\cdot) = \sum_{i=1}^m\left[\ln\binom{10}{k_i} + k_i\ln p + (10-k_i)\ln(1-p)\right].$$
+
+\textbf{CPO} ($\partial\ln L/\partial p = 0$)~:
+\begin{align*}
+\frac{\partial\ln L(\cdot)}{\partial p} &= \sum_{i=1}^m\left(\frac{k_i}{p}-\frac{10-k_i}{1-p}\right) = 0 \\[4pt]
+\Rightarrow\quad (1-p)\sum k_i &= p\sum(10-k_i) \\
+\Rightarrow\quad \sum k_i - p\sum k_i &= 10mp - p\sum k_i \\
+\Rightarrow\quad \sum k_i &= 10mp.
+\end{align*}
+
+D'o\`u~:
+$$\boxed{\hat p(k_1,\ldots,k_m) = \frac{1}{10m}\sum_{i=1}^m k_i = \frac{\bar k}{10}.}$$
+
+Sur l'\'echantillon th\'eorique~: $\hat p(K_1,\ldots,K_m) = \dfrac{\bar K}{10}$.
+
+\textbf{CSO~:}
+$$\frac{\partial^2\ln L(\cdot)}{\partial p^2}
+  = -\sum_{i=1}^m\!\left(\frac{k_i}{p^2}+\frac{10-k_i}{(1-p)^2}\right) \leq 0. \checkmark$$
+
+\medskip
+\textbf{3) Propri\'et\'es de $\hat p$.}
+
+\begin{demobox}[(a) Sans biais]
+$$\E[\hat p] = \E\!\left[\frac{1}{10m}\sum_{i=1}^m K_i\right]
+  = \frac{1}{10m}\cdot m\cdot 10p = p. \qquad\checkmark$$
+\end{demobox}
+
+\begin{demobox}[(b) Convergence]
+$$\Var(\hat p) = \Var\!\left(\frac{1}{10m}\sum_{i=1}^m K_i\right)
+  = \frac{1}{100m^2}\cdot m\cdot 10p(1-p) = \frac{p(1-p)}{10m}.$$
+
+$$\lim_{m\to\infty}\Var(\hat p) = 0 \quad\Rightarrow\quad \hat p \text{ est absolument convergent.} \checkmark$$
+\end{demobox}
+
+\begin{demobox}[(c) Efficacit\'e --- Information de Fisher]
+$$\frac{\partial^2\ln L(\cdot)}{\partial p^2}
+  = -\sum_{i=1}^m\!\left(\frac{K_i}{p^2}+\frac{10-K_i}{(1-p)^2}\right).$$
+
+$$I(p) = -\E\!\left[\frac{\partial^2\ln L}{\partial p^2}\right]
+  = \sum_{i=1}^m\!\left(\frac{\E(K_i)}{p^2}+\frac{10-\E(K_i)}{(1-p)^2}\right)
+  = m\!\left(\frac{10p}{p^2}+\frac{10(1-p)}{(1-p)^2}\right) = \frac{10m}{p(1-p)}.$$
+
+Donc $\dfrac{1}{I(p)} = \dfrac{p(1-p)}{10m} = \Var(\hat p)$. L'estimateur est \textbf{efficace}. $\checkmark$
+\end{demobox}
+
+\begin{demobox}[(d) Exhaustivit\'e]
+On d\'ecompose $\P(K=k)$ sous forme exponentielle~:
+$$\exp(\ln\P(K=k)) = \exp\!\Bigl(k\underbrace{\ln p-\ln(1-p)}_{\displaystyle A(p)} + \underbrace{\ln(1-p)}_{\displaystyle B(p)} + \underbrace{\ln\binom{10}{k}}_{\displaystyle\beta(k)}\Bigr).$$
+
+On identifie $\alpha(k) = k$. La famille des estimateurs exhaustifs est~:
+$$p^* = c\cdot\frac{1}{m}\sum_{i=1}^m K_i = c\bar K.$$
+
+Pour $c=1/10$, on retrouve $\hat p = \bar K/10$. L'estimateur est \textbf{exhaustif}. $\checkmark$
+\end{demobox}
+
+\begin{methbox}[Conclusion Exercice 1]
+$$\boxed{\hat p = \frac{1}{10m}\sum_{i=1}^m K_i = \frac{\bar K}{10}}$$
+est \textbf{ESB}, \textbf{convergent}, \textbf{efficace} et \textbf{exhaustif}.
+\end{methbox}
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Maximum de vraisemblance pour une densit\'e quelconque}
+Soit $(x_1,\ldots,x_n)$ un \'echantillon de taille $n$ d'une variable $X$ de densit\'e~:
+$$f(x\,;\,\theta) =
+\begin{cases}
+\dfrac{1}{\theta}(1-x)^{1/\theta - 1}, & x\in(0,1),\;\theta>0,\\[6pt]
+0, & \text{sinon.}
+\end{cases}$$
+
+\begin{enumerate}[label=\textbf{\arabic*)}]
+  \item En d\'etaillant votre d\'emarche, d\'eterminez l'EMV de $\theta$.
+  \item D\'emontrez les propri\'et\'es via le changement de variable $K_i=-\ln(1-X_i)$, en supposant $\E(K_i)=\theta$ et $\Var(K_i)=\theta^2$.
+\end{enumerate}
+\end{exercice}
+
+\corrsep
+
+\textbf{1) EMV de $\theta$.}
+
+\textbf{Vraisemblance~:}
+$$L(x_1,\ldots,x_n\,;\,\theta)
+  = \prod_{i=1}^n \frac{1}{\theta}(1-x_i)^{1/\theta-1}
+  = \theta^{-n}\prod_{i=1}^n(1-x_i)^{1/\theta-1}.$$
+
+\textbf{Log-vraisemblance} (posons $S=\sum_{i=1}^n\ln(1-x_i)$)~:
+$$\ln L(\cdot) = -n\ln\theta + \left(\frac{1}{\theta}-1\right)S.$$
+
+\textbf{CPO}~:
+$$\frac{\partial\ln L(\cdot)}{\partial\theta}
+  = -\frac{n}{\theta} - \frac{S}{\theta^2} = 0
+  \quad\Longrightarrow\quad -n\hat\theta - S = 0
+  \quad\Longrightarrow\quad \hat\theta = -\frac{S}{n}.$$
+
+$$\boxed{\hat\theta(x_1,\ldots,x_n) = -\frac{1}{n}\sum_{i=1}^n\ln(1-x_i).}$$
+
+La CSO ($\partial^2\ln L/\partial\theta^2 \leq 0$) est v\'erifiable directement (\'el\'ement positif divis\'e par $\theta^3$, entier n\'egatif apr\`es calcul).
+
+\medskip
+\textbf{2) Propri\'et\'es via $K_i=-\ln(1-X_i)$.}
+
+On r\'e\'ecrit~: $\hat\theta(X_1,\ldots,X_n) = \dfrac{1}{n}\sum_{i=1}^n K_i = \bar K$.
+
+\begin{demobox}[(a) Sans biais]
+$\E[\hat\theta] = \E[\bar K] = \E[K] = \theta$.\quad$\checkmark$
+\end{demobox}
+
+\begin{demobox}[(b) Convergence]
+$\Var(\hat\theta) = \Var(\bar K) = \dfrac{\Var(K)}{n} = \dfrac{\theta^2}{n} \xrightarrow[n\to\infty]{} 0$.\quad Absolument convergent. $\checkmark$
+\end{demobox}
+
+\begin{demobox}[(c) Efficacit\'e]
+$I(\theta) = n/\theta^2$ \quad (calcul analogue \`a l'Exercice~3, donn\'e ici). \quad
+Donc $1/I(\theta) = \theta^2/n = \Var(\hat\theta)$. Efficace. $\checkmark$
+\end{demobox}
+
+\begin{demobox}[(d) Exhaustivit\'e]
+La densit\'e s'\'ecrit~:
+$$\ln f(x\,;\,\theta) = -\ln\theta + \left(\frac{1}{\theta}-1\right)\ln(1-x).$$
+On identifie $\alpha(x)=\ln(1-x)=-K$ (ou directement $K=-\ln(1-x)$). Donc $\hat\theta=\bar K=\frac{1}{n}\sum K_i$ est exhaustif. $\checkmark$
+\end{demobox}
+
+\begin{methbox}[Conclusion Exercice 2]
+$$\boxed{\hat\theta = -\frac{1}{n}\sum_{i=1}^n\ln(1-x_i) = \bar K}$$
+est \textbf{ESB}, \textbf{convergent}, \textbf{efficace} et \textbf{exhaustif}.
+\end{methbox}
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Densit\'e exponentielle avec fonction Gamma}
+Soit $(x_1,\ldots,x_n)$ un \'echantillon de taille $n$ d'une variable $X$ de densit\'e~:
+$$f(x\,;\,\theta) = \frac{1}{\theta}e^{-x/\theta},\qquad x>0,\;\theta>0.$$
+
+\begin{enumerate}[label=\textbf{\arabic*)}]
+  \item D\'eterminez l'EMV de $\theta$.
+  \item D\'emontrez les propri\'et\'es de l'estimateur.
+\end{enumerate}
+\end{exercice}
+
+\corrsep
+
+\textbf{1) EMV de $\theta$.}
+
+\textbf{Vraisemblance~:}
+$$L(\cdot\,;\,\theta) = \prod_{i=1}^n\frac{1}{\theta}e^{-x_i/\theta}
+  = \theta^{-n}\exp\!\left(-\frac{1}{\theta}\sum_{i=1}^n x_i\right).$$
+
+\textbf{Log-vraisemblance~:}
+$$\ln L(\cdot) = -n\ln\theta - \frac{\bar x \cdot n}{\theta}.$$
+
+\textbf{CPO}~:
+$$\frac{\partial\ln L(\cdot)}{\partial\theta}
+  = -\frac{n}{\theta}+\frac{n\bar x}{\theta^2} = 0
+  \quad\Longrightarrow\quad \hat\theta = \bar x.$$
+
+$$\boxed{\hat\theta(x_1,\ldots,x_n) = \bar x.}$$
+
+\medskip
+\textbf{2) Propri\'et\'es sur l'\'echantillon th\'eorique $(X_1,\ldots,X_n)$ i.i.d.}
+
+\begin{demobox}[(a) Sans biais --- calcul de $\E(X)$ par la fonction Gamma]
+$$\E(X) = \int_0^\infty x\cdot\frac{1}{\theta}e^{-x/\theta}\,dx.$$
+
+Changement de variable $u=x/\theta$, $x=\theta u$, $dx=\theta\,du$~:
+$$\E(X) = \int_0^\infty \theta u\cdot\frac{1}{\theta}e^{-u}\cdot\theta\,du
+  = \theta\int_0^\infty u^{2-1}e^{-u}\,du = \theta\,\Gamma(2) = \theta\cdot 1 = \theta.$$
+
+Donc $\E[\hat\theta] = \E[\bar X] = \E[X] = \theta$. ESB. $\checkmark$
+\end{demobox}
+
+\begin{demobox}[(b) Calcul de $\Var(X)$ puis $\Var(\hat\theta)$]
+On calcule $\E(X^2)$ par le m\^eme changement de variable~:
+$$\E(X^2) = \int_0^\infty x^2\cdot\frac{1}{\theta}e^{-x/\theta}\,dx
+  = \theta^2\int_0^\infty u^{3-1}e^{-u}\,du = \theta^2\,\Gamma(3) = 2\theta^2.$$
+
+Donc~:
+$$\Var(X) = \E(X^2)-\E(X)^2 = 2\theta^2-\theta^2 = \theta^2.$$
+
+D'o\`u~:
+$$\Var(\hat\theta) = \Var(\bar X) = \frac{\Var(X)}{n} = \frac{\theta^2}{n}.$$
+\end{demobox}
+
+\begin{demobox}[(c) Convergence]
+$$\lim_{n\to\infty}\Var(\hat\theta) = \lim_{n\to\infty}\frac{\theta^2}{n} = 0.$$
+Comme $\hat\theta$ est ESB, il est \textbf{absolument convergent}. $\checkmark$
+\end{demobox}
+
+\begin{demobox}[(d) Efficacit\'e --- Information de Fisher]
+On calcule la d\'eriv\'ee seconde de la log-vraisemblance~:
+$$\frac{\partial^2\ln L(\cdot)}{\partial\theta^2}
+  = \frac{n}{\theta^2} - \frac{2n\bar x}{\theta^3}.$$
+
+Information de Fisher~:
+$$I(\theta) = -\E\!\left[\frac{\partial^2\ln L}{\partial\theta^2}\right]
+  = -\frac{n}{\theta^2}+\frac{2n\E(X)}{\theta^3}
+  = -\frac{n}{\theta^2}+\frac{2n\theta}{\theta^3}
+  = \frac{n}{\theta^2}.$$
+
+Donc $1/I(\theta) = \theta^2/n = \Var(\hat\theta)$. Efficace. $\checkmark$
+\end{demobox}
+
+\begin{demobox}[(e) Exhaustivit\'e]
+$$\ln f(x\,;\,\theta) = -\ln\theta - \frac{x}{\theta}.$$
+On identifie $\alpha(x)=x$, $A(\theta)=-1/\theta$, $B(\theta)=-\ln\theta$.
+
+La famille des estimateurs exhaustifs est $\theta^*=c\cdot\frac{1}{n}\sum X_i=c\bar X$.
+Pour $c=1$~: $\hat\theta=\bar X$. Exhaustif. $\checkmark$
+\end{demobox}
+
+\begin{methbox}[Conclusion Exercice 3]
+$$\boxed{\hat\theta = \bar X}$$
+est \textbf{ESB}, \textbf{convergent}, \textbf{efficace} et \textbf{exhaustif}.
+\end{methbox}
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Densit\'e avec Gamma et changement de variable $u=x^2/\theta$}
+Soit $(x_1,\ldots,x_n)$ un \'echantillon de taille $n$ d'une variable $X$ de densit\'e~:
+$$f(x\,;\,\theta) = \frac{2}{\theta}\,x\,e^{-x^2/\theta},\qquad x>0,\;\theta>0.$$
+
+\begin{enumerate}[label=\textbf{\arabic*)}]
+  \item D\'eterminez l'EMV de $\theta$.
+  \item D\'emontrez les propri\'et\'es de l'estimateur.
+\end{enumerate}
+\end{exercice}
+
+\corrsep
+
+\textbf{1) EMV de $\theta$.}
+
+\textbf{Log-vraisemblance~:}
+\begin{align*}
+\ln L(\cdot) &= \sum_{i=1}^n \ln f(x_i\,;\,\theta)
+  = \sum_{i=1}^n\!\left(\ln 2 - \ln\theta + \ln x_i - \frac{x_i^2}{\theta}\right) \\
+  &= n\ln 2 - n\ln\theta + \sum_{i=1}^n\ln x_i - \frac{1}{\theta}\sum_{i=1}^n x_i^2.
+\end{align*}
+
+\textbf{CPO}~:
+$$\frac{\partial\ln L(\cdot)}{\partial\theta}
+  = -\frac{n}{\theta}+\frac{\sum x_i^2}{\theta^2} = 0
+  \quad\Longrightarrow\quad \hat\theta = \frac{\sum x_i^2}{n} = \overline{x^2}.$$
+
+$$\boxed{\hat\theta(x_1,\ldots,x_n) = \frac{1}{n}\sum_{i=1}^n x_i^2 = \overline{x^2}.}$$
+
+\medskip
+\textbf{2) Propri\'et\'es sur l'\'echantillon th\'eorique $(X_1,\ldots,X_n)$ i.i.d.}
+
+$\hat\theta(X_1,\ldots,X_n) = \dfrac{1}{n}\sum X_i^2$.
+
+\begin{demobox}[(a) Sans biais --- calcul de $\E(X^2)$ par changement $u=x^2/\theta$]
+$$\E(X^2) = \int_0^\infty x^2\cdot\frac{2}{\theta}x\,e^{-x^2/\theta}\,dx.$$
+
+Posons $u=x^2/\theta$, d'o\`u $x^2=\theta u$, $2x\,dx=\theta\,du$~:
+$$\E(X^2) = \int_0^\infty \theta u\cdot e^{-u}\,du = \theta\int_0^\infty u^{2-1}e^{-u}\,du
+  = \theta\,\Gamma(2) = \theta\cdot 1 = \theta.$$
+
+Donc $\E[\hat\theta] = \E[X^2] = \theta$. ESB. $\checkmark$
+\end{demobox}
+
+\begin{demobox}[(b) Calcul de $\Var(X^2)$]
+Il faut $\E(X^4)$. Par le m\^eme changement de variable~:
+$$\E(X^4) = \int_0^\infty x^4\cdot\frac{2}{\theta}x\,e^{-x^2/\theta}\,dx
+  = \theta^2\int_0^\infty u^{3-1}e^{-u}\,du = \theta^2\,\Gamma(3) = 2\theta^2.$$
+
+Donc~:
+$$\Var(X^2) = \E(X^4)-[\E(X^2)]^2 = 2\theta^2-\theta^2 = \theta^2.$$
+
+D'o\`u~:
+$$\Var(\hat\theta) = \Var\!\left(\frac{1}{n}\sum X_i^2\right)
+  = \frac{\Var(X^2)}{n} = \frac{\theta^2}{n}.$$
+\end{demobox}
+
+\begin{demobox}[(c) Convergence]
+$\displaystyle\lim_{n\to\infty}\frac{\theta^2}{n}=0$. Absolument convergent. $\checkmark$
+\end{demobox}
+
+\begin{demobox}[(d) Efficacit\'e]
+La d\'eriv\'ee seconde de $\ln L$~:
+$$\frac{\partial^2\ln L(\cdot)}{\partial\theta^2}
+  = \frac{n}{\theta^2} - \frac{2\sum x_i^2}{\theta^3}.$$
+
+$$I(\theta) = -\E\!\left[\frac{\partial^2\ln L}{\partial\theta^2}\right]
+  = -\frac{n}{\theta^2}+\frac{2n\E(X^2)}{\theta^3}
+  = -\frac{n}{\theta^2}+\frac{2n\theta}{\theta^3}
+  = \frac{n}{\theta^2}.$$
+
+$1/I(\theta) = \theta^2/n = \Var(\hat\theta)$. Efficace. $\checkmark$
+\end{demobox}
+
+\begin{demobox}[(e) Exhaustivit\'e]
+$$\ln f(x\,;\,\theta)=\ln 2-\ln\theta+\ln x-\frac{x^2}{\theta}.$$
+On identifie $\alpha(x)=x^2$, donc la famille des ESB est $c\cdot\sum X_i^2/n$.
+Pour $c=1$, on retrouve $\hat\theta=\overline{X^2}$. Exhaustif. $\checkmark$
+\end{demobox}
+
+\begin{methbox}[Conclusion Exercice 4]
+$$\boxed{\hat\theta = \frac{1}{n}\sum_{i=1}^n X_i^2 = \overline{X^2}}$$
+est \textbf{ESB}, \textbf{convergent}, \textbf{efficace} et \textbf{exhaustif}.
+\end{methbox}
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Maximum de vraisemblance pour la loi de Bernoulli}
+Un institut de sondage d\'efinit $X_i = 1$ si le $i$-\`eme individu est atteint par la grippe
+en janvier 2005, et $X_i=0$ sinon. On dispose d'un \'echantillon $(x_1,\ldots,x_n)$.
+
+\begin{enumerate}[label=\textbf{\arabic*)}]
+  \item Quelle loi proposez-vous pour $X_i$~? Justifiez.
+  \item D\'eterminez l'EMV de $p$.
+  \item D\'emontrez les propri\'et\'es de cet estimateur.
+\end{enumerate}
+\end{exercice}
+
+\corrsep
+
+\textbf{1) Loi de $X_i$.}
+
+\'Epreuve~: choisir un individu au hasard. Deux \'ev\'enements~:
+\begin{itemize}
+  \item $A=\{$individu malade$\}$~: $\P(A)=p$.
+  \item $\bar A=\{$individu sain$\}$~: $\P(\bar A)=1-p$.
+\end{itemize}
+
+$X_i(\Omega)=\{0\,;\,1\}$, deux probabilit\'es mutuellement exclusives, une seule \'epreuve~:
+$$X_i\sim\B(1\,;\,p), \qquad \P(X_i=x_i)=p^{x_i}(1-p)^{1-x_i}.$$
+
+On rappelle~: $\E(X_i)=p$ et $\Var(X_i)=p(1-p)$.
+
+\medskip
+\textbf{2) EMV de $p$.}
+
+\textbf{Vraisemblance~:}
+$$L(x_1,\ldots,x_n\,;\,p)=\prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}
+  = p^{\sum x_i}(1-p)^{n-\sum x_i}.$$
+
+\textbf{Log-vraisemblance~:}
+$$\ln L(\cdot) = \left(\sum_{i=1}^n x_i\right)\ln p
+  + \left(n-\sum_{i=1}^n x_i\right)\ln(1-p).$$
+
+\textbf{CPO}~:
+$$\frac{\partial\ln L(\cdot)}{\partial p}
+  = \frac{\sum x_i}{p}-\frac{n-\sum x_i}{1-p}=0
+  \quad\Longrightarrow\quad \hat p = \frac{\sum x_i}{n} = \bar x.$$
+
+$$\boxed{\hat p(x_1,\ldots,x_n) = \bar x.}$$
+
+\medskip
+\textbf{3) Propri\'et\'es sur l'\'echantillon th\'eorique.}
+
+\begin{demobox}[(a) Sans biais]
+$\E[\hat p] = \E[\bar X] = \E[X] = p$.\quad $\checkmark$
+\end{demobox}
+
+\begin{demobox}[(b) Efficacit\'e]
+$\Var(\hat p) = \Var(\bar X) = \dfrac{p(1-p)}{n}$.
+
+Information de Fisher~:
+$$I(p) = -\E\!\left[\frac{\partial^2\ln L}{\partial p^2}\right]
+  = -\E\!\left[-\frac{\sum X_i}{p^2}-\frac{n-\sum X_i}{(1-p)^2}\right]
+  = \frac{np}{p^2}+\frac{n(1-p)}{(1-p)^2} = \frac{n}{p(1-p)}.$$
+
+Donc $1/I(p)=p(1-p)/n=\Var(\hat p)$. Efficace. $\checkmark$
+\end{demobox}
+
+\begin{demobox}[(c) Convergence]
+$\displaystyle\lim_{n\to\infty}\frac{p(1-p)}{n}=0$. Absolument convergent. $\checkmark$
+\end{demobox}
+
+\begin{alertbox}[Remarque : l'Exercice 5 est un cas particulier de l'Exercice 1]
+L'Exercice~1 portait sur $K\sim\B(10\,;\,p)$ et donnait $\hat p=\bar K/10$.
+L'Exercice~5 porte sur $X_i\sim\B(1\,;\,p)$ (Bernoulli). La m\^eme m\'ethode donne $\hat p=\bar X$. Les deux sont coh\'erents~: si l'on pose $K_i=\sum_{j=1}^{10}X_{ij}$, alors $\bar K/10=\bar X$.
+\end{alertbox}
+
+\begin{methbox}[Conclusion Exercice 5]
+$$\boxed{\hat p = \bar X = \frac{1}{n}\sum_{i=1}^n X_i}$$
+est \textbf{ESB}, \textbf{convergent} et \textbf{efficace}.
+\end{methbox}
+
+% ─────────────────────────────────────────────────────────────────
+\begin{exercice}{Loi normale --- deux EMV et biais de $S^2$}
+Soit $X$ la variable ``taille des individus'' avec $X\sim\N(m\,;\,\sigma)$.
+D\'eterminez les EMV de $m$ et de $\sigma^2$.
+\end{exercice}
+
+\corrsep
+
+\begin{alertbox}[But de cet exercice]
+Cet exercice illustre deux situations nouvelles par rapport aux exercices pr\'ec\'edents~: (i)~il peut y avoir \textbf{plusieurs EMV} (un par param\`etre), et (ii)~un EMV peut \textbf{ne pas \^etre sans biais}.
+\end{alertbox}
+
+\textbf{Vraisemblance~:}
+$$L(x_1,\ldots,x_n\,;\,m\,;\,\sigma)
+  = \left(\frac{1}{\sigma\sqrt{2\pi}}\right)^n
+    \exp\!\left(-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-m)^2\right).$$
+
+\textbf{Log-vraisemblance~:}
+$$\ln L(\cdot) = -n\ln\sigma - \frac{n}{2}\ln(2\pi)
+  - \frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-m)^2.$$
+
+\medskip
+\textbf{CPO par rapport \`a $m$~:}
+$$\frac{\partial\ln L}{\partial m}
+  = \frac{1}{\sigma^2}\sum_{i=1}^n(x_i-m) = 0
+  \quad\Longrightarrow\quad \sum(x_i-\hat m)=0
+  \quad\Longrightarrow\quad \boxed{\hat m = \bar x.}$$
+
+\textbf{CPO par rapport \`a $\sigma^2$} (en posant $\tau=\sigma^2$)~:
+$$\frac{\partial\ln L}{\partial\tau}
+  = -\frac{n}{2\tau}+\frac{1}{2\tau^2}\sum_{i=1}^n(x_i-m)^2 = 0
+  \quad\Longrightarrow\quad \boxed{\widehat{\sigma^2} = \frac{1}{n}\sum_{i=1}^n(x_i-\hat m)^2 = s^2.}$$
+
+\textbf{Propri\'et\'es de $\hat m$~:}
+
+$\hat m(X_1,\ldots,X_n) = \bar X$. Les m\^emes calculs qu'aux exercices pr\'ec\'edents donnent~:
+\begin{itemize}
+  \item $\E[\hat m]=m$~: ESB $\checkmark$
+  \item $\Var(\hat m)=\sigma^2/n \xrightarrow[n\to\infty]{} 0$~: convergent $\checkmark$
+  \item $I(m)=n/\sigma^2$, donc $1/I(m)=\sigma^2/n=\Var(\hat m)$~: efficace $\checkmark$
+  \item Forme exponentielle donne $\alpha(x)=x$, $\hat m=\bar X$~: exhaustif $\checkmark$
+\end{itemize}
+
+\textbf{Propri\'et\'es de $\widehat{\sigma^2}$ --- mise en \'evidence du biais~:}
+
+\begin{demobox}[D\'emonstration du biais de $S^2$]
+On cherche $\E[S^2]=\E\!\left[\dfrac{1}{n}\sum_{i=1}^n(X_i-\bar X)^2\right]$.
+
+On d\'ecompose $(X_i-\bar X)^2$ en utilisant $X_i-m=(X_i-\bar X)+(\bar X-m)$~:
+$$\sum_{i=1}^n(X_i-m)^2
+  = \sum_{i=1}^n(X_i-\bar X)^2 + n(\bar X-m)^2.$$
+
+Donc~:
+$$\sum_{i=1}^n(X_i-\bar X)^2 = \sum_{i=1}^n(X_i-m)^2 - n(\bar X-m)^2.$$
+
+En prenant l'esp\'erance~:
+$$\E\!\left[\sum(X_i-\bar X)^2\right]
+  = \sum\E\!\left[(X_i-m)^2\right] - n\,\E\!\left[(\bar X-m)^2\right]
+  = n\sigma^2 - n\cdot\frac{\sigma^2}{n}
+  = (n-1)\sigma^2.$$
+
+Donc~:
+$$\E[S^2] = \E\!\left[\frac{1}{n}\sum(X_i-\bar X)^2\right]
+  = \frac{n-1}{n}\sigma^2 \neq \sigma^2.$$
+
+Le \textbf{biais} de $S^2$ est~:
+$$\biais{S^2} = \E[S^2]-\sigma^2 = -\frac{\sigma^2}{n}.$$
+\end{demobox}
+
+\begin{demobox}[Correction du biais --- variance empirique corrig\'ee $\hat S^2$]
+Pour annuler le biais, on multiplie $S^2$ par $n/(n-1)$~:
+$$\hat S^2 = \frac{n}{n-1}S^2 = \frac{1}{n-1}\sum_{i=1}^n(X_i-\bar X)^2.$$
+
+V\'erification~:
+$$\E[\hat S^2] = \frac{n}{n-1}\cdot\frac{n-1}{n}\sigma^2 = \sigma^2. \qquad\checkmark$$
+
+$\hat S^2$ (avec diviseur $n-1$) est un ESB de $\sigma^2$, alors que $S^2$ (diviseur $n$) est un estimateur \textbf{biais\'e} fourni par le maximum de vraisemblance.
+\end{demobox}
+
+\begin{methbox}[Conclusion Exercice 6]
+\begin{itemize}
+  \item $\hat m = \bar X$~: EMV de $m$, ESB, convergent, efficace, exhaustif.
+  \item $\widehat{\sigma^2} = S^2 = \dfrac{1}{n}\displaystyle\sum(X_i-\bar X)^2$~: EMV de $\sigma^2$, mais \textbf{biais\'e} ($\E[S^2]=\frac{n-1}{n}\sigma^2$).
+  \item $\hat S^2 = \dfrac{1}{n-1}\displaystyle\sum(X_i-\bar X)^2$~: estimateur corrig\'e, ESB de $\sigma^2$.
+\end{itemize}
+\end{methbox}
+
+% ════════════════════════════════════════════════════════════════
+\newpage
+\section{Conseils pratiques et pi\`eges classiques}
+% ════════════════════════════════════════════════════════════════
+
+\begin{methbox}[D\'emarche g\'en\'erale --- m\'ethode du maximum de vraisemblance]
+\begin{enumerate}
+  \item \textbf{Identifier la loi} de $X$ et le(s) param\`etre(s) \`a estimer.
+  \item \textbf{\'Ecrire la vraisemblance} $L = \prod f(x_i;\theta)$ (continu) ou $\prod \P(X=x_i;\theta)$ (discret).
+  \item \textbf{Passer au logarithme}~: $\ln L = \sum\ln f(x_i;\theta)$.
+  \item \textbf{D\'eriver} par rapport \`a chaque param\`etre et \'egaliser \`a z\'ero (CPO).
+  \item \textbf{V\'erifier la CSO} ($\partial^2\ln L/\partial\theta^2\leq 0$).
+  \item \textbf{V\'erifier les propri\'et\'es} sur l'\'echantillon th\'eorique $(X_1,\ldots,X_n)$.
+\end{enumerate}
+\end{methbox}
+
+\begin{methbox}[Neutraliser un biais]
+Si $\E[\hat\theta]=k\theta$ (avec $k\neq 1$), l'estimateur est biais\'e. Le biais vaut~:
+$$\biais{\hat\theta} = \E[\hat\theta]-\theta = (k-1)\theta.$$
+
+Pour neutraliser le biais, on construit $\tilde\theta = \dfrac{1}{k}\hat\theta$~:
+$$\E[\tilde\theta] = \frac{1}{k}\E[\hat\theta] = \frac{1}{k}\cdot k\theta = \theta.\qquad\checkmark$$
+
+Exemple~: $S^2$ est biais\'e avec $k=(n-1)/n$. On pose $\hat S^2=\dfrac{n}{n-1}S^2=\dfrac{1}{n-1}\sum(X_i-\bar X)^2$.
+\end{methbox}
+
+\begin{alertbox}[Pi\`ege 1 --- Confondre \'echantillon empirique et th\'eorique]
+\begin{itemize}
+  \item \textbf{EMV}~: calcul\'e sur l'\'echantillon empirique $(x_1,\ldots,x_n)$ (minuscules).
+  \item \textbf{Propri\'et\'es}~: v\'erifi\'ees sur l'\'echantillon th\'eorique $(X_1,\ldots,X_n)$ (majuscules).
+\end{itemize}
+Ne jamais \'ecrire $\E[\bar x]$ (l'esp\'erance d'une constante n'a pas de sens).
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 2 --- Oublier de v\'erifier la CSO]
+La CPO ($\partial\ln L/\partial\theta=0$) donne les \textit{points stationnaires}, pas n\'ecessairement des maxima. La CSO ($\partial^2\ln L/\partial\theta^2\leq 0$) assure qu'il s'agit bien d'un \textbf{maximum} et non d'un minimum ou d'un point d'inflexion.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 3 --- Efficacit\'e sans biais pr\'ealable]
+Un estimateur est efficace seulement s'il est \textbf{d'abord sans biais}. L'in\'egalit\'e de FRCD borne la variance des estimateurs \textbf{sans biais} uniquement. Calculer $I(\theta)$ sans v\'erifier l'absence de biais est incorrect.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 4 --- Le signe du biais de $S^2$]
+$$\E[S^2] = \frac{n-1}{n}\sigma^2 < \sigma^2.$$
+L'EMV de la variance \textbf{sous-estime} la vraie variance. C'est un \textbf{biais n\'egatif}~: on obtient en moyenne une variance trop petite. La correction divise par $(n-1)$ et non par $n$.
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 5 --- Convergence pour un ESB]
+Si l'estimateur est ESB, la convergence revient \`a montrer $\Var(\hat\theta)\to 0$. Si l'estimateur est \textbf{biais\'e}, il faut montrer \`a la fois $\Var(\hat\theta)\to 0$ \textbf{et} $\biais{\hat\theta}\to 0$ (convergence au sens g\'en\'eral).
+\end{alertbox}
+
+\begin{alertbox}[Pi\`ege 6 --- Utilisation de la fonction Gamma]
+Retenir~: $\Gamma(n)=(n-1)!$ pour $n\in\mathbb{N}^*$. En pratique~:
+\begin{itemize}
+  \item $\int_0^\infty u^{k-1}e^{-u}\,du = \Gamma(k)$
+  \item Pour la densit\'e exponentielle~: $u=x/\theta$ donne $\E(X^k)=\theta^k\Gamma(k+1)$.
+  \item Pour la densit\'e $f(x)=\frac{2}{\theta}xe^{-x^2/\theta}$~: $u=x^2/\theta$ donne $\E(X^{2k})=\theta^k\Gamma(k+1)$.
+\end{itemize}
+\end{alertbox}
+
+% ════════════════════════════════════════════════════════════════
+\newpage
+\section*{Fiche de synth\`ese finale}
+\addcontentsline{toc}{section}{Fiche de synth\`ese finale}
+% ════════════════════════════════════════════════════════════════
+
+\begin{defbox}[Tableau r\'ecapitulatif --- Exercices 1 \`a 6]
+\renewcommand{\arraystretch}{1.9}
+\small\sffamily
+\begin{tabularx}{\linewidth}{@{}p{1.4cm} p{4.5cm} X p{1.5cm}@{}}
+\toprule
+\textbf{Ex.} & \textbf{Densit\'e / Loi} & \textbf{EMV} & \textbf{Biais\'e~?} \\
+\midrule
+1 & $K\sim\mathcal{B}(10\,;\,p)$, \'ech. de taille $m$ &
+  $\hat p = \bar K/10$ & Non \\
+2 & $f(x)=\frac{1}{\theta}(1-x)^{1/\theta-1}$, $x\in(0,1)$ &
+  $\hat\theta = -\frac{1}{n}\sum\ln(1-x_i)$ & Non \\
+3 & $f(x)=\frac{1}{\theta}e^{-x/\theta}$ (exponentielle) &
+  $\hat\theta = \bar x$ & Non \\
+4 & $f(x)=\frac{2}{\theta}xe^{-x^2/\theta}$ &
+  $\hat\theta = \overline{x^2}$ & Non \\
+5 & $X_i\sim\mathcal{B}(1\,;\,p)$ (Bernoulli) &
+  $\hat p = \bar x$ & Non \\
+\multirow{2}{*}{6} & \multirow{2}{*}{$X\sim\mathcal{N}(m\,;\,\sigma)$} &
+  $\hat m = \bar x$ & Non \\
+& & $\widehat{\sigma^2}=s^2=\frac{1}{n}\sum(x_i-\hat m)^2$ & \textbf{Oui} \\
+\bottomrule
+\end{tabularx}
+\end{defbox}
+
+\begin{defbox}[Quatre propri\'et\'es et comment les v\'erifier]
+\renewcommand{\arraystretch}{1.7}
+\small\sffamily
+\begin{tabularx}{\linewidth}{@{}p{2.4cm} X@{}}
+\toprule
+\textbf{Propri\'et\'e} & \textbf{D\'emarche de v\'erification} \\
+\midrule
+\textbf{Sans biais} &
+  Calculer $\E[\hat\theta(X_1,\ldots,X_n)]$ et v\'erifier l'\'egalit\'e \`a $\theta$.
+  Utiliser lin\'earit\'e de $\E$, i.i.d.~: $\E[\sum X_i]=n\E(X)$. \\
+\textbf{Efficace} &
+  (1)~V\'erifier ESB. (2)~Calculer $\Var(\hat\theta)$. (3)~Calculer $I(\theta)=-\E[\partial^2\ln L/\partial\theta^2]$.
+  (4)~V\'erifier $\Var(\hat\theta)=1/I(\theta)$. \\
+\textbf{Convergent} &
+  Si ESB~: montrer $\Var(\hat\theta)\to 0$. En g\'en\'eral~: montrer biais$\to 0$ \textbf{et} variance$\to 0$. \\
+\textbf{Exhaustif} &
+  Identifier $\alpha(x)$ dans la forme exponentielle de $\ln f(x;\theta)$. V\'erifier que $\hat\theta=c\cdot\frac{1}{n}\sum\alpha(X_i)$. \\
+\bottomrule
+\end{tabularx}
+\end{defbox}
+
+\begin{methbox}[R\`egle m\'emoire pour $\Gamma$]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lccc}
+\toprule
+$\Gamma(n)$ & $\Gamma(1)$ & $\Gamma(2)$ & $\Gamma(3)$ \\
+\midrule
+Valeur & 1 & 1 & 2 \\
+\bottomrule
+\end{tabular}
+
+\medskip
+$\E(X^k) = \theta^{k/(d)}\Gamma(k/d+1)$ o\`u $d=1$ pour la densit\'e exponentielle et $d=2$ pour la densit\'e de l'Ex.~4.
+\end{methbox}
+
+\end{document}

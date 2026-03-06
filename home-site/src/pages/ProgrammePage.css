@@ -1,0 +1,292 @@
+﻿.programme-page-shell {
+  min-height: 100vh;
+  color: var(--color-text-primary);
+  background: var(--color-bg-raised);
+}
+
+html.dark .programme-page-shell header.glass-premium,
+html[data-theme="dark"] .programme-page-shell header.glass-premium,
+[data-theme="dark"] .programme-page-shell header.glass-premium {
+  background:
+    radial-gradient(1200px 520px at 50% -260px, color-mix(in srgb, var(--color-accent) 6%, transparent), transparent 70%),
+    var(--color-bg-raised) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.programme-page-main {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: clamp(1.2rem, 4vw, 3rem) calc(1rem + env(safe-area-inset-left, 0px))
+    calc(2.7rem + env(safe-area-inset-bottom, 0px)) calc(1rem + env(safe-area-inset-right, 0px));
+}
+
+.programme-hero {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.programme-kicker {
+  margin: 0;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.programme-title {
+  margin: 0.7rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 8vw, 5rem);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.programme-title-letter {
+  color: var(--color-text-primary);
+}
+
+.programme-title-letter.is-fresh {
+  color: var(--color-accent);
+}
+
+.programme-title-cursor {
+  width: 0.08em;
+  height: 0.9em;
+  margin-left: 0.06em;
+  background: var(--color-accent);
+  align-self: center;
+  animation: programme-title-cursor-blink 800ms steps(1, end) infinite;
+}
+
+@keyframes programme-title-cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.programme-lead {
+  margin: 1rem 0 0;
+  max-width: 60ch;
+  font-size: clamp(0.98rem, 1.35vw, 1.12rem);
+  line-height: 1.66;
+  color: var(--color-text-secondary);
+}
+
+.programme-layout {
+  margin-top: clamp(1.2rem, 4vw, 2.4rem);
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.programme-toc {
+  position: sticky;
+  top: 5.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.22rem;
+  border: 1px solid var(--color-border-default);
+  border-radius: 20px;
+  background: var(--color-bg-raised);
+}
+
+.programme-toc-button {
+  position: relative;
+  min-height: 30px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--color-text-secondary);
+  background: transparent;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.programme-toc-button:hover {
+  color: var(--color-text-primary);
+}
+
+.programme-toc-button[data-active="true"] {
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+}
+
+.programme-toc-button[data-active="true"]::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+  transform: translateY(-50%);
+}
+
+.programme-toc-button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  outline-offset: 2px;
+}
+
+@keyframes programme-license-slide {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.programme-license-panel {
+  border: 1px solid var(--color-border-default);
+  border-radius: calc(var(--radius-lg) + 2px);
+  background: var(--color-bg-raised);
+  box-shadow: var(--shadow-sm);
+  padding: clamp(1rem, 2.4vw, 1.45rem);
+  animation: programme-license-slide 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.programme-license-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+
+.programme-semesters-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.programme-semester-block {
+  padding: 0.2rem 0;
+}
+
+.programme-semester-block + .programme-semester-block {
+  border-left: 1px solid var(--color-border-default);
+  padding-left: 1rem;
+}
+
+.programme-semester-head {
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.28rem;
+}
+
+.programme-semester-title {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+.programme-subject-list {
+  margin: 0;
+  padding-left: 1.05rem;
+  list-style: disc;
+  display: grid;
+  gap: 0.66rem;
+}
+
+.programme-subject-item {
+  padding-left: 0.08rem;
+}
+
+.programme-subject-item::marker {
+  color: var(--color-accent);
+}
+
+.programme-subject-name {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--color-text-primary);
+}
+
+.programme-subject-description {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 900px) {
+  .programme-semesters-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .programme-semester-block {
+    padding: 0.95rem 0;
+  }
+
+  .programme-semester-block + .programme-semester-block {
+    border-left: none;
+    border-top: 1px solid var(--color-border-default);
+    padding-left: 0;
+  }
+
+  .programme-layout {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .programme-toc {
+    position: static;
+    display: inline-flex;
+    flex-direction: row;
+    width: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 0.3rem;
+    gap: 0.4rem;
+    justify-self: start;
+  }
+
+  .programme-toc-button {
+    min-width: 56px;
+    flex: 0 0 auto;
+  }
+
+  .programme-toc-button[data-active="true"]::after {
+    left: 50%;
+    top: auto;
+    bottom: 5px;
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .programme-title-cursor,
+  .programme-toc-button,
+  .programme-license-panel {
+    animation: none;
+    transition: none;
+  }
+
+  .programme-title-letter {
+    color: var(--color-text-primary);
+  }
+}

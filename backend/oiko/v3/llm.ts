@@ -10,6 +10,22 @@ const providerRegistry = {
   openrouter: openRouterProvider,
 };
 
+/** Default timeout per LLM call in ms — overridable via OIKO_LLM_TIMEOUT_MS env var. */
+const LLM_TIMEOUT_MS = Number(process.env.OIKO_LLM_TIMEOUT_MS) || 45_000;
+
+/** Wraps a promise with a hard timeout. Rejects with a clear message if exceeded. */
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new Error(`LLM call timed out after ${timeoutMs}ms [${label}]`));
+    }, timeoutMs);
+
+    promise
+      .then((result) => { clearTimeout(timer); resolve(result); })
+      .catch((error) => { clearTimeout(timer); reject(error); });
+  });
+}
+
 export function extractJsonCandidate(rawText?: string | null) {
   if (!rawText) return null;
   const trimmed = rawText.trim();
@@ -43,13 +59,19 @@ export async function callConfiguredProvider(
 
   const trackedServiceKey = providerName === 'groq' ? getGroqTrackedServiceKey(model) : null;
 
+  const timeoutMs = options.maxTokens && options.maxTokens > 6000 ? LLM_TIMEOUT_MS * 1.5 : LLM_TIMEOUT_MS;
+
   try {
-    const result = await provider.generate({
-      model,
-      messages,
-      maxTokens: options.maxTokens || 7200,
-      temperature: options.temperature ?? 0.15,
-    });
+    const result = await withTimeout(
+      provider.generate({
+        model,
+        messages,
+        maxTokens: options.maxTokens || 7200,
+        temperature: options.temperature ?? 0.15,
+      }),
+      timeoutMs,
+      `${providerName}/${model}`,
+    );
 
     if (trackedServiceKey && usageDate) {
       trackOikoApiUsage(trackedServiceKey, { usageDate, requests: 1, tokens: result.tokensUsed || 0 });

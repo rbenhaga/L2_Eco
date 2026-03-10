@@ -140,6 +140,19 @@ export type TopicCluster = {
   sourceProfiles: SourceProfile[];
 };
 
+export type MicroBriefCandidate = {
+  id: string;
+  kind: 'lead_aftershock' | 'context_pulse';
+  titleHint: string;
+  textHint: string;
+  factIds: string[];
+  articleIds: string[];
+  clusterIds?: string[];
+  marketKeys?: string[];
+  sourceClusterId?: string;
+  priority: number;
+};
+
 export type StructuredMarketSeries = {
   key: string;
   label: string;
@@ -176,6 +189,7 @@ export type DayEditorialPacket = {
     carnet: TopicCluster[];
     briefs: TopicCluster[];
   };
+  microBriefCandidates: MicroBriefCandidate[];
   sourceCoverage: {
     distinctSources: number;
     distinctDomains: number;

@@ -6,6 +6,33 @@ import { buildUnsubscribeToken, safeJsonParse, toAbsoluteUrl } from './utils.ts'
 
 let cachedTransporter: any = null;
 
+/** Max retry attempts per recipient. Overridable via OIKO_SEND_MAX_RETRIES. */
+const MAX_RETRIES = Number(process.env.OIKO_SEND_MAX_RETRIES) || 2;
+
+/** Base delay in ms for exponential backoff between retries. */
+const RETRY_BASE_DELAY_MS = 1500;
+
+async function sendWithRetry(
+  transporter: any,
+  mailOptions: Record<string, unknown>,
+  maxRetries: number,
+): Promise<{ messageId: string | null }> {
+  let lastError: Error | null = null;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      return { messageId: info.messageId || null };
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      if (attempt < maxRetries) {
+        const delay = RETRY_BASE_DELAY_MS * Math.pow(2, attempt);
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+  }
+  throw lastError;
+}
+
 function isLocalPublicBaseUrl(url: string) {
   return /localhost|127\.0\.0\.1/i.test(String(url || ''));
 }
@@ -78,7 +105,7 @@ export async function sendEdition(edition: any, { dryRun = false } = {}) {
     }
 
     try {
-      const info = await transporter.sendMail({
+      const info = await sendWithRetry(transporter, {
         from: OIKO_CONFIG.mailFrom,
         to: subscription.email_original,
         subject: content.email_subject,
@@ -88,14 +115,15 @@ export async function sendEdition(edition: any, { dryRun = false } = {}) {
           'List-Unsubscribe': `<${unsubscribeUrl}>`,
           'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
         },
-      });
+      }, MAX_RETRIES);
 
-      oikoQueries.sendLogs.insert.run(edition.id, subscription.id, subscription.email_original, 'sent', info.messageId || null, null);
+      oikoQueries.sendLogs.insert.run(edition.id, subscription.id, subscription.email_original, 'sent', info.messageId, null);
       oikoQueries.subscriptions.updateLastSentEdition.run(edition.id, subscription.id);
-      results.push({ subscriptionId: subscription.id, status: 'sent', messageId: info.messageId || null });
-    } catch (error: any) {
-      oikoQueries.sendLogs.insert.run(edition.id, subscription.id, subscription.email_original, 'error', null, error.message);
-      results.push({ subscriptionId: subscription.id, status: 'error', error: error.message });
+      results.push({ subscriptionId: subscription.id, status: 'sent', messageId: info.messageId });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      oikoQueries.sendLogs.insert.run(edition.id, subscription.id, subscription.email_original, 'error', null, message);
+      results.push({ subscriptionId: subscription.id, status: 'error', error: message });
     }
   }
 

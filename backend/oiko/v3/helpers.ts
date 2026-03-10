@@ -2,9 +2,35 @@ import { OIKO_V3_POLICY } from '../policy/v3.ts';
 import { normalizeTitle, titleSimilarity, trimText } from '../utils.ts';
 import type { ArticleLanguage } from './types.ts';
 
-const englishStopWords = ['the', 'and', 'with', 'will', 'from', 'this', 'that', 'after', 'into', 'amid', 'more', 'said', 'today'];
-const frenchStopWords = ['les', 'des', 'avec', 'pour', 'dans', 'une', 'sur', 'plus', 'apres', 'entre', 'marche', 'croissance', 'taux', 'economie'];
-const frenchAccentPattern = /[\u00e0\u00e2\u00e7\u00e9\u00e8\u00ea\u00eb\u00ee\u00ef\u00f4\u00f9\u00fb\u00fc\u00ff\u0153]/i;
+// ── Language detection word lists ──────────────────────────────────────
+// Unigrams: high-signal function words that almost never appear in the other language.
+const englishUnigrams = new Set([
+  'the', 'and', 'with', 'will', 'from', 'this', 'that', 'after', 'into', 'amid',
+  'more', 'said', 'today', 'also', 'which', 'about', 'been', 'have', 'were', 'their',
+  'would', 'could', 'should', 'while', 'than', 'other', 'between', 'during', 'being',
+  'those', 'these', 'they', 'what', 'when', 'where', 'there', 'some', 'only', 'over',
+]);
+const frenchUnigrams = new Set([
+  'les', 'des', 'avec', 'pour', 'dans', 'une', 'sur', 'plus', 'entre', 'cette',
+  'sont', 'par', 'mais', 'qui', 'aux', 'ses', 'ont', 'leur', 'selon', 'aussi',
+  'dont', 'ces', 'peut', 'comme', 'tout', 'elle', 'soit', 'encore', 'vers', 'donc',
+  'depuis', 'chez', 'sans', 'sous', 'nous', 'fait', 'deux', 'notre', 'moins', 'alors',
+]);
+
+// Bigrams: two-word pairs that are overwhelmingly language-specific.
+const englishBigrams = new Set([
+  'of the', 'in the', 'to the', 'on the', 'for the', 'at the', 'by the',
+  'has been', 'will be', 'is expected', 'it is', 'that the', 'said the',
+  'which is', 'would be', 'could be', 'such as', 'as well', 'there is',
+  'according to', 'more than', 'as the', 'from the', 'with the',
+]);
+const frenchBigrams = new Set([
+  'de la', 'de le', 'de les', 'dans le', 'dans la', 'sur le', 'sur la',
+  'pour le', 'pour la', 'qui a', 'qui est', 'il est', 'elle est', 'ce qui',
+  'en ce', 'par le', 'par la', 'selon le', 'selon la', 'avec le', 'avec la',
+  'a été', 'ont été', 'est un', 'est une', 'au cours', 'il y',
+]);
+
 
 export function decodeHtmlEntities(value: string) {
   return String(value || '')
@@ -147,16 +173,65 @@ export function computeReadableQuality(text: string) {
   };
 }
 
+/**
+ * Detect whether a text is French, English, or other.
+ *
+ * Uses three complementary signals:
+ * 1. **Unigram hits** — common function words exclusive to each language.
+ * 2. **Bigram hits** — two-word collocations that are very language-specific.
+ * 3. **Accent density** — proportion of accented characters (strong French signal).
+ *
+ * The approach is intentionally conservative for the Oiko pipeline:
+ * French text with a few English proper nouns or loan words should never
+ * be misclassified as English, because that blocks the edition via the
+ * language gate (`maxEnglishSentences = 0`).
+ */
 export function detectLanguage(text: string): ArticleLanguage {
   const sample = String(text || '').toLowerCase();
   if (!sample.trim()) return 'other';
 
-  const englishHits = englishStopWords.filter((word) => sample.includes(` ${word} `) || sample.startsWith(`${word} `)).length;
-  const frenchHits = frenchStopWords.filter((word) => sample.includes(` ${word} `) || sample.startsWith(`${word} `)).length;
-  const hasFrenchAccents = frenchAccentPattern.test(sample);
+  const words = sample.split(/\s+/).filter(Boolean);
+  if (words.length < 2) return 'other';
 
-  if (hasFrenchAccents || frenchHits >= englishHits + 1) return 'fr';
-  if (englishHits >= frenchHits + 1) return 'en';
+  // ── 1. Unigram scoring ────────────────────────────────────────────
+  let enUnigramHits = 0;
+  let frUnigramHits = 0;
+  for (const word of words) {
+    if (englishUnigrams.has(word)) enUnigramHits += 1;
+    if (frenchUnigrams.has(word)) frUnigramHits += 1;
+  }
+
+  // ── 2. Bigram scoring ─────────────────────────────────────────────
+  let enBigramHits = 0;
+  let frBigramHits = 0;
+  for (let i = 0; i < words.length - 1; i += 1) {
+    const bigram = `${words[i]} ${words[i + 1]}`;
+    if (englishBigrams.has(bigram)) enBigramHits += 1;
+    if (frenchBigrams.has(bigram)) frBigramHits += 1;
+  }
+
+  // ── 3. Accent density (strong French signal) ──────────────────────
+  const accentMatches = sample.match(/[\u00e0\u00e2\u00e7\u00e9\u00e8\u00ea\u00eb\u00ee\u00ef\u00f4\u00f9\u00fb\u00fc\u00ff\u0153]/g);
+  const accentCount = accentMatches ? accentMatches.length : 0;
+  const alphaCount = (sample.match(/[a-z\u00e0-\u017f]/g) || []).length;
+  const accentDensity = alphaCount > 0 ? accentCount / alphaCount : 0;
+
+  // ── Composite score ───────────────────────────────────────────────
+  // Bigrams count double because they are more discriminative.
+  const enScore = enUnigramHits + enBigramHits * 2;
+  const frScore = frUnigramHits + frBigramHits * 2;
+
+  // Accent density > 1% is a strong French signal (typical FR text ≈ 3-5%).
+  const accentBonus = accentDensity > 0.01 ? 3 : accentCount > 0 ? 1 : 0;
+  const frAdjusted = frScore + accentBonus;
+
+  // French wins on tie or near-tie (conservative: avoid false 'en' on FR text).
+  if (frAdjusted > enScore) return 'fr';
+  if (frAdjusted === enScore && accentCount > 0) return 'fr';
+  if (enScore > frAdjusted + 2) return 'en';
+
+  // Not enough signal — if there are any accents, lean French.
+  if (accentCount > 0) return 'fr';
   return 'other';
 }
 

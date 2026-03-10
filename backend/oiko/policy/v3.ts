@@ -302,6 +302,12 @@ export const OIKO_V3_POLICY = {
       'municipal bonds',
     ],
   },
+  crossEditionDedup: {
+    /** Number of past edition days to look back for already-covered stories. */
+    lookbackDays: 3,
+    /** Title similarity threshold (0–1) to consider a story already covered. */
+    titleSimilarityThreshold: 0.75,
+  },
   acquisition: {
     requestTimeoutMs: 12000,
     minimumFullBodyChars: 1600,
@@ -355,6 +361,12 @@ export const OIKO_V3_POLICY = {
     minimumDistinctClusterCount: 3,
     minimumFreshSentenceShare: 0.7,
     maxContextOnlyShare: 0.3,
+    /** Short edition: relaxed thresholds for days with less material. */
+    shortEdition: {
+      minimumFreshEventCount: 2,
+      minimumDistinctClusterCount: 2,
+      minimumFreshSentenceShare: 0.5,
+    },
   },
   facts: {
     minimumFactsPerArticle: 2,

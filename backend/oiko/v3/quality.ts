@@ -123,11 +123,12 @@ function computeMonoArticleIssue(
 }
 
 function buildPublicationReason(issues: QualityIssue[], metrics: PublicationGateMetrics) {
-  if (metrics.fresh_event_count < OIKO_V3_POLICY.freshness.minimumFreshEventCount || metrics.distinct_cluster_count < OIKO_V3_POLICY.freshness.minimumDistinctClusterCount) {
+  const short = OIKO_V3_POLICY.freshness.shortEdition;
+  if (metrics.fresh_event_count < short.minimumFreshEventCount || metrics.distinct_cluster_count < short.minimumDistinctClusterCount) {
     return {
       code: 'insufficient_fresh_material',
       status: 'blocked_insufficient_fresh_material' as const,
-      reason: `Publication bloquée : seulement ${metrics.fresh_event_count} sujet(s) frais et ${metrics.distinct_cluster_count} cluster(s) distinct(s), ce qui reste insuffisant pour une édition premium.`,
+      reason: `Publication bloquée : seulement ${metrics.fresh_event_count} sujet(s) frais et ${metrics.distinct_cluster_count} cluster(s) distinct(s), ce qui reste insuffisant même pour une édition courte.`,
     };
   }
   if (!metrics.french_only) {
@@ -264,10 +265,17 @@ export function critiqueEditionDraft(draft: V3Draft, packet: any, clusters: Topi
     french_only: englishSentenceIds.length === 0 && mixedSentenceIds.length === 0 && providerResidueCount === 0,
     originality_gate: !issues.some((issue) => ['title_reuse', 'verbatim_overlap', 'snippet_paraphrase', 'mono_article_section'].includes(issue.code)),
     traceability_gate: supportedSentences === totalSentences && !issues.some((issue) => issue.code.startsWith('missing_')),
-    freshness_gate: packet.freshEventCount >= OIKO_V3_POLICY.freshness.minimumFreshEventCount
-      && packet.distinctClusterCount >= OIKO_V3_POLICY.freshness.minimumDistinctClusterCount
-      && (freshSentenceCount / Math.max(1, totalSentences)) >= OIKO_V3_POLICY.freshness.minimumFreshSentenceShare
-      && leadClusterFresh,
+    freshness_gate: (() => {
+      const full = OIKO_V3_POLICY.freshness;
+      const short = full.shortEdition;
+      const meetsFullFreshness = packet.freshEventCount >= full.minimumFreshEventCount
+        && packet.distinctClusterCount >= full.minimumDistinctClusterCount
+        && (freshSentenceCount / Math.max(1, totalSentences)) >= full.minimumFreshSentenceShare;
+      const meetsShortFreshness = packet.freshEventCount >= short.minimumFreshEventCount
+        && packet.distinctClusterCount >= short.minimumDistinctClusterCount
+        && (freshSentenceCount / Math.max(1, totalSentences)) >= short.minimumFreshSentenceShare;
+      return (meetsFullFreshness || meetsShortFreshness) && leadClusterFresh;
+    })(),
     duplication_gate: duplicationRatio < OIKO_V3_POLICY.originality.maxMonoArticleSectionRatio,
     lead_cluster_fresh: leadClusterFresh,
     distinct_cluster_count: packet.distinctClusterCount,

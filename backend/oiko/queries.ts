@@ -385,6 +385,15 @@ export const oikoQueries = {
         WHERE edition_date = ? AND pipeline_version = ?
         ORDER BY published_at DESC, id ASC
       `),
+      /** Fetch canonical URLs and normalized titles from recent past editions for cross-edition dedup. */
+      listRecentForDedup: db.prepare(`
+        SELECT canonical_url, normalized_title, edition_date
+        FROM oiko_news_raw_articles
+        WHERE edition_date >= ? AND edition_date < ?
+          AND pipeline_version = ?
+          AND acquisition_status != 'blocked'
+        ORDER BY edition_date DESC
+      `),
     },
     factSheets: {
       clearByEdition: db.prepare(`

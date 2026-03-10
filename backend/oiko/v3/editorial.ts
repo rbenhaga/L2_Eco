@@ -1,6 +1,6 @@
 import { OIKO_V3_POLICY, isHighQualitySource } from '../policy/v3.ts';
 import { average } from '../utils.ts';
-import type { DayEditorialPacket, FactSheetRecord, StructuredMarketContext, TopicCluster } from './types.ts';
+import type { DayEditorialPacket, FactSheetRecord, MicroBriefCandidate, StructuredMarketContext, TopicCluster } from './types.ts';
 
 function freshnessScore(cluster: TopicCluster) {
   switch (cluster.freshness.clusterRecencyType) {
@@ -106,7 +106,7 @@ function chooseSectionTargets(remainingCount: number, freshRemainingCount: numbe
       : remainingCount >= 5
         ? { opening: 2, radar: 1, carnet: 1, briefs: 1 }
         : remainingCount >= 4
-          ? { opening: 2, radar: 1, carnet: 1, briefs: 0 }
+          ? { opening: 1, radar: 1, carnet: 1, briefs: 1 }
           : remainingCount >= 3
             ? { opening: 1, radar: 1, carnet: 1, briefs: 0 }
             : remainingCount >= 2
@@ -150,6 +150,92 @@ function isCarnetCandidate(cluster: TopicCluster) {
     || cluster.topicFamily === 'jobs_consumption_growth';
 }
 
+function buildLeadMicroBriefCandidate(leadTopic: TopicCluster | null, marketContext: StructuredMarketContext): MicroBriefCandidate | null {
+  if (!leadTopic) return null;
+  const bucket = sectionBucket(leadTopic);
+  if (bucket === 'energy_prices') {
+    return {
+      id: `micro-brief-${leadTopic.id}-aftershock`,
+      kind: 'lead_aftershock',
+      titleHint: 'Après le choc pétrole',
+      textHint: 'En actions, le choc pétrolier agit déjà comme un sujet de marges, de fret et de coût du capital bien au-delà d’un simple mouvement boursier.',
+      factIds: leadTopic.factIds.slice(0, 8),
+      articleIds: leadTopic.sourceArticleIds,
+      clusterIds: [leadTopic.id],
+      marketKeys: ['actions'],
+      sourceClusterId: leadTopic.id,
+      priority: 10,
+    };
+  }
+  return {
+    id: `micro-brief-${leadTopic.id}-context`,
+    kind: 'lead_aftershock',
+    titleHint: 'Après le lead',
+    textHint: 'Le sujet principal reste utile surtout parce qu’il requalifie la lecture des coûts, du risque et du tempo de marché au-delà du seul titre du jour.',
+    factIds: leadTopic.factIds.slice(0, 8),
+    articleIds: leadTopic.sourceArticleIds,
+    clusterIds: [leadTopic.id],
+    sourceClusterId: leadTopic.id,
+    priority: 8,
+  };
+}
+
+function buildClusterMicroBriefCandidate(cluster: TopicCluster, occupiedIds: Set<string>): MicroBriefCandidate | null {
+  if (!cluster || occupiedIds.has(cluster.id)) return null;
+  const bucket = sectionBucket(cluster);
+  if (bucket === 'labour') {
+    return {
+      id: `micro-brief-${cluster.id}-labour`,
+      kind: 'context_pulse',
+      titleHint: 'Signal travail',
+      textHint: 'Travail : le signal compte moins pour son détail que pour ce qu’il dit du rythme réel de désinflation et de croissance en Europe.',
+      factIds: cluster.factIds.slice(0, 6),
+      articleIds: cluster.sourceArticleIds,
+      clusterIds: [cluster.id],
+      sourceClusterId: cluster.id,
+      priority: 6,
+    };
+  }
+  if (bucket === 'industrial_supply') {
+    return {
+      id: `micro-brief-${cluster.id}-industry`,
+      kind: 'context_pulse',
+      titleHint: 'Signal industriel',
+      textHint: 'Industrie : le dossier vaut surtout comme test de continuité productive et de discipline d’investissement quand les coûts repartent.',
+      factIds: cluster.factIds.slice(0, 6),
+      articleIds: cluster.sourceArticleIds,
+      clusterIds: [cluster.id],
+      sourceClusterId: cluster.id,
+      priority: 5,
+    };
+  }
+  return null;
+}
+
+function buildMicroBriefCandidates(
+  leadTopic: TopicCluster | null,
+  remaining: TopicCluster[],
+  chosenSections: { opening: TopicCluster[]; radar: TopicCluster[]; carnet: TopicCluster[]; briefs: TopicCluster[] },
+  marketContext: StructuredMarketContext,
+): MicroBriefCandidate[] {
+  const occupiedIds = new Set(chosenSections.briefs.map((cluster) => cluster.id));
+  const candidates: MicroBriefCandidate[] = [];
+  const seen = new Set<string>();
+
+  const push = (candidate: MicroBriefCandidate | null) => {
+    if (!candidate || seen.has(candidate.id)) return;
+    seen.add(candidate.id);
+    candidates.push(candidate);
+  };
+
+  push(buildLeadMicroBriefCandidate(leadTopic, marketContext));
+  for (const cluster of remaining) {
+    push(buildClusterMicroBriefCandidate(cluster, occupiedIds));
+    if (candidates.length >= 2) break;
+  }
+
+  return candidates.sort((left, right) => right.priority - left.priority);
+}
 function accumulateSourceCoverage(clusters: TopicCluster[]) {
   const distinctSourceNames = new Set<string>();
   const distinctDomains = new Set<string>();
@@ -191,6 +277,7 @@ export function buildDayEditorialPacket(editionDate: string, clusters: TopicClus
   const radar = takeSectionCandidates(remaining, targets.radar, usedIds, usedBuckets, (cluster) => isSecondarySignalCandidate(cluster));
   const carnet = takeSectionCandidates(remaining, targets.carnet, usedIds, usedBuckets, (cluster) => isCarnetCandidate(cluster));
   const briefs = takeSectionCandidates(remaining, targets.briefs, usedIds, usedBuckets, (cluster) => cluster.freshness.clusterRecencyType !== 'stale');
+  const microBriefCandidates = buildMicroBriefCandidates(leadTopic, remaining, { opening, radar, carnet, briefs }, marketContext);
 
   const freshEventCount = usable.filter((cluster) => isFreshCluster(cluster)).length;
 
@@ -205,6 +292,7 @@ export function buildDayEditorialPacket(editionDate: string, clusters: TopicClus
       carnet,
       briefs,
     },
+    microBriefCandidates,
     sourceCoverage: accumulateSourceCoverage(usable),
     freshEventCount,
     distinctClusterCount: usable.length,

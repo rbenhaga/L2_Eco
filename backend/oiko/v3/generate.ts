@@ -1,8 +1,8 @@
-﻿import { normalizeTitle } from '../utils.ts';
+import { normalizeTitle } from '../utils.ts';
 import { GeneratedOikoEditionV21Schema, textToBlock, type GeneratedOikoEditionV21 } from '../content.ts';
 import { extractJsonCandidate, generateWithConfiguredProviders, repairJsonWithFastModel } from './llm.ts';
-import { buildHumanList, detectLanguage, hasProviderResidue, splitSentences, uniqueStrings } from './helpers.ts';
-import type { DayEditorialPacket, DraftEvidence, EvidenceRef, QualityReport, TopicCluster, V3Draft } from './types.ts';
+import { buildHumanList, detectLanguage, hasProviderResidue, ngramOverlapRatio, splitSentences, uniqueStrings } from './helpers.ts';
+import type { DayEditorialPacket, DraftEvidence, EvidenceRef, MicroBriefCandidate, QualityReport, TopicCluster, V3Draft } from './types.ts';
 
 const familyLabels: Record<string, string> = {
   inflation_rates: 'Prix',
@@ -63,6 +63,10 @@ type MergeResult = {
   usedGeneratedText: boolean;
 };
 
+type BriefSlot =
+  | { kind: 'cluster'; key: string; cluster: TopicCluster }
+  | { kind: 'micro'; key: string; candidate: MicroBriefCandidate; cluster: TopicCluster | null };
+
 function compactText(value: string, maxLength = 240) {
   const normalized = String(value || '').replace(/\s+/g, ' ').trim();
   if (normalized.length <= maxLength) return normalized;
@@ -104,10 +108,10 @@ function clusterSample(cluster?: TopicCluster | null) {
 
 function clusterKind(cluster?: TopicCluster | null): ClusterKind {
   const sample = clusterSample(cluster);
-  if (/(all ordinaries|asx|oil|crude|pétrole|baril)/.test(sample)) return 'oil_shock';
   if (/(gaz|gas)/.test(sample) && /(russ|russia|europe|europ)/.test(sample)) return 'gas_europe';
-  if (/(cuivre|copper|phosphate hill|mount isa|smelter|minier|mine)/.test(sample)) return 'copper_supply';
   if (/(iran|khamenei|bahreïn|bahrein|émirats|emirats|teheran|téhéran)/.test(sample)) return 'iran_risk';
+  if (/(cuivre|copper|phosphate hill|mount isa|smelter|minier|mine)/.test(sample)) return 'copper_supply';
+  if (/(all ordinaries|asx|oil|crude|pétrole|baril)/.test(sample)) return 'oil_shock';
   if (/(bce|ecb|zone euro|chômage|chomage|salaires|wages|labour|labor)/.test(sample)) return 'ecb_labour';
   if (/(uk|royaume-uni|britain|british|reed|recruit|vacancies|hiring)/.test(sample) && /(jobs|job market|labour|labor|unemployment|emploi|wage|salary|salaires|croissance|growth)/.test(sample)) return 'uk_labour';
   if (/(essence|gasoline|pump prices|prix à la pompe|fuel prices|drivers|motorists)/.test(sample)) return 'fuel_prices';
@@ -234,33 +238,54 @@ function extendSection(base: TopicCluster[], pool: TopicCluster[], target: numbe
 }
 
 function deriveNarrativeSections(packet: DayEditorialPacket): NarrativeSections {
-  const leadId = packet.leadTopic?.id || '';
-  const opening = packet.chosenSections.opening.slice(0, 4);
-  const radar = packet.chosenSections.radar.slice(0, 2);
-  const carnet = packet.chosenSections.carnet.slice(0, 2);
-  const briefs = packet.chosenSections.briefs.slice(0, 2);
-  const usedIds = new Set([
-    leadId,
-    ...opening.map((cluster) => cluster.id),
-    ...radar.map((cluster) => cluster.id),
-    ...carnet.map((cluster) => cluster.id),
-    ...briefs.map((cluster) => cluster.id),
-  ].filter(Boolean));
+  const secondaryCount = packet.secondaryTopics.length;
+  const targets = secondaryCount >= 6
+    ? { opening: 2, radar: 2, carnet: 1, briefs: 1 }
+    : secondaryCount === 5
+      ? { opening: 2, radar: 1, carnet: 1, briefs: 1 }
+      : secondaryCount === 4
+        ? { opening: 1, radar: 1, carnet: 1, briefs: 1 }
+        : secondaryCount === 3
+          ? { opening: 1, radar: 1, carnet: 1, briefs: 0 }
+          : secondaryCount === 2
+            ? { opening: 1, radar: 1, carnet: 0, briefs: 0 }
+            : { opening: Math.min(1, secondaryCount), radar: 0, carnet: 0, briefs: 0 };
 
-  const pool = packet.secondaryTopics.filter((cluster) => !usedIds.has(cluster.id));
-  const openingFilled = extendSection(opening, pool, Math.min(2, opening.length + pool.length));
-  const openingUsed = new Set(openingFilled.map((cluster) => cluster.id));
-  const poolAfterOpening = pool.filter((cluster) => !openingUsed.has(cluster.id));
-  const radarFilled = extendSection(radar, poolAfterOpening, Math.min(2, radar.length + poolAfterOpening.length));
-  const radarUsed = new Set(radarFilled.map((cluster) => cluster.id));
-  const poolAfterRadar = poolAfterOpening.filter((cluster) => !radarUsed.has(cluster.id));
-  const briefsFilled = extendSection(briefs, poolAfterRadar, Math.min(1, briefs.length + poolAfterRadar.length));
+  const leadId = packet.leadTopic?.id || '';
+  const orderedCandidates = [
+    ...packet.chosenSections.opening,
+    ...packet.chosenSections.radar,
+    ...packet.chosenSections.carnet,
+    ...packet.chosenSections.briefs,
+    ...packet.secondaryTopics,
+  ].filter((cluster, index, array) => {
+    if (!cluster || cluster.id === leadId) return false;
+    return array.findIndex((candidate) => candidate?.id === cluster.id) === index;
+  });
+
+  const takeDistinct = (current: TopicCluster[], target: number, usedIds: Set<string>) => {
+    const seeded = current
+      .filter((cluster, index, array) => index < target && cluster.id !== leadId && !usedIds.has(cluster.id) && array.findIndex((candidate) => candidate.id === cluster.id) === index)
+      .slice(0, target);
+    seeded.forEach((cluster) => usedIds.add(cluster.id));
+    if (seeded.length >= target) return seeded;
+    const pool = orderedCandidates.filter((cluster) => cluster.id !== leadId && !usedIds.has(cluster.id));
+    const filled = extendSection(seeded, pool, target).slice(0, target);
+    filled.forEach((cluster) => usedIds.add(cluster.id));
+    return filled;
+  };
+
+  const usedIds = new Set<string>();
+  const opening = takeDistinct(packet.chosenSections.opening, targets.opening, usedIds);
+  const radar = takeDistinct(packet.chosenSections.radar, targets.radar, usedIds);
+  const carnet = takeDistinct(packet.chosenSections.carnet, targets.carnet, usedIds);
+  const briefs = takeDistinct(packet.chosenSections.briefs, targets.briefs, usedIds);
 
   return {
-    opening: openingFilled,
-    radar: radarFilled,
+    opening,
+    radar,
     carnet,
-    briefs: briefsFilled,
+    briefs,
   };
 }
 function buildVisualHint(sectionKey: string, cluster?: TopicCluster | null) {
@@ -299,19 +324,19 @@ function buildFooterSourcesNote(packet: DayEditorialPacket) {
 function openingLine(cluster: TopicCluster) {
   switch (clusterKind(cluster)) {
     case 'gas_europe':
-      return sentence('Le gaz revient au premier plan européen. S’il se retend durablement, l’industrie retrouve un vrai sujet de coûts avant même d’avoir soldé le choc pétrolier.', 235);
+      return finalizeDeterministicText('Le gaz revient au premier plan européen. S’il se retend durablement, l’industrie retrouve un vrai sujet de coûts avant même d’avoir soldé le choc pétrolier.', 235, 'Le gaz européen redevient un sujet de coûts immédiat pour l’industrie.');
     case 'copper_supply':
-      return sentence('Le dossier cuivre compte parce qu’il protège une chaîne industrielle exposée à l’énergie et au cycle mondial, pas parce qu’il ajoute une anecdote minière.', 235);
+      return finalizeDeterministicText('Le dossier cuivre compte parce qu’il protège une chaîne industrielle exposée à l’énergie et au cycle mondial, pas parce qu’il ajoute une anecdote minière.', 235, 'Le dossier cuivre compte surtout pour la continuité industrielle et les coûts de production.');
     case 'iran_risk':
-      return sentence('La séquence iranienne épaissit la prime de risque moyen-orientale. Pour les marchés, cela renchérit le pétrole, le fret et l’assurance.', 235);
+      return finalizeDeterministicText('La séquence iranienne épaissit la prime de risque moyen-orientale. Pour les marchés, cela renchérit le pétrole, le fret et l’assurance.', 235, 'La séquence iranienne renchérit surtout le pétrole, le fret et l’assurance.');
     case 'ecb_labour':
-      return sentence('La BCE décrit un marché du travail encore solide, mais moins explosif côté salaires. C’est une nuance utile pour la désinflation européenne.', 235);
+      return finalizeDeterministicText('La BCE décrit un marché du travail encore solide, mais moins explosif côté salaires. C’est une nuance utile pour la désinflation européenne.', 235, 'La BCE signale une désinflation salariale plus graduelle en zone euro.');
     case 'uk_labour':
-      return sentence('Au Royaume-Uni, les embauches se tassent avant le reste du cycle. Cela pousse vers une croissance molle plus que vers un vrai redémarrage.', 235);
+      return finalizeDeterministicText('Au Royaume-Uni, les embauches se tassent avant le reste du cycle. Cela pousse vers une croissance molle plus que vers un vrai redémarrage.', 235, 'Au Royaume-Uni, le signal emploi pousse vers une croissance molle plutôt qu’un vrai redémarrage.');
     case 'fuel_prices':
-      return sentence('La pompe américaine absorbe encore une partie du choc pétrolier. Cela retarde l’impact sur la consommation sans l’annuler.', 235);
+      return finalizeDeterministicText('La pompe américaine absorbe encore une partie du choc pétrolier. Cela retarde l’impact sur la consommation sans l’annuler.', 235, 'La pompe américaine retarde encore une partie du choc sur la consommation.');
     case 'growth_labour':
-      return sentence('Le marché du travail reste assez ferme pour tenir la demande, mais pas assez net pour effacer d’un coup le sujet des coûts.', 235);
+      return finalizeDeterministicText('Le marché du travail reste assez ferme pour tenir la demande, mais pas assez net pour effacer d’un coup le sujet des coûts.', 235, 'Le signal travail reste utile pour lire une demande qui tient sans effacer le sujet des coûts.');
     default: {
       const fact = primaryFact(cluster, 0, 150) || sentence(cluster.topicLabel, 150);
       const angle = sentence(`Le signal recompose surtout ${familyAngles[cluster.topicFamily] || 'la hiérarchie économique du matin'}`, 150);
@@ -438,15 +463,22 @@ function buildRadarItems(clusters: TopicCluster[]) {
         break;
       default:
         paragraphs = [
-          primaryFact(cluster, 0, 185) || sentence(cluster.topicLabel, 185),
-          sentence(`Le sujet élargit la lecture du matin via ${familyAngles[cluster.topicFamily] || 'les coûts et le risque'}.`, 190),
+          `Le sujet compte surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts et le risque'}.`,
+          'Il élargit la lecture du matin sans prendre toute la hiérarchie de la séance.',
         ];
         break;
     }
 
+    const safeFallback = buildSafeFrenchFallbackForRadar(cluster);
+    const safeParagraphs = paragraphs
+      .map((paragraph, index) => finalizeClusterText(paragraph, cluster, safeFallback.paragraphs[Math.min(index, safeFallback.paragraphs.length - 1)], 230, 30))
+      .filter((paragraph) => isAcceptableGeneratedText(paragraph, 30) && !isTooCloseToClusterSources(paragraph, cluster));
+
     return {
-      title: displayTitle(cluster, 'radar'),
-      paragraphs: paragraphs.slice(0, 2).map((paragraph) => textToBlock(sentence(paragraph, 230))),
+      title: detectLanguage(displayTitle(cluster, 'radar')) === 'en' ? safeFallback.title : displayTitle(cluster, 'radar'),
+      paragraphs: (safeParagraphs.length ? safeParagraphs : safeFallback.paragraphs.map((paragraph) => finalizeDeterministicText(paragraph, 230, paragraph, 30)))
+        .slice(0, 2)
+        .map((paragraph) => textToBlock(paragraph)),
     };
   });
 }
@@ -469,53 +501,104 @@ function buildCarnetItems(clusters: TopicCluster[]) {
         break;
       default:
         paragraphs = [
-          primaryFact(cluster, 0, 190) || sentence(cluster.topicLabel, 190),
-          sentence(`À suivre surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et les marchés'}.`, 180),
+          `À suivre surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et les marchés'}.`,
+          'Le dossier mérite une place de second rang dans la lecture du matin.',
         ];
         break;
     }
 
+    const safeFallback = buildSafeFrenchFallbackForCarnet(cluster);
+    const safeParagraphs = paragraphs
+      .map((paragraph, index) => finalizeClusterText(paragraph, cluster, safeFallback.paragraphs[Math.min(index, safeFallback.paragraphs.length - 1)], 230, 30))
+      .filter((paragraph) => isAcceptableGeneratedText(paragraph, 28) && !isTooCloseToClusterSources(paragraph, cluster));
+
     return {
-      title: displayTitle(cluster, 'carnet'),
-      paragraphs: paragraphs.slice(0, 2).map((paragraph) => textToBlock(sentence(paragraph, 230))),
+      title: detectLanguage(displayTitle(cluster, 'carnet')) === 'en' ? safeFallback.title : displayTitle(cluster, 'carnet'),
+      paragraphs: (safeParagraphs.length ? safeParagraphs : safeFallback.paragraphs.map((paragraph) => finalizeDeterministicText(paragraph, 230, paragraph, 28)))
+        .slice(0, 2)
+        .map((paragraph) => textToBlock(paragraph)),
     };
   });
 }
 
-function buildBriefItems(clusters: TopicCluster[]) {
-  return clusters.map((cluster) => {
-    let text: string;
-    switch (clusterKind(cluster)) {
-      case 'fuel_prices':
-        text = 'Essence : le baril n’a pas encore tout passé à la pompe américaine, ce qui retarde le choc sur la consommation sans l’annuler.';
-        break;
-      case 'iran_risk':
-        text = 'Iran : la séquence garde d’abord une portée énergétique, donc un impact direct sur les primes de risque et le fret.';
-        break;
-      case 'gas_europe':
-        text = 'Gaz : le risque russe rallonge la facture potentielle de l’industrie européenne en plus du choc pétrolier.';
-        break;
-      case 'copper_supply':
-        text = 'Cuivre : la chaîne industrielle évite un trou d’air à Mount Isa au moment où les coûts repartent.';
-        break;
-      case 'ecb_labour':
-        text = 'BCE : l’emploi reste ferme, mais les salaires offrent un peu plus de marge à la désinflation en zone euro.';
-        break;
-      case 'uk_labour':
-      case 'growth_labour':
-        text = 'Travail : le ralentissement des embauches renforce l’idée d’une croissance molle avant une vraie reprise.';
-        break;
-      case 'oil_shock':
-        text = 'Pétrole : le choc reste central pour lire l’inflation importée et les actifs sensibles à l’énergie.';
-        break;
-      default:
-        text = sentence(`Le signal compte surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et le risque'}.`, 180);
-        break;
-    }
-    return { parts: [{ text: sentence(text, 220) }] };
-  });
+function buildClusterMap(packet: DayEditorialPacket) {
+  const clusters = [
+    packet.leadTopic,
+    ...packet.secondaryTopics,
+    ...packet.chosenSections.opening,
+    ...packet.chosenSections.radar,
+    ...packet.chosenSections.carnet,
+    ...packet.chosenSections.briefs,
+  ].filter(Boolean) as TopicCluster[];
+  return new Map(clusters.map((cluster) => [cluster.id, cluster]));
 }
 
+function microBriefEvidence(candidate: MicroBriefCandidate): EvidenceRef {
+  const clusterIds = candidate.clusterIds?.length ? candidate.clusterIds : candidate.sourceClusterId ? [candidate.sourceClusterId] : [];
+  return {
+    factIds: candidate.factIds.slice(0, 8),
+    articleIds: candidate.articleIds,
+    ...(clusterIds.length ? { clusterIds } : {}),
+    ...(candidate.marketKeys?.length ? { marketKeys: candidate.marketKeys } : {}),
+  };
+}
+
+function buildCanonicalBriefText(cluster: TopicCluster) {
+  switch (clusterKind(cluster)) {
+    case 'fuel_prices': return 'Essence : le baril n’a pas encore tout passé à la pompe américaine, ce qui retarde le choc sur la consommation sans l’annuler.';
+    case 'iran_risk': return 'Iran : la séquence garde d’abord une portée énergétique, donc un impact direct sur les primes de risque et le fret.';
+    case 'gas_europe': return 'Gaz : le risque russe rallonge la facture potentielle de l’industrie européenne en plus du choc pétrolier.';
+    case 'copper_supply': return 'Cuivre : la chaîne industrielle évite un trou d’air à Mount Isa au moment où les coûts repartent.';
+    case 'ecb_labour': return 'BCE : l’emploi reste ferme, mais les salaires offrent un peu plus de marge à la désinflation en zone euro.';
+    case 'uk_labour':
+    case 'growth_labour': return 'Travail : le ralentissement des embauches renforce l’idée d’une croissance molle avant une vraie reprise.';
+    case 'oil_shock': return 'Pétrole : le choc reste central pour lire l’inflation importée et les actifs sensibles à l’énergie.';
+    default: return sentence(`Le signal compte surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et le risque'}.`, 180);
+  }
+}
+
+function buildMicroBriefText(candidate: MicroBriefCandidate, cluster: TopicCluster | null) {
+  if (!cluster) {
+    return finalizeDeterministicText(candidate.textHint, 220, 'Dernier signal utile : le sujet compte surtout pour les coûts, le risque et la lecture de séance.', 28);
+  }
+  if (candidate.kind === 'lead_aftershock') {
+    return finalizeClusterText(
+      'En actions, le choc pétrolier agit déjà comme un sujet de marges, de fret et de coût du capital bien au-delà d’un simple mouvement boursier.',
+      cluster,
+      'En actions, le choc pétrolier reste un sujet direct de marges, de fret et de coût du capital.',
+      220,
+      28,
+    );
+  }
+  return finalizeClusterText(candidate.textHint, cluster, buildSafeFrenchFallbackForBrief(cluster), 220, 28);
+}
+
+function buildBriefSlots(packet: DayEditorialPacket, sections: NarrativeSections): BriefSlot[] {
+  const slots: BriefSlot[] = sections.briefs.map((cluster) => ({ kind: 'cluster', key: cluster.id, cluster }));
+  const usedClusterIds = new Set(sections.briefs.map((cluster) => cluster.id));
+  const clusterMap = buildClusterMap(packet);
+  const microCandidates = [...(packet.microBriefCandidates || [])]
+    .sort((left, right) => right.priority - left.priority)
+    .filter((candidate) => !candidate.sourceClusterId || !usedClusterIds.has(candidate.sourceClusterId));
+  const desiredCount = packet.secondaryTopics.length >= 4 ? Math.min(2, slots.length + microCandidates.length) : slots.length;
+
+  for (const candidate of microCandidates) {
+    if (slots.length >= desiredCount) break;
+    const cluster = candidate.sourceClusterId ? clusterMap.get(candidate.sourceClusterId) || null : null;
+    slots.push({ kind: 'micro', key: candidate.id, candidate, cluster });
+  }
+
+  return slots;
+}
+
+function buildBriefItems(packet: DayEditorialPacket, sections: NarrativeSections) {
+  return buildBriefSlots(packet, sections).map((slot) => {
+    if (slot.kind === 'micro') {
+      return { parts: [{ text: buildMicroBriefText(slot.candidate, slot.cluster) }] };
+    }
+    return { parts: [{ text: finalizeClusterText(buildCanonicalBriefText(slot.cluster), slot.cluster, buildSafeFrenchFallbackForBrief(slot.cluster), 220, 24) }] };
+  });
+}
 function buildDeterministicPayload(packet: DayEditorialPacket): GeneratedOikoEditionV21 {
   const lead = packet.leadTopic || packet.secondaryTopics[0];
   if (!lead) {
@@ -529,18 +612,38 @@ function buildDeterministicPayload(packet: DayEditorialPacket): GeneratedOikoEdi
     ...openingClusters.map((cluster) => shortTopic(cluster)),
     sections.radar[0] ? shortTopic(sections.radar[0]) : '',
     sections.carnet[0] ? shortTopic(sections.carnet[0]) : '',
-  ].filter(Boolean)).slice(0, 3);
+  ].filter(Boolean)).slice(0, 2);
   const actionsLabel = packet.marketContext.equities[0]?.label || 'Actions';
   const cryptoLabel = packet.marketContext.crypto[0]?.label || 'Crypto';
   const displayDate = formatFrenchDisplayDate(packet.editionDate);
 
   const introLead = clusterKind(lead) === 'oil_shock'
-    ? 'Le matin se reclasse par l’énergie : le pétrole remonte d’un cran et force déjà les marchés à recalculer coûts, inflation importée et risque.'
-    : sentence(`${displayTitle(lead, 'lead')} remet au premier rang ${familyAngles[lead.topicFamily] || 'les coûts, les taux et le risque'}.`, 220);
+    ? finalizeDeterministicText(
+        'Le matin se reclasse par l’énergie : le pétrole remonte d’un cran et force déjà les marchés à recalculer coûts, inflation importée et risque.',
+        220,
+        'Le matin se reclasse par l’énergie : le pétrole force déjà les marchés à réévaluer coûts, inflation importée et risque.',
+        40,
+      )
+    : finalizeDeterministicText(
+        `${displayTitle(lead, 'lead')} remet au premier rang ${familyAngles[lead.topicFamily] || 'les coûts, les taux et le risque'}.`,
+        220,
+        'Le sujet remet au premier rang les coûts, les taux et le risque du matin.',
+        40,
+      );
 
   const introFollow = introFragments.length
-    ? sentence(`Le reste du numéro suit ce qui déplace réellement la matinée : ${buildHumanList(introFragments)} prolongent la même lecture, celle d’un coût mondial plus difficile à absorber et d’un risque plus cher à porter.`, 230)
-    : 'Le reste du numéro prolonge cette même lecture : un coût mondial plus difficile à absorber et un risque plus cher à porter.';
+    ? finalizeDeterministicText(
+        `Le reste du numéro suit ${buildHumanList(introFragments)} : même lecture, un coût mondial plus dur à absorber et un risque plus cher à porter.`,
+        220,
+        'Le reste du numéro suit les sujets qui déplacent vraiment la lecture des coûts, des taux et du risque.',
+        40,
+      )
+    : finalizeDeterministicText(
+        'Le reste du numéro suit les sujets qui déplacent vraiment la lecture des coûts, des taux et du risque.',
+        220,
+        'Le reste du numéro suit les sujets qui déplacent vraiment la lecture des coûts, des taux et du risque.',
+        40,
+      );
 
   return GeneratedOikoEditionV21Schema.parse({
     content_version: 'v2.1',
@@ -601,7 +704,7 @@ function buildDeterministicPayload(packet: DayEditorialPacket): GeneratedOikoEdi
     },
     briefs_section: {
       title: narrativeLabels.briefs,
-      items: buildBriefItems(sections.briefs),
+      items: buildBriefItems(packet, sections),
     },
     footer_sources_note: buildFooterSourcesNote(packet),
     footer_disclaimer: 'Contenu pédagogique. Pas de conseil en investissement.',
@@ -644,6 +747,7 @@ function buildEvidenceMap(payload: GeneratedOikoEditionV21, packet: DayEditorial
   const lead = packet.leadTopic || packet.secondaryTopics[0];
   if (!lead) return evidence;
   const sections = deriveNarrativeSections(packet);
+  const briefSlots = buildBriefSlots(packet, sections);
   const openingReferences = sections.opening.map((cluster) => clusterEvidence(cluster));
   const introReference = combineEvidence(clusterEvidence(lead), ...openingReferences.slice(0, 2));
   const hierarchyReference = combineEvidence(clusterEvidence(lead), ...openingReferences);
@@ -679,9 +783,12 @@ function buildEvidenceMap(payload: GeneratedOikoEditionV21, packet: DayEditorial
   });
 
   payload.briefs_section.items.forEach((item, itemIndex) => {
-    const cluster = sections.briefs[itemIndex];
-    if (!cluster) return;
-    buildParagraphEvidence(`brief-${itemIndex}`, clusterEvidence(cluster), evidence, item.parts.map((part) => part.text).join(' '));
+    const slot = briefSlots[itemIndex];
+    if (!slot) return;
+    const reference = slot.kind === 'micro'
+      ? microBriefEvidence(slot.candidate)
+      : clusterEvidence(slot.cluster);
+    buildParagraphEvidence(`brief-${itemIndex}`, reference, evidence, item.parts.map((part) => part.text).join(' '));
   });
 
   payload.markets_section.paragraphs.forEach((paragraph, index) => {
@@ -706,6 +813,7 @@ function buildClusterDossier(cluster: TopicCluster) {
 
 function buildWriterMessages(packet: DayEditorialPacket, referenceDraft: GeneratedOikoEditionV21) {
   const sections = deriveNarrativeSections(packet);
+  const briefSlots = buildBriefSlots(packet, sections);
   return [
     {
       role: 'system',
@@ -729,7 +837,7 @@ function buildWriterMessages(packet: DayEditorialPacket, referenceDraft: Generat
           opening: sections.opening.length,
           radar: sections.radar.length,
           carnet: sections.carnet.length,
-          briefs: sections.briefs.length,
+          briefs: briefSlots.length,
         },
         sourceCoverage: packet.sourceCoverage,
         leadTopic: packet.leadTopic ? buildClusterDossier(packet.leadTopic) : null,
@@ -737,6 +845,7 @@ function buildWriterMessages(packet: DayEditorialPacket, referenceDraft: Generat
         radar: sections.radar.map(buildClusterDossier),
         carnet: sections.carnet.map(buildClusterDossier),
         briefs: sections.briefs.map(buildClusterDossier),
+        microBriefCandidates: packet.microBriefCandidates,
         marketContext: packet.marketContext,
         referenceDraft,
       }),
@@ -780,6 +889,73 @@ function isAcceptableGeneratedText(text: string, minLength = 24) {
   return sentences.every((sentenceText) => detectLanguage(sentenceText) !== 'en');
 }
 
+function finalizeDeterministicText(value: string, maxLength: number, fallback: string, minLength = 24) {
+  const primary = sentence(value, maxLength);
+  if (isAcceptableGeneratedText(primary, minLength)) return primary;
+  const safeFallback = sentence(fallback, maxLength);
+  if (isAcceptableGeneratedText(safeFallback, Math.min(minLength, 18))) return safeFallback;
+  return sentence(compactText(fallback, Math.max(40, maxLength - 20)), maxLength);
+}
+
+function clusterSourceWindows(cluster: TopicCluster) {
+  return uniqueStrings([
+    cluster.topicLabel,
+    ...cluster.mergedFacts,
+    ...cluster.mergedCauses,
+    ...cluster.mergedConsequences,
+  ].map((value) => compactText(value, 260)).filter(Boolean));
+}
+
+function isTooCloseToClusterSources(text: string, cluster: TopicCluster) {
+  return clusterSourceWindows(cluster).some((window) => ngramOverlapRatio(text, window, 3) >= 0.72);
+}
+
+function finalizeClusterText(value: string, cluster: TopicCluster, fallback: string, maxLength: number, minLength = 24) {
+  const primary = finalizeDeterministicText(value, maxLength, fallback, minLength);
+  if (!isTooCloseToClusterSources(primary, cluster)) return primary;
+  const safeFallback = finalizeDeterministicText(fallback, maxLength, fallback, minLength);
+  if (!isTooCloseToClusterSources(safeFallback, cluster)) return safeFallback;
+  return safeFallback;
+}
+
+function buildSafeFrenchFallbackForRadar(cluster: TopicCluster) {
+  switch (clusterKind(cluster)) {
+    case 'oil_shock':
+      return { title: 'Le pétrole renverse la séance', paragraphs: ['Le pétrole reste le vrai dossier de coût du matin, bien au-delà d’un simple mouvement de marché asiatique.', 'Le sujet pèse d’abord sur l’inflation importée, les marges et la prime de risque globale.'] };
+    case 'iran_risk':
+      return { title: 'Iran : l’énergie récupère une prime de risque', paragraphs: ['La séquence iranienne pèse d’abord par l’énergie, le fret et l’assurance.', 'Le dossier élargit la lecture du matin sans se réduire à un simple angle diplomatique.'] };
+    case 'gas_europe':
+      return { title: 'Gaz russe : le coût européen revient dans le prix', paragraphs: ['Le gaz européen redevient un dossier de coûts pour l’industrie et les prix importés.', 'Le sujet compte surtout pour la vitesse réelle de désinflation en Europe.'] };
+    case 'copper_supply':
+      return { title: 'Cuivre australien : la chaîne industrielle évite la rupture', paragraphs: ['Le dossier cuivre vaut comme signal d’offre industrielle et d’investissement, pas comme anecdote minière.', 'Il éclaire la manière dont l’appareil productif absorbe un choc plus large sur l’énergie.'] };
+    case 'ecb_labour':
+      return { title: 'BCE : l’emploi reste solide, les salaires ralentissent', paragraphs: ['Le signal reste utile pour la désinflation salariale et la lecture future des taux.', 'Le sujet compte davantage pour la politique monétaire que pour le simple bruit conjoncturel.'] };
+    default:
+      return { title: displayTitle(cluster, 'radar'), paragraphs: [`Le sujet compte surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et le risque'}.`, 'Il élargit la lecture du matin sans prendre toute la hiérarchie de la séance.'] };
+  }
+}
+
+function buildSafeFrenchFallbackForCarnet(cluster: TopicCluster) {
+  switch (clusterKind(cluster)) {
+    case 'ecb_labour':
+      return { title: 'BCE : l’emploi reste solide, les salaires ralentissent', paragraphs: ['La BCE décrit une désinflation salariale plus graduelle que brutale.', 'Le signal compte surtout pour le tempo de la politique monétaire en zone euro.'] };
+    default:
+      return { title: displayTitle(cluster, 'carnet'), paragraphs: [`À suivre surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et les marchés'}.`, 'Le dossier mérite une place de second rang dans la lecture du matin.'] };
+  }
+}
+
+function buildSafeFrenchFallbackForBrief(cluster: TopicCluster) {
+  switch (clusterKind(cluster)) {
+    case 'iran_risk': return 'Iran : le dossier pèse d’abord sur l’énergie, le fret et la prime de risque.';
+    case 'gas_europe': return 'Gaz : le risque européen rallonge surtout la facture industrielle et la désinflation importée.';
+    case 'copper_supply': return 'Cuivre : le dossier reste utile pour lire l’offre industrielle et l’investissement.';
+    case 'ecb_labour': return 'BCE : l’emploi reste ferme, mais les salaires donnent un peu d’air à la désinflation en zone euro.';
+    case 'uk_labour':
+    case 'growth_labour': return 'Travail : le signal renforce surtout l’idée d’une croissance molle avant une vraie reprise.';
+    case 'oil_shock': return 'Pétrole : le choc reste central pour lire l’inflation importée et les actifs sensibles à l’énergie.';
+    default: return `Le signal compte surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et le risque'}.`;
+  }
+}
 function normalizeGeneratedBlock(block: any, maxLength = 260, minLength = 24) {
   const text = blockText(block);
   if (!isAcceptableGeneratedText(text, minLength)) return null;
@@ -979,6 +1155,16 @@ export async function repairOrRegenerateDraftIfNeeded(currentDraft: V3Draft, cri
     },
   };
 }
+
+export const __testables = {
+  deriveNarrativeSections,
+  buildBriefSlots,
+  buildDeterministicPayload,
+  buildEvidenceMap,
+  buildMicroBriefText,
+  finalizeDeterministicText,
+  isAcceptableGeneratedText,
+};
 
 export default {
   generateFrenchEditionDraft,

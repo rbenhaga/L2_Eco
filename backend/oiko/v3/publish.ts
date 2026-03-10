@@ -4,7 +4,8 @@ import { OIKO_V3_POLICY } from '../policy/v3.ts';
 import { oikoQueries } from '../queries.ts';
 import { renderEditionBundle } from '../render.ts';
 import { toAbsoluteUrl } from '../utils.ts';
-import type { DayEditorialPacket, QualityReport, V3Draft } from './types.ts';
+import type { DayEditorialPacket, QualityReport, StructuredMarketContext, StructuredMarketSeries, V3Draft } from './types.ts';
+import { upsertEditorialPacket } from './upsertEditorialPacket.ts';
 
 function buildStoredPathFromAssetUrl(url: string) {
   try {
@@ -78,7 +79,19 @@ export function computeAssetQuality(rendered: any) {
   };
 }
 
-export async function renderV3Draft(editionDate: string, draft: V3Draft, packet: DayEditorialPacket, marketContext: any) {
+function mapMarketSeries(item: StructuredMarketSeries, overrideKey?: string) {
+  return {
+    key: overrideKey || item.key,
+    label: item.label,
+    latest_value: item.latestValue,
+    change_pct: item.changePct,
+    period: item.period,
+    points: item.points,
+    labels: item.labels,
+  };
+}
+
+export async function renderV3Draft(editionDate: string, draft: V3Draft, packet: DayEditorialPacket, marketContext: StructuredMarketContext) {
   const rendered = await renderEditionBundle({
     editionDate,
     payload: draft.payload,
@@ -86,32 +99,10 @@ export async function renderV3Draft(editionDate: string, draft: V3Draft, packet:
       editionDate,
       generated_at: marketContext.generatedAt,
       market_regime: marketContext.marketRegime,
-      items: [...marketContext.equities, ...marketContext.fx, ...marketContext.crypto].map((item: any) => ({
-        key: item.key,
-        label: item.label,
-        latest_value: item.latestValue,
-        change_pct: item.changePct,
-        period: item.period,
-        points: item.points,
-        labels: item.labels,
-      })),
+      items: [...marketContext.equities, ...marketContext.fx, ...marketContext.crypto].map((item) => mapMarketSeries(item)),
       chartCandidates: {
-        actions: marketContext.equities.map((item: any) => ({
-          labels: item.labels,
-          points: item.points,
-          latest_value: item.latestValue,
-          change_pct: item.changePct,
-          label: item.label,
-          key: 'actions',
-        })),
-        crypto: marketContext.crypto.map((item: any) => ({
-          labels: item.labels,
-          points: item.points,
-          latest_value: item.latestValue,
-          change_pct: item.changePct,
-          label: item.label,
-          key: 'crypto',
-        })),
+        actions: marketContext.equities.map((item) => mapMarketSeries(item, 'actions')),
+        crypto: marketContext.crypto.map((item) => mapMarketSeries(item, 'crypto')),
       },
       equities_open: false,
       equities_note: packet.marketContext.narrativeHints[0] || 'Lecture de marché prudente.',
@@ -156,10 +147,15 @@ export function publishEdition(
   rendered: any,
   qualityReport: QualityReport,
   assetQuality: { assetCoverage: number; missingAssets: string[]; brokenAssetCount: number },
+  options: { isShortEdition?: boolean } = {},
 ) {
   const archiveTeaser = generateArchiveTeaserFromPacket(packet);
+  const effectiveStatus = options.isShortEdition && qualityReport.publicationStatus === 'ready'
+    ? 'short_draft' as const
+    : qualityReport.publicationStatus;
+
   const visibility = OIKO_V3_POLICY.rollout.publicEnabled
-    && qualityReport.publicationStatus === 'ready'
+    && effectiveStatus === 'ready'
     && qualityReport.metrics.french_only
     && qualityReport.metrics.originality_gate
     && qualityReport.metrics.traceability_gate
@@ -168,44 +164,49 @@ export function publishEdition(
     ? 'public'
     : 'internal';
 
-  const qualityState = qualityReport.publicationStatus === 'ready' ? 'passed' : 'failed';
-  const publicationReason = visibility === 'internal' && qualityReport.publicationStatus === 'ready'
+  const qualityState = (effectiveStatus === 'ready' || effectiveStatus === 'short_draft') ? 'passed' : 'failed';
+  const publicationReason = visibility === 'internal' && effectiveStatus === 'ready'
     ? 'Draft V3 valide en interne, conservé hors public tant que le switch Phase C reste désactivé.'
-    : qualityReport.publicationReason;
-  const publicationReasonCode = visibility === 'internal' && qualityReport.publicationStatus === 'ready'
+    : options.isShortEdition && qualityReport.publicationStatus === 'ready'
+      ? 'Édition courte V3 — matière insuffisante pour une édition premium mais qualité validée.'
+      : qualityReport.publicationReason;
+  const publicationReasonCode = visibility === 'internal' && effectiveStatus === 'ready'
     ? 'internal_rollout_only'
-    : qualityReport.publicationReasonCode;
+    : options.isShortEdition && qualityReport.publicationStatus === 'ready'
+      ? 'short_edition_passed'
+      : qualityReport.publicationReasonCode;
 
-  oikoQueries.v3.editorialPackets.upsert.run(
+  upsertEditorialPacket({
     editionDate,
     pipelineVersion,
-    qualityReport.publicationStatus,
-    visibility,
-    qualityState,
-    JSON.stringify(packet),
-    JSON.stringify(draft.metadata),
-    JSON.stringify(draft.evidence),
-    JSON.stringify(rendered.payload),
-    JSON.stringify(packet.marketContext),
-    JSON.stringify({
+    status: effectiveStatus,
+    visibility: visibility as 'public' | 'internal',
+    qualityState: qualityState as 'passed' | 'failed',
+    packetJson: JSON.stringify(packet),
+    draftJson: JSON.stringify(draft.metadata),
+    evidenceJson: JSON.stringify(draft.evidence),
+    contentJson: JSON.stringify(rendered.payload),
+    marketContextJson: JSON.stringify(packet.marketContext),
+    assetManifestJson: JSON.stringify({
       chartManifest: rendered.chartManifest,
       assets: rendered.assets,
       assetQuality,
     }),
-    rendered.html,
-    rendered.text,
+    html: rendered.html,
+    text: rendered.text,
     archiveTeaser,
     publicationReason,
     publicationReasonCode,
-  );
+  });
 
   return {
-    status: qualityReport.publicationStatus,
+    status: effectiveStatus,
     visibility,
     qualityState,
     publicationReason,
     publicationReasonCode,
     archiveTeaser,
+    isShortEdition: Boolean(options.isShortEdition),
     emailHtmlPreviewUrl: visibility === 'public'
       ? toAbsoluteUrl(process.env.OIKO_PUBLIC_BASE_URL || 'http://localhost:3001', `/api/oiko-news/${editionDate}/email-html`)
       : null,

@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 
 export const RichTextPartSchema = z.object({
   text: z.string().min(1),
@@ -66,7 +66,7 @@ export const GeneratedOikoEditionV21Schema = z.object({
   }),
   opening_brief: z.object({
     title: OpeningBriefTitleSchema,
-    items: z.array(MenuItemSchema).min(2).max(5),
+    items: z.array(MenuItemSchema).min(1).max(5),
   }),
   markets_section: z.object({
     title: z.string().min(3).max(40),
@@ -115,7 +115,7 @@ export const OikoEditionV21Schema = z.object({
   }),
   opening_brief: z.object({
     title: OpeningBriefTitleSchema,
-    items: z.array(MenuItemSchema).min(2).max(5),
+    items: z.array(MenuItemSchema).min(1).max(5),
   }),
   markets_section: z.object({
     title: z.string().min(3).max(40),

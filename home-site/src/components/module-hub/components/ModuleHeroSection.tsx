@@ -1,164 +1,39 @@
-/**
- * ModuleHeroSection - Masterclass Editorial Design
- *
- * 2-column grid: Text content + Decorative themed visual
- * Premium typography, module-themed accents, geometric patterns
- * All colors via CSS variables / design tokens only
- */
-
-import { Play, Bookmark, BookOpen, Clock, ListChecks } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowRight, CheckCircle2, Clock3, Lock, PlayCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getModuleTheme } from '../../../design-system/tokens';
 import type { ModuleId } from '../types';
+
+const TYPING_SPEED_MS = 62;
 
 interface ModuleHeroSectionProps {
     title: string;
     description: string;
     chaptersCount: number;
     totalDuration: string;
+    studyTime: string;
     todoCount: number;
     moduleId: ModuleId;
     hasIntroVideo?: boolean;
     startButtonLabel?: string;
-    startDetailText?: string;
+    startButtonMeta?: string;
+    guidanceTitle?: string;
+    guidanceDescription?: string;
+    progressSummary?: string;
+    pathHintLabel?: string;
     completedCoursesCount?: number;
+    lockedItemsCount?: number;
+    resourceCounts: {
+        fiches: number;
+        td: number;
+        qcm: number;
+        annales: number;
+    };
+    badgeLabel: string;
     onStartClick?: () => void;
     onStartHover?: () => void;
     onStartFocus?: () => void;
     onVideoClick?: () => void;
-}
-
-/** Decorative SVG geometric pattern themed to the module */
-function GeometricPattern({ moduleId }: { moduleId: ModuleId }) {
-    const theme = getModuleTheme(moduleId);
-
-    return (
-        <svg
-            viewBox="0 0 400 300"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-full"
-            aria-hidden="true"
-        >
-            {/* Grid dots */}
-            {Array.from({ length: 8 }).map((_, row) =>
-                Array.from({ length: 10 }).map((_, col) => (
-                    <circle
-                        key={`dot-${row}-${col}`}
-                        cx={40 + col * 36}
-                        cy={30 + row * 36}
-                        r={1.5}
-                        fill={theme.color}
-                        opacity={0.15}
-                    />
-                ))
-            )}
-
-            {/* Large accent circle */}
-            <circle
-                cx={300}
-                cy={100}
-                r={70}
-                fill={theme.light}
-                opacity={0.5}
-            />
-
-            {/* Medium circle */}
-            <circle
-                cx={120}
-                cy={200}
-                r={45}
-                stroke={theme.color}
-                strokeWidth={1.5}
-                opacity={0.25}
-                fill="none"
-            />
-
-            {/* Small filled circle */}
-            <circle
-                cx={80}
-                cy={80}
-                r={20}
-                fill={theme.color}
-                opacity={0.08}
-            />
-
-            {/* Diagonal lines */}
-            <line
-                x1={160}
-                y1={40}
-                x2={280}
-                y2={160}
-                stroke={theme.color}
-                strokeWidth={1}
-                opacity={0.12}
-            />
-            <line
-                x1={180}
-                y1={40}
-                x2={300}
-                y2={160}
-                stroke={theme.color}
-                strokeWidth={1}
-                opacity={0.08}
-            />
-
-            {/* Accent ring */}
-            <circle
-                cx={340}
-                cy={230}
-                r={35}
-                stroke={theme.color}
-                strokeWidth={2}
-                opacity={0.2}
-                fill="none"
-                strokeDasharray="6 4"
-            />
-
-            {/* Small accent dot cluster */}
-            <circle cx={200} cy={140} r={4} fill={theme.color} opacity={0.3} />
-            <circle cx={215} cy={130} r={3} fill={theme.color} opacity={0.2} />
-            <circle cx={190} cy={155} r={2.5} fill={theme.color} opacity={0.25} />
-        </svg>
-    );
-}
-
-/** Stat pill shown on the visual panel */
-function StatPill({
-    icon: Icon,
-    value,
-    label,
-}: {
-    icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
-    value: string | number;
-    label: string;
-}) {
-    return (
-        <div
-            className="flex items-center gap-2 px-3 py-2 rounded-lg"
-            style={{
-                background: 'var(--color-bg-raised)',
-                boxShadow: 'var(--shadow-sm)',
-            }}
-        >
-            <Icon
-                className="w-4 h-4 shrink-0"
-                style={{ color: 'var(--color-text-muted)' }}
-            />
-            <span
-                className="text-sm font-semibold"
-                style={{ color: 'var(--color-text-primary)' }}
-            >
-                {value}
-            </span>
-            <span
-                className="text-xs"
-                style={{ color: 'var(--color-text-muted)' }}
-            >
-                {label}
-            </span>
-        </div>
-    );
 }
 
 export function ModuleHeroSection({
@@ -166,177 +41,248 @@ export function ModuleHeroSection({
     description,
     chaptersCount,
     totalDuration,
+    studyTime,
     todoCount,
     moduleId,
-    hasIntroVideo = true,
-    startButtonLabel = 'Rejoindre le cours',
-    startDetailText,
+    hasIntroVideo = false,
+    startButtonLabel = 'Commencer',
+    startButtonMeta,
+    guidanceTitle,
+    guidanceDescription,
+    progressSummary,
+    pathHintLabel,
     completedCoursesCount = 0,
+    lockedItemsCount = 0,
+    resourceCounts,
+    badgeLabel,
     onStartClick,
     onStartHover,
     onStartFocus,
     onVideoClick,
 }: ModuleHeroSectionProps) {
     const theme = getModuleTheme(moduleId);
+    const [typedCount, setTypedCount] = useState(0);
+    const overviewItems = [
+        { label: chaptersCount > 1 ? 'chapitres' : 'chapitre', value: chaptersCount },
+        { label: resourceCounts.fiches > 1 ? 'fiches' : 'fiche', value: resourceCounts.fiches },
+        { label: 'TD', value: resourceCounts.td },
+        { label: 'QCM', value: resourceCounts.qcm },
+        { label: resourceCounts.annales > 1 ? 'annales' : 'annale', value: resourceCounts.annales },
+    ].filter((item, index) => index === 0 || item.value > 0);
+
+    useEffect(() => {
+        setTypedCount(0);
+        const timer = window.setInterval(() => {
+            setTypedCount((prev) => {
+                if (prev >= title.length) {
+                    window.clearInterval(timer);
+                    return prev;
+                }
+                return prev + 1;
+            });
+        }, TYPING_SPEED_MS);
+
+        return () => window.clearInterval(timer);
+    }, [title]);
 
     return (
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
-            {/* Left Column: Text Content (5/12) */}
-            <div className="lg:col-span-5">
-                {/* Badge - dynamic from title */}
+        <section className="grid grid-cols-1 gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:gap-8">
+            <div className="max-w-2xl">
                 <div
-                    className="inline-block px-3 py-1 rounded mb-6"
+                    className="flex w-fit items-center rounded-full px-3 py-1.5"
                     style={{
                         background: theme.subtle,
                         color: theme.color,
                     }}
                 >
-                    <span className="text-xs font-bold uppercase" style={{ letterSpacing: '0.2em' }}>
-                        {title}
+                    <span className="text-[11px] font-bold uppercase tracking-[0.22em]">
+                        {badgeLabel}
                     </span>
                 </div>
 
-                {/* Title - Huge Serif */}
-                <h1
-                    className="mb-6 tracking-tight"
-                    style={{
-                        fontFamily: 'var(--font-serif)',
-                        fontSize: 'clamp(42px, 6vw, 60px)',
-                        lineHeight: 1.1,
-                        color: 'var(--color-text-primary)',
-                    }}
-                >
-                    {title}
+                <h1 className="module-hero-title">
+                    {title.slice(0, typedCount).split('').map((char, index) => (
+                        <span
+                            key={`${char}-${index}`}
+                            className={`module-hero-letter ${index === typedCount - 1 && typedCount < title.length ? 'is-fresh' : ''}`}
+                        >
+                            {char === ' ' ? '\u00A0' : char}
+                        </span>
+                    ))}
+                    <span className="module-hero-cursor" aria-hidden="true" />
                 </h1>
 
-                {/* Description */}
                 <p
-                    className="text-lg font-light mb-10 max-w-md"
+                    className="mt-4 max-w-2xl text-base sm:text-lg"
                     style={{
-                        color: 'var(--color-text-secondary)',
-                        lineHeight: 1.7,
+                        color: 'var(--color-text-primary)',
+                        lineHeight: 1.65,
                     }}
                 >
                     {description}
                 </p>
 
-                {/* CTAs */}
-                <div className="flex items-center gap-4">
+                <div className="mt-6 flex flex-wrap items-center gap-3">
                     <motion.button
+                        type="button"
                         onClick={onStartClick}
                         onMouseEnter={onStartHover}
                         onFocus={onStartFocus}
-                        className="px-8 py-4 rounded-xl font-semibold"
+                        className="inline-flex min-h-12 items-center gap-2 rounded-xl px-5 text-sm font-semibold"
                         style={{
-                            background: 'var(--color-text-primary)',
-                            color: 'var(--color-canvas)',
+                            background: 'var(--color-accent)',
+                            color: 'var(--color-accent-foreground)',
+                            boxShadow: 'none',
                         }}
-                        whileHover={{
-                            y: -4,
-                            boxShadow: 'var(--shadow-xl)',
-                        }}
-                        transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
                     >
-                        {startButtonLabel}
+                        <span>{startButtonLabel}</span>
+                        {startButtonMeta && (
+                            <span className="hidden items-center gap-2 text-[12px] font-medium text-white/80 sm:inline-flex">
+                                <span aria-hidden="true">·</span>
+                                {startButtonMeta}
+                            </span>
+                        )}
+                        <ArrowRight className="h-4 w-4" />
                     </motion.button>
 
-                    <motion.button
-                        className="p-4 rounded-xl border"
-                        style={{
-                            borderColor: 'var(--color-border-default)',
-                            background: 'transparent',
-                        }}
-                        whileHover={{
-                            background: 'var(--color-bg-raised)',
-                        }}
-                        transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
-                    >
-                        <Bookmark className="w-5 h-5" style={{ color: 'var(--color-text-primary)' }} />
-                    </motion.button>
+                    {hasIntroVideo && onVideoClick && (
+                        <motion.button
+                            type="button"
+                            onClick={onVideoClick}
+                            className="inline-flex min-h-12 items-center gap-2 rounded-xl border px-5 text-sm font-semibold"
+                            style={{
+                                borderColor: 'var(--color-border-default)',
+                                color: 'var(--color-text-primary)',
+                                background: 'var(--color-bg-raised)',
+                            }}
+                        >
+                            <PlayCircle className="h-4 w-4" />
+                            Voir le cours en vidéo
+                        </motion.button>
+                    )}
                 </div>
-                {startDetailText && (
-                    <p
-                        className="mt-3 text-sm"
-                        style={{ color: 'var(--color-text-muted)' }}
-                    >
-                        {startDetailText}
-                    </p>
-                )}
-                <p className="mt-1 text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                    {completedCoursesCount} cours termine(s) sur {chaptersCount}
-                </p>
-
             </div>
 
-            {/* Right Column: Decorative themed visual (7/12) */}
-            <div className="lg:col-span-7 relative">
-                <motion.div
-                    className="relative rounded-2xl overflow-hidden border"
-                    style={{
-                        aspectRatio: '16/10',
-                        background: theme.gradient,
-                        borderColor: 'var(--color-border-soft)',
-                        boxShadow: 'var(--shadow-lg)',
-                    }}
-                    whileHover={{ scale: 1.01 }}
-                    transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
-                >
-                    {/* Geometric SVG pattern */}
-                    <div className="absolute inset-0">
-                        <GeometricPattern moduleId={moduleId} />
-                    </div>
+            <aside
+                className="relative rounded-[28px] border p-5 sm:p-6"
+                style={{
+                    borderColor: 'var(--color-border-default)',
+                    background: 'var(--color-bg-raised)',
+                    boxShadow: 'none',
+                }}
+            >
+                <div className="relative">
+                    <div className="flex items-center justify-between gap-2">
+                        <p
+                            className="min-w-0 shrink text-[11px] font-bold uppercase sm:text-[11px]"
+                            style={{
+                                color: 'var(--color-text-secondary)',
+                                letterSpacing: '0.18em',
+                                whiteSpace: 'nowrap',
+                            }}
+                        >
+                            Vue d'ensemble
+                        </p>
 
-                    {/* Play button overlay for intro video */}
-                    {hasIntroVideo && (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <motion.button
-                                onClick={onVideoClick}
-                                className="w-16 h-16 rounded-full flex items-center justify-center"
+                        {lockedItemsCount > 0 && (
+                            <div
+                                className="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-1 text-[10px] font-medium sm:px-2.5 sm:text-[11px]"
                                 style={{
-                                    background: 'var(--color-bg-raised)',
-                                    color: theme.color,
-                                    boxShadow: 'var(--shadow-xl)',
+                                    background: 'var(--color-bg-overlay)',
+                                    color: 'var(--color-text-secondary)',
+                                    border: '1px solid var(--color-border-subtle)',
+                                    whiteSpace: 'nowrap',
                                 }}
-                                whileHover={{ scale: 1.1 }}
-                                transition={{ duration: 0.25, ease: [0.34, 1.56, 0.64, 1] }}
                             >
-                                <Play className="w-6 h-6 ml-0.5" fill="currentColor" />
-                            </motion.button>
-                        </div>
-                    )}
-
-                    {/* Bottom stats overlay */}
-                    <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
-                        <StatPill
-                            icon={BookOpen}
-                            value={chaptersCount}
-                            label={chaptersCount > 1 ? 'chapitres' : 'chapitre'}
-                        />
-                        <StatPill
-                            icon={Clock}
-                            value={totalDuration}
-                            label="min"
-                        />
-                        {todoCount > 0 && (
-                            <StatPill
-                                icon={ListChecks}
-                                value={todoCount}
-                                label={todoCount > 1 ? 'restants' : 'restant'}
-                            />
+                                <Lock className="h-3 w-3 shrink-0" />
+                                Premium · {lockedItemsCount} contenus en plus
+                            </div>
                         )}
                     </div>
-                </motion.div>
 
-                {/* Decorative circles - themed with module colors */}
-                <div
-                    className="absolute -top-4 -right-4 w-24 h-24 rounded-full -z-10"
-                    style={{ background: theme.subtle }}
-                />
-                <div
-                    className="absolute -bottom-6 -left-6 w-48 h-48 rounded-full -z-10"
-                    style={{ background: theme.light }}
-                />
-            </div>
+                    <div
+                        className="mt-3.5 rounded-2xl border px-4 py-3"
+                        style={{
+                            borderColor: 'var(--color-border-subtle)',
+                            background: 'var(--color-bg-raised)',
+                        }}
+                    >
+                        <div
+                            className="overflow-x-auto"
+                            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                        >
+                            <div className="inline-flex min-w-max items-center gap-2 whitespace-nowrap text-[11px] sm:text-sm">
+                                {overviewItems.map((item, index) => (
+                                    <div key={item.label} className="inline-flex items-center gap-1.5">
+                                        <span className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+                                            {item.value}
+                                        </span>
+                                        <span style={{ color: 'var(--color-text-secondary)' }}>
+                                            {item.label}
+                                        </span>
+                                        {index < overviewItems.length - 1 && (
+                                            <span aria-hidden="true" style={{ color: 'var(--color-text-muted)' }}>
+                                                ·
+                                            </span>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-4 space-y-2.5">
+                        <div
+                            className="rounded-2xl border px-4 py-3"
+                            style={{
+                                borderColor: 'var(--color-border-subtle)',
+                                background: 'var(--color-bg-raised)',
+                            }}
+                        >
+                            <div className="flex items-start gap-3">
+                                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: theme.color }} />
+                                <div>
+                                    <p className="text-[10px] font-bold uppercase tracking-[0.16em]" style={{ color: 'var(--color-text-muted)' }}>
+                                        Prochaine étape
+                                    </p>
+                                    <p className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+                                        {guidanceTitle ?? `${completedCoursesCount} chapitres terminés sur ${chaptersCount}`}
+                                    </p>
+                                    <p className="mt-1 text-xs" style={{ color: 'var(--color-text-secondary)' }}>
+                                        {guidanceDescription ?? (todoCount > 0 ? `${todoCount} ressources à traiter pour boucler le module.` : 'Le module est intégralement parcouru.')}
+                                    </p>
+                                    {progressSummary && (
+                                        <p className="mt-1 text-[11px] font-medium" style={{ color: 'var(--color-text-muted)' }}>
+                                            {progressSummary}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            className="rounded-2xl border px-4 py-3"
+                            style={{
+                                borderColor: 'var(--color-border-subtle)',
+                                background: 'var(--color-bg-raised)',
+                            }}
+                        >
+                            <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+                                <Clock3 className="h-4 w-4" />
+                                Temps étudié : {studyTime}
+                            </div>
+                            <p className="mt-1 text-xs" style={{ color: 'var(--color-text-secondary)' }}>
+                                Module estimé : {totalDuration} min
+                            </p>
+                            {pathHintLabel && (
+                                <p className="mt-1 text-[11px] font-medium" style={{ color: 'var(--color-text-muted)' }}>
+                                    {pathHintLabel}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </aside>
         </section>
     );
 }

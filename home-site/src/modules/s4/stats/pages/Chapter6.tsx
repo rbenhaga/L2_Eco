@@ -17,9 +17,9 @@ import { TableOfContents } from '../../../../components/course/TableOfContents';
 
 export function Chapter6() {
   return (
-    <main className="course-page course-page--scoped-zoom w-full flex justify-center px-6">
-      <div className="course-zoom-scope w-full max-w-[760px]">
-        <div className="course-zoom-layer">
+    <main className="course-page course-page--paper-focus w-full flex justify-center">
+      <div className="course-reader-frame w-full">
+        <div className="course-reader-body">
           <div className="course-paper">
             <PageHeader
               number="Chapitre 6"

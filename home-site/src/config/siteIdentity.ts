@@ -1,0 +1,25 @@
+﻿export const SITE_IDENTITY = {
+  name: "Oikonomia",
+  legalName: "Rayane Ben Haga",
+  domain: "oikonomia.clipperpro.app",
+  contactEmail: "contact@oikonomia.clipperpro.app",
+  supportEmail: "support@oikonomia.clipperpro.app",
+  legalEmail: "legal@oikonomia.clipperpro.app",
+  privacyEmail: "privacy@oikonomia.clipperpro.app",
+  publisherName: "Rayane Ben Haga",
+  legalForm: "Entrepreneur individuel (micro-entreprise)",
+  shareCapital: "Non applicable",
+  siret: "[À compléter]",
+  rcs: "RNE : [À compléter] (RCS uniquement si activité commerciale)",
+  vatNumber: "TVA non applicable, art. 293 B du CGI",
+  headquartersAddress: "22 Place du Nombre d'Or, 34000 Montpellier, France",
+  hostName: "Oracle Cloud Infrastructure (OCI)",
+  hostAddress: "[À compléter - adresse légale de l'hébergeur]",
+  hostPhone: "[À compléter]",
+  dpoName: "Rayane Ben Haga",
+  consumerMediatorName: "[À compléter]",
+  consumerMediatorAddress: "[À compléter]",
+  consumerMediatorWebsite: "[À compléter]",
+} as const;
+
+export type SiteIdentity = typeof SITE_IDENTITY;

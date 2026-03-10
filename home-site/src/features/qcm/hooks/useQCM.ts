@@ -39,7 +39,7 @@ interface UseQCMReturn {
     answers: Map<string, AnswerRecord>;
 
     // Actions
-    selectAnswer: (index: number) => void;
+    selectAnswer: (index: number, options?: { replace?: boolean }) => void;
     nextQuestion: () => void;
     previousQuestion: () => void;
     goToQuestion: (index: number) => void;
@@ -61,7 +61,7 @@ export function useQCM({
     onComplete,
 }: UseQCMOptions): UseQCMReturn {
     const [sessionId, setSessionId] = useState(() => generateSessionId());
-    const [startTime] = useState(() => Date.now());
+    const [startTime, setStartTime] = useState(() => Date.now());
     const [currentChapterId, setCurrentChapterId] = useState(selectedChapterId);
     const [currentMode, setCurrentMode] = useState(mode);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -85,6 +85,7 @@ export function useQCM({
         setCurrentIndex(0);
         setSelectedAnswer(null);
         setAnswers(new Map());
+        setStartTime(Date.now());
     }, [baseQuestions, shuffleQuestions, sessionId]);
 
     // Build shuffled questions array
@@ -132,8 +133,9 @@ export function useQCM({
     }, [chapters, currentChapterId]);
 
     // Actions
-    const selectAnswer = useCallback((index: number) => {
-        if (isAnswered || !currentQuestion) return;
+    const selectAnswer = useCallback((index: number, options?: { replace?: boolean }) => {
+        if (!currentQuestion) return;
+        if (isAnswered && !options?.replace) return;
 
         setSelectedAnswer(index);
         const isCorrect = index === currentQuestion.correctIndex;
@@ -212,6 +214,7 @@ export function useQCM({
         setCurrentIndex(0);
         setSelectedAnswer(null);
         setAnswers(new Map());
+        setStartTime(Date.now());
     }, []);
 
     return {

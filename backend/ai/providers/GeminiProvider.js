@@ -42,13 +42,14 @@ export class GeminiProvider extends BaseProvider {
 
         try {
             const response = await this.retry(async () => {
-                // Gemini API URL format: .../{model}:generateContent?key={apiKey}
-                const url = `${this.baseUrl}/${model}:generateContent?key=${this.apiKey}`;
+                // Gemini API URL format: .../models/{model}:generateContent
+                const url = `${this.baseUrl}/models/${model}:generateContent`; 
 
                 const res = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': this.apiKey
                     },
                     body: JSON.stringify(requestBody)
                 });
@@ -116,7 +117,7 @@ export class GeminiProvider extends BaseProvider {
 
             let text = msg.content;
             if (!systemInjected && role === 'user' && systemInstructions) {
-                text = `[INSTRUCTIONS SYSTÈME]\n${systemInstructions}\n[/INSTRUCTIONS SYSTÈME]\n\n${msg.content}`;
+                text = `[INSTRUCTIONS SYSTEME]\n${systemInstructions}\n[/INSTRUCTIONS SYSTEME]\n\n${msg.content}`;
                 systemInjected = true;
             }
 
@@ -154,11 +155,12 @@ export class GeminiProvider extends BaseProvider {
     }
 
     /**
-     * Build headers for Gemini (no Authorization header, API key in URL)
+     * Build headers for Gemini
      */
     buildHeaders() {
         return {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-goog-api-key': this.apiKey
         };
     }
 

@@ -5,6 +5,15 @@ import { isAdminUser } from '../utils/adminAccess.js';
 
 const router = express.Router();
 
+const touchUserPresenceStatement = db.prepare(`
+    INSERT INTO users (firebase_uid, last_seen_at, updated_at)
+    VALUES (?, strftime('%s', 'now'), CURRENT_TIMESTAMP)
+    ON CONFLICT(firebase_uid)
+    DO UPDATE SET
+        last_seen_at = strftime('%s', 'now'),
+        updated_at = CURRENT_TIMESTAMP
+`);
+
 function isAdmin(req) {
     return isAdminUser(req.user);
 }
@@ -21,6 +30,14 @@ function ensureOwnUser(req, res, next) {
 }
 
 router.use('/user/:userId', requireAuth, ensureOwnUser);
+router.use('/user/:userId', (req, _res, next) => {
+    try {
+        touchUserPresenceStatement.run(req.params.userId);
+    } catch (error) {
+        console.error('Error updating user presence:', error);
+    }
+    next();
+});
 
 function normalizeSemester(input) {
     return String(input || '').toLowerCase() === 's4' ? 's4' : 's3';
@@ -63,6 +80,10 @@ function getActiveNotifications(notifications = []) {
         return now <= expiresAt;
     });
 }
+
+router.post('/user/:userId/presence', (_req, res) => {
+    res.json({ success: true });
+});
 
 // GET /api/user/:userId/onboarding - Check if user has completed onboarding
 router.get('/user/:userId/onboarding', (req, res) => {

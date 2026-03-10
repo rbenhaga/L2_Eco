@@ -2,6 +2,10 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import path from 'path'
 
+const coopHeaders = {
+  'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+}
+
 export default defineConfig({
   plugins: [react()],
   base: '/',
@@ -38,5 +42,9 @@ export default defineConfig({
     port: 5173,
     strictPort: false,
     host: true,
+    headers: coopHeaders,
+  },
+  preview: {
+    headers: coopHeaders,
   },
 })

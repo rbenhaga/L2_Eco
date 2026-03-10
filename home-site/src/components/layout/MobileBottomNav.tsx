@@ -3,9 +3,10 @@ import { Home, MoreHorizontal } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { semesters, type SubjectConfig } from '../../config/semesters';
 import { AnimatePresence, motion } from 'framer-motion';
+import { DEFAULT_ENABLED_SEMESTER, normalizeEnabledSemester } from '../../config/semesterAccess';
 
 /**
- * MobileBottomNav — Fixed bottom tab bar for mobile (< lg)
+ * MobileBottomNav - Fixed bottom tab bar for mobile (< lg)
  *
  * - Design Contract compliant (CSS vars, 8px grid, touch targets)
  * - Active state with accent color
@@ -19,8 +20,8 @@ export function MobileBottomNav() {
 
     // Detect current semester from URL
     const detectedSemester = useMemo(() => {
-        if (location.pathname.startsWith('/s4/')) return 's4';
-        return 's3';
+        const match = location.pathname.match(/^\/(s[34])\//i);
+        return normalizeEnabledSemester(match?.[1] ?? DEFAULT_ENABLED_SEMESTER);
     }, [location.pathname]);
 
     const currentSemester = semesters[detectedSemester];

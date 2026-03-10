@@ -1,11 +1,4 @@
-/**
- * ModuleTabBar - Masterclass Editorial Design
- *
- * Minimal border-bottom style with accent color,
- * count badges for each tab
- */
-
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 
 export type TabId = 'cours' | 'td' | 'qcm' | 'annales';
 
@@ -33,68 +26,49 @@ export function ModuleTabBar({
     annalesCount,
 }: ModuleTabBarProps) {
     const tabs: Tab[] = [
-        { id: 'cours', label: 'Cours', count: coursCount },
-        { id: 'td', label: 'Ressources TD', count: tdCount > 0 ? tdCount : undefined },
-        { id: 'qcm', label: 'Quiz & QCM', count: qcmCount > 0 ? qcmCount : undefined },
+        { id: 'cours', label: 'Parcours', count: coursCount },
+        { id: 'td', label: 'TD', count: tdCount > 0 ? tdCount : undefined },
+        { id: 'qcm', label: 'QCM', count: qcmCount > 0 ? qcmCount : undefined },
         { id: 'annales', label: 'Annales', count: annalesCount > 0 ? annalesCount : undefined },
     ];
 
     return (
-        <div
-            className="flex items-center gap-6 sm:gap-10 mb-10 overflow-x-auto"
-            style={{ borderBottom: '1px solid var(--color-border-subtle)' }}
-        >
+        <div className="flex items-center gap-3 overflow-x-auto border-b pb-1 sm:gap-4" style={{ borderColor: 'var(--color-border-subtle)' }}>
             {tabs.map((tab) => {
                 const isActive = tab.id === activeTab;
 
                 return (
                     <button
                         key={tab.id}
+                        type="button"
                         onClick={() => onTabChange(tab.id)}
-                        className="pb-4 relative shrink-0 transition-colors hover:text-[var(--color-text-primary)]"
+                        className="relative shrink-0 rounded-full px-2.5 py-2 pb-3 text-[13px] font-medium sm:px-3 sm:text-sm"
                         style={{
-                            color: isActive
-                                ? 'var(--color-text-primary)'
-                                : 'var(--color-text-muted)',
+                            color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+                            background: isActive ? 'color-mix(in srgb, var(--color-accent-subtle) 68%, transparent)' : 'transparent',
+                            fontWeight: isActive ? 600 : 500,
                         }}
                     >
-                        <span
-                            className="text-sm"
-                            style={{
-                                fontWeight: isActive ? 700 : 500,
-                            }}
-                        >
-                            {tab.label}
-                        </span>
-
-                        {/* Count badge */}
+                        <span>{tab.label}</span>
                         {tab.count !== undefined && (
                             <span
-                                className="ml-2 px-2 py-0.5 rounded-md text-[10px]"
+                                className="ml-1.5 inline-flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold sm:ml-2 sm:min-w-6 sm:px-2 sm:text-[11px]"
                                 style={{
-                                    background: isActive ? 'var(--color-accent-subtle)' : 'var(--color-bg-overlay)',
+                                    background: isActive ? 'var(--color-bg-raised)' : 'var(--color-bg-overlay)',
                                     color: isActive ? 'var(--color-accent)' : 'var(--color-text-muted)',
-                                    fontWeight: 700,
+                                    border: isActive ? '1px solid color-mix(in srgb, var(--color-accent) 18%, transparent)' : '1px solid transparent',
                                 }}
                             >
                                 {tab.count}
                             </span>
                         )}
 
-                        {/* Active border */}
                         {isActive && (
                             <motion.div
-                                className="absolute bottom-0 left-0 right-0"
-                                style={{
-                                    height: '2px',
-                                    background: 'var(--color-accent)',
-                                }}
-                                layoutId="activeTabIndicator"
-                                transition={{
-                                    type: 'tween',
-                                    ease: [0.25, 0.1, 0.25, 1],
-                                    duration: 0.3,
-                                }}
+                                layoutId="module-tab-active"
+                                className="absolute inset-x-2 bottom-0 h-0.5 rounded-full"
+                                style={{ background: 'var(--color-accent)' }}
+                                transition={{ duration: 0.24, ease: [0.33, 1, 0.68, 1] }}
                             />
                         )}
                     </button>

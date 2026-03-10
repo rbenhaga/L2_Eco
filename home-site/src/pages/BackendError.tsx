@@ -1,88 +1,115 @@
-import { ServerOff, RefreshCw } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowRight, Clock3, RefreshCw, ServerOff, ShieldCheck } from 'lucide-react';
+import { Header } from '../components/layout/Header';
+import { Footer } from '../components/layout/Footer';
+import './Home.css';
+import './BackendError.css';
 
-// Logo component matching Home.tsx
-function Logo({ className = "h-8 w-8" }: { className?: string }) {
-    return (
-        <svg className={className} viewBox="0 0 24 24" fill="none">
-            <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" fill="url(#logo-grad)" />
-            <path d="M22 10v6" stroke="url(#logo-grad)" strokeWidth="2" strokeLinecap="round" />
-            <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" stroke="url(#logo-grad)" strokeWidth="2" strokeLinecap="round" />
-            <defs>
-                <linearGradient id="logo-grad" x1="2" y1="5" x2="22" y2="19" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="var(--color-micro)" /><stop offset="1" stopColor="var(--color-micro)" />
-                </linearGradient>
-            </defs>
-        </svg>
-    );
-}
-
-const SITE_NAME = "Οἰκονομία";
+const HERO_TITLE = 'Maintenance';
+const TYPING_SPEED_MS = 62;
 
 export function BackendError() {
+    const [typedCount, setTypedCount] = useState(0);
+
+    useEffect(() => {
+        setTypedCount(0);
+        const timer = window.setInterval(() => {
+            setTypedCount((prev) => {
+                if (prev >= HERO_TITLE.length) {
+                    window.clearInterval(timer);
+                    return prev;
+                }
+                return prev + 1;
+            });
+        }, TYPING_SPEED_MS);
+
+        return () => window.clearInterval(timer);
+    }, []);
+
     const handleRefresh = () => {
         window.location.reload();
     };
 
     return (
-        <div className="min-h-screen antialiased relative" style={{ background: "var(--color-bg-base)", color: "rgb(var(--text))" }}>
-            {/* Background - subtle single gradient (matching Home.tsx) */}
-            <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-                <div
-                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] -translate-y-1/3"
-                    style={{
-                        background: "radial-gradient(ellipse, color-mix(in srgb, var(--color-accent) 6%, transparent) 0%, transparent 70%)",
-                    }}
-                />
-            </div>
+        <div className="home-min-shell min-h-screen antialiased">
+            <div className="home-min-top">
+                <Header />
 
-            {/* Content */}
-            <div className="relative" style={{ zIndex: 1 }}>
-                {/* Header with logo */}
-                <header className="backdrop-blur-xl" style={{ background: "color-mix(in srgb, var(--color-bg-raised) 85%, transparent)", borderBottom: '1px solid var(--color-border-default)' }}>
-                    <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                        <div className="flex h-14 sm:h-16 items-center">
-                            <div className="flex items-center gap-2">
-                                <Logo className="h-7 w-7 sm:h-8 sm:w-8" />
-                                <span className="text-base sm:text-lg font-semibold tracking-tight" style={{ color: 'var(--color-text-primary)' }}>{SITE_NAME}</span>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-
-                {/* Error content */}
-                <div className="flex items-center justify-center px-4 py-24 sm:py-32">
-                    <div className="max-w-lg w-full text-center">
-                        {/* Icon */}
-                        <div className="inline-flex items-center justify-center h-20 w-20 sm:h-24 sm:w-24 rounded-2xl mb-8" style={{ background: "var(--color-error-subtle)" }}>
-                            <ServerOff className="h-10 w-10 sm:h-12 sm:w-12" style={{ color: "var(--color-error)" }} />
-                        </div>
-
-                        {/* Title */}
-                        <h1 className="text-3xl sm:text-4xl font-semibold tracking-[-0.02em] mb-4" style={{ color: 'var(--color-text-primary)' }}>
-                            Maintenance en cours
+                <main className="maintenance-min-main">
+                    <section className="maintenance-min-hero" aria-label="Maintenance en cours">
+                        <p className="home-min-kicker">Statut du service</p>
+                        <h1 className="home-min-title">
+                            {HERO_TITLE.slice(0, typedCount).split('').map((char, index) => (
+                                <span
+                                    key={`${char}-${index}`}
+                                    className={`home-min-letter ${index === typedCount - 1 && typedCount < HERO_TITLE.length ? 'is-fresh' : ''}`}
+                                >
+                                    {char === ' ' ? '\u00A0' : char}
+                                </span>
+                            ))}
+                            <span className="home-min-cursor" aria-hidden="true" />
                         </h1>
+                        <p className="home-min-lead">{"Oikonomia est momentan\u00E9ment indisponible pendant une intervention technique."}</p>
+                        <p className="home-min-sublead">{"En local, cela signifie g\u00E9n\u00E9ralement que le backend n'est pas lanc\u00E9 sur le port 3001. D\u00E9marrez-le puis actualisez la page."}</p>
 
-                        {/* Description - generic public message */}
-                        <p className="text-base sm:text-lg leading-relaxed mb-10 max-w-md mx-auto" style={{ color: 'var(--color-text-secondary)' }}>
-                            Le service redémarre. Revenez dans quelques instants.
-                        </p>
+                        <div className="maintenance-min-pill" role="status" aria-live="polite">
+                            <ServerOff className="h-4 w-4" />
+                            <span>Interruption temporaire du backend</span>
+                        </div>
 
-                        {/* CTA */}
-                        <button
-                            onClick={handleRefresh}
-                            className="btn-primary h-12 sm:h-14 px-8 sm:px-10 rounded-xl text-sm sm:text-base font-semibold inline-flex items-center gap-2.5 transition-all active:scale-[0.98]"
-                        >
-                            <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5" />
-                            Revenir bientôt
-                        </button>
+                        <div className="home-min-actions maintenance-min-actions">
+                            <button type="button" onClick={handleRefresh} className="home-min-cta-primary">
+                                Actualiser
+                                <RefreshCw className="h-4 w-4" />
+                            </button>
+                            <a href="/" className="home-min-cta-secondary">
+                                Retour \u00E0 l'accueil
+                                <ArrowRight className="h-4 w-4" />
+                            </a>
+                        </div>
+                    </section>
 
-                        {/* Help text */}
-                        <p className="text-xs sm:text-sm mt-8" style={{ color: 'var(--color-text-muted)' }}>
-                            Cette page disparaît automatiquement dès que le backend revient.
-                        </p>
-                    </div>
-                </div>
+                    <section className="maintenance-min-grid" aria-label="Informations de maintenance">
+                        <article className="maintenance-min-card maintenance-min-card-primary">
+                            <div className="maintenance-min-card-head">
+                                <div className="maintenance-min-icon-wrap">
+                                    <ServerOff className="h-6 w-6" />
+                                </div>
+                                <div>
+                                    <p className="maintenance-min-card-kicker">Maintenance en cours</p>
+                                    <h2 className="maintenance-min-card-title">{"Le service revient d\u00E8s que l'infrastructure est stable."}</h2>
+                                </div>
+                            </div>
+
+                            <p className="maintenance-min-card-lead">{"Aucun compte ni aucune progression ne sont r\u00E9initialis\u00E9s. Une fois le backend relanc\u00E9, un simple rafra\u00EEchissement suffit."}</p>
+
+                            <div className="maintenance-min-status-list">
+                                <div className="maintenance-min-status-item">
+                                    <ShieldCheck className="h-4 w-4" />
+                                    <span>{"Aucune action n'est requise de votre c\u00F4t\u00E9."}</span>
+                                </div>
+                                <div className="maintenance-min-status-item">
+                                    <Clock3 className="h-4 w-4" />
+                                    <span>{"Vous pouvez simplement actualiser dans quelques instants."}</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article className="maintenance-min-card">
+                            <p className="maintenance-min-card-kicker">Pendant ce temps</p>
+                            <h2 className="maintenance-min-card-title">{"Ce qu'il faut retenir"}</h2>
+
+                            <ul className="maintenance-min-note-list">
+                                <li>{"La maintenance concerne le service applicatif, pas vos donn\u00E9es."}</li>
+                                <li>{"La page publique reste align\u00E9e avec le design actuel du site."}</li>
+                                <li>{"D\u00E8s que le backend revient, l'acc\u00E8s aux cours est r\u00E9tabli normalement."}</li>
+                            </ul>
+                        </article>
+                    </section>
+                </main>
             </div>
+
+            <Footer className="mt-0 border-t" />
         </div>
     );
 }

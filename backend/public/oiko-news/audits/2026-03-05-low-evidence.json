@@ -1,0 +1,371 @@
+{
+  "scenario": {
+    "name": "low-evidence",
+    "editionDate": "2026-03-05",
+    "fixtureMode": "low-evidence",
+    "forceFallback": true
+  },
+  "passed": true,
+  "summary": {
+    "contentVersion": "v2",
+    "marketRegime": "risk_off",
+    "evidenceCoverageScore": 4.17,
+    "chartCount": 2,
+    "assetCount": 4,
+    "providerAttempts": [
+      {
+        "label": "forced_fallback",
+        "status": "skipped"
+      }
+    ],
+    "validationErrors": [],
+    "firstRun": {
+      "editionDate": "2026-03-05",
+      "step": "all",
+      "dryRun": true,
+      "fixtureMode": "low-evidence",
+      "forceFallback": true,
+      "results": {
+        "collect": {
+          "itemCount": 9,
+          "topStories": 6,
+          "briefs": 3,
+          "evidenceCoverageScore": 4.17,
+          "fixtureMode": "low-evidence",
+          "contentVersion": "v2"
+        },
+        "compose": {
+          "editionDate": "2026-03-05",
+          "status": "fallback",
+          "providerAttempts": [
+            {
+              "label": "forced_fallback",
+              "status": "skipped"
+            }
+          ],
+          "validationErrors": [],
+          "fixtureMode": "low-evidence",
+          "forcedFallback": true,
+          "contentVersion": "v2",
+          "assetCount": 4
+        },
+        "send": {
+          "transporterConfigured": true,
+          "totalRecipients": 2,
+          "results": [
+            {
+              "subscriptionId": 31,
+              "status": "skipped",
+              "reason": "dry_run"
+            },
+            {
+              "subscriptionId": 49,
+              "status": "skipped",
+              "reason": "dry_run"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "assertions": [
+    {
+      "key": "edition_exists",
+      "pass": true,
+      "details": "Prévisualisation disponible."
+    },
+    {
+      "key": "content_version_v2",
+      "pass": true,
+      "details": "content_version=v2"
+    },
+    {
+      "key": "content_schema_valid",
+      "pass": true,
+      "details": "Le JSON V2 valide le schéma Zod."
+    },
+    {
+      "key": "menu_count",
+      "pass": true,
+      "details": "menu=4"
+    },
+    {
+      "key": "radar_count",
+      "pass": true,
+      "details": "radar=4"
+    },
+    {
+      "key": "carnet_count",
+      "pass": true,
+      "details": "carnet=3"
+    },
+    {
+      "key": "more_news_count",
+      "pass": true,
+      "details": "more_news=4"
+    },
+    {
+      "key": "chart_count_exactly_2",
+      "pass": true,
+      "details": "charts=2"
+    },
+    {
+      "key": "has_header_image",
+      "pass": true,
+      "details": "asset_types=header,lead_image,radar_image,carnet_image"
+    },
+    {
+      "key": "has_lead_image",
+      "pass": true,
+      "details": "asset_types=header,lead_image,radar_image,carnet_image"
+    },
+    {
+      "key": "has_radar_image",
+      "pass": true,
+      "details": "asset_types=header,lead_image,radar_image,carnet_image"
+    },
+    {
+      "key": "has_carnet_image",
+      "pass": true,
+      "details": "asset_types=header,lead_image,radar_image,carnet_image"
+    },
+    {
+      "key": "render_non_empty",
+      "pass": true,
+      "details": "html=15348, text=4218"
+    },
+    {
+      "key": "email_preheader_present",
+      "pass": true,
+      "details": "Préheader caché présent."
+    },
+    {
+      "key": "email_container_600px",
+      "pass": true,
+      "details": "Conteneur principal 600px présent."
+    },
+    {
+      "key": "html_src_public",
+      "pass": true,
+      "details": "src_count=6"
+    },
+    {
+      "key": "job_runs_success",
+      "pass": true,
+      "details": "Les trois étapes principales ont été exécutées avec succès."
+    },
+    {
+      "key": "compose_rerun_skips",
+      "pass": true,
+      "details": "Un deuxième compose sur la même date est ignoré grâce au verrou de job."
+    },
+    {
+      "key": "send_rerun_skips",
+      "pass": true,
+      "details": "Un deuxième send sur la même date est ignoré grâce au verrou de job."
+    },
+    {
+      "key": "dry_run_log_has_audit_recipient",
+      "pass": true,
+      "details": "send_logs=2"
+    },
+    {
+      "key": "dry_run_logs_unique_per_subscription",
+      "pass": true,
+      "details": "send_logs=2"
+    },
+    {
+      "key": "forced_fallback_status",
+      "pass": true,
+      "details": "status=fallback"
+    }
+  ],
+  "preview": {
+    "id": 24,
+    "editionDate": "2026-03-05",
+    "slug": "oiko-news-2026-03-05",
+    "status": "fallback",
+    "htmlLength": 15348,
+    "textLength": 4218,
+    "chartManifest": [
+      {
+        "key": "actions",
+        "fileName": "actions.png",
+        "filePath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\charts\\2026-03-05\\actions.png",
+        "url": "https://oiko.example/static/oiko-news/charts/2026-03-05/actions.png"
+      },
+      {
+        "key": "crypto",
+        "fileName": "crypto.png",
+        "filePath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\charts\\2026-03-05\\crypto.png",
+        "url": "https://oiko.example/static/oiko-news/charts/2026-03-05/crypto.png"
+      }
+    ],
+    "assets": [
+      {
+        "id": 21,
+        "edition_id": 24,
+        "section_key": "header_visual",
+        "asset_type": "header",
+        "provider": "oiko-fallback",
+        "source_url": null,
+        "stored_url": "https://oiko.example/static/oiko-news/images/2026-03-05/header_visual-fallback.png",
+        "author": "Oiko News",
+        "license": "Internal fallback",
+        "credit_line": "Visuel Oiko News",
+        "alt_text": "Couverture Oiko News du 2026-03-05",
+        "width": 1600,
+        "height": 900,
+        "score": 100,
+        "fetched_at": "2026-03-08T19:56:06.603Z"
+      },
+      {
+        "id": 22,
+        "edition_id": 24,
+        "section_key": "lead_story",
+        "asset_type": "lead_image",
+        "provider": "oiko-fallback",
+        "source_url": null,
+        "stored_url": "https://oiko.example/static/oiko-news/images/2026-03-05/lead_story-fallback.png",
+        "author": "Oiko News",
+        "license": "Internal fallback",
+        "credit_line": "Visuel Oiko News",
+        "alt_text": "La BCE prépare un ton plus souple face au reflux de l’inflation",
+        "width": 1600,
+        "height": 900,
+        "score": 100,
+        "fetched_at": "2026-03-08T19:56:06.900Z"
+      },
+      {
+        "id": 23,
+        "edition_id": 24,
+        "section_key": "radar_section",
+        "asset_type": "radar_image",
+        "provider": "oiko-fallback",
+        "source_url": null,
+        "stored_url": "https://oiko.example/static/oiko-news/images/2026-03-05/radar_section-fallback.png",
+        "author": "Oiko News",
+        "license": "Internal fallback",
+        "credit_line": "Visuel Oiko News",
+        "alt_text": "Illustration du radar Oiko",
+        "width": 1600,
+        "height": 900,
+        "score": 100,
+        "fetched_at": "2026-03-08T19:56:06.604Z"
+      },
+      {
+        "id": 24,
+        "edition_id": 24,
+        "section_key": "carnet_section",
+        "asset_type": "carnet_image",
+        "provider": "oiko-fallback",
+        "source_url": null,
+        "stored_url": "https://oiko.example/static/oiko-news/images/2026-03-05/carnet_section-fallback.png",
+        "author": "Oiko News",
+        "license": "Internal fallback",
+        "credit_line": "Visuel Oiko News",
+        "alt_text": "Illustration du carnet Oiko",
+        "width": 1600,
+        "height": 900,
+        "score": 100,
+        "fetched_at": "2026-03-08T19:56:06.605Z"
+      }
+    ],
+    "snapshotPaths": {
+      "htmlPath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\audits\\snapshots\\2026-03-05\\low-evidence.html",
+      "textPath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\audits\\snapshots\\2026-03-05\\low-evidence.txt",
+      "jsonPath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\audits\\snapshots\\2026-03-05\\low-evidence.json"
+    }
+  },
+  "runs": [
+    {
+      "id": 69,
+      "job_date": "2026-03-05",
+      "step": "send",
+      "status": "success",
+      "lock_key": "2026-03-05:send",
+      "meta_json": {
+        "transporterConfigured": true,
+        "totalRecipients": 2,
+        "results": [
+          {
+            "subscriptionId": 31,
+            "status": "skipped",
+            "reason": "dry_run"
+          },
+          {
+            "subscriptionId": 49,
+            "status": "skipped",
+            "reason": "dry_run"
+          }
+        ]
+      },
+      "started_at": "2026-03-08 19:56:06",
+      "finished_at": "2026-03-08 19:56:06"
+    },
+    {
+      "id": 68,
+      "job_date": "2026-03-05",
+      "step": "compose",
+      "status": "success",
+      "lock_key": "2026-03-05:compose",
+      "meta_json": {
+        "editionDate": "2026-03-05",
+        "status": "fallback",
+        "providerAttempts": [
+          {
+            "label": "forced_fallback",
+            "status": "skipped"
+          }
+        ],
+        "validationErrors": [],
+        "fixtureMode": "low-evidence",
+        "forcedFallback": true,
+        "contentVersion": "v2",
+        "assetCount": 4
+      },
+      "started_at": "2026-03-08 19:56:06",
+      "finished_at": "2026-03-08 19:56:06"
+    },
+    {
+      "id": 67,
+      "job_date": "2026-03-05",
+      "step": "collect",
+      "status": "success",
+      "lock_key": "2026-03-05:collect",
+      "meta_json": {
+        "itemCount": 9,
+        "topStories": 6,
+        "briefs": 3,
+        "evidenceCoverageScore": 4.17,
+        "fixtureMode": "low-evidence",
+        "contentVersion": "v2"
+      },
+      "started_at": "2026-03-08 19:56:06",
+      "finished_at": "2026-03-08 19:56:06"
+    }
+  ],
+  "sendLogs": [
+    {
+      "id": 26,
+      "edition_id": 24,
+      "subscription_id": 31,
+      "email": "rayanebenhaga@gmail.com",
+      "status": "skipped",
+      "smtp_message_id": null,
+      "error_message": "dry_run",
+      "attempted_at": "2026-03-08 19:56:06"
+    },
+    {
+      "id": 27,
+      "edition_id": 24,
+      "subscription_id": 49,
+      "email": "audit.oiko@example.com",
+      "status": "skipped",
+      "smtp_message_id": null,
+      "error_message": "dry_run",
+      "attempted_at": "2026-03-08 19:56:06"
+    }
+  ],
+  "generatedAt": "2026-03-08T19:56:06.907Z"
+}

@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Loader2, Settings } from 'lucide-react';
+import { ArrowLeft, Loader2, ReceiptText, Settings } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { createCustomerPortalSession } from '../services/api';
+
+const DATE_FORMATTER = new Intl.DateTimeFormat('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+});
 
 export function SubscriptionPage() {
     const { user, loading } = useAuth();
@@ -21,7 +27,7 @@ export function SubscriptionPage() {
         }
     }, [loading, navigate, user]);
 
-    const handleManageSubscription = async () => {
+    const handleManageBilling = async () => {
         if (!user) return;
 
         setIsProcessing(true);
@@ -32,7 +38,7 @@ export function SubscriptionPage() {
             window.location.href = url;
         } catch (err) {
             console.error('Portal error:', err);
-            setError("Impossible d'acceder au portail client");
+            setError("Impossible d'accéder au portail Stripe pour le moment.");
             setIsProcessing(false);
         }
     };
@@ -47,6 +53,10 @@ export function SubscriptionPage() {
             </div>
         );
     }
+
+    const expiryLabel = user.subscriptionExpiry
+        ? DATE_FORMATTER.format(user.subscriptionExpiry)
+        : null;
 
     return (
         <div className="min-h-screen" style={{ background: 'var(--color-bg-base)' }}>
@@ -70,11 +80,29 @@ export function SubscriptionPage() {
                 >
                     <div className="flex items-center gap-3 mb-3" style={{ color: 'var(--color-text-primary)' }}>
                         <Settings className="h-5 w-5" />
-                        <h1 className="text-2xl font-semibold">Gestion de l'abonnement</h1>
+                        <h1 className="text-2xl font-semibold">Mon accès Premium</h1>
                     </div>
                     <p className="text-sm mb-6" style={{ color: 'var(--color-text-secondary)' }}>
-                        Accedez au portail Stripe pour gerer votre abonnement, vos moyens de paiement et vos factures.
+                        {expiryLabel
+                            ? `Votre Pass Partiels S4 est actif jusqu'au ${expiryLabel}.`
+                            : "Votre accès Premium est actif."}
                     </p>
+
+                    <div
+                        className="mb-6 rounded-2xl p-4"
+                        style={{
+                            border: '1px solid var(--color-border-default)',
+                            background: 'var(--color-bg-overlay)',
+                        }}
+                    >
+                        <div className="flex items-center gap-2 mb-2" style={{ color: 'var(--color-text-primary)' }}>
+                            <ReceiptText className="h-4 w-4" />
+                            <p className="text-sm font-semibold">Facture et moyens de paiement</p>
+                        </div>
+                        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                            Le portail Stripe permet de consulter la facture du paiement test et les informations de facturation associées à votre accès.
+                        </p>
+                    </div>
 
                     {error && (
                         <div
@@ -90,7 +118,7 @@ export function SubscriptionPage() {
                     )}
 
                     <button
-                        onClick={handleManageSubscription}
+                        onClick={handleManageBilling}
                         disabled={isProcessing}
                         className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold disabled:opacity-60"
                         style={{
@@ -104,7 +132,7 @@ export function SubscriptionPage() {
                                 Redirection...
                             </>
                         ) : (
-                            'Ouvrir le portail de gestion'
+                            'Ouvrir le portail Stripe'
                         )}
                     </button>
                 </div>

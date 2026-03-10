@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { PremiumRoute } from '../../../components/auth/PremiumRoute';
 
 const MacroLayout = lazy(() => import('./layouts/MacroLayout').then(m => ({ default: m.MacroLayout })));
 const MacroHome = lazy(() => import('./pages/Home').then(m => ({ default: m.MacroHome })));
@@ -23,9 +24,9 @@ export function MacroRoutes() {
                 <Route element={<MacroLayout />}>
                     <Route index element={<MacroHome />} />
                     <Route path="chapitre-1" element={<Chapter1 />} />
-                    <Route path="chapitre-2" element={<Chapter2 />} />
-                    <Route path="chapitre-3" element={<Chapter3 />} />
-                    <Route path="chapitre-4" element={<Chapter4 />} />
+                    <Route path="chapitre-2" element={<PremiumRoute fallbackTo="/s4/macro"><Chapter2 /></PremiumRoute>} />
+                    <Route path="chapitre-3" element={<PremiumRoute fallbackTo="/s4/macro"><Chapter3 /></PremiumRoute>} />
+                    <Route path="chapitre-4" element={<PremiumRoute fallbackTo="/s4/macro"><Chapter4 /></PremiumRoute>} />
                 </Route>
             </Routes>
         </Suspense>

@@ -22,7 +22,7 @@
     // Avoid strict unicode errors in math mode by transliterating accents.
     .replace(/[éèêëàâäùûüîïôöçœÉÈÊËÀÂÄÙÛÜÎÏÔÖÇŒ]/g, (ch) => accentMap[ch] ?? ch)
     .replace(/\\euro/g, '\\mathrm{EUR}')
-    .replace(/â‚¬/g, '\\mathrm{EUR}')
+    .replace(/\u20AC/g, '\\mathrm{EUR}')
     .replace(/\\\$/g, '\\mathrm{USD}')
     .replace(/\$/g, '\\mathrm{USD}');
 }

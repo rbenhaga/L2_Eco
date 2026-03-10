@@ -1,5 +1,5 @@
 /**
- * MOBILE DRAWER — Bottom Sheet Navigation
+ * MOBILE DRAWER - Bottom Sheet Navigation
  * 
  * Replaces hidden sidebar on mobile with a swipeable drawer
  * that provides access to all navigation features.
@@ -12,6 +12,7 @@ import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { X, Menu, ChevronRight, GraduationCap, Search } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { semesters } from '../../config/semesters';
+import { DEFAULT_ENABLED_SEMESTER, SEMESTER_ACCESS_OPTIONS, normalizeEnabledSemester } from '../../config/semesterAccess';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -20,10 +21,10 @@ interface MobileDrawerProps {
   currentSemester?: string;
 }
 
-export function MobileDrawer({ isOpen, onClose, currentModule, currentSemester = 's3' }: MobileDrawerProps) {
+export function MobileDrawer({ isOpen, onClose, currentModule, currentSemester = DEFAULT_ENABLED_SEMESTER }: MobileDrawerProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedSemester, setSelectedSemester] = useState(currentSemester);
+  const [selectedSemester, setSelectedSemester] = useState(() => normalizeEnabledSemester(currentSemester));
   const [expandedModule, setExpandedModule] = useState<string | null>(currentModule || null);
 
   const semester = semesters[selectedSemester];
@@ -32,6 +33,10 @@ export function MobileDrawer({ isOpen, onClose, currentModule, currentSemester =
   useEffect(() => {
     onClose();
   }, [location.pathname, onClose]);
+
+  useEffect(() => {
+    setSelectedSemester(normalizeEnabledSemester(currentSemester));
+  }, [currentSemester]);
 
   // Handle drag to close
   const handleDragEnd = (_event: unknown, info: PanInfo) => {
@@ -124,18 +129,47 @@ export function MobileDrawer({ isOpen, onClose, currentModule, currentSemester =
                   Semestre
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                  {Object.entries(semesters).map(([id, sem]) => (
+                  {SEMESTER_ACCESS_OPTIONS.map((semesterOption) => (
                     <button
-                      key={id}
-                      onClick={() => setSelectedSemester(id)}
+                      key={semesterOption.key}
+                      type="button"
+                      disabled={semesterOption.disabled}
+                      onClick={() => {
+                        if (!semesterOption.disabled) {
+                          setSelectedSemester(normalizeEnabledSemester(semesterOption.key));
+                        }
+                      }}
                       className="py-3 px-4 rounded-xl text-sm font-semibold transition-all"
                       style={{
-                        background: selectedSemester === id ? 'var(--color-accent)' : 'var(--color-bg-overlay)',
-                        color: selectedSemester === id ? 'var(--color-accent-foreground)' : 'var(--color-text-secondary)',
-                        border: selectedSemester === id ? 'none' : '1px solid var(--color-border-default)',
+                        background: selectedSemester === semesterOption.key
+                          ? 'var(--color-accent)'
+                          : semesterOption.disabled
+                            ? 'color-mix(in srgb, var(--color-bg-overlay) 78%, transparent)'
+                            : 'var(--color-bg-overlay)',
+                        color: selectedSemester === semesterOption.key
+                          ? 'var(--color-accent-foreground)'
+                          : semesterOption.disabled
+                            ? 'var(--color-text-muted)'
+                            : 'var(--color-text-secondary)',
+                        border: selectedSemester === semesterOption.key ? 'none' : '1px solid var(--color-border-default)',
+                        cursor: semesterOption.disabled ? 'not-allowed' : 'pointer',
+                        opacity: semesterOption.disabled ? 0.72 : 1,
                       }}
                     >
-                      {sem.name}
+                      <span className="inline-flex items-center gap-2">
+                        <span>{semesterOption.label}</span>
+                        {semesterOption.availabilityLabel ? (
+                          <span
+                            className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                            style={{
+                              background: 'var(--color-bg-raised)',
+                              color: semesterOption.disabled ? 'var(--color-text-secondary)' : 'var(--color-success)',
+                            }}
+                          >
+                            {semesterOption.availabilityLabel}
+                          </span>
+                        ) : null}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -249,7 +283,7 @@ export function MobileDrawer({ isOpen, onClose, currentModule, currentSemester =
 }
 
 /**
- * MOBILE NAV BUTTON — Floating action button
+ * MOBILE NAV BUTTON - Floating action button
  * 
  * Appears on mobile to open the drawer
  */

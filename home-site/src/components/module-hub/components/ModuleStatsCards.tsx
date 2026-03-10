@@ -1,4 +1,4 @@
-import { Clock, Info, TrendingDown, TrendingUp } from 'lucide-react';
+﻿import { Clock, Info, TrendingDown, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 interface ModuleStatsCardsProps {
@@ -30,9 +30,9 @@ export function ModuleStatsCards({
                 }}
             >
                 <div
-                    className="text-5xl font-serif leading-none"
+                    className="text-5xl leading-none"
                     style={{
-                        fontFamily: 'var(--font-serif)',
+                        fontFamily: 'var(--font-display)',
                         color: 'var(--color-text-primary)',
                     }}
                 >
@@ -75,9 +75,9 @@ export function ModuleStatsCards({
 
                 <div className="flex items-center gap-3">
                     <div
-                        className="text-3xl font-serif"
+                        className="text-3xl"
                         style={{
-                            fontFamily: 'var(--font-serif)',
+                            fontFamily: 'var(--font-display)',
                             color: 'var(--color-text-primary)',
                         }}
                     >
@@ -114,9 +114,9 @@ export function ModuleStatsCards({
                         Temps d'étude total
                     </div>
                     <div
-                        className="text-3xl font-serif mb-1"
+                        className="text-3xl mb-1"
                         style={{
-                            fontFamily: 'var(--font-serif)',
+                            fontFamily: 'var(--font-display)',
                             color: 'var(--color-canvas)',
                         }}
                     >
@@ -167,9 +167,9 @@ function InfoTooltip() {
                         boxShadow: 'var(--shadow-lg)',
                     }}
                 >
-                    L'engagement mesure le rapport entre ton temps d'étude réel et le temps cible estimé sur la matière.
+                    L'engagement mesure le rapport entre votre temps d'étude réel et le temps cible estimé sur la matière.
                     <br />
-                    <strong style={{ color: 'var(--color-text-primary)' }}>100%</strong> signifie que tu es exactement sur le rythme cible.
+                    <strong style={{ color: 'var(--color-text-primary)' }}>100%</strong> signifie que vous êtes exactement sur le rythme cible.
                 </div>
             )}
         </div>

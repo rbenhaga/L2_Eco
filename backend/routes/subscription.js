@@ -2,6 +2,7 @@ import express from 'express';
 import { subscriptionQueries } from '../db/database.js';
 import { requireAuth } from '../ai/middleware/auth.js';
 import { isAdminUser } from '../utils/adminAccess.js';
+import { isIncompletePremiumGrant, serializeSubscription } from '../utils/stripeAccess.js';
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ function ensureOwnUser(req, res, next) {
 
 /**
  * GET /api/subscription/:userId
- * Gets subscription status for a user
+ * Gets the current premium access state for a user.
  */
 router.get('/subscription/:userId', requireAuth, ensureOwnUser, (req, res) => {
     try {
@@ -32,43 +33,28 @@ router.get('/subscription/:userId', requireAuth, ensureOwnUser, (req, res) => {
             return res.status(400).json({ error: 'userId is required' });
         }
 
-        const subscription = subscriptionQueries.getByUserId.get(userId);
-
-        // No subscription found = free tier
+        let subscription = subscriptionQueries.getByUserId.get(userId);
         if (!subscription) {
-            return res.json({
-                tier: 'free',
-                status: 'inactive',
-                currentPeriodEnd: null,
-            });
+            return res.json(serializeSubscription(null));
         }
 
-        // Check if subscription is expired (if current_period_end is set)
+        if (isIncompletePremiumGrant(subscription)) {
+            subscriptionQueries.updateTier.run('free', 'inactive', null, userId);
+            subscription = subscriptionQueries.getByUserId.get(userId);
+            return res.json(serializeSubscription(subscription));
+        }
+
         const now = Math.floor(Date.now() / 1000);
         if (subscription.current_period_end && subscription.current_period_end < now) {
-            // Expired premium → revert to free
             subscriptionQueries.updateTier.run('free', 'inactive', null, userId);
-
-            return res.json({
-                tier: 'free',
-                status: 'inactive',
-                currentPeriodEnd: null,
-            });
+            subscription = subscriptionQueries.getByUserId.get(userId);
         }
 
-        // Active subscription
-        res.json({
-            tier: subscription.tier,
-            status: subscription.status,
-            currentPeriodEnd: subscription.current_period_end
-                ? new Date(subscription.current_period_end * 1000).toISOString()
-                : null,
-        });
-
+        res.json(serializeSubscription(subscription));
     } catch (error) {
         console.error('Get subscription error:', error);
         res.status(500).json({
-            error: 'Failed to get subscription'
+            error: 'Failed to get subscription',
         });
     }
 });

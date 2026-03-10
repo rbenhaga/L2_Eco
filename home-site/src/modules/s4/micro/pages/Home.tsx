@@ -1,56 +1,10 @@
-﻿import ModuleHub from '../../../../components/layout/ModuleHub';
-import type { ModuleChapter, ModuleStats } from '../../../../components/layout/ModuleHub';
+import ModuleHub from '../../../../components/layout/ModuleHub';
+import type { ModuleStats } from '../../../../components/layout/ModuleHub';
 import { PieChart } from 'lucide-react';
-
-const chapters: ModuleChapter[] = [
-    {
-        id: 'micro-ch1',
-        number: '01',
-        title: 'Chapitre 1',
-        description: 'Theorie du consommateur (complements) : dualite, Slutsky, bien-etre',
-        path: '/s4/micro/chapitre-1',
-        hasAudio: false,
-        hasIntroVideo: false,
-        isCompleted: false,
-        isTDCompleted: false,
-    },
-    {
-        id: 'micro-ch2',
-        number: '02',
-        title: 'Chapitre 2',
-        description: 'Theorie du consommateur (complements) : dualite, Slutsky, bien-etre',
-        path: '/s4/micro/chapitre-2',
-        hasAudio: false,
-        hasIntroVideo: false,
-        isCompleted: false,
-        isTDCompleted: false,
-    },
-    {
-        id: 'micro-ch3',
-        number: '03',
-        title: 'Chapitre 3',
-        description: 'Theorie du consommateur (complements) : dualite, Slutsky, bien-etre',
-        path: '/s4/micro/chapitre-3',
-        hasAudio: false,
-        hasIntroVideo: false,
-        isCompleted: false,
-        isTDCompleted: false,
-    },
-    {
-        id: 'micro-ch4',
-        number: '04',
-        title: 'Chapitre 4',
-        description: 'Theorie du consommateur (complements) : dualite, Slutsky, bien-etre',
-        path: '/s4/micro/chapitre-4',
-        hasAudio: false,
-        hasIntroVideo: false,
-        isCompleted: false,
-        isTDCompleted: false,
-    },
-];
+import { chapters, microModuleMeta } from '../data/chapters';
 
 const stats: ModuleStats = {
-    totalChapters: 4,
+    totalChapters: chapters.length,
     completedCourses: 0,
     completedTDs: 0,
     overallProgress: 0,
@@ -59,8 +13,8 @@ const stats: ModuleStats = {
 export function MicroHome() {
     return (
         <ModuleHub
-            title="Microéconomie"
-            description="Cours et TD de Microéconomie - Semestre 4"
+            title={microModuleMeta.title}
+            description={microModuleMeta.description}
             icon={<PieChart className="h-6 w-6" />}
             moduleId="micro"
             chapters={chapters}

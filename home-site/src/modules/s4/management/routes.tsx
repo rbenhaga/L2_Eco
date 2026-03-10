@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { PremiumRoute } from '../../../components/auth/PremiumRoute';
 
 const ManagementLayout = lazy(() => import('./layouts/ManagementLayout').then(m => ({ default: m.ManagementLayout })));
 const ManagementHome = lazy(() => import('./pages/Home').then(m => ({ default: m.ManagementHome })));
@@ -23,9 +24,9 @@ export function ManagementRoutes() {
                 <Route element={<ManagementLayout />}>
                     <Route index element={<ManagementHome />} />
                     <Route path="chapitre-1" element={<Chapter1 />} />
-                    <Route path="chapitre-2" element={<Chapter2 />} />
-                    <Route path="chapitre-3" element={<Chapter3 />} />
-                    <Route path="chapitre-4" element={<Chapter4 />} />
+                    <Route path="chapitre-2" element={<PremiumRoute fallbackTo="/s4/management"><Chapter2 /></PremiumRoute>} />
+                    <Route path="chapitre-3" element={<PremiumRoute fallbackTo="/s4/management"><Chapter3 /></PremiumRoute>} />
+                    <Route path="chapitre-4" element={<PremiumRoute fallbackTo="/s4/management"><Chapter4 /></PremiumRoute>} />
                 </Route>
             </Routes>
         </Suspense>

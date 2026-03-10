@@ -125,12 +125,12 @@ STYLE : Approfondi, nuancé, structuré avec exemples concrets. Pas d'abus de fo
   gemini: {
     name: 'gemini',
     displayName: 'Google Gemini',
-    baseUrl: 'https://generativelanguage.googleapis.com/v1',
+    baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
     priority: 2, // Fallback provider
 
     models: {
       flash: {
-        id: 'gemini-2.0-flash-exp',
+        id: 'gemini-2.0-flash',
         displayName: 'Gemini 2.0 Flash',
         maxTokens: 8192,
         contextWindow: 1000000,  // 1M context!

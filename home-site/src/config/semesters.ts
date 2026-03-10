@@ -129,7 +129,7 @@ export const semesters: Record<string, SemesterConfig> = {
 };
 
 // Export default semester (current)
-export const currentSemester = semesters.s3;
+export const currentSemester = semesters.s4;
 
 // Get all available semesters
 export function getAvailableSemesters(): SemesterConfig[] {

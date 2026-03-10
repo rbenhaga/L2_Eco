@@ -1,242 +1,145 @@
-import { motion } from 'framer-motion';
-import { Mail, MessageSquare, HelpCircle, Bug, Lightbulb } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Header } from '../components/layout/Header';
-import { Footer } from '../components/layout/Footer';
-import { BackgroundBlobs } from '../components/layout/BackgroundBlobs';
+﻿import { FormEvent, useState } from "react";
+import { InfoPageShell } from "../components/layout/InfoPageShell";
+import { SITE_IDENTITY } from "../config/siteIdentity";
+
+type ContactForm = {
+  name: string;
+  email: string;
+  topic: string;
+  message: string;
+};
+
+const INITIAL_FORM: ContactForm = {
+  name: "",
+  email: "",
+  topic: "support",
+  message: "",
+};
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: 'support',
-    message: ''
-  });
-  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState<ContactForm>(INITIAL_FORM);
+  const [sent, setSent] = useState(false);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', subject: 'support', message: '' });
-    }, 3000);
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSent(true);
+    setForm(INITIAL_FORM);
   };
 
   return (
-    <div className="min-h-screen antialiased relative" data-theme="light" style={{ background: 'var(--color-bg-base)' }}>
-      <BackgroundBlobs />
-      <div className="relative" style={{ zIndex: 1 }}>
-        <Header />
-        <section className="py-12 sm:py-16">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6">
-            {/* Header */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center mb-12"
-            >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ background: 'var(--color-accent)' }}>
-                <Mail className="w-8 h-8" style={{ color: 'var(--color-accent-foreground)' }} />
-              </div>
-              <h1 className="text-3xl sm:text-4xl font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-                Contactez-nous
-              </h1>
-              <p className="text-lg max-w-2xl mx-auto" style={{ color: 'var(--color-text-secondary)' }}>
-                Une question, un problème ou une suggestion ? Notre équipe est là pour vous aider.
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Contact Form */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-                style={{
-                  background: 'var(--color-bg-raised)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid var(--color-border-default)',
-                  boxShadow: 'var(--shadow-lg)'
-                }}
-                className="rounded-2xl p-8"
-              >
-                <h2 className="text-xl font-semibold mb-6" style={{ color: 'var(--color-text-primary)' }}>
-                  Envoyez-nous un message
-                </h2>
-
-                {submitted ? (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'var(--color-success)' }}>
-                      <svg className="w-8 h-8" style={{ color: 'var(--color-accent-foreground)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>Message envoyé !</h3>
-                    <p style={{ color: 'var(--color-text-secondary)' }}>Nous vous répondrons dans les plus brefs délais.</p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>Nom complet</label>
-                      <input
-                        type="text"
-                        id="name"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl focus:ring-2 focus:border-transparent"
-                        style={{
-                          background: 'var(--color-bg-overlay)',
-                          border: '1px solid var(--color-border-default)',
-                          color: 'var(--color-text-primary)'
-                        }}
-                        placeholder="Jean Dupont"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>Email</label>
-                      <input
-                        type="email"
-                        id="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl focus:ring-2 focus:border-transparent"
-                        style={{
-                          background: 'var(--color-bg-overlay)',
-                          border: '1px solid var(--color-border-default)',
-                          color: 'var(--color-text-primary)'
-                        }}
-                        placeholder="jean@example.com"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="subject" className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>Sujet</label>
-                      <select
-                        id="subject"
-                        value={formData.subject}
-                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl focus:ring-2 focus:border-transparent"
-                        style={{
-                          background: 'var(--color-bg-overlay)',
-                          border: '1px solid var(--color-border-default)',
-                          color: 'var(--color-text-primary)'
-                        }}
-                      >
-                        <option value="support">Support technique</option>
-                        <option value="bug">Signaler un bug</option>
-                        <option value="feature">Suggestion</option>
-                        <option value="billing">Facturation</option>
-                        <option value="other">Autre</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>Message</label>
-                      <textarea
-                        id="message"
-                        required
-                        rows={5}
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl focus:ring-2 focus:border-transparent resize-none"
-                        style={{
-                          background: 'var(--color-bg-overlay)',
-                          border: '1px solid var(--color-border-default)',
-                          color: 'var(--color-text-primary)'
-                        }}
-                        placeholder="Décrivez votre demande..."
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="w-full px-6 py-3 font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 btn-accent-hover"
-                      style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}
-                    >
-                      <Mail className="w-5 h-5" />
-                      Envoyer
-                    </button>
-                  </form>
-                )}
-              </motion.div>
-
-              {/* Contact Info */}
-              <div className="space-y-6">
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 }}
-                  style={{
-                    background: 'var(--color-bg-raised)',
-                    backdropFilter: 'blur(20px)',
-                    border: '1px solid var(--color-border-default)',
-                    boxShadow: 'var(--shadow-lg)'
-                  }}
-                  className="rounded-2xl p-8"
-                >
-                  <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>Contact rapide</h3>
-                  <div className="space-y-4">
-                    <a
-                      href="mailto:support@revp2.com"
-                      className="flex items-center gap-3 p-3 rounded-xl transition-colors"
-                      style={{ background: 'var(--color-bg-overlay)' }}
-                    >
-                      <Mail className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
-                      <div>
-                        <p className="font-medium" style={{ color: 'var(--color-text-primary)' }}>Email</p>
-                        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>support@revp2.com</p>
-                      </div>
-                    </a>
-                    <div className="flex items-center gap-3 p-3 rounded-xl" style={{ background: 'var(--color-bg-overlay)' }}>
-                      <MessageSquare className="w-5 h-5" style={{ color: 'var(--color-text-muted)' }} />
-                      <div>
-                        <p className="font-medium" style={{ color: 'var(--color-text-primary)' }}>Temps de réponse</p>
-                        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>Sous 24-48h ouvrées</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
-                  style={{
-                    background: 'var(--color-bg-raised)',
-                    backdropFilter: 'blur(20px)',
-                    border: '1px solid var(--color-border-default)',
-                    boxShadow: 'var(--shadow-lg)'
-                  }}
-                  className="rounded-2xl p-8"
-                >
-                  <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>Nous contacter pour</h3>
-                  <div className="space-y-3">
-                    {[
-                      { icon: HelpCircle, label: 'Support', desc: 'Questions sur votre compte' },
-                      { icon: Bug, label: 'Bug', desc: 'Signaler un problème' },
-                      { icon: Lightbulb, label: 'Suggestion', desc: 'Proposer une amélioration' },
-                    ].map((item) => (
-                      <div key={item.label} className="flex items-start gap-3 p-3 rounded-xl" style={{ background: 'var(--color-bg-overlay)' }}>
-                        <item.icon className="w-5 h-5 mt-0.5" style={{ color: 'var(--color-accent)' }} />
-                        <div>
-                          <p className="font-medium" style={{ color: 'var(--color-text-primary)' }}>{item.label}</p>
-                          <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{item.desc}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              </div>
+    <InfoPageShell
+      kicker="Assistance"
+      title="Contact"
+      lead="Une question de support, de facturation ou de conformité ? Contactez l’équipe via le formulaire ou par email."
+    >
+      <article className="info-page-panel">
+        <div className="info-contact-grid">
+          <form className="info-contact-form" onSubmit={handleSubmit} noValidate>
+            <div className="info-contact-field">
+              <label className="info-contact-label" htmlFor="contact-name">Nom complet</label>
+              <input
+                id="contact-name"
+                className="info-contact-input"
+                type="text"
+                required
+                value={form.name}
+                onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
+                placeholder="Votre nom"
+              />
             </div>
+
+            <div className="info-contact-field">
+              <label className="info-contact-label" htmlFor="contact-email">Email</label>
+              <input
+                id="contact-email"
+                className="info-contact-input"
+                type="email"
+                required
+                value={form.email}
+                onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
+                placeholder="vous@exemple.fr"
+              />
+            </div>
+
+            <div className="info-contact-field">
+              <label className="info-contact-label" htmlFor="contact-topic">Sujet</label>
+              <select
+                id="contact-topic"
+                className="info-contact-select"
+                value={form.topic}
+                onChange={(event) => setForm((prev) => ({ ...prev, topic: event.target.value }))}
+              >
+                <option value="support">Support technique</option>
+                <option value="billing">Facturation</option>
+                <option value="legal">Juridique et conformité</option>
+                <option value="partnership">Partenariats</option>
+                <option value="other">Autre</option>
+              </select>
+            </div>
+
+            <div className="info-contact-field">
+              <label className="info-contact-label" htmlFor="contact-message">Message</label>
+              <textarea
+                id="contact-message"
+                className="info-contact-textarea"
+                required
+                value={form.message}
+                onChange={(event) => setForm((prev) => ({ ...prev, message: event.target.value }))}
+                placeholder="Décrivez précisément votre demande."
+              />
+            </div>
+
+            <button className="info-contact-submit" type="submit">Envoyer la demande</button>
+
+            {sent ? (
+              <p className="info-section-text">
+                Message enregistré. En production, ce formulaire devra être relié à un service d’envoi ou à une API.
+              </p>
+            ) : null}
+          </form>
+
+          <div>
+            <section className="info-section" aria-labelledby="contact-direct">
+              <h2 id="contact-direct" className="info-section-title">Contacts directs</h2>
+              <ul className="info-list">
+                <li>
+                  Support: {" "}
+                  <a className="info-link" href={`mailto:${SITE_IDENTITY.supportEmail}`}>
+                    {SITE_IDENTITY.supportEmail}
+                  </a>
+                </li>
+                <li>
+                  Juridique: {" "}
+                  <a className="info-link" href={`mailto:${SITE_IDENTITY.legalEmail}`}>
+                    {SITE_IDENTITY.legalEmail}
+                  </a>
+                </li>
+                <li>
+                  Données personnelles: {" "}
+                  <a className="info-link" href={`mailto:${SITE_IDENTITY.privacyEmail}`}>
+                    {SITE_IDENTITY.privacyEmail}
+                  </a>
+                </li>
+              </ul>
+            </section>
+
+            <section className="info-section" aria-labelledby="contact-delais">
+              <h2 id="contact-delais" className="info-section-title">Délais de réponse</h2>
+              <p className="info-section-text">
+                Délai indicatif: 24h à 48h ouvrées. Les demandes juridiques et RGPD sont traitées prioritairement.
+              </p>
+            </section>
+
+            <section className="info-section" aria-labelledby="contact-preuve">
+              <h2 id="contact-preuve" className="info-section-title">Traçabilité</h2>
+              <p className="info-section-text">
+                Pour les demandes sensibles (droit d’accès, suppression de compte), merci d’indiquer un moyen
+                d’identification associé à votre compte afin d’accélérer la vérification.
+              </p>
+            </section>
           </div>
-        </section>
-        <Footer />
-      </div>
-    </div>
+        </div>
+      </article>
+    </InfoPageShell>
   );
 }

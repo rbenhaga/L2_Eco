@@ -12,16 +12,20 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { useSidebar } from '../../context/SidebarContext';
+import { DEFAULT_ACADEMIC_YEAR, YEAR_OPTIONS, normalizeAcademicYear } from '../../config/academicOptions';
+import { DEFAULT_ENABLED_SEMESTER_LABEL, SEMESTER_ACCESS_OPTIONS, normalizeEnabledSemester, normalizeEnabledSemesterLabel } from '../../config/semesterAccess';
 import { semesters } from '../../config/semesters';
 import { authFetch } from '../../utils/authFetch';
 
 const SITE_NAME = "Oikonomia";
+const TYPE_SPEED_MS = 62;
 const RAIL_WIDTH = 64;
 const EXPANDED_WIDTH = 256;
 const SIDEBAR_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+const SHOW_SIDEBAR_ACADEMIC_SELECTOR = false;
 const MODULE_LABEL_BY_ID: Record<string, string> = {
-    macro: 'Macroeconomie',
-    micro: 'Microeconomie',
+    macro: 'Macroéconomie',
+    micro: 'Microéconomie',
     stats: 'Statistiques',
     socio: 'Sociologie',
     management: 'Management',
@@ -32,6 +36,8 @@ const MODULE_LABEL_BY_ID: Record<string, string> = {
 interface SelectOption {
     value: string;
     label: string;
+    disabled?: boolean;
+    badge?: string;
 }
 
 interface FancySelectProps {
@@ -107,27 +113,53 @@ function FancySelect({ label, value, options, onChange }: FancySelectProps) {
                         >
                             {options.map((option) => {
                                 const isSelected = option.value === value;
+                                const isDisabled = Boolean(option.disabled);
                                 return (
                                     <button
                                         key={option.value}
                                         type="button"
+                                        disabled={isDisabled}
                                         onClick={() => {
+                                            if (isDisabled) return;
                                             onChange(option.value);
                                             setIsOpen(false);
                                         }}
                                         className="w-full px-3 py-2.5 text-sm font-medium flex items-center justify-between transition-colors"
                                         style={{
-                                            background: isSelected ? 'var(--color-accent-subtle)' : 'transparent',
-                                            color: isSelected ? 'var(--color-accent)' : 'var(--color-text-primary)',
+                                            background: isSelected
+                                                ? 'var(--color-accent-subtle)'
+                                                : isDisabled
+                                                    ? 'color-mix(in srgb, var(--color-bg-overlay) 76%, transparent)'
+                                                    : 'transparent',
+                                            color: isSelected
+                                                ? 'var(--color-accent)'
+                                                : isDisabled
+                                                    ? 'var(--color-text-muted)'
+                                                    : 'var(--color-text-primary)',
+                                            cursor: isDisabled ? 'not-allowed' : 'pointer',
+                                            opacity: isDisabled ? 0.72 : 1,
                                         }}
                                         onMouseEnter={(e) => {
-                                            if (!isSelected) e.currentTarget.style.background = 'var(--color-bg-overlay)';
+                                            if (!isSelected && !isDisabled) e.currentTarget.style.background = 'var(--color-bg-overlay)';
                                         }}
                                         onMouseLeave={(e) => {
-                                            if (!isSelected) e.currentTarget.style.background = 'transparent';
+                                            if (!isSelected && !isDisabled) e.currentTarget.style.background = 'transparent';
                                         }}
                                     >
-                                        <span>{option.label}</span>
+                                        <div className="flex items-center gap-2">
+                                            <span>{option.label}</span>
+                                            {option.badge && (
+                                                <span
+                                                    className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                                                    style={{
+                                                        background: isDisabled ? 'var(--color-bg-overlay)' : 'var(--color-success-subtle)',
+                                                        color: isDisabled ? 'var(--color-text-secondary)' : 'var(--color-success)',
+                                                    }}
+                                                >
+                                                    {option.badge}
+                                                </span>
+                                            )}
+                                        </div>
                                         {isSelected && <Check className="h-4 w-4" />}
                                     </button>
                                 );
@@ -147,10 +179,13 @@ export function ModuleSidebar() {
     const { isExpanded, isPinned, setIsHovered, togglePin, isMobileOpen, setIsMobileOpen } = useSidebar();
     const hoverLeaveTimeoutRef = useRef<number | null>(null);
 
-    const [selectedYear, setSelectedYear] = useState('L2');
-    const [selectedSemester, setSelectedSemester] = useState('S3');
+    const [selectedYear, setSelectedYear] = useState<string>(DEFAULT_ACADEMIC_YEAR);
+    const [selectedSemester, setSelectedSemester] = useState<string>(DEFAULT_ENABLED_SEMESTER_LABEL);
+    const [typedCount, setTypedCount] = useState(0);
+    const [hasAnimatedBrand, setHasAnimatedBrand] = useState(false);
+    const [railTooltip, setRailTooltip] = useState<{ label: string; top: number } | null>(null);
 
-    // Mapping année → semestres disponibles
+    // Mapping année -> semestres disponibles
     const semestersByYear: Record<string, string[]> = {
         'L1': ['S1', 'S2'],
         'L2': ['S3', 'S4'],
@@ -158,6 +193,7 @@ export function ModuleSidebar() {
     };
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+    const typedName = SITE_NAME.slice(0, typedCount);
     const currentSemesterFromUrl = useMemo(() => {
         const match = location.pathname.match(/^\/(s[34])\//i);
         return match?.[1]?.toUpperCase() || null;
@@ -166,7 +202,7 @@ export function ModuleSidebar() {
     // Keep sidebar semester in sync with URL after reload/direct navigation
     useEffect(() => {
         if (!currentSemesterFromUrl) return;
-        setSelectedSemester(currentSemesterFromUrl);
+        setSelectedSemester(normalizeEnabledSemesterLabel(currentSemesterFromUrl));
         for (const [year, sems] of Object.entries(semestersByYear)) {
             if (sems.includes(currentSemesterFromUrl)) {
                 setSelectedYear(year);
@@ -183,15 +219,9 @@ export function ModuleSidebar() {
             .then(r => r.ok ? r.json() : null)
             .then(data => {
                 if (data?.semester) {
-                    const sem = data.semester.toUpperCase();
+                    const sem = normalizeEnabledSemesterLabel(data.semester);
                     setSelectedSemester(sem);
-                    // Also set the correct year
-                    for (const [year, sems] of Object.entries(semestersByYear)) {
-                        if (sems.includes(sem)) {
-                            setSelectedYear(year);
-                            break;
-                        }
-                    }
+                    setSelectedYear(DEFAULT_ACADEMIC_YEAR);
                 }
             })
             .catch(() => { /* use default */ });
@@ -200,9 +230,12 @@ export function ModuleSidebar() {
 
     // Handle semester change: navigate + persist
     const handleSemesterChange = useCallback((newSemester: string) => {
-        const prev = selectedSemester.toLowerCase();
-        const next = newSemester.toLowerCase();
-        setSelectedSemester(newSemester);
+        const normalizedSemester = normalizeEnabledSemesterLabel(newSemester);
+        if (normalizedSemester !== newSemester) return;
+
+        const prev = normalizeEnabledSemester(selectedSemester);
+        const next = normalizeEnabledSemester(normalizedSemester);
+        setSelectedSemester(normalizedSemester);
 
         // If user is currently on a subject page, navigate to the equivalent in the new semester
         const currentPath = location.pathname;
@@ -225,28 +258,35 @@ export function ModuleSidebar() {
 
     // Gérer le changement d'année
     const handleYearChange = (newYear: string) => {
-        setSelectedYear(newYear);
+        const normalizedYear = normalizeAcademicYear(newYear);
+        if (normalizedYear !== newYear) return;
+        setSelectedYear(normalizedYear);
         // Auto-sélectionner le premier semestre de l'année
-        const availableSemesters = semestersByYear[newYear];
+        const availableSemesters = semestersByYear[normalizedYear];
         if (availableSemesters && !availableSemesters.includes(selectedSemester)) {
             handleSemesterChange(availableSemesters[0]);
         }
     };
 
     // Semestres disponibles pour l'année sélectionnée
-    const availableSemesters = semestersByYear[selectedYear] || ['S3', 'S4'];
-    const yearOptions: SelectOption[] = [
-        { value: 'L1', label: 'L1' },
-        { value: 'L2', label: 'L2' },
-        { value: 'L3', label: 'L3' },
-    ];
-    const semesterOptions: SelectOption[] = availableSemesters.map((semester) => ({
-        value: semester,
-        label: semester,
+    const availableSemesters = semestersByYear[selectedYear] || [DEFAULT_ENABLED_SEMESTER_LABEL];
+    const yearOptions: SelectOption[] = YEAR_OPTIONS.map((year) => ({
+        value: year.value,
+        label: year.label,
+        disabled: year.disabled,
+        badge: year.availabilityLabel,
     }));
+    const semesterOptions: SelectOption[] = SEMESTER_ACCESS_OPTIONS
+        .filter((semester) => availableSemesters.includes(semester.value))
+        .map((semester) => ({
+            value: semester.value,
+            label: semester.label,
+            disabled: semester.disabled,
+            badge: semester.availabilityLabel,
+        }));
     // Build modules dynamically from semesters.ts config
     const modules = useMemo(() => {
-        const semKey = selectedSemester.toLowerCase();
+        const semKey = normalizeEnabledSemester(selectedSemester);
         const semConfig = semesters[semKey];
         if (!semConfig) return [];
         return semConfig.subjects.map(s => ({
@@ -278,6 +318,25 @@ export function ModuleSidebar() {
         };
     }, []);
 
+    useEffect(() => {
+        const shouldShowBrand = isExpanded || isMobileOpen;
+        if (!shouldShowBrand || hasAnimatedBrand) return;
+
+        setTypedCount(0);
+        const timer = window.setInterval(() => {
+            setTypedCount((prev) => {
+                if (prev >= SITE_NAME.length) {
+                    window.clearInterval(timer);
+                    setHasAnimatedBrand(true);
+                    return prev;
+                }
+                return prev + 1;
+            });
+        }, TYPE_SPEED_MS);
+
+        return () => window.clearInterval(timer);
+    }, [hasAnimatedBrand, isExpanded, isMobileOpen]);
+
     const handleDesktopHoverEnter = useCallback(() => {
         clearHoverLeaveTimeout();
         setIsHovered(true);
@@ -296,9 +355,72 @@ export function ModuleSidebar() {
         navigate('/pricing');
     };
 
+    const showRailTooltip = useCallback((target: HTMLElement, label: string) => {
+        if (isExpanded) return;
+        const rect = target.getBoundingClientRect();
+        setRailTooltip({
+            label,
+            top: rect.top + rect.height / 2,
+        });
+    }, [isExpanded]);
+
+    const hideRailTooltip = useCallback(() => {
+        setRailTooltip(null);
+    }, []);
+
     const isFreeUser = !user?.subscriptionTier || user.subscriptionTier === 'free';
+
+    const brandWordmark = (
+        <span className="text-base font-semibold tracking-tight" style={{ color: 'var(--color-text-primary)' }}>
+            <span className="relative inline-block align-baseline" style={{ minWidth: `${SITE_NAME.length}ch` }}>
+                <span aria-hidden="true" className="invisible select-none">{SITE_NAME}</span>
+                <span className="absolute left-0 top-0 whitespace-nowrap">
+                    {typedName.split("").map((char, index) => (
+                        <span
+                            key={`${char}-${index}`}
+                            style={{
+                                color:
+                                    index === typedCount - 1 && typedCount < SITE_NAME.length
+                                        ? 'var(--color-accent)'
+                                        : 'var(--color-text-primary)',
+                            }}
+                        >
+                            {char}
+                        </span>
+                    ))}
+                    <span aria-hidden="true" style={{ marginLeft: '0.08em', color: 'var(--color-accent)' }}>
+                        |
+                    </span>
+                </span>
+            </span>
+        </span>
+    );
+
     return (
         <>
+            <AnimatePresence>
+                {!isExpanded && railTooltip && (
+                    <motion.div
+                        initial={{ opacity: 0, x: -6, scale: 0.98 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        exit={{ opacity: 0, x: -6, scale: 0.98 }}
+                        transition={{ duration: 0.14 }}
+                        className="pointer-events-none hidden lg:flex fixed items-center rounded-full px-3 py-1.5 text-xs font-semibold z-[70]"
+                        style={{
+                            left: `${RAIL_WIDTH + 12}px`,
+                            top: `${railTooltip.top}px`,
+                            transform: 'translateY(-50%)',
+                            background: 'color-mix(in srgb, var(--color-bg-raised) 96%, transparent)',
+                            color: 'var(--color-text-primary)',
+                            border: '1px solid var(--color-border-default)',
+                            boxShadow: 'var(--shadow-md)',
+                        }}
+                    >
+                        {railTooltip.label}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Mobile drawer overlay */}
             <AnimatePresence>
                 {isMobileOpen && (
@@ -337,31 +459,23 @@ export function ModuleSidebar() {
                             >
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
-                                        <div
-                                            className="h-10 w-10 rounded-2xl grid place-items-center"
-                                            style={{
-                                                background: 'transparent',
-                                                border: '1px solid var(--color-border-default)',
-                                            }}
-                                        >
-                                            <GraduationCap className="h-5 w-5" style={{ color: 'var(--color-text-primary)' }} />
-                                        </div>
                                         <button
                                             onClick={() => {
                                                 navigate('/');
                                                 setIsMobileOpen(false);
                                             }}
-                                            className="text-sm font-semibold transition-colors"
-                                            style={{ color: 'var(--color-text-primary)' }}
+                                            className="inline-flex items-center gap-2 transition-opacity duration-150"
+                                            style={{ color: 'var(--color-accent)' }}
                                             onMouseEnter={(e) => {
-                                                e.currentTarget.style.color = 'var(--color-accent)';
+                                                e.currentTarget.style.opacity = '0.8';
                                             }}
                                             onMouseLeave={(e) => {
-                                                e.currentTarget.style.color = 'var(--color-text-primary)';
+                                                e.currentTarget.style.opacity = '1';
                                             }}
                                             title="Retour a l'accueil"
                                         >
-                                            {SITE_NAME}
+                                            <GraduationCap className="h-5 w-5" />
+                                            {brandWordmark}
                                         </button>
                                     </div>
                                     <button
@@ -378,27 +492,28 @@ export function ModuleSidebar() {
                                         <X className="h-5 w-5" />
                                     </button>
                                 </div>
-                                {/* Year/Semester selector - Modern dropdowns */}
-                                <div className="mt-3 flex items-center gap-2">
-                                    <FancySelect
-                                        label="ANNEE"
-                                        value={selectedYear}
-                                        options={yearOptions}
-                                        onChange={handleYearChange}
-                                    />
-                                    <FancySelect
-                                        label="SEMESTRE"
-                                        value={selectedSemester}
-                                        options={semesterOptions}
-                                        onChange={handleSemesterChange}
-                                    />
-                                </div>
+                                {SHOW_SIDEBAR_ACADEMIC_SELECTOR && (
+                                    <div className="mt-3 flex items-center gap-2">
+                                        <FancySelect
+                                            label={"ANNÉE"}
+                                            value={selectedYear}
+                                            options={yearOptions}
+                                            onChange={handleYearChange}
+                                        />
+                                        <FancySelect
+                                            label="SEMESTRE"
+                                            value={selectedSemester}
+                                            options={semesterOptions}
+                                            onChange={handleSemesterChange}
+                                        />
+                                    </div>
+                                )}
                             </div>
 
                             {/* Modules */}
                             <div className="flex-1 overflow-y-auto p-3">
                                 <p className="px-2 py-2 text-xs font-semibold tracking-wider" style={{ color: 'var(--color-text-muted)' }}>
-                                    MATIERES
+                                    MATIÈRES
                                 </p>
                                 <nav className="space-y-1">
                                     {modules.map((module) => {
@@ -494,14 +609,24 @@ export function ModuleSidebar() {
                                         onClick={handleUpgrade}
                                         className="w-full mt-2 inline-flex items-center justify-center gap-2 h-9 px-3 text-sm font-semibold rounded-xl transition"
                                         style={{
-                                            background: 'var(--color-accent)',
-                                            color: 'var(--color-accent-foreground)',
-                                            border: '1px solid var(--color-accent)',
-                                            boxShadow: 'var(--shadow-sm)',
+                                            background: 'var(--color-bg-overlay)',
+                                            color: 'var(--color-text-primary)',
+                                            border: '1px solid var(--color-border-default)',
+                                            boxShadow: 'none',
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.background = 'var(--color-bg-raised)';
+                                            e.currentTarget.style.borderColor = 'color-mix(in srgb, var(--color-accent) 28%, var(--color-border-default))';
+                                            e.currentTarget.style.color = 'var(--color-accent)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.background = 'var(--color-bg-overlay)';
+                                            e.currentTarget.style.borderColor = 'var(--color-border-default)';
+                                            e.currentTarget.style.color = 'var(--color-text-primary)';
                                         }}
                                     >
-                                        <span className="inline-block h-2 w-2 rounded-full animate-pulse" style={{ background: 'color-mix(in srgb, var(--color-accent-foreground) 80%, transparent)' }} />
-                                        <span>Passer a Premium</span>
+                                        <span>Voir Premium</span>
+                                        <ArrowRight className="h-4 w-4" />
                                     </button>
                                 )}
                             </div>
@@ -521,26 +646,26 @@ export function ModuleSidebar() {
             <aside
                 onMouseEnter={handleDesktopHoverEnter}
                 onMouseLeave={handleDesktopHoverLeave}
-                className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 overflow-hidden z-40 glass-premium relative"
+                className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 overflow-hidden z-40 app-chrome-surface relative"
                 style={{
                     width: 'var(--sidebar-width)',
-                    borderRight: '1px solid var(--glass-border)',
+                    borderRight: '1px solid var(--color-app-chrome-border)',
                     boxSizing: 'border-box',
                     willChange: 'width',
                     backfaceVisibility: 'hidden',
                     transition: 'width 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), background 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1)',
                     background: isExpanded
-                        ? 'color-mix(in srgb, var(--color-card) 94%, var(--color-canvas) 6%)'
-                        : 'color-mix(in srgb, var(--color-card) 88%, var(--color-canvas) 12%)',
+                        ? 'color-mix(in srgb, var(--color-app-chrome) 94%, transparent)'
+                        : 'color-mix(in srgb, var(--color-app-chrome) 88%, transparent)',
                     boxShadow: isExpanded
-                        ? 'inset -1px 0 0 color-mix(in srgb, var(--color-text-primary) 7%, transparent), 0 1px 0 color-mix(in srgb, var(--color-bg-raised) 55%, transparent), 0 10px 24px color-mix(in srgb, var(--color-text-primary) 8%, transparent)'
-                        : 'inset -1px 0 0 color-mix(in srgb, var(--color-text-primary) 6%, transparent), 0 1px 0 color-mix(in srgb, var(--color-bg-raised) 45%, transparent), 0 6px 14px color-mix(in srgb, var(--color-text-primary) 6%, transparent)',
+                        ? 'var(--shadow-app-chrome), inset -1px 0 0 color-mix(in srgb, var(--color-app-panel) 42%, transparent)'
+                        : 'var(--shadow-app-chrome), inset -1px 0 0 color-mix(in srgb, var(--color-app-panel) 28%, transparent)',
                 }}
             >
                 <div
                     className="pointer-events-none absolute inset-0 z-0"
                     style={{
-                        background: 'linear-gradient(180deg, color-mix(in srgb, var(--color-bg-raised) 38%, transparent) 0%, color-mix(in srgb, var(--color-bg-raised) 5%, transparent) 34%, transparent 100%)',
+                        background: 'linear-gradient(180deg, color-mix(in srgb, var(--color-app-panel) 52%, transparent) 0%, color-mix(in srgb, var(--color-app-panel) 14%, transparent) 34%, transparent 100%)',
                         opacity: isExpanded ? 1 : 0.58,
                         transform: isExpanded ? 'translateX(0)' : 'translateX(-3px)',
                         transition: `opacity 300ms ${SIDEBAR_EASE}, transform 300ms ${SIDEBAR_EASE}`,
@@ -549,23 +674,35 @@ export function ModuleSidebar() {
                 {/* Header */}
                 <div
                     className="p-3 flex items-center gap-3 shrink-0 relative z-10"
-                    style={{ borderBottom: '1px solid var(--color-border-default)' }}
+                    style={{
+                        borderBottom: '1px solid var(--color-border-default)',
+                        justifyContent: isExpanded ? 'flex-start' : 'center',
+                        gap: isExpanded ? '0.75rem' : '0',
+                    }}
                 >
-                    {/* Logo - always visible */}
                     <button
                         onClick={() => navigate('/')}
-                        className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 transition-colors"
+                        className="shrink-0 transition-opacity duration-150"
                         style={{
-                            background: 'transparent',
-                            border: '1px solid var(--color-border-default)',
+                            color: 'var(--color-accent)',
+                            width: isExpanded ? '0px' : '24px',
+                            opacity: isExpanded ? 0 : 1,
+                            overflow: 'hidden',
+                            pointerEvents: isExpanded ? 'none' : 'auto',
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.opacity = '0.8';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.opacity = '1';
                         }}
                         title="Accueil"
                     >
                         <GraduationCap
                             className="h-5 w-5"
                             style={{
-                                color: 'var(--color-text-primary)',
-                                transform: isExpanded ? 'translateX(0)' : 'translateX(-1.5px)',
+                                color: 'var(--color-accent)',
+                                transform: isExpanded ? 'translateX(-6px)' : 'translateX(0)',
                                 transition: `transform 300ms ${SIDEBAR_EASE}`,
                                 willChange: 'transform',
                             }}
@@ -575,28 +712,31 @@ export function ModuleSidebar() {
                     <div
                         className="flex-1 flex items-center justify-between min-w-0 overflow-hidden"
                         style={{
+                            flex: isExpanded ? '1 1 auto' : '0 0 0px',
+                            width: isExpanded ? 'auto' : '0px',
                             opacity: isExpanded ? 1 : 0,
                             maxWidth: isExpanded ? '240px' : '0px',
                             transform: isExpanded ? 'translateX(0)' : 'translateX(-8px)',
                             pointerEvents: isExpanded ? 'auto' : 'none',
                             transition: `opacity 240ms ${SIDEBAR_EASE}, max-width 300ms ${SIDEBAR_EASE}, transform 240ms ${SIDEBAR_EASE}`,
-                            transitionDelay: isExpanded ? '40ms' : '0ms',
+                            transitionDelay: isExpanded ? '0ms' : '0ms',
                             willChange: 'opacity, transform, max-width',
                         }}
                     >
                         <button
                             onClick={() => navigate('/')}
-                            className="text-sm font-semibold truncate transition-colors"
-                            style={{ color: 'var(--color-text-primary)' }}
+                            className="flex items-center gap-2 transition-opacity duration-150 focus:outline-none rounded-lg"
+                            style={{ color: 'var(--color-accent)' }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.color = 'var(--color-accent)';
+                                e.currentTarget.style.opacity = '0.8';
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.color = 'var(--color-text-primary)';
+                                e.currentTarget.style.opacity = '1';
                             }}
                             title="Retour a l'accueil"
                         >
-                            {SITE_NAME}
+                            <GraduationCap className="h-5 w-5" />
+                            {brandWordmark}
                         </button>
                         <button
                             onClick={togglePin}
@@ -626,72 +766,86 @@ export function ModuleSidebar() {
                     </div>
                 </div>
 
-                <div
-                    className="relative z-30 px-3 overflow-visible"
-                    style={{
-                        borderBottom: '1px solid var(--color-border-default)',
-                        maxHeight: isExpanded ? '120px' : '0px',
-                        opacity: isExpanded ? 1 : 0,
-                        paddingTop: isExpanded ? '12px' : '0px',
-                        paddingBottom: isExpanded ? '12px' : '0px',
-                        pointerEvents: isExpanded ? 'auto' : 'none',
-                        transition: `max-height 300ms ${SIDEBAR_EASE}, opacity 220ms ${SIDEBAR_EASE}, padding 260ms ${SIDEBAR_EASE}`,
-                        transitionDelay: isExpanded ? '60ms' : '0ms',
-                        willChange: 'max-height, opacity, padding',
-                    }}
-                >
-                    {/* Modern dropdowns with year-semester logic */}
-                    <div className="flex items-center gap-2">
-                        <FancySelect
-                            label="ANNEE"
-                            value={selectedYear}
-                            options={yearOptions}
-                            onChange={handleYearChange}
-                        />
-                        <FancySelect
-                            label="SEMESTRE"
-                            value={selectedSemester}
-                            options={semesterOptions}
-                            onChange={handleSemesterChange}
-                        />
+                {SHOW_SIDEBAR_ACADEMIC_SELECTOR && (
+                    <div
+                        className="relative z-30 px-3 overflow-visible"
+                        style={{
+                            borderBottom: '1px solid var(--color-border-default)',
+                            maxHeight: isExpanded ? '120px' : '0px',
+                            opacity: isExpanded ? 1 : 0,
+                            paddingTop: isExpanded ? '12px' : '0px',
+                            paddingBottom: isExpanded ? '12px' : '0px',
+                            pointerEvents: isExpanded ? 'auto' : 'none',
+                            transition: `max-height 300ms ${SIDEBAR_EASE}, opacity 220ms ${SIDEBAR_EASE}, padding 260ms ${SIDEBAR_EASE}`,
+                            transitionDelay: isExpanded ? '20ms' : '0ms',
+                            willChange: 'max-height, opacity, padding',
+                        }}
+                    >
+                        <div className="flex items-center gap-2">
+                            <FancySelect
+                                label={"ANNÉE"}
+                                value={selectedYear}
+                                options={yearOptions}
+                                onChange={handleYearChange}
+                            />
+                            <FancySelect
+                                label="SEMESTRE"
+                                value={selectedSemester}
+                                options={semesterOptions}
+                                onChange={handleSemesterChange}
+                            />
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Modules navigation */}
                 <nav className="flex-1 overflow-y-auto p-3 relative z-10">
                     <p
-                        className="px-2 py-2 text-xs font-semibold tracking-wider overflow-hidden whitespace-nowrap"
+                        className="px-2 text-xs font-semibold tracking-wider overflow-hidden whitespace-nowrap"
                         style={{
                             color: 'var(--color-text-muted)',
+                            maxHeight: isExpanded ? '28px' : '0px',
+                            paddingTop: isExpanded ? '8px' : '0px',
+                            paddingBottom: isExpanded ? '8px' : '0px',
                             opacity: isExpanded ? 1 : 0,
                             maxWidth: isExpanded ? '180px' : '0px',
                             transform: isExpanded ? 'translateX(0)' : 'translateX(-8px)',
-                            transition: `opacity 220ms ${SIDEBAR_EASE}, max-width 280ms ${SIDEBAR_EASE}, transform 220ms ${SIDEBAR_EASE}`,
-                            transitionDelay: isExpanded ? '80ms' : '0ms',
-                            willChange: 'opacity, transform, max-width',
+                            transition: `opacity 220ms ${SIDEBAR_EASE}, max-width 280ms ${SIDEBAR_EASE}, max-height 220ms ${SIDEBAR_EASE}, padding 220ms ${SIDEBAR_EASE}, transform 220ms ${SIDEBAR_EASE}`,
+                            transitionDelay: isExpanded ? '24ms' : '0ms',
+                            willChange: 'opacity, transform, max-width, max-height, padding',
                         }}
                     >
-                        MATIERES
+                        MATIÈRES
                     </p>
-                    <div className="space-y-1">
+                    <div className="mt-2 space-y-1">
                         {modules.map((module, index) => {
                             const Icon = module.icon;
                             const isActive = activeModuleId === module.id;
-                            const itemDelay = isExpanded ? `${Math.min(120 + index * 18, 220)}ms` : '0ms';
+                            const itemDelay = isExpanded ? `${Math.min(36 + index * 12, 96)}ms` : '0ms';
+                            const collapsedActive = !isExpanded && isActive;
 
                             return (
                                 <button
                                     key={module.id}
                                     onClick={() => navigate(module.path)}
-                                    className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all duration-200"
+                                    onFocus={(e) => showRailTooltip(e.currentTarget, module.label)}
+                                    onBlur={hideRailTooltip}
+                                    className="relative w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all duration-200"
                                     style={{
-                                        background: isActive ? 'var(--color-bg-raised)' : 'transparent',
+                                        background: collapsedActive
+                                            ? 'color-mix(in srgb, var(--color-accent) 10%, var(--color-bg-raised))'
+                                            : isActive
+                                                ? 'var(--color-bg-raised)'
+                                                : 'transparent',
                                         color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
-                                        border: isActive ? '1px solid var(--color-border-default)' : '1px solid transparent',
-                                        boxShadow: isActive ? 'var(--shadow-sm)' : 'none',
+                                        border: isActive
+                                            ? `1px solid ${collapsedActive ? 'color-mix(in srgb, var(--color-accent) 22%, var(--color-border-default))' : 'var(--color-border-default)'}`
+                                            : '1px solid transparent',
+                                        boxShadow: isActive && !collapsedActive ? 'var(--shadow-sm)' : 'none',
                                         justifyContent: isExpanded ? 'space-between' : 'center',
                                     }}
                                     onMouseEnter={(e) => {
+                                        showRailTooltip(e.currentTarget, module.label);
                                         if (!isActive) {
                                             e.currentTarget.style.background = 'var(--color-bg-raised)';
                                             e.currentTarget.style.borderColor = 'var(--color-border-default)';
@@ -704,6 +858,7 @@ export function ModuleSidebar() {
                                         }
                                     }}
                                     onMouseLeave={(e) => {
+                                        hideRailTooltip();
                                         if (!isActive) {
                                             e.currentTarget.style.background = 'transparent';
                                             e.currentTarget.style.borderColor = 'transparent';
@@ -716,12 +871,25 @@ export function ModuleSidebar() {
                                         }
                                     }}
                                     title={!isExpanded ? module.label : undefined}
+                                    aria-label={`Aller à ${module.label}`}
+                                    aria-current={isActive ? 'page' : undefined}
                                 >
+                                    {collapsedActive && (
+                                        <span
+                                            aria-hidden="true"
+                                            className="absolute left-1.5 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full"
+                                            style={{ background: 'var(--color-accent)' }}
+                                        />
+                                    )}
                                     <span className="flex items-center gap-3 min-w-0">
                                         <Icon
                                             className="h-4 w-4 shrink-0"
                                             style={{
-                                                color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-muted)',
+                                                color: collapsedActive
+                                                    ? 'var(--color-accent)'
+                                                    : isActive
+                                                        ? 'var(--color-text-primary)'
+                                                        : 'var(--color-text-muted)',
                                                 transform: isExpanded ? 'translateX(0)' : 'translateX(-1.5px)',
                                                 transition: `transform 260ms ${SIDEBAR_EASE}`,
                                                 transitionDelay: itemDelay,
@@ -809,7 +977,7 @@ export function ModuleSidebar() {
                                                 e.currentTarget.style.background = 'transparent';
                                                 e.currentTarget.style.color = 'var(--color-text-muted)';
                                             }}
-                                            title="Parametres"
+                                            title="Paramètres"
                                         >
                                             <Settings className="h-4 w-4" />
                                         </button>
@@ -827,22 +995,24 @@ export function ModuleSidebar() {
                                         onClick={handleUpgrade}
                                         className="w-full inline-flex items-center justify-center gap-2 h-9 px-3 text-sm font-semibold rounded-xl transition"
                                         style={{
-                                            background: 'var(--color-accent)',
-                                            color: 'var(--color-accent-foreground)',
-                                            border: '1px solid var(--color-accent)',
-                                            boxShadow: 'var(--shadow-sm)',
+                                            background: 'var(--color-bg-overlay)',
+                                            color: 'var(--color-text-primary)',
+                                            border: '1px solid var(--color-border-default)',
+                                            boxShadow: 'none',
                                         }}
                                         onMouseEnter={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(-1px)';
-                                            e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                                            e.currentTarget.style.background = 'var(--color-bg-raised)';
+                                            e.currentTarget.style.borderColor = 'color-mix(in srgb, var(--color-accent) 28%, var(--color-border-default))';
+                                            e.currentTarget.style.color = 'var(--color-accent)';
                                         }}
                                         onMouseLeave={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(0)';
-                                            e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
+                                            e.currentTarget.style.background = 'var(--color-bg-overlay)';
+                                            e.currentTarget.style.borderColor = 'var(--color-border-default)';
+                                            e.currentTarget.style.color = 'var(--color-text-primary)';
                                         }}
                                     >
-                                        <span className="inline-block h-2 w-2 rounded-full animate-pulse" style={{ background: 'color-mix(in srgb, var(--color-accent-foreground) 80%, transparent)' }} />
-                                        <span>Passer a Premium</span>
+                                        <span>Voir Premium</span>
+                                        <ArrowRight className="h-4 w-4" />
                                     </button>
                                 )}
 
@@ -866,7 +1036,7 @@ export function ModuleSidebar() {
                                     }}
                                 >
                                     <LogOut className="h-4 w-4" />
-                                    <span>Se deconnecter</span>
+                                    <span>Se déconnecter</span>
                                 </button>
                             </div>
                         </>

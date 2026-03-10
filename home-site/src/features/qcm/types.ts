@@ -36,6 +36,7 @@ export interface QCMConfig {
     subject: string;
     subjectId: string;
     description?: string;
+    validationScore?: number;
     chapters: Chapter[];
 }
 

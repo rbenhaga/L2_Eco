@@ -3,6 +3,8 @@
  * Centralized type definitions for the module hub system
  */
 
+import type { LearningFicheSection, LearningResourceCard, LearningStep, LearningValidationConfig } from '../../types/learning';
+
 export interface ModuleChapter {
     id: string;
     number: string;
@@ -21,6 +23,12 @@ export interface ModuleChapter {
     icon?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
     /** Accent color for the icon bg/text */
     iconColor?: string;
+    objectives?: string[];
+    steps?: LearningStep[];
+    resources?: LearningResourceCard[];
+    ficheSections?: LearningFicheSection[];
+    validation?: LearningValidationConfig;
+    qcmId?: string;
 }
 
 export interface ModuleStats {

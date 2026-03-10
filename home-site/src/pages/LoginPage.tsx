@@ -1,63 +1,108 @@
 ﻿import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, CalendarDays, CheckCircle2, CreditCard, GraduationCap, Layers, Sparkles } from 'lucide-react';
+import { ArrowRight, CalendarDays, Check, CreditCard, GraduationCap, Layers, ShieldCheck } from 'lucide-react';
+import { DEFAULT_ACADEMIC_YEAR, YEAR_OPTIONS, normalizeAcademicYear } from '../config/academicOptions';
+import { DEFAULT_ENABLED_SEMESTER_LABEL, SEMESTER_ACCESS_OPTIONS, getDefaultLearningPath, normalizeEnabledSemester, normalizeEnabledSemesterLabel } from '../config/semesterAccess';
 import { useAuth } from '../context/AuthContext';
 import { authFetch } from '../utils/authFetch';
 import { createCheckoutSession } from '../services/api';
+import { updateMyOikoSubscription } from '../services/oikoNews';
+import { trackEvent } from '../services/analytics';
 import './LoginPage.css';
+import './PricingPage.css';
 
 const APP_NAME = 'Oikonomia';
 const TYPE_SPEED_MS = 62;
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 const ONBOARDING_STORAGE_KEY = 'agora_onboarding_completed';
+const ONBOARDING_DRAFT_STORAGE_KEY = 'agora_onboarding_draft';
+const FORCE_ONBOARDING_EMAILS = new Set(
+    String(import.meta.env.VITE_FORCE_ONBOARDING_EMAILS || '')
+        .split(',')
+        .map((email) => email.trim().toLowerCase())
+        .filter(Boolean)
+);
 const AUTH_FUN_LINES = [
     'Mode révision activé !',
-    'Bonjour, futur économiste.',
+    'Bonjour, futur(e) économiste.',
     'Des partiels à réviser ?',
     'Café ready ?',
     'Bon courage !',
-    'Une question ? Demande à Oiko.'
+    'Une question ? Demandez à Oiko.'
 ] as const;
+const ONBOARDING_PASS_PRICE = 7.99;
+const ONBOARDING_PASS_DURATION_DAYS = 30;
 
-const YEAR_OPTIONS = [
-    { value: 'L1', title: 'L1', subtitle: 'Première année' },
-    { value: 'L2', title: 'L2', subtitle: 'Deuxième année' },
-    { value: 'L3', title: 'L3', subtitle: 'Troisième année' },
-] as const;
-
-const SEMESTER_OPTIONS = [
-    { value: 'S3', title: 'Semestre S3', subtitle: '', detail: 'macro, micro, stats, socio' },
-    { value: 'S4', title: 'Semestre S4', subtitle: '', detail: 'macro, micro, stats, management' },
-] as const;
+function getStoredLearningPath(path?: string | null) {
+    if (typeof path !== 'string') return getDefaultLearningPath();
+    if (/^\/s4\/[a-z0-9-]+(?:\/.*)?$/i.test(path)) return path;
+    if (/^\/oiko-news(?:\/[a-z0-9-]+)?(?:\?.*)?$/i.test(path)) return path;
+    return getDefaultLearningPath();
+}
 
 type Step = 1 | 2 | 3;
+
+interface OnboardingDraft {
+    step: Step;
+    selectedYear: string;
+    selectedSemester: string;
+    subscribeToOikoNews: boolean;
+}
 
 interface OptionCardProps {
     title: string;
     subtitle: string;
-    detail?: string;
     selected: boolean;
+    disabled?: boolean;
+    statusLabel?: string;
     onClick: () => void;
 }
 
-function OptionCard({ title, subtitle, detail, selected, onClick }: OptionCardProps) {
+function OptionCard({ title, subtitle, selected, disabled = false, statusLabel, onClick }: OptionCardProps) {
     return (
         <button
             type="button"
             onClick={onClick}
-            className="text-left p-4 rounded-2xl transition-all duration-200"
+            disabled={disabled}
+            className="text-left p-4 rounded-2xl transition-all duration-200 disabled:cursor-not-allowed"
             style={{
-                border: selected ? '1px solid var(--color-accent)' : '1px solid var(--color-border-default)',
-                background: selected ? 'var(--color-accent-subtle)' : 'var(--color-bg-raised)',
+                border: selected
+                    ? '1px solid var(--color-accent)'
+                    : disabled
+                        ? '1px solid var(--color-border-subtle)'
+                        : '1px solid var(--color-border-default)',
+                background: selected
+                    ? 'var(--color-accent-subtle)'
+                    : disabled
+                        ? 'color-mix(in srgb, var(--color-bg-overlay) 78%, transparent)'
+                        : 'var(--color-bg-raised)',
                 boxShadow: 'none',
+                opacity: disabled ? 0.72 : 1,
             }}
         >
             <div>
-                <p className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>{title}</p>
-                <p className="text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>{subtitle}</p>
+                <div className="flex items-start justify-between gap-3">
+                    <p className="font-semibold" style={{ color: disabled ? 'var(--color-text-muted)' : 'var(--color-text-primary)' }}>{title}</p>
+                    {statusLabel ? (
+                        <span
+                            className="inline-flex shrink-0 items-center justify-center rounded-xl px-3 py-2 text-[11px] font-semibold text-center leading-tight"
+                            style={{
+                                background: disabled ? 'var(--color-bg-overlay)' : 'var(--color-success-subtle)',
+                                color: disabled ? 'var(--color-text-secondary)' : 'var(--color-success)',
+                                maxWidth: '104px',
+                            }}
+                        >
+                            {statusLabel}
+                        </span>
+                    ) : null}
+                </div>
+                {subtitle ? (
+                    <p className="text-sm mt-3" style={{ color: disabled ? 'var(--color-text-muted)' : 'var(--color-text-secondary)' }}>
+                        {subtitle}
+                    </p>
+                ) : null}
             </div>
-            {detail && <p className="text-xs mt-2" style={{ color: 'var(--color-text-muted)' }}>{detail}</p>}
         </button>
     );
 }
@@ -69,19 +114,27 @@ export function LoginPage() {
 
     const [isSigningIn, setIsSigningIn] = useState(false);
     const [isSavingOnboarding, setIsSavingOnboarding] = useState(false);
-    const [checkoutLoadingPlan, setCheckoutLoadingPlan] = useState<'semester' | 'annual' | null>(null);
+    const [checkoutLoadingPlan, setCheckoutLoadingPlan] = useState<'semester' | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [checkoutError, setCheckoutError] = useState<string | null>(null);
     const [showOnboarding, setShowOnboarding] = useState(false);
     const [checkingOnboarding, setCheckingOnboarding] = useState(false);
     const [step, setStep] = useState<Step>(1);
-    const [selectedYear, setSelectedYear] = useState('L2');
-    const [selectedSemester, setSelectedSemester] = useState('S4');
+    const [selectedYear, setSelectedYear] = useState<string>(DEFAULT_ACADEMIC_YEAR);
+    const [selectedSemester, setSelectedSemester] = useState<string>(DEFAULT_ENABLED_SEMESTER_LABEL);
+    const [subscribeToOikoNews, setSubscribeToOikoNews] = useState(false);
     const [typedCount, setTypedCount] = useState(0);
 
     const hasCheckedOnboarding = useRef(false);
+    const hasTrackedOnboardingStart = useRef(false);
 
-    const fromState = (location.state as { from?: { pathname?: string } })?.from?.pathname;
+    const navigationState = location.state as { from?: { pathname?: string; search?: string }; forceOnboarding?: boolean } | null;
+    const fromState = navigationState?.from?.pathname
+        ? `${navigationState.from.pathname}${navigationState.from.search || ''}`
+        : null;
+    const shouldForceOnboarding =
+        Boolean(navigationState?.forceOnboarding) ||
+        (Boolean(user?.email) && FORCE_ONBOARDING_EMAILS.has(String(user?.email).toLowerCase()));
 
     useEffect(() => {
         setTypedCount(0);
@@ -101,6 +154,7 @@ export function LoginPage() {
     useEffect(() => {
         if (!user) {
             hasCheckedOnboarding.current = false;
+            hasTrackedOnboardingStart.current = false;
             return;
         }
 
@@ -110,16 +164,43 @@ export function LoginPage() {
         }
     }, [user]);
 
+    useEffect(() => {
+        if (!user || !showOnboarding) return;
+        const draft: OnboardingDraft = {
+            step,
+            selectedYear,
+            selectedSemester,
+            subscribeToOikoNews,
+        };
+        localStorage.setItem(`${ONBOARDING_DRAFT_STORAGE_KEY}_${user.uid}`, JSON.stringify(draft));
+    }, [user, showOnboarding, step, selectedYear, selectedSemester, subscribeToOikoNews]);
+
+    useEffect(() => {
+        if (!user || !showOnboarding || hasTrackedOnboardingStart.current) return;
+        hasTrackedOnboardingStart.current = true;
+        void trackEvent('onboarding_started', {
+            source: shouldForceOnboarding ? 'forced' : 'standard',
+        });
+    }, [user, showOnboarding, shouldForceOnboarding]);
+
+    useEffect(() => {
+        if (!user || !showOnboarding) return;
+        void trackEvent('onboarding_step_view', {
+            step,
+            year: selectedYear,
+            semester: normalizeEnabledSemester(selectedSemester),
+        });
+    }, [user, showOnboarding, step, selectedYear, selectedSemester, subscribeToOikoNews]);
     const resolveDefaultFromPath = async () => {
-        if (!user) return '/s3/macro';
-        if (fromState) return fromState;
+        if (!user) return getDefaultLearningPath();
+        if (fromState) return getStoredLearningPath(fromState);
 
         try {
             const local = localStorage.getItem(`last-nav-${user.uid}`);
             if (local) {
                 const parsed = JSON.parse(local);
-                if (typeof parsed?.path === 'string' && /^\/s[34]\/[a-z0-9-]+/i.test(parsed.path)) {
-                    return parsed.path;
+                if (typeof parsed?.path === 'string') {
+                    return getStoredLearningPath(parsed.path);
                 }
             }
         } catch (_e) {
@@ -130,23 +211,58 @@ export function LoginPage() {
             const response = await authFetch(`${API_URL}/api/user/${user.uid}/navigation`);
             if (response.ok) {
                 const data = await response.json();
-                if (typeof data?.lastPath === 'string' && /^\/s[34]\/[a-z0-9-]+/i.test(data.lastPath)) {
-                    return data.lastPath;
+                if (typeof data?.lastPath === 'string') {
+                    return getStoredLearningPath(data.lastPath);
                 }
-                const semester = String(data?.semester || '').toLowerCase() === 's4' ? 's4' : 's3';
+                const semester = normalizeEnabledSemester(data?.semester);
                 return `/${semester}/macro`;
             }
         } catch (_e) {
             // ignore
         }
 
-        return '/s3/macro';
+        return getDefaultLearningPath();
+    };
+
+    const restoreOnboardingDraft = (fallbackYear = DEFAULT_ACADEMIC_YEAR, fallbackSemester = DEFAULT_ENABLED_SEMESTER_LABEL) => {
+        const normalizedYear = normalizeAcademicYear(fallbackYear);
+        const normalizedSemester = normalizeEnabledSemesterLabel(fallbackSemester);
+
+        setStep(1);
+        setSelectedYear(normalizedYear);
+        setSelectedSemester(normalizedSemester);
+        setSubscribeToOikoNews(false);
+
+        if (!user) return;
+
+        try {
+            const raw = localStorage.getItem(`${ONBOARDING_DRAFT_STORAGE_KEY}_${user.uid}`);
+            if (!raw) return;
+            const draft = JSON.parse(raw) as Partial<OnboardingDraft>;
+            const draftYear = normalizeAcademicYear(typeof draft.selectedYear === 'string' ? draft.selectedYear : normalizedYear);
+            const draftSemester = normalizeEnabledSemesterLabel(typeof draft.selectedSemester === 'string' ? draft.selectedSemester : normalizedSemester);
+            const draftStep = draft.step === 1 || draft.step === 2 || draft.step === 3 ? draft.step : 1;
+
+            setSelectedYear(draftYear);
+            setSelectedSemester(draftSemester);
+            setSubscribeToOikoNews(Boolean(draft.subscribeToOikoNews));
+            setStep(draftStep);
+        } catch (_e) {
+            // ignore invalid local draft
+        }
     };
 
     const checkOnboardingStatus = async (targetPath: string) => {
         if (!user) return;
 
         setCheckingOnboarding(true);
+
+        if (shouldForceOnboarding) {
+            restoreOnboardingDraft();
+            setShowOnboarding(true);
+            setCheckingOnboarding(false);
+            return;
+        }
 
         const localOnboarding = localStorage.getItem(`${ONBOARDING_STORAGE_KEY}_${user.uid}`);
         if (localOnboarding === 'true') {
@@ -158,25 +274,29 @@ export function LoginPage() {
             const response = await authFetch(`${API_URL}/api/user/${user.uid}/onboarding`);
             if (response.ok) {
                 const data = await response.json();
-                if (typeof data?.year === 'string' && /^L[1-3]$/.test(data.year)) {
-                    setSelectedYear(data.year);
+                if (typeof data?.year === 'string') {
+                    setSelectedYear(normalizeAcademicYear(data.year));
                 }
-                const semester = String(data?.semester || '').toUpperCase();
-                if (semester === 'S3' || semester === 'S4') {
-                    setSelectedSemester(semester);
-                }
+                const semester = normalizeEnabledSemesterLabel(data?.semester);
+                setSelectedSemester(semester);
 
                 if (data.completed) {
                     localStorage.setItem(`${ONBOARDING_STORAGE_KEY}_${user.uid}`, 'true');
+                    localStorage.removeItem(`${ONBOARDING_DRAFT_STORAGE_KEY}_${user.uid}`);
                     navigate(targetPath, { replace: true });
                 } else {
+                    const serverYear = normalizeAcademicYear(typeof data?.year === 'string' ? data.year : DEFAULT_ACADEMIC_YEAR);
+                    const serverSemester = normalizeEnabledSemesterLabel(semester);
+                    restoreOnboardingDraft(serverYear, serverSemester);
                     setShowOnboarding(true);
                 }
             } else {
+                restoreOnboardingDraft();
                 setShowOnboarding(true);
             }
         } catch (_e) {
-            navigate(targetPath, { replace: true });
+            restoreOnboardingDraft();
+            setShowOnboarding(true);
         } finally {
             setCheckingOnboarding(false);
         }
@@ -185,13 +305,21 @@ export function LoginPage() {
     const handleGoogleSignIn = async () => {
         setIsSigningIn(true);
         setError(null);
+        void trackEvent('auth_google_click', { source: 'login_page' });
 
         try {
             await signInWithGoogle();
+            void trackEvent('auth_google_success', { source: 'login_page' });
         } catch (err: unknown) {
             const code = (err as { code?: string })?.code;
+            const normalizedCode = typeof code === 'string' ? code : 'unknown';
+            void trackEvent('auth_google_error', {
+                source: 'login_page',
+                code: normalizedCode,
+            });
+
             if (code === 'auth/popup-closed-by-user') {
-                setError('Connexion annulée. Réessayez quand vous êtes prêt.');
+                setError('Connexion annulée. Réessayez quand vous êtes prêt(e).');
             } else if (code === 'auth/popup-blocked') {
                 setError('Popup bloquée. Autorisez les popups pour ce site.');
             } else if (code === 'auth/network-request-failed') {
@@ -203,12 +331,12 @@ export function LoginPage() {
         }
     };
 
-    const getTargetPath = () => `/${selectedSemester.toLowerCase() === 's4' ? 's4' : 's3'}/macro`;
+    const getTargetPath = () => `/${normalizeEnabledSemester(selectedSemester)}/macro`;
 
     const persistOnboardingSelection = async () => {
         if (!user) return getTargetPath();
 
-        const semester = selectedSemester.toLowerCase() === 's4' ? 's4' : 's3';
+        const semester = normalizeEnabledSemester(selectedSemester);
         const targetPath = getTargetPath();
 
         await Promise.all([
@@ -222,9 +350,11 @@ export function LoginPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ year: selectedYear, semester, lastPath: targetPath }),
             }).catch(() => {}),
+            updateMyOikoSubscription(subscribeToOikoNews, 'onboarding').catch(() => null),
         ]);
 
         localStorage.setItem(`${ONBOARDING_STORAGE_KEY}_${user.uid}`, 'true');
+        localStorage.removeItem(`${ONBOARDING_DRAFT_STORAGE_KEY}_${user.uid}`);
         localStorage.setItem(`last-nav-${user.uid}`, JSON.stringify({ semester, path: targetPath }));
 
         return targetPath;
@@ -235,30 +365,55 @@ export function LoginPage() {
         setCheckoutError(null);
         try {
             const targetPath = await persistOnboardingSelection();
+            void trackEvent('onboarding_completed', {
+                mode: 'discovery',
+                year: selectedYear,
+                semester: normalizeEnabledSemester(selectedSemester),
+            });
             navigate(targetPath, { replace: true });
         } finally {
             setIsSavingOnboarding(false);
         }
     };
 
-    const startCheckout = async (plan: 'semester' | 'annual') => {
+    const startCheckout = async () => {
         if (!user?.uid) return;
 
         setCheckoutError(null);
-        setCheckoutLoadingPlan(plan);
+        setCheckoutLoadingPlan('semester');
+        void trackEvent('checkout_started', {
+            source: 'onboarding',
+            plan: 'semester',
+            price: ONBOARDING_PASS_PRICE,
+        });
 
         try {
             await persistOnboardingSelection();
-            const { url } = await createCheckoutSession(user.uid, plan);
+            const { url } = await createCheckoutSession(user.uid, 'semester');
             if (!url) throw new Error('URL de paiement non reçue');
+            void trackEvent('checkout_redirect', {
+                source: 'onboarding',
+                plan: 'semester',
+            });
             window.location.href = url;
         } catch (err) {
             const message = err instanceof Error ? err.message : 'Impossible de lancer le paiement';
+            void trackEvent('checkout_failed', {
+                source: 'onboarding',
+                plan: 'semester',
+            });
             setCheckoutError(message);
             setCheckoutLoadingPlan(null);
         }
     };
 
+    const continueWithFreeAccess = async () => {
+        void trackEvent('onboarding_continue_free', {
+            year: selectedYear,
+            semester: normalizeEnabledSemester(selectedSemester),
+        });
+        await finishOnboarding();
+    };
     const anyActionLoading = isSavingOnboarding || Boolean(checkoutLoadingPlan);
     const typedName = APP_NAME.slice(0, typedCount);
     const [funLine] = useState(() => AUTH_FUN_LINES[Math.floor(Math.random() * AUTH_FUN_LINES.length)]);
@@ -280,137 +435,178 @@ export function LoginPage() {
                 <div className="relative min-h-screen px-4 sm:px-6 lg:px-8 flex items-center justify-center" style={{ zIndex: 1 }}>
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mx-auto w-full max-w-2xl">
                         <div className="rounded-2xl p-6 sm:p-8" style={{ border: '1px solid var(--color-border-default)', background: 'var(--color-bg-raised)', boxShadow: 'var(--shadow-md)' }}>
-                                <div className="text-center mb-6">
-                                    <div className="inline-flex items-center gap-3 mb-3">
-                                        <GraduationCap className="h-8 w-8" style={{ color: 'var(--color-accent)' }} />
-                                        <h2 className="auth-brand-title text-2xl sm:text-3xl font-semibold" style={{ color: 'var(--color-text-primary)' }}>
-                                            {typedName.split('').map((char, index) => (
-                                                <span
-                                                    key={`${char}-${index}`}
-                                                    className={`auth-brand-letter ${index === typedCount - 1 && typedCount < APP_NAME.length ? 'is-fresh' : ''}`}
-                                                >
-                                                    {char}
-                                                </span>
-                                            ))}
-                                            <span className="auth-brand-cursor" aria-hidden="true" />
-                                        </h2>
-                                    </div>
-                                    <div className="flex items-center justify-center gap-2">
-                                        {[1, 2, 3].map((dot) => (
+                            <div className="text-center mb-6">
+                                <div className="inline-flex items-center gap-3 mb-3">
+                                    <GraduationCap className="h-8 w-8" style={{ color: 'var(--color-accent)' }} />
+                                    <h2 className="auth-brand-title text-2xl sm:text-3xl font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+                                        {typedName.split('').map((char, index) => (
                                             <span
-                                                key={dot}
-                                                className="h-2.5 rounded-full transition-all"
-                                                style={{
-                                                    width: step === dot ? 26 : 10,
-                                                    background: step > dot ? 'var(--color-success)' : step === dot ? 'var(--color-accent)' : 'var(--color-border-default)',
+                                                key={`${char}-${index}`}
+                                                className={`auth-brand-letter ${index === typedCount - 1 && typedCount < APP_NAME.length ? 'is-fresh' : ''}`}
+                                            >
+                                                {char}
+                                            </span>
+                                        ))}
+                                        <span className="auth-brand-cursor" aria-hidden="true" />
+                                    </h2>
+                                </div>
+                                <div className="flex items-center justify-center gap-2">
+                                    {[1, 2, 3].map((dot) => (
+                                        <span
+                                            key={dot}
+                                            className="h-2.5 rounded-full transition-all"
+                                            style={{
+                                                width: step === dot ? 26 : 10,
+                                                background: step > dot ? 'var(--color-success)' : step === dot ? 'var(--color-accent)' : 'var(--color-border-default)',
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+
+                            {step === 1 && (
+                                <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <CalendarDays className="h-5 w-5" style={{ color: 'var(--color-accent)' }} />
+                                        <p className="text-sm font-semibold" style={{ color: 'var(--color-text-secondary)' }}>Étape 1</p>
+                                    </div>
+                                    <h3 className="text-2xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>Quelle est votre année actuelle ?</h3>
+                                    <p className="text-sm mb-6" style={{ color: 'var(--color-text-secondary)' }}>
+                                        Ces choix servent à personnaliser votre espace. Cela n'impacte pas votre accès aux contenus.</p>
+                                    <div className="grid sm:grid-cols-3 gap-3 mb-8">
+                                        {YEAR_OPTIONS.map((opt) => (
+                                            <OptionCard
+                                                key={opt.value}
+                                                title={opt.title}
+                                                subtitle={opt.subtitle}
+                                                selected={selectedYear === opt.value}
+                                                disabled={opt.disabled}
+                                                statusLabel={opt.availabilityLabel}
+                                                onClick={() => {
+                                                    if (!opt.disabled) {
+                                                        setSelectedYear(opt.value);
+                                                    }
                                                 }}
                                             />
                                         ))}
                                     </div>
-                                </div>
-                                {step === 1 && (
-                                    <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <CalendarDays className="h-5 w-5" style={{ color: 'var(--color-accent)' }} />
-                                            <p className="text-sm font-semibold" style={{ color: 'var(--color-text-secondary)' }}>Étape 1</p>
-                                        </div>
-                                        <h3 className="text-2xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>Choisis ton année</h3>
-                                        <p className="text-sm mb-6" style={{ color: 'var(--color-text-secondary)' }}>On personnalise les contenus, annales et progression selon cette année.</p>
-                                        <div className="grid sm:grid-cols-3 gap-3 mb-8">
-                                            {YEAR_OPTIONS.map((opt) => (
-                                                <OptionCard key={opt.value} title={opt.title} subtitle={opt.subtitle} selected={selectedYear === opt.value} onClick={() => setSelectedYear(opt.value)} />
-                                            ))}
-                                        </div>
-                                        <div className="flex justify-end">
-                                            <button type="button" onClick={() => setStep(2)} className="h-11 px-6 rounded-xl font-semibold" style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}>Continuer</button>
-                                        </div>
-                                    </motion.div>
-                                )}
+                                    <div className="flex justify-end">
+                                        <button type="button" onClick={() => { void trackEvent('onboarding_step_continue', { from_step: 1, to_step: 2 }); setStep(2); }} className="h-11 px-6 rounded-xl font-semibold" style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}>Continuer</button>
+                                    </div>
+                                </motion.div>
+                            )}
 
-                                {step === 2 && (
-                                    <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <Layers className="h-5 w-5" style={{ color: 'var(--color-accent)' }} />
-                                            <p className="text-sm font-semibold" style={{ color: 'var(--color-text-secondary)' }}>Étape 2</p>
-                                        </div>
-                                        <h3 className="text-2xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>Choisis ton semestre</h3>
-                                        <p className="text-sm mb-6" style={{ color: 'var(--color-text-secondary)' }}>C’est ton point d’entrée par défaut dès la première session.</p>
-                                        <div className="grid gap-3 mb-8">
-                                            {SEMESTER_OPTIONS.map((opt) => (
-                                                <OptionCard key={opt.value} title={opt.title} subtitle={opt.subtitle} detail={opt.detail} selected={selectedSemester === opt.value} onClick={() => setSelectedSemester(opt.value)} />
-                                            ))}
-                                        </div>
-                                        <div className="flex items-center justify-between gap-3">
-                                            <button type="button" onClick={() => setStep(1)} className="h-11 px-6 rounded-xl font-medium" style={{ border: '1px solid var(--color-border-default)', color: 'var(--color-text-secondary)' }}>Retour</button>
-                                            <button type="button" onClick={() => setStep(3)} className="h-11 px-6 rounded-xl font-semibold" style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}>Voir les offres</button>
-                                        </div>
-                                    </motion.div>
-                                )}
+                            {step === 2 && (
+                                <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <Layers className="h-5 w-5" style={{ color: 'var(--color-accent)' }} />
+                                        <p className="text-sm font-semibold" style={{ color: 'var(--color-text-secondary)' }}>Étape 2</p>
+                                    </div>
+                                    <h3 className="text-2xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>Quel semestre souhaitez-vous voir en priorité ?</h3>
+                                    <p className="text-sm mb-6" style={{ color: 'var(--color-text-secondary)' }}>
+                                        Ce choix organise votre tableau de bord. Vous pouvez le modifier à tout moment.</p>
+                                    <div className="grid gap-3 mb-8">
+                                        {SEMESTER_ACCESS_OPTIONS.map((opt) => (
+                                            <OptionCard
+                                                key={opt.value}
+                                                title={opt.title}
+                                                subtitle={opt.subtitle}
+                                                selected={selectedSemester === opt.value}
+                                                disabled={opt.disabled}
+                                                statusLabel={opt.availabilityLabel}
+                                                onClick={() => {
+                                                    if (!opt.disabled) {
+                                                        setSelectedSemester(opt.value);
+                                                    }
+                                                }}
+                                            />
+                                        ))}
+                                    </div>
+                                    <div className="flex items-center justify-between gap-3">
+                                        <button type="button" onClick={() => setStep(1)} className="h-11 px-6 rounded-xl font-medium" style={{ border: '1px solid var(--color-border-default)', color: 'var(--color-text-secondary)' }}>Retour</button>
+                                        <button type="button" onClick={() => { void trackEvent('onboarding_step_continue', { from_step: 2, to_step: 3 }); setStep(3); }} className="h-11 px-6 rounded-xl font-semibold" style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}>Voir l'offre Premium</button>
+                                    </div>
+                                </motion.div>
+                            )}
 
-                                {step === 3 && (
-                                    <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <CreditCard className="h-5 w-5" style={{ color: 'var(--color-accent)' }} />
-                                            <p className="text-sm font-semibold" style={{ color: 'var(--color-text-secondary)' }}>Étape 3</p>
+                            {step === 3 && (
+                                <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <CreditCard className="h-5 w-5" style={{ color: 'var(--color-accent)' }} />
+                                        <p className="text-sm font-semibold" style={{ color: 'var(--color-text-secondary)' }}>Étape 3</p>
+                                    </div>
+                                    <h3 className="text-2xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>Débloquez tout pour vos partiels</h3>
+                                    <p className="text-sm mb-5" style={{ color: 'var(--color-text-secondary)' }}>
+                                        Vous pouvez continuer gratuitement, ou débloquer pendant 30 jours tout le contenu utile pour réviser : cours, TD corrigés, fiches, QCM, annales, vidéos, audios et Oiko IA.</p>
+
+                                    <label
+                                        className="mb-4 flex items-start gap-3 rounded-2xl p-4"
+                                        style={{ border: '1px solid var(--color-border-default)', background: 'var(--color-bg-overlay)' }}
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            checked={subscribeToOikoNews}
+                                            onChange={(event) => setSubscribeToOikoNews(event.target.checked)}
+                                            className="mt-1 h-4 w-4"
+                                        />
+                                        <span>
+                                            <span className="block font-semibold" style={{ color: 'var(--color-text-primary)' }}>Recevoir Oiko News chaque matin à 07:00</span>
+                                            <span className="block text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>
+                                                Point marchés, grandes news macro des dernières 24h, analyse pédagogique et brèves finales. Option non obligatoire, modifiable ensuite depuis la page Oiko News.
+                                            </span>
+                                        </span>
+                                    </label>
+
+                                    {checkoutError && (
+                                        <div className="mb-4 rounded-xl p-3 text-sm" style={{ background: 'color-mix(in srgb, var(--color-error) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--color-error) 35%, transparent)', color: 'var(--color-error)' }}>
+                                            {checkoutError}
                                         </div>
-                                        <h3 className="text-2xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>Passe Premium maintenant</h3>
-                                        <p className="text-sm mb-5" style={{ color: 'var(--color-text-secondary)' }}>Espace initialisé sur {selectedYear} · {selectedSemester}. Active Premium ici, ou continue en gratuit.</p>
+                                    )}
 
-                                        {checkoutError && (
-                                            <div className="mb-4 rounded-xl p-3 text-sm" style={{ background: 'color-mix(in srgb, var(--color-error) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--color-error) 35%, transparent)', color: 'var(--color-error)' }}>
-                                                {checkoutError}
-                                            </div>
-                                        )}
-
-                                        <div className="grid gap-3 mb-5">
-                                            <button type="button" onClick={() => startCheckout('semester')} disabled={anyActionLoading} className="rounded-2xl p-4 text-left disabled:opacity-60" style={{ border: '1px solid var(--color-border-default)', background: 'var(--color-bg-raised)' }}>
-                                                <div className="flex items-center justify-between gap-3">
-                                                    <div>
-                                                        <p className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>Plan Semestriel</p>
-                                                        <p className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>15,99 EUR · 6 mois</p>
-                                                    </div>
-                                                    <span className="text-[11px] font-semibold" style={{ color: 'var(--color-accent)' }}>2,67 EUR/mois</span>
-                                                </div>
-                                                <p className="text-xs mt-3" style={{ color: 'var(--color-text-muted)' }}>{checkoutLoadingPlan === 'semester' ? 'Redirection en cours...' : 'Idéal si tu veux valider ce semestre rapidement.'}</p>
-                                            </button>
-
-                                            <button type="button" onClick={() => startCheckout('annual')} disabled={anyActionLoading} className="rounded-2xl p-4 text-left disabled:opacity-60" style={{ border: '1px solid var(--color-accent)', background: 'var(--color-accent-subtle)', boxShadow: 'none' }}>
-                                                <div className="flex items-center justify-between gap-3">
-                                                    <div className="flex items-center gap-2">
-                                                        <p className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>Plan Annuel</p>
-                                                        <span className="text-[10px] px-2 py-1 rounded-full" style={{ background: 'var(--color-success-subtle)', color: 'var(--color-success)' }}>meilleur prix</span>
-                                                    </div>
-                                                    <span className="text-[11px] font-semibold" style={{ color: 'var(--color-accent)' }}>2,50 EUR/mois</span>
-                                                </div>
-                                                <p className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>29,99 EUR · 12 mois</p>
-                                                <p className="text-xs mt-3" style={{ color: 'var(--color-text-muted)' }}>{checkoutLoadingPlan === 'annual' ? 'Redirection en cours...' : 'Le meilleur ratio prix / valeur pour toute l’année.'}</p>
-                                            </button>
+                                    <div className="rounded-2xl p-4 mb-4" style={{ border: '1px solid var(--color-border-default)', background: 'var(--color-bg-overlay)' }}>
+                                        <div className="inline-flex items-center mb-3 text-[11px] font-semibold px-2 py-1 rounded-full" style={{ background: 'var(--color-bg-raised)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border-default)' }}>
+                                            Offre actuelle
                                         </div>
+                                        <p className="pricing-min-card-name">Pass Partiels S4</p>
+                                        <p className="pricing-min-card-sub">{ONBOARDING_PASS_DURATION_DAYS} jours d'accès complet</p>
+                                        <p className="pricing-min-price">{ONBOARDING_PASS_PRICE.toFixed(2).replace('.', ',')}€</p>
+                                        <ul className="mt-3 space-y-1.5 text-xs" style={{ color: 'var(--color-text-secondary)' }}>
+                                            <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5" style={{ color: 'var(--color-accent)' }} /> Accès complet L1, L2 et L3</li>
+                                            <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5" style={{ color: 'var(--color-accent)' }} /> Cours, TD corrigés, QCM, fiches et annales</li>
+                                            <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5" style={{ color: 'var(--color-accent)' }} /> Vidéos, audios et bot IA Oiko pour vos questions</li>
+                                        </ul>
+                                        <p className="text-xs mt-3" style={{ color: 'var(--color-text-muted)' }}>Parfait pour réviser efficacement avant les examens.</p>
+                                        <button
+                                            type="button"
+                                            onClick={startCheckout}
+                                            disabled={anyActionLoading}
+                                            className="mt-4 h-11 w-full rounded-xl font-semibold disabled:opacity-60 inline-flex items-center justify-center gap-2"
+                                            style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}
+                                        >
+                                            {checkoutLoadingPlan === 'semester' ? 'Redirection...' : 'Débloquer mon accès complet'}
+                                            {checkoutLoadingPlan !== 'semester' && <ArrowRight className="h-4 w-4" />}
+                                        </button>
+                                    </div>
 
-                                        <div className="rounded-2xl p-4 mb-6" style={{ border: '1px solid var(--color-border-default)', background: 'var(--color-bg-overlay)' }}>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle2 className="h-5 w-5 mt-0.5" style={{ color: 'var(--color-success)' }} />
-                                                <div>
-                                                    <p className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>Tu peux commencer gratuitement</p>
-                                                    <p className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>Et activer Premium plus tard depuis la page Tarifs.</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div className="flex items-center justify-between gap-3">
+                                        <button type="button" onClick={() => { void trackEvent('onboarding_step_back', { from_step: 3, to_step: 2 }); setStep(2); }} className="h-11 px-6 rounded-xl font-medium" style={{ border: '1px solid var(--color-border-default)', color: 'var(--color-text-secondary)' }}>Retour</button>
+                                        <button
+                                            type="button"
+                                            onClick={() => { void continueWithFreeAccess(); }}
+                                            disabled={anyActionLoading}
+                                            className="text-sm font-medium underline underline-offset-4 disabled:opacity-60"
+                                            style={{ color: 'var(--color-text-secondary)' }}
+                                        >
+                                            {isSavingOnboarding ? 'Initialisation...' : "Continuer avec l'accès découverte"}
+                                        </button>
+                                    </div>
 
-                                        <div className="flex items-center justify-between gap-3">
-                                            <button type="button" onClick={() => setStep(2)} className="h-11 px-6 rounded-xl font-medium" style={{ border: '1px solid var(--color-border-default)', color: 'var(--color-text-secondary)' }}>Retour</button>
-                                            <button type="button" onClick={finishOnboarding} disabled={anyActionLoading} className="h-11 px-6 rounded-xl font-semibold flex items-center gap-2 disabled:opacity-60" style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}>
-                                                {isSavingOnboarding ? 'Initialisation...' : <><Sparkles className="h-4 w-4" />Continuer en gratuit</>}
-                                            </button>
-                                        </div>
-
-                                        <div className="mt-5 flex items-center justify-center gap-2 text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                                            <Sparkles className="h-4 w-4" />
-                                            Paiement sécurisé via Stripe
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </div>
+                                    <div className="mt-5 flex items-center justify-center gap-2 text-xs" style={{ color: 'var(--color-text-muted)' }}>
+                                        <ShieldCheck className="h-4 w-4" />
+                                        Paiement sécurisé via Stripe</div>
+                                </motion.div>
+                            )}
+                        </div>
                     </motion.div>
                 </div>
             </div>
@@ -470,13 +666,15 @@ export function LoginPage() {
                             )}
                         </button>
 
-                        <p className="mt-4 text-center text-xs" style={{ color: 'var(--color-text-muted)' }}>En vous connectant, vous acceptez les <a href="/terms" className="underline" style={{ color: 'var(--color-accent)' }}>conditions d’utilisation</a>.</p>
+                        <p className="mt-4 text-center text-xs" style={{ color: 'var(--color-text-muted)' }}>
+                            En vous connectant, vous acceptez les <a href="/terms" className="underline" style={{ color: 'var(--color-accent)' }}>conditions d'utilisation</a>.
+                        </p>
                     </motion.div>
 
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 text-center">
                         <button onClick={() => navigate('/')} className="inline-flex items-center gap-2 text-sm font-medium transition-colors group" style={{ color: 'var(--color-text-secondary)' }}>
                             <ArrowRight className="h-4 w-4 rotate-180 group-hover:-translate-x-1 transition-transform" />
-                            Retour à l’accueil
+                            Retour à l'accueil
                         </button>
                     </motion.div>
                 </motion.div>
@@ -484,6 +682,11 @@ export function LoginPage() {
         </div>
     );
 }
+
+
+
+
+
 
 
 

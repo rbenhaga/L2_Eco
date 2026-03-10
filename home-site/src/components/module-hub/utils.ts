@@ -7,6 +7,7 @@
  */
 
 import type { ModuleId } from './types';
+import { S4_QCM_LISTS } from '../../modules/s4/qcm';
 
 /**
  * Extract semester-specific lookup key from baseRoute.
@@ -113,10 +114,10 @@ export const QCM_DATA: Record<string, Array<{ id: string; title: string; subtitl
     ],
 
     // ── S4 keys ──
-    's4:stats': [],
-    's4:macro': [],
-    's4:micro': [],
-    's4:management': [],
+    's4:stats': S4_QCM_LISTS['s4:stats'],
+    's4:macro': S4_QCM_LISTS['s4:macro'],
+    's4:micro': S4_QCM_LISTS['s4:micro'],
+    's4:management': S4_QCM_LISTS['s4:management'],
 };
 
 export const ANNALES_DATA: Record<string, Array<{ title: string; description: string; path: string; isNew?: boolean; hasCorrection?: boolean; session?: string }>> = {

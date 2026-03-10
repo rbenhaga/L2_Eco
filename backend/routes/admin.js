@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Admin Routes
  * Accessible to emails listed in ADMIN_EMAILS.
  */
@@ -6,10 +6,13 @@
 import express from 'express';
 import { requireAuth } from '../ai/middleware/auth.js';
 import db from '../db/database.js';
+import '../db/progress.js';
 import admin from 'firebase-admin';
 import { initializeFirebaseAdmin } from '../config/firebase.js';
 import { aiRouter } from '../ai/core/AIRouter.js';
 import { isAdminUser } from '../utils/adminAccess.js';
+import { getEditionPreview, getRunsByDate, runPipeline } from '../oiko/pipeline.ts';
+import { getOikoAdminOverview } from '../oiko/usage.ts';
 
 const router = express.Router();
 
@@ -76,6 +79,11 @@ function getPublicConfig() {
     }
 }
 
+function sendPublicConfig(res) {
+    res.set('Cache-Control', 'no-store');
+    res.json(getPublicConfig());
+}
+
 // Middleware to check admin access
 function requireAdmin(req, res, next) {
     if (!isAdminUser(req.user)) {
@@ -92,15 +100,15 @@ function requireAdmin(req, res, next) {
  * Public config for frontend (course badges + topbar notifications)
  */
 router.get('/site-config', (_req, res) => {
-    res.json(getPublicConfig());
+    sendPublicConfig(res);
 });
 
 /**
  * GET /api/admin/site-config
  * Admin-only read of public config
  */
-router.get('/admin/site-config', requireAuth, requireAdmin, (req, res) => {
-    res.json(getPublicConfig());
+router.get('/admin/site-config', requireAuth, requireAdmin, (_req, res) => {
+    sendPublicConfig(res);
 });
 
 /**
@@ -191,6 +199,32 @@ router.get('/admin/stats', requireAuth, requireAdmin, async (req, res) => {
             todayRequestsMap[tr.firebase_uid] = tr.today_count;
         });
 
+        // 4b. Get study progress aggregates
+        const studyProgress = db.prepare(`
+            SELECT
+                firebase_uid as uid,
+                COALESCE(SUM(time_spent_seconds), 0) as study_time_seconds,
+                SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completed_items,
+                MAX(strftime('%s', updated_at)) as last_study_at
+            FROM user_progress
+            GROUP BY firebase_uid
+        `).all();
+        const studyProgressMap = {};
+        studyProgress.forEach(entry => {
+            studyProgressMap[entry.uid] = entry;
+        });
+
+        const userPresenceRows = db.prepare(`
+            SELECT
+                firebase_uid as uid,
+                COALESCE(last_seen_at, strftime('%s', updated_at)) as last_seen_at
+            FROM users
+        `).all();
+        const userPresenceMap = {};
+        userPresenceRows.forEach(entry => {
+            userPresenceMap[entry.uid] = entry;
+        });
+
         // 5. Merge all user data
         const aiUsageMap = {};
         usersAIUsage.forEach(u => {
@@ -205,9 +239,17 @@ router.get('/admin/stats', requireAuth, requireAdmin, async (req, res) => {
 
         const users = firebaseUsers.map(fbUser => {
             const aiUsage = aiUsageMap[fbUser.uid] || { requests_used: 0, tokens_used: 0, last_activity_at: null };
+            const studyStats = studyProgressMap[fbUser.uid] || { study_time_seconds: 0, completed_items: 0, last_study_at: null };
+            const presenceStats = userPresenceMap[fbUser.uid] || { last_seen_at: null };
             const subscription = subscriptionMap[fbUser.uid];
             const tier = subscription?.tier || 'free';
             const requestsLimit = tier === 'premium' ? 200 : 50;
+            const aiLastActive = normalizeTimestampMs(aiUsage.last_activity_at);
+            const studyLastActive = normalizeTimestampMs(studyStats.last_study_at);
+            const presenceLastActive = normalizeTimestampMs(presenceStats.last_seen_at);
+            const mergedLastActive = [presenceLastActive, aiLastActive, studyLastActive]
+                .filter((value) => Number.isFinite(value) && value > 0)
+                .reduce((latest, value) => Math.max(latest, value), 0) || null;
 
             return {
                 uid: fbUser.uid,
@@ -215,8 +257,10 @@ router.get('/admin/stats', requireAuth, requireAdmin, async (req, res) => {
                 displayName: fbUser.displayName || 'Unknown User',
                 photoURL: fbUser.photoURL || null,
                 createdAt: new Date(fbUser.metadata.creationTime).getTime(),
-                lastActive: normalizeTimestampMs(aiUsage.last_activity_at),
+                lastActive: mergedLastActive,
                 tier: tier,
+                studyTimeSeconds: studyStats.study_time_seconds || 0,
+                completedLessons: studyStats.completed_items || 0,
                 aiUsage: {
                     requestsToday: todayRequestsMap[fbUser.uid] || 0,
                     requestsLimit: requestsLimit,
@@ -234,7 +278,7 @@ router.get('/admin/stats', requireAuth, requireAdmin, async (req, res) => {
             FROM ai_chat_history
         `).get();
 
-        console.log('📊 AI Stats from DB:', aiStats);
+        console.log('ðŸ“Š AI Stats from DB:', aiStats);
 
         // 7. Get provider stats from AIRouter (real-time data with quotas)
         const providerStatsFromRouter = await aiRouter.getProviderStats();
@@ -513,4 +557,55 @@ router.get('/admin/stats', requireAuth, requireAdmin, async (req, res) => {
     }
 });
 
+
+router.post('/admin/oiko-news/run', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        const step = ['collect', 'compose', 'send', 'all'].includes(String(req.body?.step || 'all'))
+            ? String(req.body?.step || 'all')
+            : 'all';
+        const editionDate = typeof req.body?.date === 'string' ? req.body.date : undefined;
+        const dryRun = Boolean(req.body?.dryRun);
+        const result = await runPipeline({ editionDate, step, dryRun });
+        res.json({ success: true, result });
+    } catch (error) {
+        console.error('Admin Oiko run error:', error);
+        res.status(500).json({ error: 'Failed to run Oiko pipeline', details: process.env.NODE_ENV === 'development' ? error.message : undefined });
+    }
+});
+
+router.get('/admin/oiko-news/preview/:date', requireAuth, requireAdmin, (req, res) => {
+    try {
+        const preview = getEditionPreview(req.params.date);
+        if (!preview) {
+            return res.status(404).json({ error: 'Edition not found' });
+        }
+        res.json({ preview });
+    } catch (error) {
+        console.error('Admin Oiko preview error:', error);
+        res.status(500).json({ error: 'Failed to fetch Oiko preview' });
+    }
+});
+
+router.get('/admin/oiko-news/runs/:date', requireAuth, requireAdmin, (req, res) => {
+    try {
+        const runs = getRunsByDate(req.params.date);
+        res.json({ runs });
+    } catch (error) {
+        console.error('Admin Oiko runs error:', error);
+        res.status(500).json({ error: 'Failed to fetch Oiko runs' });
+    }
+});
+
+router.get('/admin/oiko-news/overview', requireAuth, requireAdmin, (req, res) => {
+    try {
+        const requestedDate = typeof req.query?.date === 'string' ? req.query.date : undefined;
+        const overview = getOikoAdminOverview(requestedDate);
+        res.json({ overview });
+    } catch (error) {
+        console.error('Admin Oiko overview error:', error);
+        res.status(500).json({ error: 'Failed to fetch Oiko overview', details: process.env.NODE_ENV === 'development' ? error.message : undefined });
+    }
+});
 export default router;
+
+

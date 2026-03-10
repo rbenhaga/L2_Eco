@@ -10,18 +10,23 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { progressService } from '../services/progressService';
+import { getScrollableProgressMetrics } from '../utils/scrollMetrics';
 
 interface UseChapterProgressOptions {
     moduleId: string;
     chapterId: string;
     estimatedMinutes?: number;
     enabled?: boolean;
+    minimumReadPercentage?: number;
+    minimumQCMScore?: number;
 }
 
 export function useChapterProgress({
     moduleId,
     chapterId,
     enabled = true,
+    minimumReadPercentage,
+    minimumQCMScore,
 }: UseChapterProgressOptions) {
     const [progress, setProgress] = useState(() =>
         progressService.getChapter(moduleId, chapterId)
@@ -50,6 +55,10 @@ export function useChapterProgress({
     useEffect(() => {
         if (!enabled) return;
 
+        progressService.configureChapter(moduleId, chapterId, {
+            minimumReadPercentage,
+            minimumQCMScore,
+        });
         progressService.startReading(moduleId, chapterId);
         startTimeRef.current = Date.now();
         isVisibleRef.current = document.visibilityState === 'visible';
@@ -88,6 +97,14 @@ export function useChapterProgress({
         };
     }, [moduleId, chapterId, enabled]);
 
+    useEffect(() => {
+        if (!enabled) return;
+
+        return progressService.subscribe(() => {
+            setProgress(progressService.getChapter(moduleId, chapterId));
+        });
+    }, [moduleId, chapterId, enabled]);
+
     // Periodic flush every 10 seconds (only counts foreground time)
     useEffect(() => {
         if (!enabled) return;
@@ -110,11 +127,12 @@ export function useChapterProgress({
     useEffect(() => {
         if (!enabled) return;
 
+        const scrollContainer = document.querySelector<HTMLElement>('.app-scroll-container');
+
         const handleScroll = () => {
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            const scrollTop = window.scrollY;
-            const scrollableHeight = Math.max(0, documentHeight - windowHeight);
+            const metrics = scrollContainer ? getScrollableProgressMetrics(scrollContainer) : null;
+            const scrollTop = metrics?.scrollTop ?? window.scrollY;
+            const scrollableHeight = metrics?.scrollableHeight ?? Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
 
             const scrollPercentage = scrollableHeight > 0
                 ? Math.floor(Math.min(100, (scrollTop / scrollableHeight) * 100))
@@ -136,15 +154,16 @@ export function useChapterProgress({
             }
         };
 
-        window.addEventListener('scroll', throttledScroll, { passive: true });
+        const scrollTarget: HTMLElement | Window = scrollContainer ?? window;
+        scrollTarget.addEventListener('scroll', throttledScroll, { passive: true });
 
         // Check initial scroll position
         handleScroll();
 
         return () => {
-            window.removeEventListener('scroll', throttledScroll);
+            scrollTarget.removeEventListener('scroll', throttledScroll);
         };
-    }, [moduleId, chapterId, enabled]);
+    }, [moduleId, chapterId, enabled, minimumReadPercentage, minimumQCMScore]);
 
     return {
         progress,

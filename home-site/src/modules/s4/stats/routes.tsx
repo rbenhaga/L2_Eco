@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { PremiumRoute } from '../../../components/auth/PremiumRoute';
 
 const StatsLayout = lazy(() => import('./layouts/StatsLayout').then(m => ({ default: m.StatsLayout })));
 const StatsHome = lazy(() => import('./pages/Home').then(m => ({ default: m.StatsHome })));
@@ -25,13 +26,13 @@ export function StatsRoutes() {
             <Routes>
                 <Route element={<StatsLayout />}>
                     <Route index element={<StatsHome />} />
-                    <Route path="chapitre-6" element={<Chapter6 />} />
-                    <Route path="chapitre-7" element={<Chapter7 />} />
-                    <Route path="chapitre-8" element={<Chapter8 />} />
-                    <Route path="chapitre-9" element={<Chapter9 />} />
-                    <Route path="chapitre-10" element={<Chapter10 />} />
-                    <Route path="chapitre-11" element={<Chapter11 />} />
-                    <Route path="correction-td-3" element={<CorrectionTD3 />} />
+                    <Route path="chapitre-6" element={<PremiumRoute fallbackTo="/s4/stats"><Chapter6 /></PremiumRoute>} />
+                    <Route path="chapitre-7" element={<PremiumRoute fallbackTo="/s4/stats"><Chapter7 /></PremiumRoute>} />
+                    <Route path="chapitre-8" element={<PremiumRoute fallbackTo="/s4/stats"><Chapter8 /></PremiumRoute>} />
+                    <Route path="chapitre-9" element={<PremiumRoute fallbackTo="/s4/stats"><Chapter9 /></PremiumRoute>} />
+                    <Route path="chapitre-10" element={<PremiumRoute fallbackTo="/s4/stats"><Chapter10 /></PremiumRoute>} />
+                    <Route path="chapitre-11" element={<PremiumRoute fallbackTo="/s4/stats"><Chapter11 /></PremiumRoute>} />
+                    <Route path="correction-td-3" element={<PremiumRoute fallbackTo="/s4/stats"><CorrectionTD3 /></PremiumRoute>} />
                 </Route>
             </Routes>
         </Suspense>

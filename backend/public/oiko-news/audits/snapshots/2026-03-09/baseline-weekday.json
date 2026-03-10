@@ -1,0 +1,337 @@
+{
+  "content_version": "v2.1",
+  "email_subject": "Oiko News — 2026-03-09",
+  "preview_text": "Taux, croissance, energie et commerce: les signaux qui structurent vraiment la matinee macro.",
+  "date_label": "2026-03-09",
+  "header_visual": {
+    "section_key": "header_visual",
+    "asset_type": "header",
+    "image_url": "http://localhost:3001/static/oiko-news/images/2026-03-09/header_visual-pexels-c5997794.jpg",
+    "alt_text": "Salle de marché, presse économique et écrans au lever du jour",
+    "credit_line": "Crédit : Pexels / Marija Piliskic",
+    "provider": "pexels",
+    "source_url": "https://www.pexels.com/photo/scenic-view-of-notre-dame-and-seine-river-in-paris-33935421/",
+    "width": 3840,
+    "height": 2560
+  },
+  "intro": {
+    "paragraphs": [
+      {
+        "parts": [
+          {
+            "text": "La BCE insiste sur le ralentissement de l’inflation sous-jacente et sur des conditions de crédit plus calmes, ce qui no… Les créations d’emplois restent positives mais moins vives, tandis que la progression des salaires se tasse. Le signal… Le commerce extérieur chinois décélère tandis que la demande intérieure reste faible, ce qui entretient les doutes sur…"
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Le marche lit donc la meme matinee sous plusieurs angles a la fois: bce, états-unis, commerce. C'est ce croisement qui donne la vraie hierarchie du jour."
+          }
+        ]
+      }
+    ],
+    "signature": "La redaction Oiko"
+  },
+  "opening_brief": {
+    "title": "À l’ouverture",
+    "items": [
+      {
+        "label": "BCE",
+        "parts": [
+          {
+            "text": "La BCE insiste sur le ralentissement de l’inflation sous-jacente et sur des conditions de crédit plus calmes, ce qui nourrit l’idée d’un assouplissement gradue…"
+          }
+        ]
+      },
+      {
+        "label": "États-Unis",
+        "parts": [
+          {
+            "text": "Les créations d’emplois restent positives mais moins vives, tandis que la progression des salaires se tasse. Le signal alimente le débat sur un atterrissage pl…"
+          }
+        ]
+      },
+      {
+        "label": "Commerce",
+        "parts": [
+          {
+            "text": "Le commerce extérieur chinois décélère tandis que la demande intérieure reste faible, ce qui entretient les doutes sur la solidité de la reprise malgré le sout…"
+          }
+        ]
+      },
+      {
+        "label": "Commerce",
+        "parts": [
+          {
+            "text": "De nouvelles discussions sur les droits de douane ravivent l’incertitude pour les chaînes d’approvisionnement et les coûts à l’importation."
+          }
+        ]
+      }
+    ]
+  },
+  "markets_section": {
+    "title": "Sur les marchés",
+    "charts": [
+      {
+        "key": "actions",
+        "title": "Bourse",
+        "image_url": "http://localhost:3001/static/oiko-news/charts/2026-03-09/actions.png",
+        "alt_text": "Évolution récente des marchés actions"
+      },
+      {
+        "key": "crypto",
+        "title": "Crypto",
+        "image_url": "http://localhost:3001/static/oiko-news/charts/2026-03-09/crypto.png",
+        "alt_text": "Évolution récente du marché crypto"
+      }
+    ],
+    "paragraphs": [
+      {
+        "label": "Marchés",
+        "parts": [
+          {
+            "text": "Marchés actions avant ouverture, dernière clôture disponible. Le marche reste pris entre detente graduelle sur les prix, activite moins franche et retour de quelques points de friction exterieurs."
+          }
+        ]
+      },
+      {
+        "label": "Valeur",
+        "parts": [
+          {
+            "text": "Cote actions, la lecture dominante reste celle du cout du capital: les secteurs les plus sensibles aux taux respirent si la desinflation tient, mais ils restent exposes a tout signal de reprise des couts importes."
+          }
+        ]
+      },
+      {
+        "label": "Crypto",
+        "parts": [
+          {
+            "text": "Cote crypto, les mouvements traduisent surtout le climat general de risque et de liquidite. Sans catalyseur autonome confirme dans la selection du jour, la classe d'actifs reste un thermometre secondaire de l'appetit pour le risque."
+          }
+        ]
+      }
+    ]
+  },
+  "lead_story": {
+    "kicker": "Banques centrales",
+    "title": "La BCE prépare un ton plus souple face au reflux de l’inflation",
+    "visual": {
+      "section_key": "lead_story",
+      "asset_type": "lead_image",
+      "image_url": "http://localhost:3001/static/oiko-news/images/2026-03-09/lead_story-pexels-c5997794.jpg",
+      "alt_text": "Siège de la Banque centrale européenne à Francfort",
+      "credit_line": "Crédit : Pexels / Marija Piliskic",
+      "provider": "pexels",
+      "source_url": "https://www.pexels.com/photo/scenic-view-of-notre-dame-and-seine-river-in-paris-33935421/",
+      "width": 3840,
+      "height": 2560
+    },
+    "paragraphs": [
+      {
+        "parts": [
+          {
+            "text": "La BCE insiste sur le ralentissement de l’inflation sous-jacente et sur des conditions de crédit plus calmes, ce qui nourrit l’idée d’un assouplissement graduel si les prochains indicateurs confirment la tendance.. Le sujet central, ce matin, est la maniere dont ce signal change la lecture immediate du cycle plutot qu'un simple effet de manche. "
+          },
+          {
+            "text": "(Reuters)",
+            "href": "https://reuters.com/oiko/2026-03-09/bce-ton-plus-souple"
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Plusieurs indicateurs européens confirment un ralentissement de l’inflation, ce qui conforte la BCE dans une ligne plus souple. Ce deuxieme element compte parce qu'il donne de l'epaisseur au scenario principal au lieu de laisser le marche face a un seul titre."
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Marchés actions avant ouverture, dernière clôture disponible. Dans ce contexte, le grand angle agit surtout comme un test de hierarchie des risques: ce qui semblait secondaire hier peut redevenir le point d'ancrage des anticipations de taux, de croissance ou de prix."
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Les créations d’emplois restent positives mais moins vives, tandis que la progression des salaires se tasse. Le signal alimente le débat sur un atterrissage plus doux de l’économie américaine. Ce signal adjacent empeche une lecture trop simple du dossier principal, parce qu'il rappelle que la journee ne se resume pas a une seule variable."
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Le commerce extérieur chinois décélère tandis que la demande intérieure reste faible, ce qui entretient les doutes sur la solidité de la reprise malgré le soutien des autorités. C'est la que se situe la fragilite du scenario central: un facteur exterieur peut tres vite reinjecter de la tension dans une sequence qui paraissait se detendre."
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "The ECB notes continued disinflation and tighter but stabilising financing conditions across the euro area. La prochaine etape sera de voir si les publications officielles prolongent ce mouvement ou si le signal du jour reste isole."
+          }
+        ]
+      }
+    ],
+    "signature": "Redaction Oiko"
+  },
+  "radar_section": {
+    "title": "Le radar",
+    "visual": {
+      "section_key": "radar_section",
+      "asset_type": "radar_image",
+      "image_url": "http://localhost:3001/static/oiko-news/images/2026-03-09/radar_section-pexels-bdc7d3fd.jpg",
+      "alt_text": "Façade d’une institution économique américaine à Washington",
+      "credit_line": "Crédit : Pexels / Lee chinyama",
+      "provider": "pexels",
+      "source_url": "https://www.pexels.com/photo/red-car-parked-near-building-9162116/",
+      "width": 2738,
+      "height": 1825
+    },
+    "items": [
+      {
+        "title": "L’emploi américain ralentit, avec des salaires moins dynamiques",
+        "paragraphs": [
+          {
+            "parts": [
+              {
+                "text": "Les créations d’emplois restent positives mais moins vives, tandis que la progression des salaires se tasse. Le signal alimente le débat sur un atterrissage plus doux de l’économie américaine. Le sujet merite sa place ici parce qu'il inflechit la lecture du scenario central sans prendre toute la couverture a lui seul. "
+              },
+              {
+                "text": "(AP)",
+                "href": "https://apnews.com/oiko/2026-03-09/emploi-americain-ralentit"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Les exportations chinoises perdent en élan malgré le soutien public",
+        "paragraphs": [
+          {
+            "parts": [
+              {
+                "text": "Le commerce extérieur chinois décélère tandis que la demande intérieure reste faible, ce qui entretient les doutes sur la solidité de la reprise malgré le soutien des autorités. Le sujet merite sa place ici parce qu'il inflechit la lecture du scenario central sans prendre toute la couverture a lui seul. "
+              },
+              {
+                "text": "(Financial Times)",
+                "href": "https://ft.com/oiko/2026-03-09/exportations-chinoises-ralentissent"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "carnet_section": {
+    "title": "Le carnet",
+    "visual": {
+      "section_key": "carnet_section",
+      "asset_type": "carnet_image",
+      "image_url": "http://localhost:3001/static/oiko-news/images/2026-03-09/carnet_section-pexels-de4c6513.jpg",
+      "alt_text": "Portiques douaniers et conteneurs dans une zone logistique",
+      "credit_line": "Crédit : Pexels / Téméraire Marketing Luxembourg",
+      "provider": "pexels",
+      "source_url": "https://www.pexels.com/photo/modern-architecture-in-esch-sur-alzette-luxembourg-36390209/",
+      "width": 4032,
+      "height": 2268
+    },
+    "items": [
+      {
+        "title": "Washington relance les discussions tarifaires sur plusieurs biens industriels",
+        "paragraphs": [
+          {
+            "parts": [
+              {
+                "text": "De nouvelles discussions sur les droits de douane ravivent l’incertitude pour les chaînes d’approvisionnement et les coûts à l’importation. Ce point compte surtout pour les couts, l'investissement ou l'allocation sectorielle a surveiller dans la journee. "
+              },
+              {
+                "text": "(Reuters)",
+                "href": "https://reuters.com/oiko/2026-03-09/washington-discussions-tarifaires"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Le FMI alerte sur une croissance mondiale encore freinée par les tensions commerciales",
+        "paragraphs": [
+          {
+            "parts": [
+              {
+                "text": "Le FMI souligne que l’investissement et le commerce mondial restent fragiles dans un environnement de tensions commerciales persistantes. Ce point compte surtout pour les couts, l'investissement ou l'allocation sectorielle a surveiller dans la journee. "
+              },
+              {
+                "text": "(IMF)",
+                "href": "https://imf.org/oiko/2026-03-09/fmi-croissance-mondiale-tensions-commerciales"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "briefs_section": {
+    "title": "En bref",
+    "items": [
+      {
+        "parts": [
+          {
+            "text": "L’OCDE voit une reprise de productivité encore trop inégale entre secteurs — "
+          },
+          {
+            "text": "L’OCDE observe une reprise de productivité trop inégale pour soutenir durablement la croissance potentielle.",
+            "href": "https://oecd.org/oiko/2026-03-09/ocde-productivite-inegale"
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Le pétrole remonte avec les tensions sur les routes maritimes — "
+          },
+          {
+            "text": "Les cours du pétrole repartent à la hausse alors que des tensions sur les routes maritimes alimentent les craintes sur l’offre. Le mouvement ravive l…",
+            "href": "https://bloomberg.com/oiko/2026-03-09/petrole-routes-maritimes"
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "L’Allemagne annonce un plan d’investissement ciblé sur l’industrie — "
+          },
+          {
+            "text": "Berlin présente un plan d’investissement public tourné vers l’industrie, l’énergie et la défense, avec l’objectif de soutenir la capacité productive…",
+            "href": "https://lesechos.fr/oiko/2026-03-09/allemagne-plan-investissement-industrie"
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Les ventes de détail de la zone euro se redressent légèrement — "
+          },
+          {
+            "text": "Eurostat signale un léger redressement des ventes de détail dans la zone euro, un indicateur utile pour suivre la consommation des ménages après plus…",
+            "href": "https://ec.europa.eu/oiko/2026-03-09/zone-euro-ventes-detail"
+          }
+        ]
+      }
+    ]
+  },
+  "footer_sources_note": {
+    "parts": [
+      {
+        "text": "Sources integrees dans les liens du texte. "
+      },
+      {
+        "text": "Reuters",
+        "href": "https://reuters.com/oiko/2026-03-09/bce-ton-plus-souple"
+      }
+    ]
+  },
+  "footer_disclaimer": "Contenu pedagogique. Pas de conseil en investissement."
+}

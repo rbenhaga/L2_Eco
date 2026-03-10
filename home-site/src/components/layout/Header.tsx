@@ -8,6 +8,7 @@ import {
   FileText,
   GraduationCap,
   Home,
+  Newspaper,
   LogOut,
   Menu,
   Sparkles,
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { ThemeToggle } from "../ThemeToggle";
+import { resolveCourseEntryPath } from "../../utils/courseEntryPath";
 
 const SITE_NAME = "Oikonomia";
 const TYPE_SPEED_MS = 62;
@@ -37,13 +39,16 @@ export function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, loading, signOut } = useAuth();
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
   const typedName = SITE_NAME.slice(0, typedCount);
-  const isInApp = !["/", "/login", "/pricing", "/programme"].includes(location.pathname);
+  const isInApp = /^\/s[34](?:\/|$)/i.test(location.pathname);
+  const showNotifications = false;
 
   const navLinks = [
     { label: "Accueil", href: "/", icon: Home },
     { label: "Programme", href: "/programme", icon: BookOpen },
+    { label: "Oiko News", href: "/oiko-news", icon: Newspaper },
     { label: "Tarifs", href: "/pricing", icon: BadgeEuro },
   ] as const;
 
@@ -111,6 +116,15 @@ export function Header() {
     await signOut();
     setIsUserMenuOpen(false);
     navigate("/");
+  };
+
+  const handleOpenCourses = async () => {
+    if (!user?.uid) return;
+
+    const targetPath = await resolveCourseEntryPath(user.uid, apiUrl);
+    setIsMobileMenuOpen(false);
+    setIsUserMenuOpen(false);
+    navigate(targetPath);
   };
 
   return (
@@ -195,7 +209,7 @@ export function Header() {
             {user && (
               <button
                 type="button"
-                onClick={() => navigate("/macro")}
+                onClick={() => { void handleOpenCourses(); }}
                 className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-150"
                 style={{ color: "var(--color-text-secondary)", border: "1px solid var(--color-border-default)" }}
               >
@@ -204,7 +218,7 @@ export function Header() {
               </button>
             )}
 
-            {isInApp && (
+            {showNotifications && (
               <div className="relative" ref={notifRef}>
                 <button
                   type="button"
@@ -342,7 +356,7 @@ export function Header() {
                             </p>
                           </div>
                           <span className="ml-2 px-2 py-0.5 rounded-full text-[10px] font-semibold" style={{ background: "var(--color-bg-overlay)", color: "var(--color-text-secondary)" }}>
-                            FREE
+                            {user.subscriptionTier === "premium" ? "PREMIUM" : "FREE"}
                           </span>
                         </div>
                       </button>
@@ -461,6 +475,11 @@ export function Header() {
     </header>
   );
 }
+
+
+
+
+
 
 
 

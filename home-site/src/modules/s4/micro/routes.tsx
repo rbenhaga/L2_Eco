@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { PremiumRoute } from '../../../components/auth/PremiumRoute';
 
 const MicroLayout = lazy(() => import('./layouts/MicroLayout').then(m => ({ default: m.MicroLayout })));
 const MicroHome = lazy(() => import('./pages/Home').then(m => ({ default: m.MicroHome })));
@@ -23,9 +24,9 @@ export function MicroRoutes() {
                 <Route element={<MicroLayout />}>
                     <Route index element={<MicroHome />} />
                     <Route path="chapitre-1" element={<Chapter1 />} />
-                    <Route path="chapitre-2" element={<Chapter2 />} />
-                    <Route path="chapitre-3" element={<Chapter3 />} />
-                    <Route path="chapitre-4" element={<Chapter4 />} />
+                    <Route path="chapitre-2" element={<PremiumRoute fallbackTo="/s4/micro"><Chapter2 /></PremiumRoute>} />
+                    <Route path="chapitre-3" element={<PremiumRoute fallbackTo="/s4/micro"><Chapter3 /></PremiumRoute>} />
+                    <Route path="chapitre-4" element={<PremiumRoute fallbackTo="/s4/micro"><Chapter4 /></PremiumRoute>} />
                 </Route>
             </Routes>
         </Suspense>

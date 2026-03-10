@@ -1,0 +1,31 @@
+{
+  "baseEditionDate": "2026-03-09",
+  "overallPassed": true,
+  "scenarios": [
+    {
+      "name": "baseline-weekday",
+      "editionDate": "2026-03-09",
+      "fixtureMode": "baseline",
+      "passed": true,
+      "failedAssertions": [],
+      "reportPath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\audits\\2026-03-09-baseline.json"
+    },
+    {
+      "name": "baseline-weekend",
+      "editionDate": "2026-03-14",
+      "fixtureMode": "baseline",
+      "passed": true,
+      "failedAssertions": [],
+      "reportPath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\audits\\2026-03-14-baseline.json"
+    },
+    {
+      "name": "low-evidence",
+      "editionDate": "2026-03-06",
+      "fixtureMode": "low-evidence",
+      "passed": true,
+      "failedAssertions": [],
+      "reportPath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\audits\\2026-03-06-low-evidence.json"
+    }
+  ],
+  "generatedAt": "2026-03-09T11:13:54.279Z"
+}

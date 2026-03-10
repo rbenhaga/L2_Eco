@@ -1,10 +1,19 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Loader2, Headphones } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+    Headphones,
+    Loader2,
+    Pause,
+    Play,
+    SkipBack,
+    SkipForward,
+    Volume2,
+    VolumeX,
+} from 'lucide-react';
 
 interface WordBoundary {
     word: string;
-    offset: number; // ms
-    duration: number; // ms
+    offset: number;
+    duration: number;
 }
 
 interface AudioPlayerProps {
@@ -20,7 +29,7 @@ export function AudioPlayer({
     segmentId,
     onWordHighlight,
     onTimeUpdate,
-    compact = false
+    compact = false,
 }: AudioPlayerProps) {
     const audioRef = useRef<HTMLAudioElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -33,7 +42,6 @@ export function AudioPlayer({
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
-    // Fetch word boundaries metadata
     useEffect(() => {
         if (!segmentId) return;
 
@@ -54,14 +62,13 @@ export function AudioPlayer({
         fetchMetadata();
     }, [segmentId, API_URL]);
 
-    // Update current word based on playback time
     useEffect(() => {
         if (!isPlaying || wordBoundaries.length === 0) return;
 
         const currentMs = currentTime * 1000;
         let newIndex = -1;
 
-        for (let i = 0; i < wordBoundaries.length; i++) {
+        for (let i = 0; i < wordBoundaries.length; i += 1) {
             const wb = wordBoundaries[i];
             if (currentMs >= wb.offset && currentMs < wb.offset + wb.duration) {
                 newIndex = i;
@@ -75,7 +82,7 @@ export function AudioPlayer({
                 onWordHighlight(newIndex, wordBoundaries[newIndex].word);
             }
         }
-    }, [currentTime, isPlaying, wordBoundaries, currentWordIndex, onWordHighlight]);
+    }, [currentTime, currentWordIndex, isPlaying, onWordHighlight, wordBoundaries]);
 
     const handleTimeUpdate = useCallback(() => {
         if (audioRef.current) {
@@ -93,15 +100,24 @@ export function AudioPlayer({
     };
 
     const handlePlay = () => {
-        if (audioRef.current) {
-            if (isPlaying) {
-                audioRef.current.pause();
-            } else {
-                setIsLoading(true);
-                audioRef.current.play().then(() => setIsLoading(false));
-            }
-            setIsPlaying(!isPlaying);
+        if (!audioRef.current) return;
+
+        if (isPlaying) {
+            audioRef.current.pause();
+            setIsPlaying(false);
+            return;
         }
+
+        setIsLoading(true);
+        audioRef.current.play()
+            .then(() => {
+                setIsPlaying(true);
+                setIsLoading(false);
+            })
+            .catch(() => {
+                setIsLoading(false);
+                setIsPlaying(false);
+            });
     };
 
     const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,11 +140,31 @@ export function AudioPlayer({
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
-    // No audio URL — placeholder
     if (!audioUrl) {
-        return (
+        return compact ? (
+            <span
+                className="inline-flex min-h-11 items-center gap-3 rounded-xl border px-3 py-2.5"
+                style={{
+                    background: 'var(--color-bg-raised)',
+                    borderColor: 'var(--color-border-default)',
+                    color: 'var(--color-text-muted)',
+                    opacity: 0.72,
+                }}
+            >
+                <span
+                    className="flex h-8 w-8 items-center justify-center rounded-lg"
+                    style={{ background: 'var(--color-bg-overlay)' }}
+                >
+                    <Headphones className="h-4 w-4" />
+                </span>
+                <span className="min-w-0">
+                    <span className="block text-sm font-semibold">Audio</span>
+                    <span className="block text-[11px]">Bientôt disponible</span>
+                </span>
+            </span>
+        ) : (
             <div
-                className="flex items-center gap-3 p-4 rounded-xl"
+                className="flex items-center gap-3 rounded-xl border p-4"
                 style={{
                     background: 'var(--color-card)',
                     border: '1px solid var(--color-border-default)',
@@ -136,72 +172,76 @@ export function AudioPlayer({
                 }}
             >
                 <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg"
                     style={{ background: 'var(--color-bg-overlay)' }}
                 >
                     <Headphones className="h-5 w-5" style={{ color: 'var(--color-text-muted)' }} />
                 </div>
                 <span className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-                    Audio bientôt disponible
+                    Audio indisponible
                 </span>
             </div>
         );
     }
 
-    // Compact version
     if (compact) {
         return (
-            <div className="flex items-center gap-2">
+            <div
+                className="inline-flex min-h-11 items-center gap-3 rounded-xl border px-2.5 py-2"
+                style={{ borderColor: 'var(--color-border-default)', background: 'var(--color-bg-raised)' }}
+            >
                 <audio
                     ref={audioRef}
                     src={audioUrl}
                     onTimeUpdate={handleTimeUpdate}
                     onLoadedMetadata={handleLoadedMetadata}
                     onEnded={() => setIsPlaying(false)}
+                    muted={isMuted}
                 />
                 <button
+                    type="button"
                     onClick={handlePlay}
-                    className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
-                    style={{ background: 'var(--color-accent)', color: 'var(--color-bg-raised)' }}
+                    className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors"
+                    style={{ background: 'var(--color-accent)', color: 'var(--color-accent-foreground)' }}
+                    aria-label={isPlaying ? 'Mettre en pause l’audio' : 'Lancer l’audio'}
                 >
                     {isLoading ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
                     ) : isPlaying ? (
                         <Pause className="h-4 w-4" />
                     ) : (
-                        <Play className="h-4 w-4 ml-0.5" />
+                        <Play className="ml-0.5 h-4 w-4" />
                     )}
                 </button>
-                <span className="text-xs tabular-nums" style={{ color: 'var(--color-text-muted)' }}>
-                    {formatTime(currentTime)} / {formatTime(duration)}
+                <span className="min-w-0">
+                    <span className="block text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+                        Audio
+                    </span>
+                    <span className="block text-[11px] tabular-nums" style={{ color: 'var(--color-text-muted)' }}>
+                        {duration > 0 ? `${formatTime(currentTime)} / ${formatTime(duration)}` : 'Chargement...'}
+                    </span>
                 </span>
             </div>
         );
     }
 
-    // Full version — premium card
     const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
 
     return (
         <div
-            className="rounded-2xl overflow-hidden"
+            className="overflow-hidden rounded-2xl"
             style={{
                 background: 'var(--color-card)',
                 boxShadow: 'var(--shadow-md)',
                 border: '1px solid var(--color-border-subtle)',
             }}
         >
-            {/* Accent top bar */}
-            <div
-                className="h-1"
-                style={{ background: 'var(--callout-intuition-border)' }}
-            />
+            <div className="h-1" style={{ background: 'var(--callout-intuition-border)' }} />
 
             <div className="p-5">
-                {/* Header */}
-                <div className="flex items-center gap-2 mb-4">
+                <div className="mb-4 flex items-center gap-2">
                     <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg"
                         style={{ background: 'var(--callout-intuition-bg)' }}
                     >
                         <Headphones className="h-4 w-4" style={{ color: 'var(--callout-intuition-text)' }} />
@@ -220,7 +260,6 @@ export function AudioPlayer({
                     muted={isMuted}
                 />
 
-                {/* Progress bar */}
                 <div className="mb-4">
                     <input
                         type="range"
@@ -228,12 +267,12 @@ export function AudioPlayer({
                         max={duration || 100}
                         value={currentTime}
                         onChange={handleSeek}
-                        className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
+                        className="h-1.5 w-full cursor-pointer appearance-none rounded-full"
                         style={{
                             background: `linear-gradient(to right, var(--color-accent) ${progressPercent}%, var(--color-border-default) ${progressPercent}%)`,
                         }}
                     />
-                    <div className="flex justify-between mt-1">
+                    <div className="mt-1 flex justify-between">
                         <span className="text-xs tabular-nums" style={{ color: 'var(--color-text-muted)' }}>
                             {formatTime(currentTime)}
                         </span>
@@ -243,22 +282,23 @@ export function AudioPlayer({
                     </div>
                 </div>
 
-                {/* Controls */}
                 <div className="flex items-center justify-center gap-4">
                     <button
+                        type="button"
                         onClick={() => skip(-10)}
-                        className="p-2 rounded-lg transition-colors"
+                        className="rounded-lg p-2 transition-colors"
                         style={{ color: 'var(--color-text-secondary)' }}
                     >
                         <SkipBack className="h-5 w-5" />
                     </button>
 
                     <button
+                        type="button"
                         onClick={handlePlay}
-                        className="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-105"
+                        className="flex h-12 w-12 items-center justify-center rounded-full transition-all hover:scale-105"
                         style={{
                             background: 'var(--color-accent)',
-                            color: 'var(--color-bg-raised)',
+                            color: 'var(--color-accent-foreground)',
                             boxShadow: '0 4px 16px color-mix(in srgb, var(--color-accent) 25%, transparent)',
                         }}
                     >
@@ -267,21 +307,23 @@ export function AudioPlayer({
                         ) : isPlaying ? (
                             <Pause className="h-6 w-6" />
                         ) : (
-                            <Play className="h-6 w-6 ml-1" />
+                            <Play className="ml-1 h-6 w-6" />
                         )}
                     </button>
 
                     <button
+                        type="button"
                         onClick={() => skip(10)}
-                        className="p-2 rounded-lg transition-colors"
+                        className="rounded-lg p-2 transition-colors"
                         style={{ color: 'var(--color-text-secondary)' }}
                     >
                         <SkipForward className="h-5 w-5" />
                     </button>
 
                     <button
+                        type="button"
                         onClick={() => setIsMuted(!isMuted)}
-                        className="p-2 rounded-lg transition-colors ml-2"
+                        className="ml-2 rounded-lg p-2 transition-colors"
                         style={{ color: 'var(--color-text-secondary)' }}
                     >
                         {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}

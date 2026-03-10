@@ -37,8 +37,12 @@
   }
 }
 
+
+
 @media (prefers-reduced-motion: reduce) {
   .auth-brand-cursor {
     animation: none;
   }
 }
+
+

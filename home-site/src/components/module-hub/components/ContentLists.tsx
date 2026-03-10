@@ -1,17 +1,104 @@
-import { motion } from 'framer-motion';
-import { FileText, CheckCircle2, ChevronRight, Lock } from 'lucide-react';
+﻿import { ChevronRight, Lock } from 'lucide-react';
 import { TD_DATA, QCM_DATA, getSemesterKey, getAnnalesData } from '../utils';
 import type { ModuleId } from '../types';
 
-const staggerItem = (index: number) => ({
-    initial: { opacity: 0, y: 12 },
-    animate: { opacity: 1, y: 0 },
-    transition: {
-        duration: 0.3,
-        delay: index * 0.05,
-        ease: [0.33, 1, 0.68, 1] as const,
-    },
-});
+function ContentCard({
+    kind,
+    title,
+    description,
+    meta,
+    locked,
+    onClick,
+    onMouseEnter,
+    onFocus,
+}: {
+    kind: string;
+    title: string;
+    description?: string;
+    meta?: string;
+    locked?: boolean;
+    onClick: () => void;
+    onMouseEnter?: () => void;
+    onFocus?: () => void;
+}) {
+    return (
+        <button
+            type="button"
+            onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onFocus={onFocus}
+            className="group w-full rounded-2xl border px-2.5 py-2.5 text-left transition-colors duration-200 sm:rounded-[18px] sm:px-4 sm:py-3.5"
+            style={{
+                borderColor: 'var(--color-border-default)',
+                background: 'var(--color-bg-raised)',
+                opacity: locked ? 0.74 : 1,
+            }}
+        >
+            <div className="flex items-start justify-between gap-2.5 sm:gap-3">
+                <div className="min-w-0 flex-1">
+                    <p
+                        className="mb-0.5 text-[9px] font-bold uppercase tracking-[0.14em] sm:mb-1 sm:text-[11px] sm:tracking-[0.16em]"
+                        style={{ color: 'var(--color-text-muted)' }}
+                    >
+                        {kind}
+                    </p>
+                    <h3 className="text-[14px] font-semibold leading-snug sm:text-[15px]" style={{ color: 'var(--color-text-primary)' }}>
+                        {title}
+                    </h3>
+
+                    {description && (
+                        <p
+                            className="mt-1 hidden text-sm sm:block"
+                            style={{
+                                color: 'var(--color-text-secondary)',
+                                lineHeight: 1.45,
+                                display: '-webkit-box',
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                            }}
+                        >
+                            {description}
+                        </p>
+                    )}
+
+                    {meta && (
+                        <span
+                            className="mt-1.5 inline-flex items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.1em] sm:mt-2 sm:px-2 sm:py-1 sm:text-[11px] sm:tracking-[0.12em]"
+                            style={{
+                                background: 'var(--color-bg-overlay)',
+                                color: 'var(--color-text-secondary)',
+                                border: '1px solid var(--color-border-subtle)',
+                            }}
+                        >
+                            {meta}
+                        </span>
+                    )}
+                </div>
+
+                <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+                    <span
+                        className="hidden text-xs font-medium sm:inline"
+                        style={{ color: locked ? 'var(--color-text-muted)' : 'var(--color-text-secondary)' }}
+                    >
+                        {locked ? 'Verrouillé' : 'Ouvrir'}
+                    </span>
+                    <span
+                        className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center sm:h-8 sm:w-8"
+                        style={{ color: 'var(--color-text-muted)' }}
+                        aria-hidden="true"
+                    >
+                        {locked ? (
+                            <Lock className="h-3.5 w-3.5" />
+                        ) : (
+                            <ChevronRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                        )}
+                    </span>
+                </div>
+            </div>
+        </button>
+    );
+}
 
 interface TDListProps {
     moduleId: ModuleId;
@@ -29,72 +116,33 @@ export function TDList({ moduleId, baseRoute, isItemLocked, onLockedItemClick, o
 
     if (tdList.length === 0) {
         return (
-            <div className="text-center py-16">
-                <FileText className="w-12 h-12 mx-auto mb-4 opacity-20" style={{ color: 'var(--color-text-muted)' }} />
-                <p className="text-base font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>Aucun TD disponible</p>
+            <div className="rounded-2xl border px-6 py-12 text-center" style={{ borderColor: 'var(--color-border-default)' }}>
+                <p className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>Aucun TD disponible</p>
+                <p className="mt-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>Les exercices corrigés apparaîtront ici.</p>
             </div>
         );
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+        <div className="mt-5 grid grid-cols-1 gap-2 md:mt-6 md:grid-cols-2 md:gap-3">
             {tdList.map((td, index) => {
                 const item = { id: td.id, route: td.route };
                 const locked = Boolean(isItemLocked?.(item, index));
+
                 return (
-                    <motion.button
+                    <ContentCard
                         key={td.id}
-                        onClick={() => (locked ? onLockedItemClick?.(item) : onItemClick?.(item))}
+                        kind="TD"
+                        title={td.title}
+                        description={td.description}
+                        meta={td.count}
+                        locked={locked}
                         onMouseEnter={() => onItemHover?.(item)}
                         onFocus={() => onItemFocus?.(item)}
-                        className="group w-full text-left relative overflow-hidden"
-                        {...staggerItem(index)}
-                        style={{ background: 'var(--color-bg-raised)', borderRadius: '12px', border: '1px solid var(--color-border-default)', opacity: locked ? 0.8 : 1 }}
-                    >
-                        <div className="absolute left-0 top-0 bottom-0 w-[3px]" style={{ background: 'var(--color-accent)', borderRadius: '12px 0 0 12px' }} />
-                        <div className="flex flex-col gap-3 p-4 pl-5">
-                            <div className="flex items-start gap-3">
-                                <div className="flex items-center justify-center w-9 h-9 shrink-0 mt-0.5" style={{ background: 'var(--color-accent-subtle)', borderRadius: '8px' }}>
-                                    <FileText className="w-[18px] h-[18px]" style={{ color: 'var(--color-accent)' }} />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 flex-wrap">
-                                        <h3 className="text-[15px] font-semibold leading-snug" style={{ color: 'var(--color-text-primary)' }}>{td.title}</h3>
-                                        {locked && (
-                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--color-warning)', background: 'var(--color-warning-subtle)', borderRadius: '4px' }}>
-                                                <Lock className="w-3 h-3" />Premium
-                                            </span>
-                                        )}
-                                    </div>
-                                    <p className="text-[13px] line-clamp-2 mt-1" style={{ color: 'var(--color-text-muted)' }}>{td.description}</p>
-                                </div>
-                            </div>
-                            <div className="flex items-center justify-between pl-12">
-                                <span className="text-[12px] font-medium px-2 py-1" style={{ color: 'var(--color-text-secondary)', background: 'var(--color-bg-overlay)', borderRadius: '6px' }}>{td.count}</span>
-                                <ChevronRight className="w-4 h-4" style={{ color: 'var(--color-accent)' }} />
-                            </div>
-                        </div>
-                    </motion.button>
+                        onClick={() => (locked ? onLockedItemClick?.(item) : onItemClick?.(item))}
+                    />
                 );
             })}
-        </div>
-    );
-}
-
-function ProgressRing({ count }: { count: number }) {
-    const radius = 18;
-    const stroke = 3;
-    const circumference = 2 * Math.PI * radius;
-    const visualProgress = (count % 7) * 0.04;
-    const offset = circumference - visualProgress * circumference;
-
-    return (
-        <div className="relative flex items-center justify-center w-11 h-11 shrink-0">
-            <svg width="44" height="44" viewBox="0 0 44 44" className="absolute inset-0" style={{ transform: 'rotate(-90deg)' }}>
-                <circle cx="22" cy="22" r={radius} fill="none" strokeWidth={stroke} style={{ stroke: 'var(--color-bg-overlay)' }} />
-                <circle cx="22" cy="22" r={radius} fill="none" strokeWidth={stroke} strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset} style={{ stroke: 'var(--color-success)' }} />
-            </svg>
-            <CheckCircle2 className="w-[18px] h-[18px] relative z-10" style={{ color: 'var(--color-success)' }} />
         </div>
     );
 }
@@ -112,42 +160,30 @@ export function QCMList({ moduleId, baseRoute, isItemLocked, onLockedItemClick, 
     const qcmList = QCM_DATA[key] || [];
 
     if (qcmList.length === 0) {
-        return <div className="text-center py-16" style={{ color: 'var(--color-text-secondary)' }}>Aucun QCM disponible</div>;
+        return (
+            <div className="rounded-2xl border px-6 py-12 text-center" style={{ borderColor: 'var(--color-border-default)' }}>
+                <p className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>Aucun QCM disponible</p>
+                <p className="mt-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>Les vérifications rapides apparaîtront ici.</p>
+            </div>
+        );
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+        <div className="mt-5 grid grid-cols-1 gap-2 md:mt-6 md:grid-cols-2 md:gap-3">
             {qcmList.map((qcm, index) => {
                 const item = { id: qcm.id };
                 const locked = Boolean(isItemLocked?.(item, index));
+
                 return (
-                    <motion.button
+                    <ContentCard
                         key={qcm.id}
+                        kind="QCM"
+                        title={qcm.title}
+                        description={qcm.subtitle}
+                        meta={`${qcm.count} questions`}
+                        locked={locked}
                         onClick={() => (locked ? onLockedItemClick?.(item) : onItemClick?.(item))}
-                        className="group w-full text-left relative overflow-hidden"
-                        {...staggerItem(index)}
-                        style={{ background: 'var(--color-bg-raised)', borderRadius: '12px', border: '1px solid var(--color-border-default)', opacity: locked ? 0.8 : 1 }}
-                    >
-                        <div className="flex items-center gap-4 p-4">
-                            <ProgressRing count={qcm.count} />
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 flex-wrap">
-                                    <h3 className="text-[15px] font-semibold mb-1" style={{ color: 'var(--color-text-primary)' }}>{qcm.title}</h3>
-                                    {locked && (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--color-warning)', background: 'var(--color-warning-subtle)', borderRadius: '4px' }}>
-                                            <Lock className="w-3 h-3" />Premium
-                                        </span>
-                                    )}
-                                </div>
-                                <p className="text-[13px] line-clamp-1" style={{ color: 'var(--color-text-muted)' }}>{qcm.subtitle}</p>
-                            </div>
-                            <div className="flex flex-col items-end gap-1 shrink-0">
-                                <span className="text-[20px] font-bold leading-none" style={{ color: 'var(--color-success)' }}>{qcm.count}</span>
-                                <span className="text-[11px] font-medium" style={{ color: 'var(--color-text-muted)' }}>questions</span>
-                            </div>
-                            <ChevronRight className="w-4 h-4 shrink-0" style={{ color: 'var(--color-success)' }} />
-                        </div>
-                    </motion.button>
+                    />
                 );
             })}
         </div>
@@ -168,41 +204,31 @@ export function AnnalesList({ moduleId, baseRoute, isItemLocked, onLockedItemCli
     const annalesList = moduleId ? getAnnalesData(moduleId, baseRoute) : getAnnalesData('stats' as ModuleId);
 
     if (annalesList.length === 0) {
-        return <div className="text-center py-16" style={{ color: 'var(--color-text-secondary)' }}>Aucune annale disponible</div>;
+        return (
+            <div className="rounded-2xl border px-6 py-12 text-center" style={{ borderColor: 'var(--color-border-default)' }}>
+                <p className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>Aucune annale disponible</p>
+                <p className="mt-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>Les sujets d'examen apparaîtront ici.</p>
+            </div>
+        );
     }
 
     return (
-        <div className="grid gap-3 mt-8">
+        <div className="mt-5 grid gap-2 md:mt-6 md:gap-3">
             {annalesList.map((annale, index) => {
                 const locked = Boolean(isItemLocked?.(annale.path, index));
+
                 return (
-                    <motion.button
+                    <ContentCard
                         key={annale.path}
-                        onClick={() => (locked ? onLockedItemClick?.(annale.path) : onItemClick?.(annale.path))}
+                        kind="Annale"
+                        title={annale.title}
+                        description={annale.description}
+                        meta="Sujet + correction"
+                        locked={locked}
                         onMouseEnter={() => onItemHover?.(annale.path)}
                         onFocus={() => onItemFocus?.(annale.path)}
-                        className="group w-full text-left relative overflow-hidden"
-                        {...staggerItem(index)}
-                        style={{ background: 'var(--color-bg-raised)', borderRadius: '12px', border: '1px solid var(--color-border-default)', opacity: locked ? 0.8 : 1 }}
-                    >
-                        <div className="flex items-center gap-4 p-4">
-                            <div className="flex items-center justify-center w-10 h-10 shrink-0" style={{ background: 'var(--color-info-subtle)', borderRadius: '8px' }}>
-                                <FileText className="w-5 h-5" style={{ color: 'var(--color-info)' }} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                    <h3 className="text-[15px] font-semibold" style={{ color: 'var(--color-text-primary)' }}>{annale.title}</h3>
-                                    {locked && (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--color-warning)', background: 'var(--color-warning-subtle)', borderRadius: '4px' }}>
-                                            <Lock className="w-3 h-3" />Premium
-                                        </span>
-                                    )}
-                                </div>
-                                <p className="text-[13px]" style={{ color: 'var(--color-text-muted)' }}>{annale.description}</p>
-                            </div>
-                            <ChevronRight className="w-5 h-5" style={{ color: 'var(--color-info)' }} />
-                        </div>
-                    </motion.button>
+                        onClick={() => (locked ? onLockedItemClick?.(annale.path) : onItemClick?.(annale.path))}
+                    />
                 );
             })}
         </div>

@@ -1,0 +1,363 @@
+{
+  "content_version": "v2",
+  "email_subject": "Oiko News — 2026-03-05",
+  "preview_text": "Les marchés, le grand angle du jour et les signaux macro à retenir sur les dernières 24 heures.",
+  "date_label": "2026-03-05",
+  "header_visual": {
+    "section_key": "header_visual",
+    "asset_type": "header",
+    "image_url": "https://oiko.example/static/oiko-news/images/2026-03-05/header_visual-fallback.png",
+    "alt_text": "Couverture Oiko News du 2026-03-05",
+    "credit_line": "Visuel Oiko News",
+    "provider": "oiko-fallback",
+    "width": 1600,
+    "height": 900
+  },
+  "intro": {
+    "greeting": "Bonjour.",
+    "paragraphs": [
+      {
+        "parts": [
+          {
+            "text": "Oiko News rassemble ce matin les signaux macroéconomiques les plus utiles à retenir sur les dernières 24 heures. L'idée n'est pas d'empiler les titres, mais de donner une lecture claire et dense de la séquence du jour."
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Cette édition V2 reste produite automatiquement, mais en gardant une cadence de vraie newsletter : marchés, grand angle, radar, carnet et derniers signaux à surveiller."
+          }
+        ]
+      }
+    ],
+    "signature": "La rédaction Oiko"
+  },
+  "menu_of_the_day": [
+    {
+      "label": "Sur les marchés",
+      "parts": [
+        {
+          "text": "Marchés actions avant ouverture, dernière clôture disponible. Les grands indices restent pris entre désinflation progre…"
+        }
+      ]
+    },
+    {
+      "label": "Le grand angle",
+      "parts": [
+        {
+          "text": "La BCE prépare un ton plus souple face au reflux de l’inflation"
+        }
+      ]
+    },
+    {
+      "label": "Le radar",
+      "parts": [
+        {
+          "text": "L’emploi américain ralentit, avec des salaires moins dynamiques"
+        }
+      ]
+    },
+    {
+      "label": "Le carnet",
+      "parts": [
+        {
+          "text": "Washington relance les discussions tarifaires sur plusieurs biens industriels"
+        }
+      ]
+    }
+  ],
+  "markets_section": {
+    "title": "Sur les marchés",
+    "charts": [
+      {
+        "key": "actions",
+        "title": "Bourse",
+        "image_url": "https://oiko.example/static/oiko-news/charts/2026-03-05/actions.png",
+        "alt_text": "Évolution récente des marchés actions"
+      },
+      {
+        "key": "crypto",
+        "title": "Crypto",
+        "image_url": "https://oiko.example/static/oiko-news/charts/2026-03-05/crypto.png",
+        "alt_text": "Évolution récente du marché crypto"
+      }
+    ],
+    "paragraphs": [
+      {
+        "label": "Marchés",
+        "parts": [
+          {
+            "text": "Marchés actions avant ouverture, dernière clôture disponible. Les grands indices restent pris entre désinflation progressive, croissance ralentie et aversion au risque."
+          }
+        ]
+      },
+      {
+        "label": "Valeur",
+        "parts": [
+          {
+            "text": "Côté actions, le sujet du jour reste surtout la manière dont les secteurs les plus sensibles aux taux et à l'énergie digèrent les derniers signaux macro."
+          }
+        ]
+      },
+      {
+        "label": "Crypto",
+        "parts": [
+          {
+            "text": "Côté crypto, les mouvements restent à lire comme une traduction du climat général de risque, sans catalyseur unique confirmé dans notre sélection."
+          }
+        ]
+      }
+    ]
+  },
+  "lead_story": {
+    "kicker": "Banques centrales",
+    "title": "La BCE prépare un ton plus souple face au reflux de l’inflation",
+    "visual": {
+      "section_key": "lead_story",
+      "asset_type": "lead_image",
+      "image_url": "https://oiko.example/static/oiko-news/images/2026-03-05/lead_story-fallback.png",
+      "alt_text": "La BCE prépare un ton plus souple face au reflux de l’inflation",
+      "credit_line": "Visuel Oiko News",
+      "provider": "oiko-fallback",
+      "width": 1600,
+      "height": 900
+    },
+    "paragraphs": [
+      {
+        "parts": [
+          {
+            "text": "La BCE souligne un reflux progressif de l’inflation et un marché du crédit plus calme."
+          },
+          {
+            "text": " (Reuters)",
+            "href": "https://reuters.com/oiko/2026-03-05/bce-ton-plus-souple"
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Dans les faits, ce sujet dépasse le simple bruit de marché : il éclaire la façon dont les investisseurs et les décideurs lisent la croissance, les prix ou les politiques publiques."
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Résultat, c'est un bon baromètre de la séquence macro du moment, surtout pour comprendre ce qui peut peser sur les prochains arbitrages monétaires, budgétaires ou commerciaux."
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Un peu de recul. Le bon réflexe consiste maintenant à regarder si les prochaines données confirment cette première lecture ou si l'on reste dans un épisode plus transitoire."
+          }
+        ]
+      }
+    ],
+    "signature": "Rédaction Oiko"
+  },
+  "radar_section": {
+    "title": "Le radar",
+    "visual": {
+      "section_key": "radar_section",
+      "asset_type": "radar_image",
+      "image_url": "https://oiko.example/static/oiko-news/images/2026-03-05/radar_section-fallback.png",
+      "alt_text": "Illustration du radar Oiko",
+      "credit_line": "Visuel Oiko News",
+      "provider": "oiko-fallback",
+      "width": 1600,
+      "height": 900
+    },
+    "items": [
+      {
+        "title": "L’emploi américain ralentit, avec des salaires moins dynamiques",
+        "paragraphs": [
+          {
+            "parts": [
+              {
+                "text": "Le marché du travail américain reste solide mais ralentit légèrement."
+              },
+              {
+                "text": " (AP)",
+                "href": "https://apnews.com/oiko/2026-03-05/emploi-americain-ralentit"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Les exportations chinoises perdent en élan malgré le soutien public",
+        "paragraphs": [
+          {
+            "parts": [
+              {
+                "text": "Les exportations chinoises ralentissent et la demande intérieure reste fragile."
+              },
+              {
+                "text": " (Financial Times)",
+                "href": "https://ft.com/oiko/2026-03-05/exportations-chinoises-ralentissent"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Le pétrole remonte avec les tensions sur les routes maritimes",
+        "paragraphs": [
+          {
+            "parts": [
+              {
+                "text": "Les prix du pétrole repartent à la hausse sur fond de tensions logistiques."
+              },
+              {
+                "text": " (Bloomberg)",
+                "href": "https://bloomberg.com/oiko/2026-03-05/petrole-routes-maritimes"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Washington relance les discussions tarifaires sur plusieurs biens industriels",
+        "paragraphs": [
+          {
+            "parts": [
+              {
+                "text": "De nouvelles discussions sur les droits de douane ravivent l’incertitude pour les chaînes d’approvisionnement et les coûts à l’importation."
+              },
+              {
+                "text": " (Reuters)",
+                "href": "https://reuters.com/oiko/2026-03-05/washington-discussions-tarifaires"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "carnet_section": {
+    "title": "Le carnet",
+    "visual": {
+      "section_key": "carnet_section",
+      "asset_type": "carnet_image",
+      "image_url": "https://oiko.example/static/oiko-news/images/2026-03-05/carnet_section-fallback.png",
+      "alt_text": "Illustration du carnet Oiko",
+      "credit_line": "Visuel Oiko News",
+      "provider": "oiko-fallback",
+      "width": 1600,
+      "height": 900
+    },
+    "items": [
+      {
+        "title": "Washington relance les discussions tarifaires sur plusieurs biens industriels",
+        "paragraphs": [
+          {
+            "parts": [
+              {
+                "text": "De nouvelles discussions sur les droits de douane ravivent l’incertitude pour les chaînes d’approvisionnement et les coûts à l’importation. Bref, ce sujet complète utilement la lecture économique du jour."
+              },
+              {
+                "text": " (Reuters)",
+                "href": "https://reuters.com/oiko/2026-03-05/washington-discussions-tarifaires"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Le FMI alerte sur une croissance mondiale encore freinée par les tensions commerciales",
+        "paragraphs": [
+          {
+            "parts": [
+              {
+                "text": "Le FMI souligne que l’investissement et le commerce mondial restent fragiles dans un environnement de tensions commerciales persistantes. Bref, ce sujet complète utilement la lecture économique du jour."
+              },
+              {
+                "text": " (IMF)",
+                "href": "https://imf.org/oiko/2026-03-05/fmi-croissance-mondiale-tensions-commerciales"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "L’OCDE voit une reprise de productivité encore trop inégale entre secteurs",
+        "paragraphs": [
+          {
+            "parts": [
+              {
+                "text": "L’OCDE observe une reprise de productivité trop inégale pour soutenir durablement la croissance potentielle. Bref, ce sujet complète utilement la lecture économique du jour."
+              },
+              {
+                "text": " (OECD)",
+                "href": "https://oecd.org/oiko/2026-03-05/ocde-productivite-inegale"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "more_news_section": {
+    "title": "À retenir aussi",
+    "items": [
+      {
+        "parts": [
+          {
+            "text": "L’Allemagne annonce un plan d’investissement ciblé sur l’industrie — "
+          },
+          {
+            "text": "Berlin présente un plan d’investissement public centré sur l’industrie.",
+            "href": "https://lesechos.fr/oiko/2026-03-05/allemagne-plan-investissement-industrie"
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "Les ventes de détail de la zone euro se redressent légèrement — "
+          },
+          {
+            "text": "Les ventes de détail se redressent légèrement dans la zone euro.",
+            "href": "https://ec.europa.eu/oiko/2026-03-05/zone-euro-ventes-detail"
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "À retenir 3 — "
+          },
+          {
+            "text": "Autre signal à conserver en arrière-plan pour compléter la lecture du jour."
+          }
+        ]
+      },
+      {
+        "parts": [
+          {
+            "text": "À retenir 4 — "
+          },
+          {
+            "text": "Autre signal à conserver en arrière-plan pour compléter la lecture du jour."
+          }
+        ]
+      }
+    ]
+  },
+  "footer_sources_note": {
+    "parts": [
+      {
+        "text": "Les sources sont intégrées dans certains liens du texte. "
+      },
+      {
+        "text": "Reuters",
+        "href": "https://reuters.com/oiko/2026-03-05/bce-ton-plus-souple"
+      }
+    ]
+  },
+  "footer_disclaimer": "Contenu pédagogique. Pas de conseil en investissement."
+}

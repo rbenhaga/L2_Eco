@@ -1,141 +1,119 @@
-import { motion } from 'framer-motion';
-import { Shield, Lock, Eye, Database, Mail } from 'lucide-react';
-import { useEffect } from 'react';
-import { Header } from "../../components/layout/Header";
-import { Footer } from "../../components/layout/Footer";
-import { BackgroundBlobs } from "../../components/layout/BackgroundBlobs";
+import { InfoPageShell } from "../../components/layout/InfoPageShell";
+import { SITE_IDENTITY } from "../../config/siteIdentity";
 
 export default function PrivacyPolicy() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
-    <div className="min-h-screen antialiased relative" data-theme="light" style={{ background: 'var(--color-bg-base)' }}>
-      <BackgroundBlobs />
-      <div className="relative" style={{ zIndex: 1 }}>
-        <Header />
-        <section className="py-12 sm:py-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl mx-auto px-4 sm:px-6"
-          >
-            <div
-              className="rounded-2xl p-8 md:p-12"
-              style={{
-                background: 'var(--color-bg-raised)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid var(--color-border-default)',
-                boxShadow: 'var(--shadow-lg)'
-              }}
-            >
-              <div className="flex items-center gap-3 mb-8">
-                <Shield className="w-10 h-10" style={{ color: 'var(--color-accent)' }} />
-                <h1 className="text-3xl sm:text-4xl font-bold" style={{
-                  color: 'var(--color-text-primary)',
-                  fontFamily: 'var(--font-serif)'
-                }}>
-                  Politique de Confidentialité
-                </h1>
-              </div>
+    <InfoPageShell
+      kicker="Protection des données"
+      title="Politique de confidentialité"
+      lead="Cadre de traitement des données personnelles conformément au RGPD et à la réglementation française."
+    >
+      <article className="info-page-panel">
+        <p className="info-page-meta">Version en vigueur au {new Date().toLocaleDateString("fr-FR")}</p>
+        <hr className="info-page-divider" />
 
-              <p className="text-sm mb-8" style={{ color: 'var(--color-text-muted)' }}>
-                Dernière mise à jour : {new Date().toLocaleDateString('fr-FR')}
-              </p>
-
-              <div className="space-y-8" style={{ color: 'var(--color-text-secondary)' }}>
-                <section>
-                  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2" style={{ color: 'var(--color-text-primary)' }}>
-                    <Database className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
-                    1. Données Collectées
-                  </h2>
-                  <p className="mb-4">
-                    RevP2 collecte et traite les données suivantes dans le cadre de l'utilisation de notre plateforme :
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 ml-4" style={{ color: 'var(--color-text-secondary)' }}>
-                    <li><strong>Données d'authentification :</strong> Email, nom, photo de profil (via Google OAuth)</li>
-                    <li><strong>Données de navigation :</strong> Pages visitées, temps passé, interactions</li>
-                    <li><strong>Données de paiement :</strong> Gérées exclusivement par Stripe (nous ne stockons aucune donnée bancaire)</li>
-                    <li><strong>Données d'abonnement :</strong> Statut d'abonnement, date d'expiration</li>
-                    <li><strong>Données d'utilisation :</strong> Questions posées à l'IA, quiz réalisés, progression</li>
-                  </ul>
-                </section>
-
-                <section>
-                  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2" style={{ color: 'var(--color-text-primary)' }}>
-                    <Eye className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
-                    2. Utilisation des Données
-                  </h2>
-                  <p className="mb-4">Vos données sont utilisées pour :</p>
-                  <ul className="list-disc list-inside space-y-2 ml-4" style={{ color: 'var(--color-text-secondary)' }}>
-                    <li>Fournir et améliorer nos services éducatifs</li>
-                    <li>Personnaliser votre expérience d'apprentissage</li>
-                    <li>Gérer votre abonnement et vos paiements</li>
-                    <li>Communiquer avec vous (mises à jour, notifications)</li>
-                    <li>Analyser l'utilisation de la plateforme (anonymisé)</li>
-                    <li>Assurer la sécurité et prévenir les abus</li>
-                  </ul>
-                </section>
-
-                <section>
-                  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2" style={{ color: 'var(--color-text-primary)' }}>
-                    <Lock className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
-                    3. Protection des Données
-                  </h2>
-                  <p className="mb-4">
-                    Nous mettons en œuvre des mesures de sécurité strictes :
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 ml-4" style={{ color: 'var(--color-text-secondary)' }}>
-                    <li>Chiffrement SSL/TLS pour toutes les communications</li>
-                    <li>Base de données sécurisée avec accès restreint</li>
-                    <li>Authentification Firebase avec Google OAuth 2.0</li>
-                    <li>Paiements sécurisés via Stripe (certifié PCI DSS)</li>
-                    <li>Sauvegardes régulières et redondance des données</li>
-                  </ul>
-                </section>
-
-                <section>
-                  <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-                    4. Vos Droits (RGPD)
-                  </h2>
-                  <p className="mb-4">
-                    Conformément au RGPD, vous disposez des droits suivants :
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 ml-4" style={{ color: 'var(--color-text-secondary)' }}>
-                    <li><strong>Droit d'accès :</strong> Consulter vos données personnelles</li>
-                    <li><strong>Droit de rectification :</strong> Corriger vos informations</li>
-                    <li><strong>Droit à l'effacement :</strong> Supprimer votre compte et vos données</li>
-                    <li><strong>Droit à la portabilité :</strong> Exporter vos données</li>
-                    <li><strong>Droit d'opposition :</strong> Refuser certains traitements</li>
-                  </ul>
-                  <p className="mt-4">
-                    Pour exercer ces droits : <a href="mailto:privacy@revp2.com" className="hover:underline" style={{ color: 'var(--color-accent)' }}>privacy@revp2.com</a>
-                  </p>
-                </section>
-
-                <section>
-                  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2" style={{ color: 'var(--color-text-primary)' }}>
-                    <Mail className="w-5 h-5" style={{ color: 'var(--color-accent)' }} />
-                    5. Contact
-                  </h2>
-                  <div className="p-6 rounded-xl" style={{ background: 'var(--color-bg-overlay)' }}>
-                    <p className="font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>RevP2 - Protection des Données</p>
-                    <p style={{ color: 'var(--color-text-secondary)' }}>Email : <a href="mailto:privacy@revp2.com" className="hover:underline" style={{ color: 'var(--color-accent)' }}>privacy@revp2.com</a></p>
-                  </div>
-                </section>
-              </div>
-
-              <div className="mt-12 pt-8" style={{ borderTop: '1px solid var(--color-border-default)' }}>
-                <p className="text-sm text-center" style={{ color: 'var(--color-text-muted)' }}>
-                  Cette politique est conforme au RGPD (Règlement UE 2016/679).
-                </p>
-              </div>
-            </div>
-          </motion.div>
+        <section className="info-section" aria-labelledby="privacy-responsable">
+          <h2 id="privacy-responsable" className="info-section-title">1. Responsable du traitement</h2>
+          <p className="info-section-text">
+            Le responsable du traitement est {SITE_IDENTITY.legalName}, joignable à{" "}
+            <a className="info-link" href={`mailto:${SITE_IDENTITY.privacyEmail}`}>
+              {SITE_IDENTITY.privacyEmail}
+            </a>
+            .
+          </p>
         </section>
-        <Footer />
-      </div>
-    </div>
+
+        <section className="info-section" aria-labelledby="privacy-donnees">
+          <h2 id="privacy-donnees" className="info-section-title">2. Données collectées</h2>
+          <ul className="info-list">
+            <li>Données de compte: identité, email, identifiants techniques d’authentification.</li>
+            <li>Données d’abonnement: statut, historique de souscription, justificatifs de transaction.</li>
+            <li>Données d’usage: progression pédagogique, interactions et préférences de navigation.</li>
+            <li>Données de support: messages envoyés via les formulaires de contact et suivi des demandes.</li>
+            <li>Données techniques: logs de sécurité, adresse IP, terminal et métadonnées de connexion.</li>
+            <li>Données de mesure d’audience (si consentement): pages vues et événements de navigation pseudonymisés.</li>
+          </ul>
+        </section>
+
+        <section className="info-section" aria-labelledby="privacy-finalites">
+          <h2 id="privacy-finalites" className="info-section-title">3. Finalités et bases légales</h2>
+          <ul className="info-list">
+            <li>Exécution du contrat: fournir l’accès aux fonctionnalités, contenus et services premium.</li>
+            <li>Intérêt légitime: sécuriser la plateforme, prévenir la fraude et améliorer la qualité de service.</li>
+            <li>Obligation légale: conservation des pièces comptables et respect des obligations fiscales.</li>
+            <li>Consentement: mesure d’audience via Google Analytics uniquement après acceptation explicite.</li>
+          </ul>
+        </section>
+
+        <section className="info-section" aria-labelledby="privacy-duree">
+          <h2 id="privacy-duree" className="info-section-title">4. Durées de conservation</h2>
+          <ul className="info-list">
+            <li>Données de compte: pendant la relation contractuelle puis archivage limité.</li>
+            <li>Données de facturation: durée légale comptable et fiscale applicable.</li>
+            <li>Données de support: le temps de traitement puis conservation probatoire raisonnable.</li>
+            <li>Logs de sécurité: durée strictement nécessaire aux objectifs de sécurité.</li>
+          </ul>
+        </section>
+
+        <section className="info-section" aria-labelledby="privacy-destinataires">
+          <h2 id="privacy-destinataires" className="info-section-title">5. Destinataires et sous-traitants</h2>
+          <p className="info-section-text">
+            Les données sont accessibles aux seules personnes habilitées. Des sous-traitants techniques peuvent
+            intervenir selon les services activés, notamment l’hébergement, l’authentification (Firebase), le paiement
+            (Stripe), et la mesure d’audience (Google Analytics, uniquement avec consentement).
+          </p>
+        </section>
+
+        <section className="info-section" aria-labelledby="privacy-transferts">
+          <h2 id="privacy-transferts" className="info-section-title">6. Transferts hors UE</h2>
+          <p className="info-section-text">
+            Certains sous-traitants peuvent traiter des données hors de l’Espace économique européen. Dans ce cas,
+            {" "}{SITE_IDENTITY.name} met en place les mécanismes requis (clauses contractuelles types et mesures
+            complémentaires) afin d’assurer un niveau de protection approprié.
+          </p>
+        </section>
+
+        <section className="info-section" aria-labelledby="privacy-droits">
+          <h2 id="privacy-droits" className="info-section-title">7. Droits des personnes</h2>
+          <ul className="info-list">
+            <li>Droit d’accès, de rectification et d’effacement.</li>
+            <li>Droit à la limitation du traitement et droit d’opposition.</li>
+            <li>Droit à la portabilité des données, lorsque applicable.</li>
+            <li>Droit de retirer votre consentement à tout moment pour les traitements concernés.</li>
+            <li>Droit d’introduire une réclamation auprès de la CNIL.</li>
+          </ul>
+          <p className="info-section-text">
+            Exercice des droits:{" "}
+            <a className="info-link" href={`mailto:${SITE_IDENTITY.privacyEmail}`}>
+              {SITE_IDENTITY.privacyEmail}
+            </a>
+            .
+          </p>
+        </section>
+
+        <section className="info-section" aria-labelledby="privacy-cookies">
+          <h2 id="privacy-cookies" className="info-section-title">8. Cookies et traceurs</h2>
+          <ul className="info-list">
+            <li>Les traceurs strictement nécessaires au fonctionnement du site sont activés par défaut.</li>
+            <li>Un bandeau de consentement est affiché lors de votre première visite pour votre choix de mesure d’audience.</li>
+            <li>La mesure d’audience (Google Analytics) n’est activée qu’après votre consentement explicite.</li>
+            <li>En cas de refus, aucune donnée de mesure d’audience n’est transmise.</li>
+            <li>Votre choix est conservé localement dans votre navigateur.</li>
+            <li>Vous pouvez modifier ce choix en supprimant les données du site puis en rechargeant la page.</li>
+          </ul>
+        </section>
+
+        <section className="info-section" aria-labelledby="privacy-contact">
+          <h2 id="privacy-contact" className="info-section-title">9. Contact</h2>
+          <p className="info-section-text">
+            Référent protection des données: {SITE_IDENTITY.dpoName}. Contact:{" "}
+            <a className="info-link" href={`mailto:${SITE_IDENTITY.privacyEmail}`}>
+              {SITE_IDENTITY.privacyEmail}
+            </a>
+            .
+          </p>
+        </section>
+      </article>
+    </InfoPageShell>
   );
 }

@@ -11,14 +11,14 @@ export function Footer({ className }: FooterProps) {
 
     return (
         <footer
-            className={footerClassName}
+            className={`${footerClassName} app-footer-surface`}
             style={{
-                background: 'var(--color-surface-raised)',
-                borderColor: 'var(--color-border-default)',
+                background: 'var(--color-app-chrome)',
+                borderColor: 'var(--color-app-chrome-border)',
             }}
         >
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                <div className="py-5 sm:py-6 border-t" style={{ borderColor: 'var(--color-border-default)' }}>
+                <div className="py-5 sm:py-6">
                     <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-4">
                         {[
                             { name: 'Mentions légales', href: '/legal' },
@@ -47,7 +47,7 @@ export function Footer({ className }: FooterProps) {
                             © 2026 {SITE_NAME}
                         </p>
                         <p className="text-xs sm:text-sm inline-flex items-center gap-1.5 sm:gap-2" style={{ color: 'var(--color-text-muted)' }}>
-                            Fait avec <Coffee className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: 'var(--color-warning)' }} /> pour les étudiants de Richter
+                            Fait avec <Coffee className="h-3.5 w-3.5 sm:h-4 sm:w-4" style={{ color: 'var(--color-warning)' }} /> pour les étudiant(e)s de Richter
                         </p>
                     </div>
                 </div>

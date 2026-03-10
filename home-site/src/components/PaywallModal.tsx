@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+﻿import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check, GraduationCap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -70,19 +70,19 @@ export function PaywallModal({ isOpen, onClose, contentTitle = 'ce contenu' }: P
                             </div>
 
                             <h2 className="text-2xl font-bold text-center mb-2" style={{ color: 'var(--color-text-primary)' }}>
-                                {'D\u00e9bloque ton acc\u00e8s Premium'}
+                                {'D\u00e9bloquez votre acc\u00e8s Premium'}
                             </h2>
                             <p className="text-center mb-1 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
                                 {"L'abonnement Premium est requis pour acc\u00e9der \u00e0 "}{contentTitle}{'.'}
                             </p>
                             <p className="text-center mb-6 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                                {"D\u00e9bloque tout le programme, r\u00e9vise plus vite et maximise tes chances le jour de l'examen."}
+                                {"D\u00e9bloquez tout le programme, r\u00e9visez plus vite et maximisez vos chances le jour de l'examen."}
                             </p>
 
                             <div className="space-y-3 mb-7">
                                 {[
                                     'Tous les CM, TD, QCM, annales et corrections en illimit\u00e9',
-                                    'Parcours complet sans blocage pour garder ton rythme',
+                                    'Parcours complet sans blocage pour garder votre rythme',
                                     'Gain de temps avec un plan de r\u00e9vision centralis\u00e9',
                                     'Acc\u00e8s imm\u00e9diat, sans attente',
                                 ].map((benefit, i) => (
@@ -118,7 +118,7 @@ export function PaywallModal({ isOpen, onClose, contentTitle = 'ce contenu' }: P
                             </motion.button>
 
                             <p className="mt-4 text-center text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                                {'Plus tu commences t\u00f4t, plus ta progression est rapide.'}
+                                {'Plus vous commencez t\u00f4t, plus votre progression est rapide.'}
                             </p>
                         </motion.div>
                     </div>

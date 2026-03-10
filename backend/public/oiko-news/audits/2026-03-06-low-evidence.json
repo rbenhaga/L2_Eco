@@ -1,0 +1,371 @@
+{
+  "scenario": {
+    "name": "low-evidence",
+    "editionDate": "2026-03-06",
+    "fixtureMode": "low-evidence",
+    "forceFallback": true
+  },
+  "passed": true,
+  "summary": {
+    "contentVersion": "v2.1",
+    "marketRegime": "risk_off",
+    "evidenceCoverageScore": 4.17,
+    "chartCount": 2,
+    "assetCount": 4,
+    "providerAttempts": [
+      {
+        "label": "forced_fallback",
+        "status": "skipped"
+      }
+    ],
+    "validationErrors": [],
+    "firstRun": {
+      "editionDate": "2026-03-06",
+      "step": "all",
+      "dryRun": true,
+      "fixtureMode": "low-evidence",
+      "forceFallback": true,
+      "results": {
+        "collect": {
+          "itemCount": 9,
+          "topStories": 6,
+          "briefs": 3,
+          "evidenceCoverageScore": 4.17,
+          "fixtureMode": "low-evidence",
+          "contentVersion": "v2.1"
+        },
+        "compose": {
+          "editionDate": "2026-03-06",
+          "status": "fallback",
+          "providerAttempts": [
+            {
+              "label": "forced_fallback",
+              "status": "skipped"
+            }
+          ],
+          "validationErrors": [],
+          "fixtureMode": "low-evidence",
+          "forcedFallback": true,
+          "contentVersion": "v2.1",
+          "assetCount": 4
+        },
+        "send": {
+          "transporterConfigured": true,
+          "totalRecipients": 2,
+          "results": [
+            {
+              "subscriptionId": 31,
+              "status": "skipped",
+              "reason": "dry_run"
+            },
+            {
+              "subscriptionId": 65,
+              "status": "skipped",
+              "reason": "dry_run"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "assertions": [
+    {
+      "key": "edition_exists",
+      "pass": true,
+      "details": "PrÃƒÂ©visualisation disponible."
+    },
+    {
+      "key": "content_version_v21",
+      "pass": true,
+      "details": "content_version=v2.1"
+    },
+    {
+      "key": "content_schema_valid",
+      "pass": true,
+      "details": "Le JSON V2.1 valide le schÃƒÂ©ma Zod."
+    },
+    {
+      "key": "opening_brief_count",
+      "pass": true,
+      "details": "opening_brief=4"
+    },
+    {
+      "key": "radar_count",
+      "pass": true,
+      "details": "radar=2"
+    },
+    {
+      "key": "carnet_count",
+      "pass": true,
+      "details": "carnet=2"
+    },
+    {
+      "key": "briefs_count",
+      "pass": true,
+      "details": "briefs=4"
+    },
+    {
+      "key": "chart_count_exactly_2",
+      "pass": true,
+      "details": "charts=2"
+    },
+    {
+      "key": "has_header_image",
+      "pass": true,
+      "details": "asset_types=header,lead_image,radar_image,carnet_image"
+    },
+    {
+      "key": "has_lead_image",
+      "pass": true,
+      "details": "asset_types=header,lead_image,radar_image,carnet_image"
+    },
+    {
+      "key": "has_radar_image",
+      "pass": true,
+      "details": "asset_types=header,lead_image,radar_image,carnet_image"
+    },
+    {
+      "key": "has_carnet_image",
+      "pass": true,
+      "details": "asset_types=header,lead_image,radar_image,carnet_image"
+    },
+    {
+      "key": "render_non_empty",
+      "pass": true,
+      "details": "html=15323, text=4996"
+    },
+    {
+      "key": "email_preheader_present",
+      "pass": true,
+      "details": "PrÃƒÂ©header cachÃƒÂ© prÃƒÂ©sent."
+    },
+    {
+      "key": "email_container_600px",
+      "pass": true,
+      "details": "Conteneur principal 600px prÃƒÂ©sent."
+    },
+    {
+      "key": "html_src_public",
+      "pass": true,
+      "details": "src_count=6"
+    },
+    {
+      "key": "job_runs_success",
+      "pass": true,
+      "details": "Les trois ÃƒÂ©tapes principales ont ÃƒÂ©tÃƒÂ© exÃƒÂ©cutÃƒÂ©es avec succÃƒÂ¨s."
+    },
+    {
+      "key": "compose_rerun_skips",
+      "pass": true,
+      "details": "Un deuxiÃƒÂ¨me compose sur la mÃƒÂªme date est ignorÃƒÂ© grÃƒÂ¢ce au verrou de job."
+    },
+    {
+      "key": "send_rerun_skips",
+      "pass": true,
+      "details": "Un deuxiÃƒÂ¨me send sur la mÃƒÂªme date est ignorÃƒÂ© grÃƒÂ¢ce au verrou de job."
+    },
+    {
+      "key": "dry_run_log_has_audit_recipient",
+      "pass": true,
+      "details": "send_logs=2"
+    },
+    {
+      "key": "dry_run_logs_unique_per_subscription",
+      "pass": true,
+      "details": "send_logs=2"
+    },
+    {
+      "key": "forced_fallback_status",
+      "pass": true,
+      "details": "status=fallback"
+    }
+  ],
+  "preview": {
+    "id": 32,
+    "editionDate": "2026-03-06",
+    "slug": "oiko-news-2026-03-06",
+    "status": "fallback",
+    "htmlLength": 15323,
+    "textLength": 4996,
+    "chartManifest": [
+      {
+        "key": "actions",
+        "fileName": "actions.png",
+        "filePath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\charts\\2026-03-06\\actions.png",
+        "url": "http://localhost:3001/static/oiko-news/charts/2026-03-06/actions.png"
+      },
+      {
+        "key": "crypto",
+        "fileName": "crypto.png",
+        "filePath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\charts\\2026-03-06\\crypto.png",
+        "url": "http://localhost:3001/static/oiko-news/charts/2026-03-06/crypto.png"
+      }
+    ],
+    "assets": [
+      {
+        "id": 45,
+        "edition_id": 32,
+        "section_key": "header_visual",
+        "asset_type": "header",
+        "provider": "pexels",
+        "source_url": "https://www.pexels.com/photo/scenic-view-of-notre-dame-and-seine-river-in-paris-33935421/",
+        "stored_url": "http://localhost:3001/static/oiko-news/images/2026-03-06/header_visual-pexels-c5997794.jpg",
+        "author": "Marija Piliskic",
+        "license": "Pexels License",
+        "credit_line": "Crédit : Pexels / Marija Piliskic",
+        "alt_text": "Salle de marché, presse économique et écrans au lever du jour",
+        "width": 3840,
+        "height": 2560,
+        "score": 86,
+        "fetched_at": "2026-03-09T11:13:53.945Z"
+      },
+      {
+        "id": 46,
+        "edition_id": 32,
+        "section_key": "lead_story",
+        "asset_type": "lead_image",
+        "provider": "pexels",
+        "source_url": "https://www.pexels.com/photo/scenic-view-of-notre-dame-and-seine-river-in-paris-33935421/",
+        "stored_url": "http://localhost:3001/static/oiko-news/images/2026-03-06/lead_story-pexels-c5997794.jpg",
+        "author": "Marija Piliskic",
+        "license": "Pexels License",
+        "credit_line": "Crédit : Pexels / Marija Piliskic",
+        "alt_text": "Siège de la Banque centrale européenne à Francfort",
+        "width": 3840,
+        "height": 2560,
+        "score": 80,
+        "fetched_at": "2026-03-09T11:13:54.230Z"
+      },
+      {
+        "id": 47,
+        "edition_id": 32,
+        "section_key": "radar_section",
+        "asset_type": "radar_image",
+        "provider": "pexels",
+        "source_url": "https://www.pexels.com/photo/red-car-parked-near-building-9162116/",
+        "stored_url": "http://localhost:3001/static/oiko-news/images/2026-03-06/radar_section-pexels-bdc7d3fd.jpg",
+        "author": "Lee chinyama",
+        "license": "Pexels License",
+        "credit_line": "Crédit : Pexels / Lee chinyama",
+        "alt_text": "Façade d’une institution économique américaine à Washington",
+        "width": 2738,
+        "height": 1825,
+        "score": 86,
+        "fetched_at": "2026-03-09T11:13:53.959Z"
+      },
+      {
+        "id": 48,
+        "edition_id": 32,
+        "section_key": "carnet_section",
+        "asset_type": "carnet_image",
+        "provider": "pexels",
+        "source_url": "https://www.pexels.com/photo/modern-architecture-in-esch-sur-alzette-luxembourg-36390209/",
+        "stored_url": "http://localhost:3001/static/oiko-news/images/2026-03-06/carnet_section-pexels-de4c6513.jpg",
+        "author": "Téméraire Marketing Luxembourg",
+        "license": "Pexels License",
+        "credit_line": "Crédit : Pexels / Téméraire Marketing Luxembourg",
+        "alt_text": "Portiques douaniers et conteneurs dans une zone logistique",
+        "width": 4032,
+        "height": 2268,
+        "score": 86,
+        "fetched_at": "2026-03-09T11:13:53.948Z"
+      }
+    ],
+    "snapshotPaths": {
+      "htmlPath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\audits\\snapshots\\2026-03-06\\low-evidence.html",
+      "textPath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\audits\\snapshots\\2026-03-06\\low-evidence.txt",
+      "jsonPath": "C:\\Users\\rayan\\Documents\\L2 Economie\\Projet\\RevP2\\backend\\public\\oiko-news\\audits\\snapshots\\2026-03-06\\low-evidence.json"
+    }
+  },
+  "runs": [
+    {
+      "id": 91,
+      "job_date": "2026-03-06",
+      "step": "send",
+      "status": "success",
+      "lock_key": "2026-03-06:send",
+      "meta_json": {
+        "transporterConfigured": true,
+        "totalRecipients": 2,
+        "results": [
+          {
+            "subscriptionId": 31,
+            "status": "skipped",
+            "reason": "dry_run"
+          },
+          {
+            "subscriptionId": 65,
+            "status": "skipped",
+            "reason": "dry_run"
+          }
+        ]
+      },
+      "started_at": "2026-03-09 11:13:54",
+      "finished_at": "2026-03-09 11:13:54"
+    },
+    {
+      "id": 90,
+      "job_date": "2026-03-06",
+      "step": "compose",
+      "status": "success",
+      "lock_key": "2026-03-06:compose",
+      "meta_json": {
+        "editionDate": "2026-03-06",
+        "status": "fallback",
+        "providerAttempts": [
+          {
+            "label": "forced_fallback",
+            "status": "skipped"
+          }
+        ],
+        "validationErrors": [],
+        "fixtureMode": "low-evidence",
+        "forcedFallback": true,
+        "contentVersion": "v2.1",
+        "assetCount": 4
+      },
+      "started_at": "2026-03-09 11:13:53",
+      "finished_at": "2026-03-09 11:13:54"
+    },
+    {
+      "id": 89,
+      "job_date": "2026-03-06",
+      "step": "collect",
+      "status": "success",
+      "lock_key": "2026-03-06:collect",
+      "meta_json": {
+        "itemCount": 9,
+        "topStories": 6,
+        "briefs": 3,
+        "evidenceCoverageScore": 4.17,
+        "fixtureMode": "low-evidence",
+        "contentVersion": "v2.1"
+      },
+      "started_at": "2026-03-09 11:13:53",
+      "finished_at": "2026-03-09 11:13:53"
+    }
+  ],
+  "sendLogs": [
+    {
+      "id": 38,
+      "edition_id": 32,
+      "subscription_id": 31,
+      "email": "rayanebenhaga@gmail.com",
+      "status": "skipped",
+      "smtp_message_id": null,
+      "error_message": "dry_run",
+      "attempted_at": "2026-03-09 11:13:54"
+    },
+    {
+      "id": 39,
+      "edition_id": 32,
+      "subscription_id": 65,
+      "email": "audit.oiko@example.com",
+      "status": "skipped",
+      "smtp_message_id": null,
+      "error_message": "dry_run",
+      "attempted_at": "2026-03-09 11:13:54"
+    }
+  ],
+  "generatedAt": "2026-03-09T11:13:54.277Z"
+}

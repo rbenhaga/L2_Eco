@@ -21,18 +21,24 @@ export function PageHeader({ number, title, description }: PageHeaderProps) {
       </div>
 
       <h1
-        className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight mb-4 leading-tight"
+        className="mb-4 font-semibold tracking-tight leading-tight"
         style={{
           color: 'var(--color-text-primary)',
           fontFamily: 'var(--font-serif)',
+          fontSize: 'clamp(2.35rem, 5vw, 3.95rem)',
+          lineHeight: 0.98,
+          letterSpacing: '-0.04em',
         }}
       >
         {title}
       </h1>
 
       <p
-        className="text-base sm:text-lg max-w-3xl leading-relaxed"
-        style={{ color: 'var(--color-text-secondary)' }}
+        className="max-w-3xl leading-relaxed"
+        style={{
+          color: 'var(--color-text-secondary)',
+          fontSize: '1rem',
+        }}
       >
         {description}
       </p>

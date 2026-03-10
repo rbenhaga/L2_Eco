@@ -7,17 +7,23 @@ import { useEffect, useRef } from 'react';
  */
 export function useContentProtection(options?: { watermark?: string; enabled?: boolean }) {
     const containerRef = useRef<HTMLElement | null>(null);
-    const enabled = options?.enabled ?? true;
+    const envEnabled = import.meta.env.DEV ? import.meta.env.VITE_ENABLE_CONTENT_PROTECTION !== 'false' : true;
+    const enabled = options?.enabled ?? envEnabled;
 
     useEffect(() => {
         if (!enabled) return;
+
+        const isAdminRoute = (): boolean => window.location.pathname.startsWith('/admin');
 
         const isTextareaTarget = (target: EventTarget | null): boolean => {
             if (!(target instanceof Element)) return false;
             return Boolean(target.closest('textarea'));
         };
 
-        const shouldBlock = (target: EventTarget | null): boolean => !isTextareaTarget(target);
+        const shouldBlock = (target: EventTarget | null): boolean => {
+            if (isAdminRoute()) return false;
+            return !isTextareaTarget(target);
+        };
 
         const handleCopy = (e: ClipboardEvent) => {
             if (shouldBlock(e.target)) e.preventDefault();
@@ -52,6 +58,7 @@ export function useContentProtection(options?: { watermark?: string; enabled?: b
         };
 
         const handleBeforePrint = (e: Event) => {
+            if (isAdminRoute()) return;
             e.preventDefault();
             window.stop();
         };

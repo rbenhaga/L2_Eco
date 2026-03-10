@@ -2,27 +2,28 @@ import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { ModuleSidebar } from '../components/layout/ModuleSidebar';
 import { GlobalSearchModal } from '../components/search/GlobalSearchModal';
-import { MobileNav } from '../components/mobile/MobileNav';
 import { TopBar } from '../components/module-hub/components/TopBar';
 import { useSidebar } from '../context/SidebarContext';
 import { useAuth } from '../context/AuthContext';
+import { usePresenceHeartbeat } from '../hooks/usePresenceHeartbeat';
 import { progressService } from '../services/progressService';
 import { authFetch } from '../utils/authFetch';
+import { getScrollableProgressMetrics } from '../utils/scrollMetrics';
 import { DEFAULT_SITE_CONFIG, type SiteConfig } from '../types/siteConfig';
+import { Footer } from '../components/layout/Footer';
 
 export function AppLayout() {
   const { isExpanded } = useSidebar();
   const { user } = useAuth();
+  usePresenceHeartbeat(user?.uid);
   const location = useLocation();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [siteConfig, setSiteConfig] = useState<SiteConfig>(DEFAULT_SITE_CONFIG);
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
   const PROGRESS_STORAGE_KEY = 'agora_user_progress';
 
-  // Calculate sidebar width
   const sidebarWidth = isExpanded ? 256 : 64;
 
-  // Global search shortcut (Ctrl+K)
   useEffect(() => {
     function handleSearchShortcut(event: KeyboardEvent) {
       if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
@@ -34,8 +35,6 @@ export function AppLayout() {
     return () => document.removeEventListener('keydown', handleSearchShortcut);
   }, []);
 
-  // Keep local progress in sync with backend:
-  // if backend has no progress rows for the current user, clear stale local cache.
   useEffect(() => {
     if (!user?.uid) return;
 
@@ -70,7 +69,6 @@ export function AppLayout() {
     };
   }, [API_URL, user?.uid]);
 
-  // Prevent rubber-band overscroll so sticky top bar never drifts down at scroll top
   useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
@@ -85,19 +83,16 @@ export function AppLayout() {
     };
   }, []);
 
-  // Scroll progress tracking for the main content area
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const target = e.currentTarget;
-    const scrollTop = target.scrollTop;
-    const docHeight = target.scrollHeight - target.clientHeight;
-    // Prevent division by zero
+    const { scrollTop, scrollableHeight: docHeight } = getScrollableProgressMetrics(target);
     const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    setScrollProgress(Math.min(progress, 100));
+    const nextProgress = Math.max(0, Math.min(100, Math.floor(progress)));
+    setScrollProgress((prev) => (prev === nextProgress ? prev : nextProgress));
   };
 
-  // Fetch public config (course badges + topbar notifications)
   useEffect(() => {
     let mounted = true;
 
@@ -119,7 +114,6 @@ export function AppLayout() {
     };
   }, [API_URL]);
 
-  // Fetch notifications (per-user when authenticated, public fallback otherwise)
   useEffect(() => {
     let mounted = true;
 
@@ -166,7 +160,6 @@ export function AppLayout() {
     };
   }, [API_URL, user?.uid]);
 
-  // Persist last learning location (semester + path) for authenticated users
   useEffect(() => {
     if (!user?.uid) return;
 
@@ -192,27 +185,21 @@ export function AppLayout() {
 
   return (
     <div
-      className="relative flex h-screen overflow-hidden"
+      className="relative flex h-screen overflow-hidden app-shell-root"
       style={{
-        background: 'var(--color-canvas)',
+        background: 'var(--color-app-canvas)',
         ['--sidebar-width' as string]: `${sidebarWidth}px`,
+        ['--shadow-app-chrome' as string]: 'none',
+        ['--shadow-app-stage' as string]: 'none',
+        ['--shadow-app-panel' as string]: 'none',
         overscrollBehaviorY: 'none',
       }}
     >
-      {/* Global Search Modal - Unified */}
       <GlobalSearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
-      {/* Mobile Navigation - Bottom drawer */}
-      <MobileNav onSearchClick={() => setIsSearchOpen(true)} />
-
-      {/* ModuleSidebar - Desktop Rail */}
       <ModuleSidebar />
 
-      {/* Content area - with TopBar + dynamic margin for sidebar */}
-      <div
-        className="app-content flex-1 min-w-0 flex flex-col overflow-hidden"
-      >
-        {/* TopBar - Always visible, receives scroll progress */}
+      <div className="app-content flex-1 min-w-0 flex flex-col overflow-hidden">
         <TopBar
           onSearchClick={() => setIsSearchOpen(true)}
           scrollProgress={scrollProgress}
@@ -233,9 +220,8 @@ export function AppLayout() {
           }}
         />
 
-        {/* Page content - scrollable */}
         <div
-          className="flex-1 overflow-y-auto pb-20 lg:pb-0 scroll-smooth"
+          className="app-scroll-container flex-1 overflow-y-auto scroll-smooth"
           onScroll={handleScroll}
           style={{
             overscrollBehaviorY: 'none',
@@ -243,6 +229,9 @@ export function AppLayout() {
           }}
         >
           <Outlet />
+          <div data-app-layout-footer>
+            <Footer className="mt-0 border-t" />
+          </div>
         </div>
       </div>
 

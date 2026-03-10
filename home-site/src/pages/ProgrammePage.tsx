@@ -35,12 +35,12 @@ const PROGRAMME: YearBlock[] = [
         id: "l1-s1",
         title: "Semestre 1",
         subjects: [
-          { name: "Économie d'entreprise", description: "Découvrir la logique de décision des organisations et leur fonctionnement économique." },
-          { name: "Principes d'économie", description: "Installer les concepts centraux de microéconomie et de macroéconomie." },
-          { name: "Sciences politiques", description: "Comprendre les cadres institutionnels qui structurent l'action économique." },
-          { name: "Droit", description: "Acquérir les repères juridiques utiles à l'analyse et à la pratique économique." },
-          { name: "Histoire des faits économiques", description: "Relier les théories aux grandes transformations économiques historiques." },
-          { name: "Mathématiques pour économistes 1", description: "Maîtriser les outils mathématiques indispensables aux modèles de base." },
+          { name: "Économie d'entreprise", description: "Introduction à l'entreprise, à ses choix d'organisation et à ses mécanismes économiques." },
+          { name: "Principes d'économie", description: "Premiers repères en micro et macro pour comprendre agents, marchés et équilibres." },
+          { name: "Sciences politiques", description: "Institutions, acteurs publics et cadres politiques qui influencent l'activité économique." },
+          { name: "Droit", description: "Bases juridiques utiles aux contrats, aux organisations et à l'environnement économique." },
+          { name: "Histoire des faits économiques", description: "Grandes transformations économiques et sociales, de l'industrialisation aux crises." },
+          { name: "Mathématiques pour économistes 1", description: "Outils de calcul et fonctions utiles aux premiers raisonnements économiques." },
           { name: "Langue vivante", description: "Renforcer l'expression écrite et orale dans un contexte académique international." }
         ]
       },
@@ -48,12 +48,12 @@ const PROGRAMME: YearBlock[] = [
         id: "l1-s2",
         title: "Semestre 2",
         subjects: [
-          { name: "Macroéconomie 1", description: "Analyser les équilibres globaux et les principaux leviers de politique économique." },
-          { name: "Microéconomie 1", description: "Étudier les choix des agents économiques et la formation des marchés." },
-          { name: "Statistiques 1", description: "Utiliser les outils descriptifs et probabilistes pour lire les données." },
-          { name: "Mathématiques et statistiques pour économistes 2", description: "Approfondir les techniques quantitatives appliquées à l'économie." },
-          { name: "Comptabilité générale", description: "Lire, structurer et interpréter les documents comptables fondamentaux." },
-          { name: "Problèmes économiques contemporains", description: "Relier les notions du cours aux enjeux économiques actuels." },
+          { name: "Macroéconomie 1", description: "Équilibres globaux, inflation, chômage et premiers instruments de politique économique." },
+          { name: "Microéconomie 1", description: "Choix du consommateur et du producteur, prix et fonctionnement des marchés." },
+          { name: "Statistiques 1", description: "Statistique descriptive, probabilités de base et lecture rigoureuse des données." },
+          { name: "Mathématiques et statistiques pour économistes 2", description: "Approfondissement quantitatif avec calcul, statistiques et modélisation simple." },
+          { name: "Comptabilité générale", description: "Lecture du bilan, du compte de résultat et des mécanismes comptables essentiels." },
+          { name: "Problèmes économiques contemporains", description: "Grands enjeux actuels relus à partir des notions économiques du semestre." },
           { name: "Langue vivante", description: "Consolider un usage professionnel de la langue à l'écrit et à l'oral." }
         ]
       }
@@ -68,11 +68,11 @@ const PROGRAMME: YearBlock[] = [
         id: "l2-s3",
         title: "Semestre 3",
         subjects: [
-          { name: "Microéconomie 2", description: "Approfondir les modèles du consommateur, du producteur et des structures de marché." },
-          { name: "Macroéconomie 2", description: "Étudier les dynamiques macroéconomiques à court et moyen terme." },
-          { name: "Statistiques 2", description: "Renforcer l'inférence statistique et la qualité du raisonnement empirique." },
-          { name: "Mathématiques pour économistes 3", description: "Formaliser des mécanismes économiques avec des outils mathématiques avancés." },
-          { name: "Sociologie", description: "Situer les comportements économiques dans leur environnement social et institutionnel." },
+          { name: "Microéconomie 2", description: "Approfondissement du consommateur, du producteur et des structures de marché." },
+          { name: "Macroéconomie 2", description: "Analyse conjoncturelle, fluctuations et effets des politiques budgétaires et monétaires." },
+          { name: "Statistiques 2", description: "Variables aléatoires, lois usuelles, estimation et premiers raisonnements inférentiels." },
+          { name: "Mathématiques pour économistes 3", description: "Outils mathématiques plus avancés pour formaliser les mécanismes économiques." },
+          { name: "Sociologie", description: "Lecture des comportements économiques à travers normes, groupes sociaux et institutions." },
           { name: "Informatique", description: "Structurer les données et automatiser des traitements utiles à l'analyse." },
           { name: "Langue vivante", description: "Poursuivre la maîtrise des usages académiques et professionnels de la langue." }
         ]
@@ -81,12 +81,12 @@ const PROGRAMME: YearBlock[] = [
         id: "l2-s4",
         title: "Semestre 4",
         subjects: [
-          { name: "Microéconomie 3", description: "Analyser des cadres plus avancés de décision et d'équilibre de marché." },
-          { name: "Macroéconomie 3", description: "Comprendre les effets des politiques conjoncturelles et des chocs économiques." },
-          { name: "Statistiques 3", description: "Approfondir la modélisation probabiliste et les méthodes d'estimation." },
-          { name: "Management des organisations", description: "Étudier la coordination, la stratégie et la gouvernance des organisations." },
+          { name: "Microéconomie 3", description: "Cadres plus avancés de décision, d'équilibre et d'analyse des marchés." },
+          { name: "Macroéconomie 3", description: "Politiques conjoncturelles, chocs macroéconomiques et arbitrages publics." },
+          { name: "Statistiques 3", description: "Estimation, tests et méthodes quantitatives appliquées à l'analyse économique." },
+          { name: "Management des organisations", description: "Fonctionnement des organisations, coordination, stratégie et prise de décision." },
           { name: "Informatique", description: "Appliquer les outils numériques au traitement des informations économiques." },
-          { name: "Options de spécialisation", description: "Personnaliser ton parcours selon tes intérêts et ton projet d'études." },
+          { name: "Options d'ouverture", description: "Premi\u00E8res options pour ouvrir le parcours vers le droit, les institutions et l'\u00E9conomie appliqu\u00E9e." },
           { name: "Langue vivante", description: "Maintenir une communication fluide pour les lectures et échanges internationaux." }
         ]
       }
@@ -101,12 +101,12 @@ const PROGRAMME: YearBlock[] = [
         id: "l3-s5",
         title: "Semestre 5",
         subjects: [
-          { name: "Histoire de la pensée économique", description: "Mettre en perspective les écoles, concepts et débats majeurs de la discipline." },
-          { name: "Théorie des jeux", description: "Modéliser les interactions stratégiques entre agents en situation d'interdépendance." },
-          { name: "Introduction à l'économétrie", description: "Passer de la théorie aux estimations sur données réelles." },
-          { name: "Organisation industrielle", description: "Étudier concurrence, pouvoir de marché et régulation sectorielle." },
-          { name: "Économie de la croissance", description: "Comprendre les moteurs de la croissance à long terme." },
-          { name: "Options", description: "Affiner ton profil avec des enseignements ciblés selon ton projet académique." },
+          { name: "Histoire de la pensée économique", description: "Grandes écoles de pensée, auteurs majeurs et évolution des idées économiques." },
+          { name: "Théorie des jeux", description: "Interactions stratégiques, équilibres et décisions en situation d'interdépendance." },
+          { name: "Introduction à l'économétrie", description: "Premiers modèles économétriques et lecture empirique des relations entre variables." },
+          { name: "Organisation industrielle", description: "Concurrence imparfaite, pouvoir de marché, stratégie des firmes et régulation." },
+          { name: "Économie de la croissance", description: "Mécanismes de croissance à long terme, innovation, capital et productivité." },
+          { name: "Options d'approfondissement", description: "Choix d'approfondissement en optimisation, comptabilit\u00E9 analytique et \u00E9conomie appliqu\u00E9e." },
           { name: "Langue vivante", description: "Consolider l'aisance linguistique requise pour le master et la mobilité." }
         ]
       },
@@ -114,13 +114,13 @@ const PROGRAMME: YearBlock[] = [
         id: "l3-s6",
         title: "Semestre 6",
         subjects: [
-          { name: "Analyse financière", description: "Évaluer la performance et la structure financière d'une organisation." },
-          { name: "Économie internationale", description: "Analyser échanges internationaux, politiques commerciales et finance globale." },
-          { name: "Politique économique et sociale", description: "Mesurer l'effet des instruments publics sur l'activité et la redistribution." },
-          { name: "Analyse de données", description: "Exploiter les données pour produire une lecture économique robuste." },
-          { name: "Base de données", description: "Structurer, interroger et gérer des ensembles de données à grande échelle." },
-          { name: "Projet personnel étudiant", description: "Formaliser ton orientation et valoriser tes compétences transversales." },
-          { name: "Options de fin de cycle", description: "Finaliser ta spécialisation avant l'entrée en master." },
+          { name: "Analyse financière", description: "Diagnostic financier, rentabilité, solvabilité et lecture des comptes." },
+          { name: "Économie internationale", description: "Commerce international, ouverture des économies et grands déséquilibres mondiaux." },
+          { name: "Politique économique et sociale", description: "Instruments publics, emploi, redistribution et effets sur l'activité." },
+          { name: "Analyse de données", description: "Méthodes de traitement, de synthèse et d'interprétation des données quantitatives." },
+          { name: "Base de données", description: "Structurer, interroger et exploiter des bases utiles à l'analyse économique." },
+          { name: "Projet personnel étudiant", description: "Clarification du projet d'études ou d'insertion, avec mise en forme du parcours." },
+          { name: "Options de sp\u00E9cialisation", description: "Derniers choix de sp\u00E9cialisation en micro\u00E9conomie appliqu\u00E9e, finance et \u00E9conomie publique." },
           { name: "Langue vivante", description: "Conserver un niveau opérationnel pour les contextes académiques et professionnels." }
         ]
       }
@@ -166,7 +166,7 @@ export default function ProgrammePage() {
 
       <main className="programme-page-main">
         <section className="programme-hero" aria-labelledby="programme-title">
-          <p className="programme-kicker">Parcours Licence Économie</p>
+          <p className="programme-kicker">Structure de la licence</p>
           <h1 id="programme-title" className="programme-title">
             {HERO_TITLE.slice(0, typedCount).split("").map((char, index) => (
               <span
@@ -178,9 +178,8 @@ export default function ProgrammePage() {
             ))}
             <span className="programme-title-cursor" aria-hidden="true" />
           </h1>
-          <p className="programme-lead">
-            Liste des matières par semestre par année de licence.
-          </p>
+          <p className="programme-lead">{"Une vue synth\u00E9tique des enseignements centraux, du tronc commun aux premi\u00E8res sp\u00E9cialisations."}</p>
+          <p className="programme-note">{"Vue simplifi\u00E9e du programme officiel : nous gardons les mati\u00E8res structurantes et les options utiles pour comprendre la progression de la licence."}</p>
         </section>
 
         <section className="programme-layout" aria-label="Liste des matières par licence et semestre">
@@ -209,7 +208,8 @@ export default function ProgrammePage() {
               {semesters.map((semester) => (
                 <section key={semester.id} className="programme-semester-block" aria-label={semester.title}>
                   <header className="programme-semester-head">
-                    <h3 className="programme-semester-title">{semester.title}</h3>                  </header>
+                    <h3 className="programme-semester-title">{semester.title}</h3>
+                  </header>
 
                   <ul className="programme-subject-list">
                     {semester.subjects.map((subject) => (
@@ -230,7 +230,6 @@ export default function ProgrammePage() {
     </div>
   );
 }
-
 
 
 

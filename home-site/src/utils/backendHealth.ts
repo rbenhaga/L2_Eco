@@ -14,7 +14,6 @@ export async function checkBackendHealth(): Promise<boolean> {
 
         return false;
     } catch (error) {
-        console.error('Backend health check failed:', error);
         return false;
     }
 }

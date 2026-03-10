@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PlayCircle, X, Video } from 'lucide-react';
+import { PlayCircle, Video, X } from 'lucide-react';
 
 interface VideoPlayerProps {
     title: string;
@@ -19,14 +19,15 @@ export function VideoPlayer({
     duration = '5:00',
     videoUrl,
     thumbnailUrl,
-    isWatched = false,
+    isWatched: _isWatched = false,
     compact = false,
     onPlay,
-    onComplete
+    onComplete,
 }: VideoPlayerProps) {
     const [showVideo, setShowVideo] = useState(false);
 
     const handlePlay = () => {
+        if (!videoUrl) return;
         setShowVideo(true);
         onPlay?.();
     };
@@ -36,59 +37,100 @@ export function VideoPlayer({
         onComplete?.();
     };
 
-    // Compact version (after video has been watched)
-    if (compact && isWatched) {
+    if (compact) {
+        const isAvailable = Boolean(videoUrl);
+
         return (
-            <button
-                onClick={handlePlay}
-                className="flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 group w-full"
-                style={{
-                    background: 'var(--color-card)',
-                    borderColor: 'var(--color-border-default)',
-                    boxShadow: 'var(--shadow-sm)',
-                }}
-            >
-                <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
-                    style={{ background: 'var(--color-accent-subtle)' }}
+            <div className={showVideo ? 'w-full' : 'flex-none'}>
+                <button
+                    type="button"
+                    onClick={showVideo ? handleClose : handlePlay}
+                    disabled={!isAvailable}
+                    className="inline-flex min-h-11 items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors"
+                    style={{
+                        background: showVideo ? 'var(--color-bg-overlay)' : 'var(--color-bg-raised)',
+                        borderColor: 'var(--color-border-default)',
+                        color: isAvailable ? 'var(--color-text-primary)' : 'var(--color-text-muted)',
+                        opacity: isAvailable ? 1 : 0.72,
+                        cursor: isAvailable ? 'pointer' : 'default',
+                    }}
                 >
-                    <PlayCircle className="h-5 w-5" style={{ color: 'var(--color-accent)' }} />
-                </div>
-                <div className="flex-1 text-left min-w-0">
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium truncate" style={{ color: 'var(--color-text-primary)' }}>{title}</span>
-                        {badge && (
-                            <span
-                                className="px-1.5 py-0.5 rounded-full text-[10px] font-medium shrink-0"
-                                style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}
+                    <span
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
+                        style={{
+                            background: isAvailable ? 'var(--color-accent-subtle)' : 'var(--color-bg-overlay)',
+                            color: isAvailable ? 'var(--color-accent)' : 'var(--color-text-muted)',
+                        }}
+                    >
+                        {isAvailable ? <PlayCircle className="h-4 w-4" /> : <Video className="h-4 w-4" />}
+                    </span>
+                    <span className="min-w-0">
+                        <span className="block text-sm font-semibold">Vidéo</span>
+                        <span className="block text-[11px]" style={{ color: 'var(--color-text-muted)' }}>
+                            {isAvailable ? (showVideo ? 'Masquer le lecteur' : duration) : 'Bientôt disponible'}
+                        </span>
+                    </span>
+                </button>
+
+                {showVideo && videoUrl && (
+                    <div
+                        className="mt-3 overflow-hidden rounded-[20px] border"
+                        style={{
+                            background: 'var(--color-card)',
+                            borderColor: 'var(--color-border-subtle)',
+                        }}
+                    >
+                        <div
+                            className="flex items-center justify-between gap-2 border-b px-4 py-3"
+                            style={{ borderColor: 'var(--color-border-subtle)' }}
+                        >
+                            <div className="min-w-0 flex items-center gap-2">
+                                <Video className="h-4 w-4 shrink-0" style={{ color: 'var(--color-accent)' }} />
+                                <h3 className="truncate text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+                                    {title}
+                                </h3>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={handleClose}
+                                className="rounded-lg p-2 transition-colors"
+                                style={{ background: 'var(--color-bg-overlay)', color: 'var(--color-text-secondary)' }}
+                                aria-label="Fermer la vidéo"
                             >
-                                {badge}
-                            </span>
-                        )}
+                                <X className="h-4 w-4" />
+                            </button>
+                        </div>
+                        <div className="relative aspect-video" style={{ background: 'var(--color-bg-overlay)' }}>
+                            <iframe
+                                src={videoUrl}
+                                className="absolute inset-0 h-full w-full"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            />
+                        </div>
                     </div>
-                </div>
-                <span className="text-xs shrink-0" style={{ color: 'var(--color-text-muted)' }}>{duration}</span>
-            </button>
+                )}
+            </div>
         );
     }
 
-    // Full version
     return (
         <div
-            className="rounded-2xl overflow-hidden"
+            className="overflow-hidden rounded-2xl"
             style={{
                 background: 'var(--color-card)',
                 boxShadow: 'var(--shadow-md)',
                 border: '1px solid var(--color-border-subtle)',
             }}
         >
-            {/* Header */}
-            <div className="flex items-center gap-2 px-5 pt-4 pb-3">
-                <Video className="w-4 h-4" style={{ color: 'var(--color-accent)' }} />
-                <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>{title}</h3>
+            <div className="flex items-center gap-2 px-5 pb-3 pt-4">
+                <Video className="h-4 w-4" style={{ color: 'var(--color-accent)' }} />
+                <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+                    {title}
+                </h3>
                 {badge && (
                     <span
-                        className="px-2 py-0.5 rounded-full text-[10px] font-medium"
+                        className="rounded-full px-2 py-0.5 text-[10px] font-medium"
                         style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}
                     >
                         {badge}
@@ -96,12 +138,12 @@ export function VideoPlayer({
                 )}
             </div>
 
-            {/* Video area */}
             <div className="px-5 pb-5">
                 {!showVideo ? (
                     <button
+                        type="button"
                         onClick={handlePlay}
-                        className="relative w-full aspect-video rounded-xl overflow-hidden group"
+                        className="group relative aspect-video w-full overflow-hidden rounded-xl"
                         style={{
                             background: thumbnailUrl
                                 ? undefined
@@ -109,21 +151,20 @@ export function VideoPlayer({
                         }}
                     >
                         {thumbnailUrl ? (
-                            <img src={thumbnailUrl} alt={title} className="absolute inset-0 w-full h-full object-cover" />
+                            <img src={thumbnailUrl} alt={title} className="absolute inset-0 h-full w-full object-cover" />
                         ) : (
                             <div
                                 className="absolute inset-0 opacity-20"
                                 style={{
-                                    backgroundImage: `radial-gradient(circle at 2px 2px, var(--color-accent) 1px, transparent 0)`,
+                                    backgroundImage: 'radial-gradient(circle at 2px 2px, var(--color-accent) 1px, transparent 0)',
                                     backgroundSize: '24px 24px',
                                 }}
                             />
                         )}
 
-                        {/* Play button */}
                         <div className="absolute inset-0 flex items-center justify-center">
                             <div
-                                className="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-200 group-hover:scale-110"
+                                className="flex h-16 w-16 items-center justify-center rounded-full transition-all duration-200 group-hover:scale-110"
                                 style={{
                                     background: 'var(--color-accent)',
                                     boxShadow: '0 8px 32px color-mix(in srgb, var(--color-accent) 30%, transparent)',
@@ -133,38 +174,44 @@ export function VideoPlayer({
                             </div>
                         </div>
 
-                        {/* Duration badge */}
                         <div
-                            className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg text-xs font-medium"
-                            style={{ background: 'color-mix(in srgb, var(--color-text-primary) 70%, transparent)', color: 'var(--color-bg-raised)' }}
+                            className="absolute bottom-3 right-3 rounded-lg px-2.5 py-1 text-xs font-medium"
+                            style={{
+                                background: 'color-mix(in srgb, var(--color-text-primary) 70%, transparent)',
+                                color: 'var(--color-bg-raised)',
+                            }}
                         >
                             {duration}
                         </div>
                     </button>
                 ) : (
                     <div
-                        className="relative w-full aspect-video rounded-xl overflow-hidden"
+                        className="relative aspect-video w-full overflow-hidden rounded-xl"
                         style={{ background: 'var(--color-bg-overlay)' }}
                     >
                         {videoUrl ? (
                             <>
                                 <iframe
                                     src={videoUrl}
-                                    className="absolute inset-0 w-full h-full"
+                                    className="absolute inset-0 h-full w-full"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
                                 />
                                 <button
+                                    type="button"
                                     onClick={handleClose}
-                                    className="absolute top-3 right-3 p-2 rounded-lg transition-colors z-10"
+                                    className="absolute right-3 top-3 z-10 rounded-lg p-2 transition-colors"
                                     style={{ background: 'color-mix(in srgb, var(--color-text-primary) 70%, transparent)' }}
+                                    aria-label="Fermer la vidéo"
                                 >
                                     <X className="h-4 w-4 text-[var(--color-bg-raised)]" />
                                 </button>
                             </>
                         ) : (
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Vidéo bientôt disponible</p>
+                                <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
+                                    Vidéo bientôt disponible
+                                </p>
                             </div>
                         )}
                     </div>

@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Send, Loader2, X, AlertCircle, Bot, User, RotateCcw, Maximize2, Minimize2 } from 'lucide-react';
 import { getAuth } from 'firebase/auth';
 import {
@@ -79,6 +80,8 @@ export function AIChatWidget() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const streamingRef = useRef<{ cancel: boolean }>({ cancel: false });
+    const mobileBottomOffset = 'calc(env(safe-area-inset-bottom, 0px) + 12px)';
+    const closedButtonSize = isDesktop ? 52 : 50;
 
     // Typewriter effect
     useEffect(() => {
@@ -132,6 +135,22 @@ export function AIChatWidget() {
             inputRef.current?.focus();
         }
     }, [isOpen]);
+
+    useEffect(() => {
+        const handleExternalOpen = (event: Event) => {
+            const detail = (event as CustomEvent<{ prompt?: string }>).detail;
+            setIsOpen(true);
+            if (isDesktop) {
+                setIsExpanded(true);
+            }
+            if (detail?.prompt) {
+                setInput(detail.prompt);
+            }
+        };
+
+        window.addEventListener('oiko:open', handleExternalOpen);
+        return () => window.removeEventListener('oiko:open', handleExternalOpen);
+    }, [isDesktop]);
 
     useEffect(() => {
         const media = window.matchMedia('(min-width: 1024px)');
@@ -213,8 +232,13 @@ export function AIChatWidget() {
         }
     };
 
+    if (typeof document === 'undefined') {
+        return null;
+    }
+
     if (!isOpen) {
-        return (
+        return createPortal(
+            (
             <button
                 onClick={() => {
                     setIsOpen(true);
@@ -225,21 +249,25 @@ export function AIChatWidget() {
                     position: 'fixed',
                     inset: 'auto',
                     right: 'clamp(12px, 2vw, 24px)',
-                    bottom: isDesktop ? '24px' : '96px',
-                    width: '56px',
-                    height: '56px',
-                    background: 'var(--color-accent)',
+                    bottom: isDesktop ? '24px' : mobileBottomOffset,
+                    width: `${closedButtonSize}px`,
+                    height: `${closedButtonSize}px`,
+                    background: 'color-mix(in srgb, var(--color-accent) 92%, white 8%)',
                     color: 'var(--color-accent-foreground)',
-                    boxShadow: 'var(--shadow-lg)',
+                    boxShadow: '0 8px 20px color-mix(in srgb, var(--color-accent) 16%, transparent)',
+                    border: '1px solid color-mix(in srgb, var(--color-accent) 20%, transparent)',
                 }}
                 aria-label="Ouvrir Oiko"
             >
-                <Bot className="w-6 h-6" />
+                <Bot className={isDesktop ? 'w-5 h-5' : 'w-[18px] h-[18px]'} />
             </button>
+            ),
+            document.body
         );
     }
 
-    return (
+    return createPortal(
+        (
         <>
         {isExpanded && (
             <div
@@ -275,7 +303,7 @@ export function AIChatWidget() {
                     : {
                         inset: 'auto',
                         right: 'clamp(12px, 2vw, 24px)',
-                        bottom: isDesktop ? '24px' : '96px',
+                        bottom: isDesktop ? '24px' : mobileBottomOffset,
                         width: 'min(94vw, 380px)',
                         height: 'min(76vh, 550px)',
                     }),
@@ -302,15 +330,17 @@ export function AIChatWidget() {
                     </div>
                 </div>
                 <div className="flex items-center gap-1">
-                    <button
-                        onClick={() => setIsExpanded((prev) => !prev)}
-                        className="p-2 rounded-lg transition-colors"
-                        style={{ color: 'var(--color-text-muted)' }}
-                        title={isExpanded ? 'Reduire' : 'Agrandir'}
-                        aria-label={isExpanded ? 'Reduire la fenetre du chatbot' : 'Agrandir la fenetre du chatbot'}
-                    >
-                        {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-                    </button>
+                    {isDesktop && (
+                        <button
+                            onClick={() => setIsExpanded((prev) => !prev)}
+                            className="p-2 rounded-lg transition-colors"
+                            style={{ color: 'var(--color-text-muted)' }}
+                            title={isExpanded ? 'Reduire' : 'Agrandir'}
+                            aria-label={isExpanded ? 'Reduire la fenetre du chatbot' : 'Agrandir la fenetre du chatbot'}
+                        >
+                            {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                        </button>
+                    )}
                     {/* New Conversation Button */}
                     {messages.length > 0 && (
                         <button
@@ -509,6 +539,8 @@ export function AIChatWidget() {
             </div>
         </div>
         </>
+        ),
+        document.body
     );
 }
 

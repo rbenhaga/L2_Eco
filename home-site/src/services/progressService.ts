@@ -16,8 +16,8 @@ export interface ChapterProgress {
     startedAt: Date | null;
     lastReadAt: Date | null;
     timeSpent: number; // en secondes
-    scrollProgress: number; // 0-100%
-    isReadComplete: boolean; // scroll >= 90%
+    scrollProgress: number; // legacy, no longer used for validation
+    isReadComplete: boolean; // always true, kept for backward compatibility
     
     // QCM
     qcmAttempts: number;
@@ -25,9 +25,9 @@ export interface ChapterProgress {
     qcmCompletedAt: Date | null;
     
     // Validation finale
-    isCompleted: boolean; // isReadComplete && qcmBestScore >= 70
+    isCompleted: boolean; // qcmBestScore >= minimumQCMScore
     completedAt: Date | null;
-    minimumReadPercentage: number;
+    minimumReadPercentage: number; // legacy, no longer used for validation
     minimumQCMScore: number;
 }
 
@@ -57,7 +57,6 @@ export interface ResourceProgress {
 
 const STORAGE_KEY = 'agora_user_progress';
 const MIN_QCM_SCORE = 70; // Score minimum pour valider un chapitre
-const MIN_READ_PERCENTAGE = 90; // % de scroll minimum
 
 class ProgressService {
     private progress: Record<string, ModuleProgress> = {};
@@ -102,30 +101,20 @@ class ProgressService {
         moduleId: string,
         chapterId: string,
         options?: {
-            minimumReadPercentage?: number;
             minimumQCMScore?: number;
         }
     ): void {
         const chapter = this.getOrCreateChapter(moduleId, chapterId);
-        const nextReadPercentage = Math.max(
-            0,
-            Math.min(100, Math.floor(options?.minimumReadPercentage ?? chapter.minimumReadPercentage ?? MIN_READ_PERCENTAGE))
-        );
         const nextQCMScore = Math.max(
             0,
             Math.min(100, Math.floor(options?.minimumQCMScore ?? chapter.minimumQCMScore ?? MIN_QCM_SCORE))
         );
 
-        if (
-            chapter.minimumReadPercentage === nextReadPercentage
-            && chapter.minimumQCMScore === nextQCMScore
-        ) {
+        if (chapter.minimumQCMScore === nextQCMScore) {
             return;
         }
 
-        chapter.minimumReadPercentage = nextReadPercentage;
         chapter.minimumQCMScore = nextQCMScore;
-        this.checkReadCompletion(moduleId, chapterId);
         this.checkChapterCompletion(moduleId, chapterId);
         this.updateModuleStats(moduleId);
         this.saveToStorage();
@@ -150,16 +139,7 @@ class ProgressService {
     /**
      * Met à jour la progression du scroll
      */
-    updateScrollProgress(moduleId: string, chapterId: string, percentage: number): void {
-        const chapter = this.getOrCreateChapter(moduleId, chapterId);
-        chapter.scrollProgress = Math.max(chapter.scrollProgress, percentage);
-        
-        this.checkReadCompletion(moduleId, chapterId);
-        this.checkChapterCompletion(moduleId, chapterId);
-        this.updateModuleStats(moduleId);
-        this.saveToStorage();
-        this.notifyChange();
-    }
+    updateScrollProgress(_moduleId: string, _chapterId: string, _percentage: number): void {}
     
     /**
      * Vérifie si la lecture est complète
@@ -167,9 +147,7 @@ class ProgressService {
     private checkReadCompletion(moduleId: string, chapterId: string, _estimatedMinutes: number = 30): void {
         const chapter = this.getOrCreateChapter(moduleId, chapterId);
         
-        const hasScrolledEnough = chapter.scrollProgress >= (chapter.minimumReadPercentage || MIN_READ_PERCENTAGE);
-        
-        chapter.isReadComplete = hasScrolledEnough;
+        chapter.isReadComplete = true;
     }
     
     // ============================================
@@ -199,8 +177,9 @@ class ProgressService {
      * Vérifie si le QCM est débloqué (lecture complète requise)
      */
     isQCMUnlocked(moduleId: string, chapterId: string): boolean {
-        const chapter = this.getChapter(moduleId, chapterId);
-        return chapter?.isReadComplete ?? false;
+        void moduleId;
+        void chapterId;
+        return true;
     }
     
     // ============================================
@@ -214,7 +193,7 @@ class ProgressService {
         const chapter = this.getOrCreateChapter(moduleId, chapterId);
         
         const wasCompleted = chapter.isCompleted;
-        chapter.isCompleted = chapter.isReadComplete && chapter.qcmBestScore >= (chapter.minimumQCMScore || MIN_QCM_SCORE);
+        chapter.isCompleted = chapter.qcmBestScore >= (chapter.minimumQCMScore || MIN_QCM_SCORE);
         
         if (chapter.isCompleted && !wasCompleted) {
             chapter.completedAt = new Date();
@@ -377,8 +356,6 @@ class ProgressService {
             ? source.lastReadAt
             : target.lastReadAt;
         target.timeSpent = Math.max(target.timeSpent, source.timeSpent);
-        target.scrollProgress = Math.max(target.scrollProgress, source.scrollProgress);
-        target.isReadComplete = target.isReadComplete || source.isReadComplete;
         target.qcmAttempts = Math.max(target.qcmAttempts, source.qcmAttempts);
         target.qcmBestScore = Math.max(target.qcmBestScore, source.qcmBestScore);
         target.qcmCompletedAt = target.qcmCompletedAt ?? source.qcmCompletedAt;
@@ -425,13 +402,13 @@ class ProgressService {
                 lastReadAt: null,
                 timeSpent: 0,
                 scrollProgress: 0,
-                isReadComplete: false,
+                isReadComplete: true,
                 qcmAttempts: 0,
                 qcmBestScore: 0,
                 qcmCompletedAt: null,
                 isCompleted: false,
                 completedAt: null,
-                minimumReadPercentage: MIN_READ_PERCENTAGE,
+                minimumReadPercentage: 0,
                 minimumQCMScore: MIN_QCM_SCORE,
             };
         }

@@ -23,40 +23,28 @@ export function Math({ children, display = false, className = '' }: MathProps) {
     }
   }, [children, display]);
 
-  return <span ref={ref} className={className} />;
+  const classes = [
+    display ? 'editorial-math editorial-math--display' : 'editorial-math editorial-math--inline',
+    className,
+  ].filter(Boolean).join(' ');
+
+  return <span ref={ref} className={classes} />;
 }
 
 interface FormulaBoxProps {
   children: string;
   label?: string;
-  /** highlight est conservé pour compatibilité API mais ne change plus le fond */
   highlight?: boolean;
+  variant?: 'default' | 'reference' | 'derivation';
 }
 
-/**
- * FormulaBox — Design v4
- *
- * Aucun fond coloré. Centrage pur avec bordures horizontales discrètes.
- * Lisible, aéré, neutre.
- */
-export function FormulaBox({ children, label }: FormulaBoxProps) {
+export function FormulaBox({ children, label, highlight = false, variant }: FormulaBoxProps) {
+  const tone = variant ?? (highlight ? 'reference' : 'default');
+
   return (
-    <div className="my-5 overflow-x-auto">
-      {label && (
-        <p
-          className="text-center text-[11px] font-semibold uppercase tracking-widest mb-2"
-          style={{ color: 'var(--color-text-secondary)' }}
-        >
-          {label}
-        </p>
-      )}
-      <div
-        className="py-3 text-center border-y"
-        style={{
-          borderColor: 'rgb(var(--border))',
-          color: 'var(--color-text-primary)',
-        }}
-      >
+    <div className={`editorial-formula editorial-formula--${tone}`}>
+      {label ? <p className="editorial-formula__label">{label}</p> : null}
+      <div className="editorial-formula__surface">
         <Math display>{children}</Math>
       </div>
     </div>

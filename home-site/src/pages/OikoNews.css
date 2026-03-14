@@ -479,6 +479,65 @@ html[data-theme='dark'] .oiko-page-shell header.glass-premium,
   margin: 0.8rem 0 1.1rem;
 }
 
+.oiko-visual-fallback-card {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(220px, 34vw, 320px);
+  padding: clamp(1.35rem, 3vw, 2rem);
+  border: 1px solid var(--color-border-default);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--color-accent) 14%, transparent) 0, transparent 34%),
+    linear-gradient(145deg, color-mix(in srgb, var(--color-bg-raised) 94%, var(--color-accent) 6%) 0%, var(--color-bg-overlay) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.72rem;
+}
+
+.oiko-visual-fallback-card::after {
+  content: '';
+  position: absolute;
+  inset: 18px 18px auto auto;
+  width: clamp(96px, 18vw, 156px);
+  height: clamp(96px, 18vw, 156px);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+}
+
+.oiko-visual-fallback-eyebrow {
+  position: relative;
+  z-index: 1;
+}
+
+.oiko-visual-fallback-title,
+.oiko-visual-fallback-copy {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+}
+
+.oiko-visual-fallback-title {
+  max-width: 18ch;
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 3vw, 2.45rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.oiko-visual-fallback-copy {
+  max-width: 46ch;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.oiko-visual-fallback figcaption {
+  position: relative;
+  z-index: 1;
+}
+
 .oiko-subscribe-popup,
 .oiko-toast {
   position: fixed;
@@ -731,5 +790,1561 @@ html[data-theme='dark'] .oiko-page-shell header.glass-premium,
 @media (max-width: 960px) {
   .oiko-compare-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+
+/* Premium Surface Oiko */
+.oiko-page-main-single {
+  width: min(1120px, 100%);
+}
+
+.oiko-newsletter-premium {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.4rem, 2.6vw, 2.4rem);
+  border-radius: 28px;
+  background:
+    radial-gradient(1100px 480px at 100% -10%, color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 70%),
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-raised) 92%, var(--color-canvas) 8%) 0%, var(--color-bg-raised) 100%);
+  box-shadow: 0 28px 70px color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+}
+
+.oiko-premium-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
+  gap: 1.35rem;
+  padding-bottom: 1.8rem;
+}
+
+.oiko-premium-hero__copy,
+.oiko-premium-hero__aside,
+.oiko-premium-pulse-card,
+.oiko-premium-pulse-card__list,
+.oiko-premium-section,
+.oiko-lead-grid__body,
+.oiko-story-card__copy,
+.oiko-premium-footer__notes {
+  display: grid;
+  gap: 1rem;
+}
+
+.oiko-premium-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.oiko-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.38rem 0.72rem;
+  border: 1px solid color-mix(in srgb, var(--color-border-default) 85%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-bg-overlay) 88%, transparent);
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.oiko-meta-pill.is-v3 {
+  border-color: color-mix(in srgb, var(--color-accent) 32%, transparent);
+  background: color-mix(in srgb, var(--color-accent) 10%, var(--color-bg-overlay));
+  color: var(--color-text-primary);
+}
+
+.oiko-meta-pill.is-legacy {
+  background: color-mix(in srgb, var(--color-bg-overlay) 72%, var(--color-canvas));
+}
+
+.oiko-premium-hero__kicker {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.oiko-premium-hero__title {
+  margin: 0;
+  max-width: 12ch;
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+  font-size: clamp(2.7rem, 5vw, 5rem);
+  line-height: 0.93;
+  letter-spacing: -0.05em;
+}
+
+.oiko-premium-hero__dek {
+  margin: 0;
+  max-width: 54ch;
+  color: var(--color-text-primary);
+  font-size: clamp(1.06rem, 1.6vw, 1.28rem);
+  line-height: 1.65;
+}
+
+.oiko-premium-hero__intro {
+  display: grid;
+  gap: 0.95rem;
+  max-width: 64ch;
+}
+
+.oiko-premium-hero__intro p,
+.oiko-market-note-card p,
+.oiko-opening-card p,
+.oiko-story-card__copy p,
+.oiko-brief-card p,
+.oiko-market-chart-card__head p,
+.oiko-premium-pulse-row p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.78;
+}
+
+.oiko-premium-hero__intro p.is-hero-first,
+.oiko-lead-grid__intro {
+  color: var(--color-text-primary);
+  font-size: 1.08rem;
+  line-height: 1.85;
+}
+
+.oiko-premium-hero__signature {
+  margin-top: -0.15rem;
+}
+
+.oiko-premium-pulse-card,
+.oiko-opening-card,
+.oiko-market-card,
+.oiko-market-chart-card,
+.oiko-market-note-card,
+.oiko-story-card,
+.oiko-brief-card,
+.oiko-hero-takeaway-card {
+  border: 1px solid color-mix(in srgb, var(--color-border-default) 88%, transparent);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--color-bg-overlay) 92%, var(--color-canvas));
+}
+
+.oiko-premium-block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.oiko-hero-takeaways-grid,
+.oiko-opening-grid,
+.oiko-market-grid,
+.oiko-market-chart-grid,
+.oiko-market-notes-grid,
+.oiko-brief-grid {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.oiko-hero-takeaways-grid,
+.oiko-opening-grid,
+.oiko-market-notes-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.oiko-hero-takeaway-card,
+.oiko-opening-card,
+.oiko-market-note-card,
+.oiko-market-chart-card,
+.oiko-brief-card {
+  padding: 1rem 1.05rem;
+}
+
+.oiko-hero-takeaway-card__label,
+.oiko-opening-card__label,
+.oiko-market-note-card__label,
+.oiko-market-chart-card__label,
+.oiko-premium-pulse-row__label,
+.oiko-market-card__category {
+  margin: 0 0 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.oiko-premium-pulse-card,
+.oiko-premium-hero__takeaways {
+  padding: 1rem 1.05rem;
+  border: 1px solid color-mix(in srgb, var(--color-border-default) 88%, transparent);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--color-bg-overlay) 92%, var(--color-canvas));
+}
+
+.oiko-premium-pulse-row {
+  display: grid;
+  gap: 0.28rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.oiko-premium-pulse-row:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.oiko-premium-pulse-row h3,
+.oiko-market-card h3,
+.oiko-story-card h3,
+.oiko-market-chart-card h3,
+.oiko-opening-card h3,
+.oiko-brief-card h3 {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.oiko-newsletter-premium .oiko-section-figure,
+.oiko-newsletter-premium .oiko-chart-figure {
+  margin: 0;
+}
+
+.oiko-premium-hero__visual,
+.oiko-lead-grid__visual,
+.oiko-story-band-grid__visual {
+  height: 100%;
+}
+
+.oiko-newsletter-premium .oiko-section-image,
+.oiko-newsletter-premium .oiko-chart {
+  width: 100%;
+  display: block;
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--color-border-default) 88%, transparent);
+  background: color-mix(in srgb, var(--color-bg-overlay) 92%, var(--color-canvas));
+}
+
+.oiko-newsletter-premium .oiko-chart {
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  padding: 0.35rem;
+}
+
+.oiko-newsletter-premium .oiko-section-image {
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.oiko-newsletter-premium .oiko-visual-fallback-card {
+  min-height: clamp(260px, 30vw, 360px);
+  padding: clamp(1.35rem, 2.6vw, 1.9rem);
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 16%, var(--color-border-default));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, #08152f 92%, var(--color-accent) 8%) 0%, color-mix(in srgb, #0f1c35 90%, var(--color-canvas) 10%) 100%),
+    linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 60%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
+  gap: 0.9rem;
+}
+
+.oiko-newsletter-premium .oiko-visual-fallback-card::after {
+  display: none;
+}
+
+.oiko-newsletter-premium .oiko-visual-fallback-eyebrow,
+.oiko-newsletter-premium .oiko-visual-fallback-title,
+.oiko-newsletter-premium .oiko-visual-fallback-copy,
+.oiko-newsletter-premium .oiko-visual-fallback figcaption {
+  position: relative;
+  z-index: 1;
+}
+
+.oiko-newsletter-premium .oiko-visual-fallback-eyebrow {
+  color: color-mix(in srgb, white 72%, var(--color-accent));
+}
+
+.oiko-newsletter-premium .oiko-visual-fallback-title {
+  max-width: 14ch;
+  color: #f6f7fb;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3vw, 3rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.oiko-newsletter-premium .oiko-visual-fallback-copy {
+  max-width: 40ch;
+  color: rgba(240, 244, 255, 0.82);
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.oiko-newsletter-premium .oiko-visual-fallback figcaption,
+.oiko-newsletter-premium .oiko-section-figure figcaption {
+  margin-top: 0.1rem;
+  color: color-mix(in srgb, white 58%, var(--color-accent));
+}
+
+.oiko-premium-section {
+  padding: 1.6rem 0;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.oiko-premium-section__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 0.75fr);
+  gap: 1rem;
+  align-items: end;
+}
+
+.oiko-premium-section__head h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(1.55rem, 2.6vw, 2.35rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.oiko-premium-section__summary {
+  margin: 0;
+  max-width: 40ch;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.oiko-opening-card {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.oiko-market-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.oiko-market-card {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem 1.05rem;
+}
+
+.oiko-market-card__head,
+.oiko-market-card__value-row,
+.oiko-premium-footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem;
+}
+
+.oiko-market-card__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  padding: 0.32rem 0.62rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.oiko-market-card__delta.is-positive {
+  background: color-mix(in srgb, var(--color-success-subtle) 78%, transparent);
+  color: var(--color-success);
+}
+
+.oiko-market-card__delta.is-negative {
+  background: color-mix(in srgb, var(--color-error-subtle) 78%, transparent);
+  color: var(--color-error);
+}
+
+.oiko-market-card__delta.is-neutral {
+  background: color-mix(in srgb, var(--color-bg-overlay) 94%, transparent);
+  color: var(--color-text-secondary);
+}
+
+.oiko-market-card__value-row {
+  align-items: baseline;
+}
+
+.oiko-market-card__value-row strong {
+  color: var(--color-text-primary);
+  font-size: clamp(1.55rem, 2.2vw, 2rem);
+  line-height: 1;
+}
+
+.oiko-market-card__value-row span {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.oiko-market-card__sparkline {
+  width: 100%;
+  height: 74px;
+}
+
+.oiko-market-card__sparkline-area {
+  fill: color-mix(in srgb, var(--color-accent) 10%, transparent);
+}
+
+.oiko-market-card__sparkline-line {
+  fill: none;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.oiko-market-card__sparkline.is-up .oiko-market-card__sparkline-line {
+  stroke: var(--color-success);
+}
+
+.oiko-market-card__sparkline.is-down .oiko-market-card__sparkline-line {
+  stroke: var(--color-error);
+}
+
+.oiko-market-card__sparkline.is-flat .oiko-market-card__sparkline-line {
+  stroke: var(--color-text-secondary);
+}
+
+.oiko-market-card__sparkline.is-up .oiko-market-card__sparkline-area {
+  fill: color-mix(in srgb, var(--color-success) 14%, transparent);
+}
+
+.oiko-market-card__sparkline.is-down .oiko-market-card__sparkline-area {
+  fill: color-mix(in srgb, var(--color-error) 12%, transparent);
+}
+
+.oiko-market-card__foot {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.oiko-market-card__foot > span {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.oiko-market-card__foot p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.62;
+}
+
+.oiko-market-chart-grid,
+.oiko-brief-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.oiko-market-chart-card {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.oiko-market-chart-card__head {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.oiko-market-notes-grid {
+  margin-top: 0.1rem;
+}
+
+.oiko-lead-grid,
+.oiko-story-band-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
+  gap: 1.1rem;
+  align-items: start;
+}
+
+.oiko-story-band-grid__visual {
+  order: 2;
+}
+
+.oiko-story-band-grid__body,
+.oiko-market-chart-card__head,
+.oiko-premium-footer__source {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.oiko-story-card {
+  padding: 1.05rem 1.1rem;
+}
+
+.oiko-story-card + .oiko-story-card {
+  margin-top: 0.9rem;
+}
+
+.oiko-story-card h3,
+.oiko-market-chart-card h3 {
+  font-size: clamp(1.18rem, 2vw, 1.55rem);
+  line-height: 1.12;
+}
+
+.oiko-brief-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.8rem;
+  align-items: start;
+}
+
+.oiko-brief-card__index {
+  width: 2rem;
+  height: 2rem;
+  margin: 0;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  color: var(--color-accent);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.oiko-premium-footer {
+  padding-top: 1.55rem;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.oiko-premium-footer__source,
+.oiko-premium-footer__notes {
+  max-width: 58ch;
+}
+
+@media (max-width: 1024px) {
+  .oiko-premium-hero,
+  .oiko-premium-section__head,
+  .oiko-lead-grid,
+  .oiko-story-band-grid,
+  .oiko-premium-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .oiko-story-band-grid__visual {
+    order: 0;
+  }
+
+  .oiko-premium-footer,
+  .oiko-market-card__head,
+  .oiko-market-card__value-row {
+    display: grid;
+  }
+}
+
+@media (max-width: 900px) {
+  .oiko-hero-takeaways-grid,
+  .oiko-opening-grid,
+  .oiko-market-chart-grid,
+  .oiko-market-notes-grid,
+  .oiko-brief-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .oiko-premium-hero__title {
+    max-width: none;
+  }
+}
+
+/* Oiko credibility pass */
+.oiko-newsletter-premium {
+  padding: clamp(1.25rem, 2.2vw, 2rem);
+}
+
+.oiko-premium-hero {
+  grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.72fr);
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.oiko-premium-hero__copy {
+  gap: 0.85rem;
+}
+
+.oiko-premium-hero__aside {
+  align-content: start;
+  gap: 0.85rem;
+}
+
+.oiko-premium-hero__title {
+  max-width: 14ch;
+  font-size: clamp(2.85rem, 4.8vw, 4.85rem);
+}
+
+.oiko-premium-hero__dek {
+  max-width: 48ch;
+  font-size: clamp(1rem, 1.25vw, 1.14rem);
+  line-height: 1.5;
+}
+
+.oiko-premium-hero__intro {
+  gap: 0.65rem;
+  max-width: 58ch;
+}
+
+.oiko-premium-hero__intro p,
+.oiko-market-note-card p,
+.oiko-opening-card p,
+.oiko-story-card__copy p,
+.oiko-brief-card p,
+.oiko-market-chart-card__head p,
+.oiko-premium-pulse-row p,
+.oiko-hero-signal-card p {
+  line-height: 1.62;
+}
+
+.oiko-premium-hero__intro p.is-hero-first,
+.oiko-lead-grid__intro {
+  font-size: 1.04rem;
+  line-height: 1.72;
+}
+
+.oiko-premium-block-head--stack {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.oiko-premium-pulse-card {
+  gap: 0.85rem;
+  padding: 1.05rem;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-bg-overlay) 96%, #f6efe6 4%) 0%, color-mix(in srgb, var(--color-bg-raised) 92%, #f4efe7 8%) 100%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 55%, transparent);
+}
+
+.oiko-premium-pulse-card__summary {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.56;
+}
+
+.oiko-hero-market-grid,
+.oiko-hero-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.72rem;
+}
+
+.oiko-hero-market-card,
+.oiko-hero-signal-card {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.88rem 0.92rem;
+  border: 1px solid color-mix(in srgb, var(--color-border-default) 94%, transparent);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--color-bg-overlay) 96%, white 4%);
+}
+
+.oiko-hero-market-card__head,
+.oiko-hero-market-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.oiko-hero-market-card__value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.oiko-hero-market-card__value strong {
+  color: var(--color-text-primary);
+  font-size: 1.42rem;
+  line-height: 1;
+}
+
+.oiko-hero-market-card__value span,
+.oiko-hero-market-card__meta span {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.oiko-hero-signal-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.16;
+}
+
+.oiko-premium-hero__visual .oiko-visual-fallback-card,
+.oiko-premium-hero__visual .oiko-section-image {
+  min-height: 220px;
+  aspect-ratio: 4 / 3;
+}
+
+.oiko-premium-hero__visual .oiko-visual-fallback-title {
+  max-width: 16ch;
+  font-size: clamp(1.55rem, 2.1vw, 2.2rem);
+}
+
+.oiko-premium-hero__visual .oiko-visual-fallback-copy {
+  max-width: 32ch;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.oiko-opening-card {
+  min-height: 100%;
+  gap: 0.55rem;
+  border-top: 2px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+
+.oiko-opening-card p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.oiko-market-grid {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.85rem;
+}
+
+.oiko-market-card {
+  gap: 0.72rem;
+  padding: 0.98rem 1rem;
+}
+
+.oiko-market-card__delta {
+  font-size: 0.78rem;
+}
+
+.oiko-market-card__value-row strong {
+  font-size: clamp(1.35rem, 1.9vw, 1.8rem);
+}
+
+.oiko-market-card__sparkline {
+  height: 62px;
+}
+
+.oiko-market-card__foot p {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.oiko-market-chart-grid {
+  gap: 0.85rem;
+}
+
+.oiko-market-chart-card {
+  gap: 0.75rem;
+  padding: 0.98rem 1rem;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-bg-overlay) 96%, white 4%) 0%, color-mix(in srgb, var(--color-bg-raised) 95%, #eef2f7 5%) 100%);
+}
+
+.oiko-market-chart-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.oiko-market-chart-card__visual {
+  padding: 0.35rem;
+  border: 1px solid color-mix(in srgb, var(--color-border-default) 88%, transparent);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--color-bg-overlay) 98%, white 2%);
+}
+
+.oiko-market-chart-card__visual .oiko-chart {
+  border: none;
+  background: transparent;
+  padding: 0;
+  aspect-ratio: 16 / 8.6;
+}
+
+.oiko-market-notes-grid {
+  gap: 0.78rem;
+}
+
+.oiko-market-note-card {
+  padding: 0.95rem 1rem;
+}
+
+.oiko-market-note-card p {
+  font-size: 0.94rem;
+  line-height: 1.56;
+}
+
+.oiko-premium-section {
+  padding: 1.38rem 0;
+}
+
+.oiko-premium-section__head {
+  gap: 0.85rem;
+}
+
+.oiko-premium-section__head h2 {
+  font-size: clamp(1.42rem, 2.2vw, 2rem);
+}
+
+.oiko-premium-section__summary {
+  font-size: 0.95rem;
+  line-height: 1.58;
+}
+
+.oiko-lead-grid,
+.oiko-story-band-grid {
+  gap: 0.95rem;
+}
+
+.oiko-lead-grid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+}
+
+.oiko-lead-grid__body {
+  gap: 0.82rem;
+}
+
+.oiko-story-card {
+  padding: 0.98rem 1rem;
+}
+
+.oiko-story-card__copy p + p,
+.oiko-lead-grid__body p + p {
+  margin-top: 0.55rem;
+}
+
+.oiko-brief-grid {
+  gap: 0.78rem;
+}
+
+.oiko-brief-card {
+  padding: 0.92rem 1rem;
+}
+
+@media (max-width: 1024px) {
+  .oiko-hero-market-grid,
+  .oiko-hero-signal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .oiko-hero-market-grid,
+  .oiko-hero-signal-grid,
+  .oiko-market-chart-grid,
+  .oiko-market-notes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Oiko hierarchy reset */
+.oiko-premium-hero {
+  grid-template-columns: minmax(0, 1.46fr) minmax(272px, 0.54fr);
+  gap: clamp(1.15rem, 2vw, 1.8rem);
+  align-items: start;
+}
+
+.oiko-premium-hero__copy {
+  gap: 1rem;
+}
+
+.oiko-premium-hero__aside {
+  gap: 0;
+}
+
+.oiko-premium-hero__title {
+  max-width: 12ch;
+  font-size: clamp(3.2rem, 5vw, 5.1rem);
+  line-height: 0.96;
+}
+
+.oiko-premium-hero__dek {
+  max-width: 42ch;
+  font-size: clamp(1.02rem, 1.25vw, 1.18rem);
+}
+
+.oiko-premium-hero__intro {
+  max-width: 52ch;
+  gap: 0.72rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-border-default) 72%, transparent);
+}
+
+.oiko-premium-pulse-card {
+  padding: 1rem 1rem 0.95rem;
+  border-radius: 26px;
+  border: 1px solid color-mix(in srgb, #6e7ba3 32%, transparent);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, #d9b56b 18%, transparent) 0%, transparent 38%),
+    linear-gradient(180deg, #171d31 0%, #111729 100%);
+  box-shadow: 0 18px 42px color-mix(in srgb, #0b1020 28%, transparent);
+}
+
+.oiko-premium-pulse-card .oiko-kicker,
+.oiko-premium-pulse-card__summary,
+.oiko-premium-pulse-card .oiko-market-card__category,
+.oiko-premium-pulse-card .oiko-hero-market-card__meta span {
+  color: color-mix(in srgb, white 78%, #aeb7cf 22%);
+}
+
+.oiko-hero-market-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.oiko-hero-market-card {
+  gap: 0.42rem;
+  padding: 0.78rem 0.82rem;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, #7e8aab 22%, transparent);
+  background: color-mix(in srgb, #1c2438 90%, white 10%);
+}
+
+.oiko-hero-market-card__head {
+  align-items: flex-start;
+}
+
+.oiko-hero-market-card .oiko-market-card__category {
+  font-size: 0.72rem;
+}
+
+.oiko-hero-market-card__value strong {
+  font-size: 1.38rem;
+}
+
+.oiko-hero-market-card__sparkline {
+  height: 34px;
+  opacity: 0.92;
+}
+
+.oiko-hero-signal-grid {
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+}
+
+.oiko-hero-signal-card {
+  gap: 0.4rem;
+  padding: 0.78rem 0.82rem;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, #7e8aab 18%, transparent);
+  background: color-mix(in srgb, #1c2438 90%, white 10%);
+}
+
+.oiko-hero-signal-card h3 {
+  font-size: 0.96rem;
+}
+
+.oiko-hero-signal-card p:last-child {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.oiko-premium-section--opening .oiko-premium-section__head,
+.oiko-premium-section--markets .oiko-premium-section__head {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 28rem);
+  align-items: end;
+}
+
+.oiko-opening-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.oiko-opening-card {
+  padding: 0.9rem 0 0;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-accent) 38%, transparent);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.oiko-market-desk-note {
+  max-width: 42rem;
+  padding: 0.1rem 0 0.45rem;
+}
+
+.oiko-market-desk-note p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.56;
+}
+
+.oiko-market-chart-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.oiko-market-chart-card {
+  gap: 0.62rem;
+  padding: 0.9rem 0.95rem;
+  border-radius: 22px;
+  border: 1px solid color-mix(in srgb, var(--color-border-default) 82%, transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-bg-overlay) 98%, white 2%) 0%, color-mix(in srgb, var(--color-bg-raised) 96%, #e8edf5 4%) 100%);
+  box-shadow: none;
+}
+
+.oiko-market-chart-card__head {
+  gap: 0.25rem;
+}
+
+.oiko-market-chart-card__head p {
+  margin: 0;
+}
+
+.oiko-market-chart-card__visual {
+  padding: 0.2rem;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--color-border-default) 74%, transparent);
+}
+
+.oiko-market-chart-card__visual .oiko-chart {
+  aspect-ratio: 16 / 8;
+}
+
+.oiko-story-card,
+.oiko-brief-card,
+.oiko-market-note-card {
+  box-shadow: none;
+}
+
+.oiko-story-card,
+.oiko-brief-card {
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--color-border-default) 72%, transparent);
+  background: color-mix(in srgb, var(--color-bg-overlay) 98%, white 2%);
+}
+
+.oiko-story-band-grid__body,
+.oiko-brief-grid {
+  gap: 0.72rem;
+}
+
+@media (max-width: 900px) {
+  .oiko-premium-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .oiko-premium-section--opening .oiko-premium-section__head,
+  .oiko-premium-section--markets .oiko-premium-section__head,
+  .oiko-opening-grid,
+  .oiko-market-chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Oiko newsletter reset */
+.oiko-newsletter-premium--linear {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: clamp(1.2rem, 2vw, 1.9rem);
+  border-radius: 30px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-overlay) 98%, #f6efe7 2%) 0%, color-mix(in srgb, var(--color-bg-raised) 97%, #f4efe8 3%) 100%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 68%, transparent),
+    0 22px 52px color-mix(in srgb, #101425 10%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-hero,
+.oiko-newsletter-premium--linear .oiko-newsletter-section,
+.oiko-newsletter-premium--linear .oiko-premium-footer {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-hero {
+  display: grid;
+  gap: 0.9rem;
+  padding-bottom: 1.55rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border-default) 78%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-hero__kicker {
+  margin: 0;
+  color: var(--color-accent);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-hero__title {
+  max-width: 11ch;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(3rem, 5vw, 5.15rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-hero__dek {
+  max-width: 54ch;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height: 1.58;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-hero__intro {
+  display: grid;
+  gap: 0.8rem;
+  max-width: 60ch;
+  padding-top: 0.3rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-hero__intro p,
+.oiko-newsletter-premium--linear .oiko-menu-row__body p,
+.oiko-newsletter-premium--linear .oiko-newsletter-section__summary,
+.oiko-newsletter-premium--linear .oiko-story-row__copy p,
+.oiko-newsletter-premium--linear .oiko-lead-section__copy p,
+.oiko-newsletter-premium--linear .oiko-brief-row p,
+.oiko-newsletter-premium--linear .oiko-market-line__fallback-copy {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.66;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-hero__intro p.is-hero-first {
+  color: var(--color-text-primary);
+  font-size: 1.08rem;
+  line-height: 1.72;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-hero__signature,
+.oiko-newsletter-premium--linear .oiko-newsletter-lead__signature {
+  margin: 0;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-section {
+  display: grid;
+  gap: 0.95rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border-default) 74%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-section:last-of-type {
+  border-bottom: none;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-section__head {
+  display: grid;
+  gap: 0.38rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-section__head h2,
+.oiko-newsletter-premium--linear .oiko-newsletter-section__head h3 {
+  margin: 0;
+  color: var(--color-text-primary);
+  line-height: 1.04;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-section__head h2 {
+  font-size: clamp(1.65rem, 2.35vw, 2.2rem);
+  letter-spacing: -0.03em;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-section__head h3 {
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-section__summary {
+  max-width: 60ch;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-section__meta-note {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-section__head--subhead {
+  padding-top: 0.3rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-menu-list,
+.oiko-newsletter-premium--linear .oiko-brief-list {
+  list-style: none;
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-border-default) 66%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-menu-row,
+.oiko-newsletter-premium--linear .oiko-brief-row {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 0.85rem;
+  align-items: start;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border-default) 60%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-menu-row__index,
+.oiko-newsletter-premium--linear .oiko-brief-row__index {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.oiko-newsletter-premium--linear .oiko-menu-row__body,
+.oiko-newsletter-premium--linear .oiko-brief-row {
+  min-width: 0;
+}
+
+.oiko-newsletter-premium--linear .oiko-menu-row__body h3,
+.oiko-newsletter-premium--linear .oiko-story-row h3,
+.oiko-newsletter-premium--linear .oiko-lead-section h3 {
+  margin: 0 0 0.28rem;
+  color: var(--color-text-primary);
+  font-size: 1.03rem;
+  line-height: 1.22;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-lines {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-border-default) 66%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) auto 144px;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border-default) 60%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line--fallback {
+  grid-template-columns: minmax(0, 140px) minmax(0, 1fr);
+  align-items: start;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__identity {
+  min-width: 0;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__label {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__category {
+  margin: 0.16rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__pricing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.35rem 0.75rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__value,
+.oiko-newsletter-premium--linear .oiko-market-line__delta,
+.oiko-newsletter-premium--linear .oiko-market-line__period {
+  margin: 0;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.32rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__value strong {
+  color: var(--color-text-primary);
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__value span,
+.oiko-newsletter-premium--linear .oiko-market-line__period {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__delta.is-positive {
+  color: var(--color-success);
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__delta.is-negative {
+  color: var(--color-danger);
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__delta.is-neutral {
+  color: var(--color-text-muted);
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__sparkline {
+  width: 144px;
+  height: 48px;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__sparkline-area {
+  opacity: 0.12;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__sparkline-path {
+  fill: none;
+  stroke-width: 2.2;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__sparkline.is-up .oiko-market-line__sparkline-area,
+.oiko-newsletter-premium--linear .oiko-market-line__sparkline.is-up .oiko-market-line__sparkline-path {
+  color: var(--color-success);
+  fill: color-mix(in srgb, var(--color-success) 18%, transparent);
+  stroke: var(--color-success);
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__sparkline.is-down .oiko-market-line__sparkline-area,
+.oiko-newsletter-premium--linear .oiko-market-line__sparkline.is-down .oiko-market-line__sparkline-path {
+  color: var(--color-danger);
+  fill: color-mix(in srgb, var(--color-danger) 18%, transparent);
+  stroke: var(--color-danger);
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__sparkline.is-flat .oiko-market-line__sparkline-area,
+.oiko-newsletter-premium--linear .oiko-market-line__sparkline.is-flat .oiko-market-line__sparkline-path {
+  color: var(--color-text-muted);
+  fill: color-mix(in srgb, var(--color-text-muted) 14%, transparent);
+  stroke: color-mix(in srgb, var(--color-text-secondary) 72%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-market-charts-inline {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.15rem;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-border-default) 60%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-market-chart-stack {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-chart-inline {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.8rem 0.85rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--color-border-default) 66%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--color-bg-overlay) 98%, white 2%);
+}
+
+.oiko-newsletter-premium--linear .oiko-market-chart-inline figcaption {
+  color: var(--color-text-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-chart-inline .oiko-chart {
+  padding: 0.15rem;
+  border: none;
+  border-radius: 16px;
+  background: transparent;
+  aspect-ratio: 16 / 8.4;
+}
+
+.oiko-newsletter-premium--linear .oiko-lead-sections,
+.oiko-newsletter-premium--linear .oiko-story-list {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-border-default) 66%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-lead-section,
+.oiko-newsletter-premium--linear .oiko-story-row {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border-default) 60%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-lead-section__copy,
+.oiko-newsletter-premium--linear .oiko-story-row__copy {
+  display: grid;
+  gap: 0.72rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-inline-visual {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.2rem 0 0.4rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-inline-visual img {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--color-border-default) 64%, transparent);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-inline-visual figcaption {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-premium-footer {
+  display: grid;
+  gap: 0.85rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-border-default) 78%, transparent);
+}
+
+.oiko-newsletter-premium--linear .oiko-premium-footer__source,
+.oiko-newsletter-premium--linear .oiko-premium-footer__notes {
+  max-width: 62ch;
+}
+
+@media (max-width: 860px) {
+  .oiko-newsletter-premium--linear .oiko-newsletter-hero__title {
+    max-width: none;
+  }
+
+  .oiko-newsletter-premium--linear .oiko-market-line {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .oiko-newsletter-premium--linear .oiko-market-line__pricing {
+    justify-content: flex-start;
+  }
+}
+
+/* Oiko markets lines reset */
+.oiko-newsletter-premium--linear .oiko-newsletter-section__head--subhead,
+.oiko-newsletter-premium--linear .oiko-market-charts-inline,
+.oiko-newsletter-premium--linear .oiko-market-chart-stack,
+.oiko-newsletter-premium--linear .oiko-market-chart-inline,
+.oiko-newsletter-premium--linear .oiko-market-line__sparkline,
+.oiko-newsletter-premium--linear .oiko-market-line__category {
+  display: none !important;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-lines {
+  gap: 0;
+  margin-top: 0.15rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  padding: 0.82rem 0;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line--fallback {
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 0.8rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__label {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__pricing {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: baseline;
+  justify-content: end;
+  gap: 0.85rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__value strong {
+  font-size: 1.03rem;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__value span,
+.oiko-newsletter-premium--linear .oiko-market-line__period,
+.oiko-newsletter-premium--linear .oiko-market-line__delta {
+  white-space: nowrap;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__period {
+  min-width: 4.6rem;
+  text-align: right;
+}
+
+.oiko-newsletter-premium--linear .oiko-market-line__fallback-copy {
+  max-width: 54ch;
+}
+
+.oiko-newsletter-premium--linear .oiko-newsletter-section__head h2 {
+  text-wrap: balance;
+}
+
+@media (max-width: 860px) {
+  .oiko-newsletter-premium--linear .oiko-market-line,
+  .oiko-newsletter-premium--linear .oiko-market-line--fallback {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .oiko-newsletter-premium--linear .oiko-market-line__pricing {
+    grid-auto-flow: row;
+    justify-content: start;
+    gap: 0.28rem;
+  }
+
+  .oiko-newsletter-premium--linear .oiko-market-line__period {
+    text-align: left;
   }
 }

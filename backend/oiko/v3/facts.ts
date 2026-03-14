@@ -1,7 +1,7 @@
 ﻿import { OIKO_V3_POLICY } from '../policy/v3.ts';
-import { generateWithConfiguredProviders, extractJsonCandidate, repairJsonWithFastModel } from './llm.ts';
+import { extractJsonCandidate, generateWithConfiguredProviders, repairJsonWithFastModelDetailed } from './llm.ts';
 import { computeReadableQuality, detectLanguage, splitSentences, uniqueStrings } from './helpers.ts';
-import type { ArticleRecencyType, ExtractedFactSheet, FactRecord, FactSheetRecord, NormalizedArticle, StructuredMarketContext, TemporalFactSheet } from './types.ts';
+import type { ArticleRecencyType, ExtractedFactSheet, FactRecord, FactSheetExtractionResult, FactSheetRecord, LlmStageTrace, NormalizedArticle, StructuredMarketContext, TemporalFactSheet } from './types.ts';
 
 function extractEntities(title: string) {
   const matches = String(title || '').match(/\b[A-Z][A-Za-z\u00c0-\u017f'.-]{2,}\b/g) || [];
@@ -300,44 +300,135 @@ function mergeLocalizedRecord(record: FactSheetRecord, localized: any): FactShee
   };
 }
 
-async function localizeFactSheets(records: FactSheetRecord[], usageDate: string) {
-  const needsRewrite = records.filter(needsFactSheetRewrite);
-  if (!needsRewrite.length) return records;
-
-  const generated = await generateWithConfiguredProviders(buildLocalizationPrompt(needsRewrite), usageDate, { maxTokens: 5600, temperature: 0.05 });
-  let parsed = extractJsonCandidate(generated.content);
-  if (!parsed && generated.content) {
-    parsed = await repairJsonWithFastModel(generated.content, usageDate);
-  }
-
-  const entries = Array.isArray(parsed?.articles) ? parsed.articles : Array.isArray(parsed) ? parsed : [];
-  if (!entries.length) return records;
-
-  return records.map((record) => {
-    const localized = entries.find((entry: any) => String(entry?.articleId || '') === record.article.id);
-    return localized ? mergeLocalizedRecord(record, localized) : record;
-  });
+function buildStageTrace(
+  stage: LlmStageTrace['stage'],
+  result: {
+    providerUsed: string | null;
+    modelUsed: string | null;
+    attempts: Array<{
+      provider: string;
+      model: string;
+      label?: string;
+      status: 'success' | 'failed';
+      tokensUsed?: number;
+      error?: string;
+      timeoutMs?: number;
+    }>;
+  },
+  options: {
+    success: boolean;
+    usedFallback: boolean;
+    fallbackReason?: string | null;
+    contentSource?: 'llm' | 'deterministic' | 'hybrid';
+  },
+): LlmStageTrace {
+  return {
+    stage,
+    providerUsed: result.providerUsed,
+    modelUsed: result.modelUsed,
+    attempts: result.attempts.map((attempt) => ({
+      provider: attempt.provider,
+      model: attempt.model,
+      ...(attempt.label ? { label: attempt.label } : {}),
+      status: attempt.status,
+      ...(typeof attempt.tokensUsed === 'number' ? { tokensUsed: attempt.tokensUsed } : {}),
+      ...(attempt.error ? { error: attempt.error } : {}),
+      ...(typeof attempt.timeoutMs === 'number' ? { timeoutMs: attempt.timeoutMs } : {}),
+    })),
+    success: options.success,
+    usedFallback: options.usedFallback,
+    ...(options.fallbackReason ? { fallbackReason: options.fallbackReason } : {}),
+    ...(options.contentSource ? { contentSource: options.contentSource } : {}),
+  };
 }
 
-export async function extractFactSheets(normalizedArticles: NormalizedArticle[], marketContext: StructuredMarketContext, usageDate: string) {
-  if (!normalizedArticles.length) return [];
+async function localizeFactSheets(records: FactSheetRecord[], usageDate: string): Promise<FactSheetExtractionResult> {
+  const needsRewrite = records.filter(needsFactSheetRewrite);
+  if (!needsRewrite.length) return { records, llmStages: [] };
 
+  const llmStages: LlmStageTrace[] = [];
+  const generated = await generateWithConfiguredProviders(buildLocalizationPrompt(needsRewrite), usageDate, { maxTokens: 5600, temperature: 0.05 });
+  let parsed = extractJsonCandidate(generated.content);
+  let repairUsed = false;
+
+  if (!parsed && generated.content) {
+    const repaired = await repairJsonWithFastModelDetailed(generated.content, usageDate);
+    parsed = repaired.parsed;
+    repairUsed = Boolean(repaired.parsed);
+    llmStages.push(buildStageTrace('facts_localize_repair', repaired, {
+      success: Boolean(repaired.parsed),
+      usedFallback: !repaired.parsed,
+      fallbackReason: repaired.parsed ? null : 'repair_failed',
+      contentSource: repaired.parsed ? 'hybrid' : 'deterministic',
+    }));
+  }
+
+  const entries = Array.isArray((parsed as any)?.articles) ? (parsed as any).articles : Array.isArray(parsed) ? parsed : [];
+  llmStages.unshift(buildStageTrace('facts_localize', generated, {
+    success: entries.length > 0,
+    usedFallback: entries.length === 0,
+    fallbackReason: entries.length ? (repairUsed ? 'repaired_json_candidate' : null) : generated.content ? 'invalid_json_candidate' : 'empty_llm_response',
+    contentSource: entries.length ? (repairUsed ? 'hybrid' : 'llm') : 'deterministic',
+  }));
+
+  if (!entries.length) return { records, llmStages };
+
+  return {
+    records: records.map((record) => {
+      const localized = entries.find((entry: any) => String(entry?.articleId || '') === record.article.id);
+      return localized ? mergeLocalizedRecord(record, localized) : record;
+    }),
+    llmStages,
+  };
+}
+
+export async function extractFactSheets(normalizedArticles: NormalizedArticle[], marketContext: StructuredMarketContext, usageDate: string): Promise<FactSheetExtractionResult> {
+  if (!normalizedArticles.length) return { records: [], llmStages: [] };
+
+  const llmStages: LlmStageTrace[] = [];
   const messages = buildExtractionPrompt(normalizedArticles, marketContext);
   const generated = await generateWithConfiguredProviders(messages, usageDate, { maxTokens: 6800, temperature: 0.1 });
   let parsed = extractJsonCandidate(generated.content);
+  let repairUsed = false;
+
   if (!parsed && generated.content) {
-    parsed = await repairJsonWithFastModel(generated.content, usageDate);
+    const repaired = await repairJsonWithFastModelDetailed(generated.content, usageDate);
+    parsed = repaired.parsed;
+    repairUsed = Boolean(repaired.parsed);
+    llmStages.push(buildStageTrace('facts_extract_repair', repaired, {
+      success: Boolean(repaired.parsed),
+      usedFallback: !repaired.parsed,
+      fallbackReason: repaired.parsed ? null : 'repair_failed',
+      contentSource: repaired.parsed ? 'hybrid' : 'deterministic',
+    }));
   }
 
-  const entries = Array.isArray(parsed?.articles) ? parsed.articles : Array.isArray(parsed) ? parsed : [];
+  const entries = Array.isArray((parsed as any)?.articles) ? (parsed as any).articles : Array.isArray(parsed) ? parsed : [];
   const extractedRecords = normalizedArticles.map((article) => {
     const matching = entries.find((entry: any) => String(entry?.articleId || '') === article.id);
     return matching ? normalizeExtractionEntry(matching, article, usageDate) : fallbackFactSheet(article, usageDate);
   });
+  const partialCoverage = entries.length > 0 && entries.length < normalizedArticles.length;
 
-  return localizeFactSheets(extractedRecords, usageDate);
+  llmStages.unshift(buildStageTrace('facts_extract', generated, {
+    success: entries.length > 0,
+    usedFallback: entries.length === 0 || partialCoverage,
+    fallbackReason: entries.length === 0
+      ? (generated.content ? 'invalid_json_candidate' : 'empty_llm_response')
+      : partialCoverage
+        ? 'partial_article_coverage'
+        : repairUsed
+          ? 'repaired_json_candidate'
+          : null,
+    contentSource: entries.length === 0 ? 'deterministic' : partialCoverage || repairUsed ? 'hybrid' : 'llm',
+  }));
+
+  const localized = await localizeFactSheets(extractedRecords, usageDate);
+  return {
+    records: localized.records,
+    llmStages: [...llmStages, ...localized.llmStages],
+  };
 }
-
 export default {
   extractFactSheets,
 };

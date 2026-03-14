@@ -14,7 +14,6 @@ interface ChapterData {
     estimatedTime?: string;
     isLocked?: boolean;
     badge?: 'new' | 'soon';
-    progressPercent?: number;
     isInProgress?: boolean;
     icon?: unknown;
     accentColor?: string;
@@ -95,7 +94,6 @@ export function ModuleChapterList({
                 const isNew = chapter.badge === 'new' || normalizedStatus.includes('nouveau');
                 const isUpdated = normalizedStatus.includes('mis a jour');
                 const isInProgress = Boolean(chapter.isInProgress) && !isCompleted;
-                const chapterProgress = Math.max(0, Math.min(100, Math.floor(chapter.progressPercent ?? 0)));
                 const safeDuration = (chapter.duration || chapter.estimatedTime || '30 min').trim();
                 const cardBackground = isActive
                     ? 'color-mix(in srgb, var(--color-accent-subtle) 14%, var(--color-bg-raised))'
@@ -161,7 +159,7 @@ export function ModuleChapterList({
                                                 {chapter.title}
                                             </h3>
                                             {isCompleted && <StatusBadge label="Terminé" tone="success" />}
-                                            {isInProgress && <StatusBadge label={`En cours ${chapterProgress}%`} tone="accent" />}
+                                            {isInProgress && <StatusBadge label="En cours" tone="accent" />}
                                             {isNew && <StatusBadge label="Nouveau" tone="accent" />}
                                             {isSoon && <StatusBadge label="Bientôt" tone="default" />}
                                             {isUpdated && <StatusBadge label="Mis à jour" tone="default" />}

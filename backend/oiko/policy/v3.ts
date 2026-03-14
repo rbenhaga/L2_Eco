@@ -1,4 +1,4 @@
-import type { SourceProfile } from '../v3/types.ts';
+﻿import type { SourceProfile } from '../v3/types.ts';
 
 export const OIKO_V3_PIPELINE_VERSION = 'v3';
 
@@ -368,6 +368,9 @@ export const OIKO_V3_POLICY = {
       minimumFreshSentenceShare: 0.5,
     },
   },
+  llm: {
+    requestTimeoutMs: Number(process.env.OIKO_LLM_TIMEOUT_MS || 30000),
+  },
   facts: {
     minimumFactsPerArticle: 2,
     maximumFactsPerArticle: 6,
@@ -526,3 +529,4 @@ export function isHighQualitySource(profile: SourceProfile) {
   return profile.sourceReliabilityScore >= OIKO_V3_POLICY.scoring.minimumHighQualitySourceReliability
     && (profile.sourceTier === 'official' || profile.sourceTier === 'tier1' || profile.sourceTier === 'tier2');
 }
+

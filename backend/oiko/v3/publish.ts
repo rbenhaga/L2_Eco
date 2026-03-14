@@ -147,10 +147,10 @@ export function publishEdition(
   rendered: any,
   qualityReport: QualityReport,
   assetQuality: { assetCoverage: number; missingAssets: string[]; brokenAssetCount: number },
-  options: { isShortEdition?: boolean } = {},
 ) {
   const archiveTeaser = generateArchiveTeaserFromPacket(packet);
-  const effectiveStatus = options.isShortEdition && qualityReport.publicationStatus === 'ready'
+  const isShortEdition = packet.materialTier === 'short';
+  const effectiveStatus = isShortEdition && qualityReport.publicationStatus === 'ready'
     ? 'short_draft' as const
     : qualityReport.publicationStatus;
 
@@ -167,14 +167,12 @@ export function publishEdition(
   const qualityState = (effectiveStatus === 'ready' || effectiveStatus === 'short_draft') ? 'passed' : 'failed';
   const publicationReason = visibility === 'internal' && effectiveStatus === 'ready'
     ? 'Draft V3 valide en interne, conservé hors public tant que le switch Phase C reste désactivé.'
-    : options.isShortEdition && qualityReport.publicationStatus === 'ready'
-      ? 'Édition courte V3 — matière insuffisante pour une édition premium mais qualité validée.'
+    : effectiveStatus === 'short_draft'
+      ? 'Édition courte V3 validée en interne, conservée hors public pour ne pas remplacer une édition premium.'
       : qualityReport.publicationReason;
   const publicationReasonCode = visibility === 'internal' && effectiveStatus === 'ready'
     ? 'internal_rollout_only'
-    : options.isShortEdition && qualityReport.publicationStatus === 'ready'
-      ? 'short_edition_passed'
-      : qualityReport.publicationReasonCode;
+    : qualityReport.publicationReasonCode;
 
   upsertEditorialPacket({
     editionDate,
@@ -206,7 +204,7 @@ export function publishEdition(
     publicationReason,
     publicationReasonCode,
     archiveTeaser,
-    isShortEdition: Boolean(options.isShortEdition),
+    isShortEdition,
     emailHtmlPreviewUrl: visibility === 'public'
       ? toAbsoluteUrl(process.env.OIKO_PUBLIC_BASE_URL || 'http://localhost:3001', `/api/oiko-news/${editionDate}/email-html`)
       : null,
@@ -220,4 +218,6 @@ export default {
   persistQualityReports,
   publishEdition,
 };
+
+
 

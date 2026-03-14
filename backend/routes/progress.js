@@ -108,7 +108,9 @@ router.post('/progress/:userId/update', (req, res) => {
         const { contentType, module, contentId, progressPercent, lastPosition } = req.body;
 
         const watched = 1;
-        const completed = progressPercent >= 90 ? 1 : 0;
+        const completed = contentType === 'chapter'
+            ? 0
+            : progressPercent >= 90 ? 1 : 0;
 
         progressQueries.upsert.run(
             userId, contentType, module, contentId,

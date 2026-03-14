@@ -7,7 +7,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { initializeDatabase } from './db/database.js';
+import { closeDatabase, initializeDatabase } from './db/database.js';
 
 import checkoutRouter from './routes/checkout.js';
 import webhookRouter from './routes/webhook.js';
@@ -18,7 +18,7 @@ import ttsRouter from './routes/tts.js';
 import adminRouter from './routes/admin.js';
 import progressRouter from './routes/progress.js';
 import oikoNewsRouter from './routes/oikoNews.ts';
-import { startOikoScheduler } from './oiko/scheduler.ts';
+import { startOikoScheduler, stopOikoScheduler } from './oiko/scheduler.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -79,10 +79,6 @@ app.use((req, res, next) => {
 
 initializeDatabase();
 
-if (process.env.OIKO_CRON_ENABLED === 'true') {
-  startOikoScheduler();
-}
-
 app.use('/static/oiko-news', express.static(path.join(__dirname, 'public', 'oiko-news'), {
   setHeaders: (res) => {
     res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
@@ -120,12 +116,70 @@ app.use((err, _req, res, _next) => {
   });
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT);
+let shutdownInProgress = false;
+
+server.once('listening', () => {
   console.log(`RevP2 Backend API running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Frontend: ${process.env.FRONTEND_URL || 'not set'}`);
   console.log('Available endpoints: /health, /api/*');
+
+  if (process.env.OIKO_CRON_ENABLED === 'true') {
+    startOikoScheduler();
+  }
 });
+
+server.once('error', (error) => {
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. Stop the existing process or set PORT to a different value.`);
+    process.exit(1);
+    return;
+  }
+
+  console.error('Server failed to start:', error);
+  process.exit(1);
+});
+
+function shutdown(signal) {
+  if (shutdownInProgress) {
+    return;
+  }
+
+  shutdownInProgress = true;
+  console.log(`Received ${signal}. Shutting down backend...`);
+  stopOikoScheduler();
+
+  const forceShutdownTimer = setTimeout(() => {
+    console.error('Forced shutdown after waiting 10 seconds.');
+    process.exit(1);
+  }, 10_000);
+
+  forceShutdownTimer.unref();
+
+  server.close((error) => {
+    clearTimeout(forceShutdownTimer);
+
+    if (error) {
+      console.error('Error while closing the HTTP server:', error);
+      process.exit(1);
+      return;
+    }
+
+    try {
+      closeDatabase();
+    } catch (closeError) {
+      console.error('Error while closing the database:', closeError);
+      process.exit(1);
+      return;
+    }
+
+    process.exit(0);
+  });
+}
+
+process.once('SIGINT', () => shutdown('SIGINT'));
+process.once('SIGTERM', () => shutdown('SIGTERM'));
 
 export default app;
 

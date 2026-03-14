@@ -23,6 +23,7 @@ export { PaywallModal } from './PaywallModal';
 // Math & Tables
 export { Math, FormulaBox } from './Math';
 export { Table, TableRow, TableCell } from './Table';
+export { CourseProof, CourseProofStep, CourseProofEquation, CourseProofConclusion } from './course/CourseProof';
 
 // Author Card (for socio)
 export { AuthorCard } from './content/AuthorCard';

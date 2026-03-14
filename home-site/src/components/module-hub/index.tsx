@@ -37,13 +37,6 @@ const FICHE_COUNT_BY_KEY: Record<string, number> = {
   socio: 1,
 };
 
-function getChapterCourseProgressPercent(
-  scrollProgress: number
-): number {
-  const safeScroll = Math.max(0, Math.min(100, Math.floor(scrollProgress)));
-  return safeScroll;
-}
-
 function resolveModuleChapterIdFromQuizKey(
   quizKey: string,
   chapterIds: string[]
@@ -220,6 +213,7 @@ export default function ModuleHub({
     completedChapters,
     totalChapters,
     nextChapterId,
+    lastAccessedChapterId,
     getChapterProgress,
   } = useModuleProgress(progressModuleId, chapterIds);
 
@@ -337,18 +331,14 @@ export default function ModuleHub({
   const activeChapter = chapters.find(ch => ch.id === computedActiveChapterId) ?? chapters[0];
   const hasModuleProgress = chapterIds.some(id => {
     const progress = getChapterProgress(id);
-    return (progress?.timeSpent ?? 0) > 0 || (progress?.scrollProgress ?? 0) > 0;
+    return (progress?.timeSpent ?? 0) > 0 || (progress?.qcmAttempts ?? 0) > 0 || Boolean(progress?.isCompleted);
   });
   const startChapter = isFreeTier ? freeChapter : activeChapter;
-  const startChapterProgress = startChapter
-    ? getChapterCourseProgressPercent(
-      getChapterProgress(startChapter.id)?.scrollProgress ?? 0
-    )
-    : 0;
-  const startButtonLabel = startChapter
-    ? `${hasModuleProgress ? 'Continuer' : 'Commencer'} le chapitre ${startChapter.number}`
-    : 'Commencer le chapitre';
-  const startButtonMeta = startChapter?.estimatedTime || '30 min';
+  const lastAccessedChapter = lastAccessedChapterId
+    ? chapters.find((chapter) => chapter.id === lastAccessedChapterId) ?? null
+    : null;
+  const startButtonLabel = hasModuleProgress ? 'Reprendre' : 'Explorer le module';
+  const startButtonMeta = hasModuleProgress && startChapter ? `Chapitre ${startChapter.number}` : undefined;
   const tdCompletedCount = tdItems.filter((td) =>
     progressService.getResource(progressModuleId, `td:${td.id}`)?.isCompleted
   ).length;
@@ -362,41 +352,20 @@ export default function ModuleHub({
   const totalUnits = totalChapters + trackableResources.length;
   const completionUnits = completedChapters + completedExtraResources;
   const remainingResourcesCount = Math.max(0, totalUnits - completionUnits);
-  const pathSteps = [
-    'Cours',
-    ...(ficheCount > 0 ? ['Fiche'] : []),
-    ...(qcmCount > 0 ? ['QCM'] : []),
-    ...(tdCount > 0 ? ['TD'] : []),
-    ...(annalesCount > 0 ? ['Annales'] : []),
-  ];
-  const pathHintLabel = `Parcours conseillé : ${pathSteps.join(' → ')}`;
-
-  let guidanceTitle = `${completedChapters} chapitres terminés sur ${totalChapters}`;
-  let guidanceDescription = remainingResourcesCount > 0
-    ? `${remainingResourcesCount} ressources à traiter pour boucler le module.`
-    : 'Le module est intégralement parcouru.';
-
-  if (completedChapters < totalChapters && startChapter) {
-    guidanceTitle = hasModuleProgress ? 'Continue le cours' : 'Commence par le cours';
-    guidanceDescription = `Chapitre ${startChapter.number} · ${startButtonMeta}${hasModuleProgress ? ` · ${startChapterProgress}%` : ''}`;
-  } else if (qcmCount > 0 && qcmCompletedCount < qcmCount) {
-    guidanceTitle = 'Teste-toi avec les QCM';
-    guidanceDescription = `${qcmCount - qcmCompletedCount} QCM restants pour valider les chapitres.`;
-  } else if (tdCount > 0 && tdCompletedCount < tdCount) {
-    guidanceTitle = 'Passe aux TD';
-    guidanceDescription = `${tdCount - tdCompletedCount} TD restants pour appliquer le cours.`;
-  } else if (annalesCount > 0 && annalesCompletedCount < annalesCount) {
-    guidanceTitle = 'Passe aux annales';
-    guidanceDescription = `${annalesCount - annalesCompletedCount} annales pour te remettre en condition partiel.`;
-  } else if (remainingResourcesCount === 0) {
-    guidanceTitle = 'Module bouclé';
-    guidanceDescription = 'Tu peux relire un chapitre clé ou refaire une annale pour consolider.';
-  }
-
-  const progressSummary = remainingResourcesCount > 0
-    ? `${completedChapters} chapitres terminés sur ${totalChapters} · ${remainingResourcesCount} ressources restantes`
-    : `${completedChapters} chapitres terminés sur ${totalChapters}`;
-
+  const overviewStateLabel = hasModuleProgress ? 'Progression' : 'Apercu';
+  const overviewTitle = hasModuleProgress
+    ? `${completedChapters} chapitre${completedChapters > 1 ? 's' : ''} valide${completedChapters > 1 ? 's' : ''} sur ${totalChapters}`
+    : `${totalChapters} chapitre${totalChapters > 1 ? 's' : ''} a explorer librement`;
+  const overviewDescription = hasModuleProgress
+    ? remainingResourcesCount > 0
+      ? `${remainingResourcesCount} ressource${remainingResourcesCount > 1 ? 's' : ''} encore disponible${remainingResourcesCount > 1 ? 's' : ''} dans le module.`
+      : 'Toutes les ressources du module ont deja ete consultees ou validees.'
+    : 'Cours, fiches, QCM, TD et annales restent accessibles selon votre abonnement.';
+  const progressSummary = hasModuleProgress
+    ? remainingResourcesCount > 0
+      ? `${completedChapters} chapitre${completedChapters > 1 ? 's' : ''} valide${completedChapters > 1 ? 's' : ''} · ${remainingResourcesCount} ressource${remainingResourcesCount > 1 ? 's' : ''} disponible${remainingResourcesCount > 1 ? 's' : ''}`
+      : `${completedChapters} chapitre${completedChapters > 1 ? 's' : ''} valide${completedChapters > 1 ? 's' : ''}`
+    : undefined;
   const handleTabChange = (newTab: TabId) => {
     setContentType(newTab);
     setSearchParams({ tab: newTab });
@@ -477,12 +446,11 @@ export default function ModuleHub({
   const chapterDataList: ChapterData[] = chapters.map((ch, index) => {
     const progress = getChapterProgress(ch.id);
     const isCompleted = progress?.isCompleted ?? false;
-    const chapterProgressPercent = getChapterCourseProgressPercent(
-      progress?.scrollProgress ?? 0
+    const isInProgress = !isCompleted && (
+      (progress?.timeSpent ?? 0) > 0
+      || (progress?.qcmAttempts ?? 0) > 0
     );
-    const isInProgress = !isCompleted && chapterProgressPercent > 0;
     const validationScore = ch.validation?.minimumScore ?? 70;
-    const minimumReadPercent = ch.validation?.minimumReadPercent ?? 90;
     const chapterSlug = ch.path.split('/').filter(Boolean).pop() || ch.id;
     const courseBadgeKey = `${baseRoute.replace(/^\//, '').replace('/', ':')}:${chapterSlug}`;
     const configuredBadge = siteConfig.courseBadges[courseBadgeKey];
@@ -493,7 +461,6 @@ export default function ModuleHub({
         return {
           ...step,
           state: isCompleted ? 'completed' : isInProgress ? 'current' : step.state,
-          meta: chapterProgressPercent > 0 ? `${chapterProgressPercent}% lu` : step.meta,
         };
       }
 
@@ -505,14 +472,6 @@ export default function ModuleHub({
             ...step,
             state: 'completed',
             meta: `${progress?.qcmBestScore ?? 0}% obtenu`,
-          };
-        }
-
-        if (!(progress?.isReadComplete ?? false)) {
-          return {
-            ...step,
-            state: 'locked',
-            meta: `Débloqué après ${minimumReadPercent}% de lecture`,
           };
         }
 
@@ -555,7 +514,6 @@ export default function ModuleHub({
       icon: ch.icon,
       accentColor: ch.iconColor,
       badge: badge === 'new' || badge === 'soon' ? badge : undefined,
-      progressPercent: chapterProgressPercent,
       isInProgress,
       objectives: ch.objectives,
     };
@@ -589,15 +547,6 @@ export default function ModuleHub({
     preloadRouteForPath(path);
   };
 
-  // Calculate total duration in minutes
-  const totalMinutes = chapters.reduce((sum, ch) => {
-    const time = parseInt(ch.estimatedTime || '30');
-    return sum + time;
-  }, 0);
-  const studiedMinutes = Math.max(0, Math.round(chapters.reduce((sum, ch) => {
-    const progress = getChapterProgress(ch.id);
-    return sum + ((progress?.timeSpent ?? 0) / 60);
-  }, 0)));
   const activeSectionMeta: Record<ContentType, { title: string; description: string }> = {
     cours: {
       title: 'Parcours par chapitre',
@@ -634,17 +583,18 @@ export default function ModuleHub({
             title={title}
             description={description}
             chaptersCount={totalChapters}
-            completedCoursesCount={completedChapters}
-            totalDuration={String(totalMinutes)}
-            studyTime={`${studiedMinutes} min`}
-            todoCount={remainingResourcesCount}
             moduleId={moduleId}
             startButtonLabel={startButtonLabel}
             startButtonMeta={startButtonMeta}
-            guidanceTitle={guidanceTitle}
-            guidanceDescription={guidanceDescription}
+            overviewTitle={overviewTitle}
+            overviewDescription={overviewDescription}
             progressSummary={progressSummary}
-            pathHintLabel={pathHintLabel}
+            resumeLabel={
+              hasModuleProgress && lastAccessedChapter
+                ? `Derniere ressource consultee : chapitre ${lastAccessedChapter.number} · ${lastAccessedChapter.title}`
+                : undefined
+            }
+            overviewStateLabel={overviewStateLabel}
             lockedItemsCount={lockedItemsCount}
             resourceCounts={{ fiches: ficheCount, td: tdCount, qcm: qcmCount, annales: annalesCount }}
             badgeLabel={semesterLabel}

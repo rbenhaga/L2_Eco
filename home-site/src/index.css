@@ -2007,13 +2007,13 @@ body:not(.admin-route):not(.content-protection-disabled) *:not(textarea):not(tex
 
 .module-hero-title {
     margin-top: 0.8rem;
-    max-width: 13ch;
+    max-width: 18ch;
     margin-inline: 0;
     text-align: left;
     font-family: var(--font-display);
-    font-size: clamp(2.2rem, 9vw, 5.2rem);
-    line-height: 0.94;
-    letter-spacing: -0.04em;
+    font-size: clamp(2.15rem, 5.2vw, 3.85rem);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
     text-wrap: balance;
     display: inline-flex;
     align-items: baseline;
@@ -2026,27 +2026,6 @@ body:not(.admin-route):not(.content-protection-disabled) *:not(textarea):not(tex
 
 .module-hero-letter.is-fresh {
     color: var(--color-accent);
-}
-
-.module-hero-cursor {
-    width: 0.08em;
-    height: 0.9em;
-    margin-left: 0.06em;
-    background: var(--color-accent);
-    align-self: center;
-    animation: home-min-cursor-blink 800ms steps(1, end) infinite;
-}
-
-@keyframes home-min-cursor-blink {
-    0%,
-    49% {
-        opacity: 1;
-    }
-
-    50%,
-    100% {
-        opacity: 0;
-    }
 }
 
 /* ============================================
@@ -2133,6 +2112,236 @@ body:not(.admin-route):not(.content-protection-disabled) *:not(textarea):not(tex
     box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04), 0 24px 60px rgba(15, 23, 42, 0.08);
     backdrop-filter: blur(12px);
     overflow: clip;
+}
+
+.editorial-prose {
+    color: rgb(var(--text-secondary));
+}
+
+.editorial-prose > * + * {
+    margin-top: 1rem;
+}
+
+.editorial-prose p,
+.editorial-prose li {
+    max-width: 70ch;
+}
+
+.editorial-prose__title {
+    font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+}
+
+.editorial-prose__lead {
+    max-width: 62ch;
+    font-size: 1.02rem;
+    line-height: 1.78;
+    color: var(--color-text-primary);
+}
+
+.editorial-prose__quote {
+    margin-top: 1.5rem;
+    max-width: 68ch;
+    padding: 1rem 0 1rem 1.1rem;
+    border-left: 1px solid color-mix(in srgb, var(--color-text-primary) 16%, transparent);
+    background: transparent;
+    color: rgb(var(--text-secondary));
+    font-style: italic;
+}
+
+.editorial-callout {
+    --callout-accent: var(--color-accent);
+    position: relative;
+    margin: 1.5rem 0;
+    padding: 1rem 0 0 1.15rem;
+    border-left: 1px solid color-mix(in srgb, var(--callout-accent) 38%, transparent);
+}
+
+.editorial-callout__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.editorial-callout__badge {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.editorial-callout__title {
+    font-size: 1.02rem;
+    line-height: 1.42;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+}
+
+.editorial-callout__body {
+    margin-top: 0.55rem;
+    max-width: 68ch;
+    line-height: 1.78;
+}
+
+.editorial-callout__body > * + * {
+    margin-top: 0.85rem;
+}
+
+.editorial-math--inline {
+    display: inline-block;
+    margin-inline: 0.08rem;
+    color: var(--color-text-primary);
+}
+
+.editorial-math--display {
+    display: block;
+    width: 100%;
+}
+
+.editorial-math--display .katex-display {
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.editorial-formula {
+    margin: 1.6rem 0;
+}
+
+.editorial-formula__label {
+    margin-bottom: 0.55rem;
+    font-size: 0.69rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+
+.editorial-formula__surface {
+    padding: 1rem 0.2rem;
+    border-block: 1px solid color-mix(in srgb, var(--color-text-primary) 10%, transparent);
+    color: var(--color-text-primary);
+}
+
+.editorial-formula--reference .editorial-formula__surface {
+    border-block-color: color-mix(in srgb, var(--color-accent) 24%, transparent);
+}
+
+.editorial-formula--reference .editorial-formula__label {
+    color: var(--color-accent);
+}
+
+.editorial-formula--derivation .editorial-formula__surface {
+    padding-inline: 0.4rem;
+    background: color-mix(in srgb, var(--color-bg-overlay) 58%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-text-primary) 7%, transparent);
+    border-radius: 18px;
+}
+
+.editorial-table {
+    margin: 1.8rem 0;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--color-text-primary) 9%, transparent);
+    border-radius: 22px;
+    background: color-mix(in srgb, var(--color-bg-raised) 98%, transparent);
+}
+
+.editorial-table__head {
+    padding: 0.95rem 1rem 0.85rem;
+    text-align: left;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: color-mix(in srgb, var(--color-bg-overlay) 58%, transparent);
+}
+
+.editorial-table__row {
+    transition: background-color 150ms ease;
+}
+
+.editorial-table__row:hover {
+    background: color-mix(in srgb, var(--color-bg-overlay) 62%, transparent);
+}
+
+.editorial-table__cell {
+    padding: 0.95rem 1rem;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    vertical-align: top;
+}
+
+.editorial-proof {
+    margin: 2rem 0;
+    padding-left: 1.2rem;
+    border-left: 1px solid color-mix(in srgb, var(--color-text-primary) 12%, transparent);
+}
+
+.editorial-proof__header {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.editorial-proof__badge {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+}
+
+.editorial-proof__result {
+    max-width: 68ch;
+    font-size: 1.02rem;
+    line-height: 1.72;
+    color: var(--color-text-primary);
+}
+
+.editorial-proof__body {
+    margin-top: 1rem;
+    display: grid;
+    gap: 1.15rem;
+}
+
+.editorial-proof__step {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.editorial-proof__step-title {
+    font-size: 0.83rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+
+.editorial-proof__step-body {
+    max-width: 70ch;
+    color: var(--color-text-secondary);
+}
+
+.editorial-proof__step-body > * + * {
+    margin-top: 0.85rem;
+}
+
+.editorial-proof__conclusion {
+    max-width: 68ch;
+    padding-top: 0.85rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-text-primary) 10%, transparent);
+    color: var(--color-text-primary);
 }
 
 .course-page h2 {

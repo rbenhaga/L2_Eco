@@ -27,7 +27,7 @@ export const MenuItemSchema = z.object({
 });
 
 export const LabeledParagraphSchema = z.object({
-  label: z.enum(['Marchés', 'Valeur', 'Crypto']),
+  label: z.enum(['Marchés', 'Change', 'Valeur', 'Crypto']),
   parts: z.array(RichTextPartSchema).min(1),
 });
 
@@ -66,7 +66,7 @@ export const GeneratedOikoEditionV21Schema = z.object({
   }),
   opening_brief: z.object({
     title: OpeningBriefTitleSchema,
-    items: z.array(MenuItemSchema).min(1).max(5),
+    items: z.array(MenuItemSchema).min(2).max(5),
   }),
   markets_section: z.object({
     title: z.string().min(3).max(40),
@@ -115,7 +115,7 @@ export const OikoEditionV21Schema = z.object({
   }),
   opening_brief: z.object({
     title: OpeningBriefTitleSchema,
-    items: z.array(MenuItemSchema).min(1).max(5),
+    items: z.array(MenuItemSchema).min(2).max(5),
   }),
   markets_section: z.object({
     title: z.string().min(3).max(40),

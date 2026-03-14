@@ -23,7 +23,7 @@ export class BaseProvider {
             this._apiKey = process.env[envKey] || '';
             
             if (!this._apiKey) {
-                console.warn(`⚠️ Missing API key for ${this.name}: ${envKey}`);
+                console.warn(`[warn] Missing API key for ${this.name}: ${envKey}`);
             }
         }
         return this._apiKey;
@@ -38,6 +38,7 @@ export class BaseProvider {
      * @param {array} params.messages - Chat messages
      * @param {number} params.maxTokens - Max tokens to generate
      * @param {number} params.temperature - Temperature (0-1)
+     * @param {AbortSignal} [params.signal] - Optional abort signal for request cancellation
      * @returns {Promise<object>} { content, tokensUsed, headers }
      */
     async generate(params) {
@@ -147,6 +148,10 @@ export class BaseProvider {
         }
 
         // Network/timeout errors
+        if (error.name === 'AbortError' || error.code === 'ABORT_ERR') {
+            return new ProviderError(`Request aborted for ${this.name}: ${error.message}`, 0, false);
+        }
+
         if (error.code === 'ECONNRESET' || error.code === 'ETIMEDOUT') {
             return new ProviderError(
                 `Network error for ${this.name}: ${error.message}`,
@@ -181,7 +186,7 @@ export class BaseProvider {
 
                 // Exponential backoff
                 const delay = initialDelay * Math.pow(2, attempt);
-                console.log(`⏳ Retrying ${this.name} in ${delay}ms (attempt ${attempt + 1}/${maxRetries})...`);
+                console.log(`[retry] ${this.name} in ${delay}ms (attempt ${attempt + 1}/${maxRetries})...`);
                 await this.sleep(delay);
             }
         }
@@ -239,3 +244,9 @@ export class RateLimitError extends ProviderError {
 }
 
 export default BaseProvider;
+
+
+
+
+
+

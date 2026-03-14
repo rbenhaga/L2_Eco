@@ -18,21 +18,21 @@ export function useModuleProgress(moduleId: string, chapterIds: string[]) {
     }, []);
 
     // Single pass to compute progression stats.
-    let chaptersWithProgress = 0;
+    let chaptersWithActivity = 0;
     let completedChapters = 0;
     for (const id of chapterIds) {
         const chapter = progressService.getChapter(moduleId, id);
-        if ((chapter?.scrollProgress ?? 0) > 0 || (chapter?.timeSpent ?? 0) > 0) {
-            chaptersWithProgress += 1;
+        if ((chapter?.timeSpent ?? 0) > 0 || (chapter?.qcmAttempts ?? 0) > 0 || chapter?.isCompleted) {
+            chaptersWithActivity += 1;
         }
         if (chapter?.isCompleted) {
             completedChapters += 1;
         }
     }
     
-    // Completion percentage based on chapters with any progress
+    // Completion percentage based on chapters validated by QCM.
     const completionPercentage = chapterIds.length > 0
-        ? Math.floor((chaptersWithProgress / chapterIds.length) * 100)
+        ? Math.floor((completedChapters / chapterIds.length) * 100)
         : 0;
     
     const nextChapterId = progressService.getNextChapter(moduleId, chapterIds);
@@ -45,6 +45,7 @@ export function useModuleProgress(moduleId: string, chapterIds: string[]) {
         completedChapters,
         totalChapters: chapterIds.length,
         completionPercentage,
+        chaptersWithActivity,
         nextChapterId,
         lastAccessedChapterId,
         totalTimeSpent,

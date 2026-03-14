@@ -48,8 +48,8 @@ function toneColor(tone: Tone) {
 export function CourseTable({ children, className = '' }: CourseTableProps) {
   return (
     <div
-      className={`my-6 rounded-xl overflow-hidden border ${className}`.trim()}
-      style={{ borderColor: OUTER_COLOR, background: 'var(--color-card)' }}
+      className={`editorial-table ${className}`.trim()}
+      style={{ borderColor: OUTER_COLOR }}
     >
       <div className="overflow-x-auto">
         <table className="w-full text-base border-collapse">{children}</table>
@@ -69,6 +69,7 @@ export function CourseTableBody({ children }: { children: ReactNode }) {
 export function CourseTableRow({ children, tone = 'default' }: CourseTableRowProps) {
   return (
     <tr
+      className="editorial-table__row"
       style={{
         ...(tone === 'muted' ? { background: 'var(--color-bg-overlay)' } : {}),
       }}
@@ -90,11 +91,10 @@ export function CourseTableCell({
   if (header) {
     return (
       <th
-        className={baseClass}
+        className={`editorial-table__head ${baseClass}`.trim()}
         style={{
           color: toneColor(tone),
           borderBottom: `1px solid ${GRID_COLOR}`,
-          borderRight: `1px solid ${GRID_COLOR}`,
         }}
       >
         {children}
@@ -104,11 +104,10 @@ export function CourseTableCell({
 
   return (
     <td
-      className={baseClass}
+      className={`editorial-table__cell ${baseClass}`.trim()}
       style={{
         color: toneColor(tone),
         borderBottom: `1px solid ${GRID_COLOR}`,
-        borderRight: `1px solid ${GRID_COLOR}`,
       }}
     >
       {children}

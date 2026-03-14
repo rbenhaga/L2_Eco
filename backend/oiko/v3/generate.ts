@@ -1,8 +1,8 @@
-import { normalizeTitle } from '../utils.ts';
+﻿import { normalizeTitle } from '../utils.ts';
 import { GeneratedOikoEditionV21Schema, textToBlock, type GeneratedOikoEditionV21 } from '../content.ts';
-import { extractJsonCandidate, generateWithConfiguredProviders, repairJsonWithFastModel } from './llm.ts';
+import { extractJsonCandidate, generateWithConfiguredProviders, repairJsonWithFastModelDetailed } from './llm.ts';
 import { buildHumanList, detectLanguage, hasProviderResidue, ngramOverlapRatio, splitSentences, uniqueStrings } from './helpers.ts';
-import type { DayEditorialPacket, DraftEvidence, EvidenceRef, MicroBriefCandidate, QualityReport, TopicCluster, V3Draft } from './types.ts';
+import type { DayEditorialPacket, DraftEvidence, EvidenceRef, LlmStageTrace, MicroBriefCandidate, QualityReport, TopicCluster, V3Draft } from './types.ts';
 
 const familyLabels: Record<string, string> = {
   inflation_rates: 'Prix',
@@ -37,7 +37,7 @@ const narrativeLabels = {
   leadKicker: 'Le point de bascule',
   radar: 'Sous la surface',
   carnet: 'Ligne de force',
-  briefs: 'Le dernier tour',
+  briefs: 'En bref',
 } as const;
 
 type ClusterKind =
@@ -140,17 +140,17 @@ function numberLine(cluster?: TopicCluster | null) {
     return 'Deux chiffres résument le choc : environ 90 milliards de dollars effacés à Sydney et un pétrole en hausse de 25 %.';
   }
   if (clusterKind(cluster) === 'copper_supply') {
-    return 'Le dossier se joue autour d’un ordre de grandeur simple : jusqu’à 100 millions de dollars pour maintenir une chaîne cuivre stratégique en activité.';
+    return 'Le sujet se joue autour d’un ordre de grandeur simple : jusqu’à 100 millions de dollars pour maintenir une chaîne cuivre stratégique en activité.';
   }
   const values = cluster.mergedNumbers.slice(0, 2).map((value) => `${value.value}${value.unit ? ` ${value.unit}` : ''}`);
   if (!values.length) return '';
   return values.length === 1
-    ? sentence(`Le repère chiffré du dossier reste ${values[0]}`, 170)
-    : sentence(`Les deux repères chiffrés du dossier restent ${values[0]} et ${values[1]}`, 180);
+    ? sentence(`Le repère chiffré du matin reste ${values[0]}`, 170)
+    : sentence(`Les deux repères chiffrés à garder en tête restent ${values[0]} et ${values[1]}`, 180);
 }
 
 function shortTopic(cluster?: TopicCluster | null) {
-  if (!cluster) return 'le dossier du jour';
+  if (!cluster) return 'le signal du jour';
   switch (clusterKind(cluster)) {
     case 'oil_shock': return 'le choc pétrole';
     case 'gas_europe': return 'le risque gazier européen';
@@ -183,7 +183,7 @@ function displayTitle(cluster: TopicCluster, section: 'lead' | 'radar' | 'carnet
     case 'growth_labour':
       return 'Croissance : le marché du travail garde la main';
     default:
-      return compactText(cluster.topicLabel, section === 'lead' ? 120 : 110) || 'Le dossier du jour';
+      return compactText(cluster.topicLabel, section === 'lead' ? 120 : 110) || 'Le signal du jour';
   }
 }
 
@@ -351,26 +351,31 @@ function buildMarketsParagraphs(packet: DayEditorialPacket) {
   const crypto = packet.marketContext.crypto[0];
   const leadKind = clusterKind(packet.leadTopic || packet.secondaryTopics[0] || null);
 
-  const marketsText = equities.length >= 3
-    ? sentence(`${equities[0].label} ${directionWord(equities[0].changePct, 'progresse', 'cède', 'reste proche de')} ${signedPercent(equities[0].changePct)}% sur ${equities[0].period}, ${equities[1].label.toLowerCase()} ${directionWord(equities[1].changePct, 'résiste avec', 'perd', 'reste proche de')} ${signedPercent(equities[1].changePct)}% et ${equities[2].label.toLowerCase()} ${directionWord(equities[2].changePct, 'avance', 'recule', 'reste proche de')} ${signedPercent(equities[2].changePct)}%. La séance reprice d’abord le coût de l’énergie et le retour du risque.`, 260)
+  const actionsText = equities.length >= 2
+    ? sentence(
+        equities[0].label + " " + directionWord(equities[0].changePct, "progresse", "cède", "reste proche de") + " " + signedPercent(equities[0].changePct) + "% sur " + equities[0].period
+        + (equities[1] ? ", pendant que " + equities[1].label.toLowerCase() + " " + directionWord(equities[1].changePct, "résiste avec", "perd", "reste proche de") + " " + signedPercent(equities[1].changePct) + "%" : "")
+        + ". La séance action reprice en premier la facture énergétique puis la prime de risque."
+        , 255,
+      )
     : equities[0]
-      ? sentence(`${equities[0].label} ${directionWord(equities[0].changePct, 'progresse', 'recule', 'reste proche de')} ${signedPercent(equities[0].changePct)}% sur ${equities[0].period}. La séance se lit d’abord par le couple énergie-risque plutôt que par une simple technique de marché.`, 245)
-      : leadKind === 'oil_shock'
-        ? 'Les actions ouvrent déjà avec un arbitrage lisible : énergie plus chère, inflation importée plus dure à faire retomber et prime de risque en hausse.'
-        : 'Les actions ouvrent sur une hiérarchie dominée par les coûts et le risque, plus que par l’idée d’un simple rebond de valorisation.';
+      ? sentence(equities[0].label + " " + directionWord(equities[0].changePct, "progresse", "recule", "reste proche de") + " " + signedPercent(equities[0].changePct) + "% sur " + equities[0].period + ". La séance action se lit d’abord par le couple énergie-risque plutôt que par une simple technique de marché.", 245)
+      : leadKind === "oil_shock"
+        ? "Sur les actions, le sujet du matin reste lisible : énergie plus chère, inflation importée plus dure à calmer et prime de risque en hausse."
+        : "Sur les actions, la hiérarchie reste dominée par les coûts et le risque, plus que par un simple rebond de valorisation.";
 
-  const valueText = fx
-    ? sentence(`${fx.label} ${directionWord(fx.changePct, 'monte', 'recule', 'reste proche de')} ${signedPercent(fx.changePct)}% sur ${fx.period}. Le change rappelle que la séance se joue entre dollar-refuge, coût de l’énergie et détente monétaire encore fragile.`, 245)
-    : 'La valorisation se lit d’abord par les coûts et le risque. Sans détente nette sur le change ou les taux, le marché a peu de raisons de rerater rapidement les actifs.';
+  const fxText = fx
+    ? sentence(fx.label + " " + directionWord(fx.changePct, "monte", "recule", "reste proche de") + " " + signedPercent(fx.changePct) + "% sur " + fx.period + ". Le change reste le test le plus direct entre dollar-refuge, coût de l’énergie et détente monétaire encore fragile.", 245)
+    : "Côté change, rien ne desserre encore franchement le couple dollar-énergie ; cela reste surtout un baromètre de stress.";
 
   const cryptoText = crypto
-    ? sentence(`${crypto.label} ${directionWord(crypto.changePct, 'progresse', 'recule', 'évolue de')} ${signedPercent(crypto.changePct)}% sur ${crypto.period}. Le mouvement reste secondaire tant que l’énergie, le dollar et le risque géopolitique écrivent la matinée.`, 235)
-    : 'La crypto reste un thermomètre secondaire d’appétit pour le risque, sans devenir le vrai moteur de la séance du matin.';
+    ? sentence(crypto.label + " " + directionWord(crypto.changePct, "progresse", "recule", "évolue de") + " " + signedPercent(crypto.changePct) + "% sur " + crypto.period + ". Le mouvement reste secondaire tant que l’énergie, le dollar et le risque géopolitique écrivent la matinée.", 235)
+    : "La crypto reste un thermomètre secondaire d’appétit pour le risque, sans devenir le vrai moteur de la séance du matin.";
 
   return [
-    { label: 'Marchés' as const, parts: [{ text: marketsText }] },
-    { label: 'Valeur' as const, parts: [{ text: valueText }] },
-    { label: 'Crypto' as const, parts: [{ text: cryptoText }] },
+    { label: "Marchés" as const, parts: [{ text: actionsText }] },
+    { label: "Change" as const, parts: [{ text: fxText }] },
+    { label: "Crypto" as const, parts: [{ text: cryptoText }] },
   ];
 }
 
@@ -380,45 +385,45 @@ function buildLeadParagraphs(packet: DayEditorialPacket, lead: TopicCluster, sec
   const facts = filterClusterFacts(lead);
   const equities = packet.marketContext.equities;
 
-  const introLine = leadType === 'oil_shock'
-    ? 'Le matin ne s’ouvre plus par une simple baisse d’actions : il s’ouvre par un pétrole qui requalifie d’un coup le coût de la séance asiatique.'
-    : sentence(`${displayTitle(lead, 'lead')} remet au premier rang ${familyAngles[lead.topicFamily] || 'les coûts, les taux et le risque'}.`, 210);
+  const introLine = leadType === "oil_shock"
+    ? "Le pétrole ne monte plus seul : dès l’ouverture asiatique, il redonne un prix à l’énergie, au fret et à la prudence."
+    : sentence(displayTitle(lead, "lead") + " replace d’abord au premier plan " + (familyAngles[lead.topicFamily] || "les coûts, les taux et le risque") + ".", 210);
 
-  const transmissionLine = leadType === 'oil_shock'
-    ? 'Le sujet compte parce qu’il remonte immédiatement vers l’inflation importée, les marges et la question de taux qui resteraient élevés plus longtemps.'
-    : leadType === 'gas_europe'
-      ? 'Le sujet dépasse le gaz lui-même : il touche la facture industrielle européenne et la capacité des entreprises à absorber un nouveau choc de coûts.'
-      : leadType === 'copper_supply'
-        ? 'Le point clé est industriel : une chaîne cuivre qui vacille remonte vite vers l’investissement, les coûts de transformation et l’offre de métaux.'
-        : leadType === 'iran_risk'
-          ? 'Le dossier ne reste pas géopolitique : il renchérit l’énergie, le fret et l’assurance, donc un morceau concret du coût mondial.'
-          : leadType === 'ecb_labour'
-            ? 'Le signal est plus fin qu’un simple point social : un marché du travail solide ne garantit plus une nouvelle poussée salariale, et c’est cela qui compte pour la BCE.'
-            : leadType === 'uk_labour'
-              ? 'Le Royaume-Uni donne un signal de cycle utile : l’emploi se refroidit avant la reprise, ce qui pousse vers une croissance molle et une détente monétaire graduelle.'
-              : sentence(`Le dossier recompose surtout ${familyAngles[lead.topicFamily] || 'les coûts, la croissance et le risque'}.`, 210);
+  const transmissionLine = leadType === "oil_shock"
+    ? "La chaîne de transmission est rapide : inflation importée, marges, fret, puis coût du capital si la détente sur les taux doit être repoussée."
+    : leadType === "gas_europe"
+      ? "Le sujet dépasse le gaz lui-même : il touche la facture industrielle européenne et la capacité des entreprises à absorber un nouveau choc de coûts."
+      : leadType === "copper_supply"
+        ? "Le point d’appui reste industriel : une chaîne cuivre qui vacille remonte vite vers l’investissement, les coûts de transformation et l’offre de métaux."
+        : leadType === "iran_risk"
+          ? "Le sujet ne reste pas géopolitique : il renchérit l’énergie, le fret et l’assurance, donc une part très concrète du coût mondial."
+          : leadType === "ecb_labour"
+            ? "Le signal est plus fin qu’un simple point social : un marché du travail solide ne garantit plus une nouvelle poussée salariale, et c’est cela qui compte pour la BCE."
+            : leadType === "uk_labour"
+              ? "Le Royaume-Uni donne un signal de cycle utile : l’emploi se refroidit avant la reprise, ce qui pousse vers une croissance molle et une détente monétaire graduelle."
+              : sentence("Le signal touche d’abord " + (familyAngles[lead.topicFamily] || "les coûts, la croissance et le risque") + ".", 210);
 
   const marketLine = equities.length >= 2
-    ? sentence(`${equities[0].label} ${directionWord(equities[0].changePct, 'progresse', 'cède', 'reste proche de')} ${signedPercent(equities[0].changePct)}% sur ${equities[0].period}${equities[1] ? `, pendant que ${equities[1].label.toLowerCase()} ${directionWord(equities[1].changePct, 'résiste avec', 'perd', 'reste proche de')} ${signedPercent(equities[1].changePct)}%` : ''}. Le marché reprice d’abord le retour des coûts et du risque.`, 250)
-    : leadType === 'oil_shock'
-      ? 'La baisse des actifs risqués raconte moins un accident local qu’un retour brutal du thème énergie-inflation dans les valorisations.'
-      : 'Sur les marchés, le sujet pousse surtout à réévaluer le couple coûts-prime de risque avant de reparler de détente monétaire.';
+    ? sentence(equities[0].label + " " + directionWord(equities[0].changePct, "progresse", "cède", "reste proche de") + " " + signedPercent(equities[0].changePct) + "% sur " + equities[0].period + (equities[1] ? ", pendant que " + equities[1].label.toLowerCase() + " " + directionWord(equities[1].changePct, "résiste avec", "perd", "reste proche de") + " " + signedPercent(equities[1].changePct) + "%" : "") + ". Le marché reprice d’abord le retour des coûts et du risque.", 250)
+    : leadType === "oil_shock"
+      ? "La baisse des actifs risqués raconte moins un accident local qu’un retour du thème énergie-inflation dans les valorisations."
+      : "Sur les marchés, le signal du jour oblige surtout à réévaluer le couple coûts-prime de risque avant de reparler de détente monétaire.";
 
-  const watchpoint = leadType === 'oil_shock' && firstOpening && clusterKind(firstOpening) === 'gas_europe'
-    ? 'Le prolongement logique se trouve désormais du côté du gaz européen : si le choc s’y diffuse aussi, l’argument d’un simple pic pétrolier perdra vite en crédibilité.'
-    : leadType === 'oil_shock'
-      ? 'Le vrai point de surveillance tient à la durée du choc : plus il dure, plus il remonte vers les marges, l’inflation et les anticipations de taux.'
-      : sentence(`Le prochain déplacement de séance se joue désormais autour de ${shortTopic(firstOpening || sections.radar[0] || lead)}.`, 220);
+  const watchpoint = leadType === "oil_shock" && firstOpening && clusterKind(firstOpening) === "gas_europe"
+    ? "La ligne de surveillance européenne est claire : si le gaz suit, le marché devra traiter le choc comme un vrai second tour."
+    : leadType === "oil_shock"
+      ? "Le test décisif reste la durée : plus le choc dure, plus il remonte vers les marges, les anticipations de prix et la discipline monétaire."
+      : sentence("Le prochain test se joue autour de " + shortTopic(firstOpening || sections.radar[0] || lead) + ".", 220);
 
-  const closingLine = leadType === 'oil_shock'
-    ? 'La vraie question pour la suite est simple : le choc reste-t-il cantonné à l’Asie ou redevient-il un test global pour toutes les valorisations sensibles aux coûts ?'
+  const closingLine = leadType === "oil_shock"
+    ? "La suite du numéro dit jusqu’où le choc diffuse : Europe gazière, prime de risque régionale et signaux macro capables, ou non, d’absorber le surcoût."
     : facts[2]
       ? sentence(facts[2], 200)
-      : sentence(`Le dossier reste central pour la lecture du matin, surtout via ${familyAngles[lead.topicFamily] || 'les coûts, la croissance et le risque'}.`, 190);
+      : sentence("La suite dira surtout comment " + (familyAngles[lead.topicFamily] || "les coûts, la croissance et le risque") + " encaissent ce nouveau signal.", 190);
 
   const paragraphs = uniqueStrings([
     sentence(introLine, 230),
-    numberLine(lead) || (facts[1] ? sentence(facts[1], 200) : ''),
+    numberLine(lead) || (facts[1] ? sentence(facts[1], 200) : ""),
     sentence(transmissionLine, 240),
     sentence(marketLine, 240),
     sentence(watchpoint, 230),
@@ -426,7 +431,7 @@ function buildLeadParagraphs(packet: DayEditorialPacket, lead: TopicCluster, sec
   ].filter(Boolean));
 
   while (paragraphs.length < 5) {
-    paragraphs.push(sentence(`Le dossier reste central pour la lecture du matin, surtout via ${familyAngles[lead.topicFamily] || 'les coûts, la croissance et le risque'}.`, 190));
+    paragraphs.push(sentence("La suite dira surtout comment " + (familyAngles[lead.topicFamily] || "les coûts, la croissance et le risque") + " encaissent ce nouveau signal.", 190));
   }
 
   return paragraphs.slice(0, 6).map((paragraph) => textToBlock(paragraph));
@@ -445,26 +450,26 @@ function buildRadarItems(clusters: TopicCluster[]) {
       case 'gas_europe':
         paragraphs = [
           'Le gaz revient comme seconde jambe du choc énergétique. Tant que cette menace reste crédible, l’Europe ne peut pas traiter le pétrole comme un accident isolé.',
-          'Le dossier remonte vers l’industrie, les utilities et les prix importés, donc vers la vitesse réelle de désinflation.',
+          'Le choc remonte vers l’industrie, les utilities et les prix importés, donc vers la vitesse réelle de désinflation.',
         ];
         break;
       case 'uk_labour':
       case 'growth_labour':
         paragraphs = [
-          'Le signal travail est discret mais utile : il renseigne sur la qualité de la reprise bien avant le reste du cycle.',
+          'Le signal travail reste discret mais utile : il renseigne sur la qualité de la reprise bien avant le reste du cycle.',
           'Pour les marchés, cela nourrit d’abord une croissance molle et une détente monétaire graduelle, pas un rebond assez propre pour effacer la pression venue de l’énergie.',
         ];
         break;
       case 'copper_supply':
         paragraphs = [
-          'Le dossier cuivre est moins spectaculaire que le pétrole, mais il dit quelque chose de concret sur l’appareil productif : une chaîne industrielle qui tient évite un nouveau coût caché.',
+          'Le cuivre est moins spectaculaire que le pétrole, mais il renseigne concrètement sur l’appareil productif : une chaîne industrielle qui tient évite un nouveau coût caché.',
           'Il faut le lire comme un sujet d’offre et d’investissement, pas comme une anecdote minière locale.',
         ];
         break;
       default:
         paragraphs = [
-          `Le sujet compte surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts et le risque'}.`,
-          'Il élargit la lecture du matin sans prendre toute la hiérarchie de la séance.',
+          `Ce signal agit surtout sur ${familyAngles[cluster.topicFamily] || 'les co\u00fbts et le risque'}.`,
+          'Il aide \u00e0 voir si la s\u00e9ance diffuse au-del\u00e0 du th\u00e8me principal.',
         ];
         break;
     }
@@ -495,14 +500,14 @@ function buildCarnetItems(clusters: TopicCluster[]) {
         break;
       case 'copper_supply':
         paragraphs = [
-          'Le dossier cuivre reste un bon signal de second rang : il dit comment l’appareil productif absorbe un choc déjà plus large sur l’énergie.',
+          'Le cuivre reste un bon signal de second rang : il dit comment l’appareil productif absorbe un choc déjà plus large sur l’énergie.',
           'Il compte surtout pour l’offre industrielle et l’investissement, bien plus que pour le fait divers minier lui-même.',
         ];
         break;
       default:
         paragraphs = [
-          `À suivre surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et les marchés'}.`,
-          'Le dossier mérite une place de second rang dans la lecture du matin.',
+          `Au second plan, ce dossier sert surtout \u00e0 lire ${familyAngles[cluster.topicFamily] || 'les co\u00fbts, la croissance et les march\u00e9s'}.`,
+          'C\u2019est ici qu\u2019on voit si le mouvement du jour s\u2019installe vraiment.',
         ];
         break;
     }
@@ -553,17 +558,17 @@ function buildCanonicalBriefText(cluster: TopicCluster) {
     case 'uk_labour':
     case 'growth_labour': return 'Travail : le ralentissement des embauches renforce l’idée d’une croissance molle avant une vraie reprise.';
     case 'oil_shock': return 'Pétrole : le choc reste central pour lire l’inflation importée et les actifs sensibles à l’énergie.';
-    default: return sentence(`Le signal compte surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et le risque'}.`, 180);
+    default: return sentence(`Ce signal de second rang \u00e9claire surtout ${familyAngles[cluster.topicFamily] || 'les co\u00fbts, la croissance et le risque'}.`, 180);
   }
 }
 
 function buildMicroBriefText(candidate: MicroBriefCandidate, cluster: TopicCluster | null) {
   if (!cluster) {
-    return finalizeDeterministicText(candidate.textHint, 220, 'Dernier signal utile : le sujet compte surtout pour les coûts, le risque et la lecture de séance.', 28);
+    return finalizeDeterministicText(candidate.textHint, 220, '\u00c0 garder en t\u00eate : le sujet \u00e9claire encore les co\u00fbts, le risque et la s\u00e9ance.', 28);
   }
   if (candidate.kind === 'lead_aftershock') {
     return finalizeClusterText(
-      'En actions, le choc pétrolier agit déjà comme un sujet de marges, de fret et de coût du capital bien au-delà d’un simple mouvement boursier.',
+      'En actions, le choc pétrolier devient déjà un sujet de marges, de fret et de coût du capital, bien au-delà du seul brut.',
       cluster,
       'En actions, le choc pétrolier reste un sujet direct de marges, de fret et de coût du capital.',
       220,
@@ -599,6 +604,57 @@ function buildBriefItems(packet: DayEditorialPacket, sections: NarrativeSections
     return { parts: [{ text: finalizeClusterText(buildCanonicalBriefText(slot.cluster), slot.cluster, buildSafeFrenchFallbackForBrief(slot.cluster), 220, 24) }] };
   });
 }
+function buildOpeningSummaryClusters(packet: DayEditorialPacket, sections: NarrativeSections, lead: TopicCluster) {
+  const target = packet.materialTier === "short"
+    ? 2
+    : Math.min(3, Math.max(2, sections.opening.length + Math.min(1, sections.radar.length) + Math.min(1, sections.carnet.length)));
+  const clusters = Array.from(new Map(
+    [
+      ...sections.opening,
+      sections.radar[0] || null,
+      sections.carnet[0] || null,
+      sections.briefs[0] || null,
+      target > 1 ? lead : null,
+    ]
+      .filter(Boolean)
+      .map((cluster) => [cluster.id, cluster]),
+  ).values());
+  return clusters.slice(0, target);
+}
+
+function buildIntroFollowParagraph(lead: TopicCluster, openingSummaryClusters: TopicCluster[]) {
+  const supportingTopics = openingSummaryClusters
+    .filter((cluster) => cluster.id !== lead.id)
+    .map((cluster) => shortTopic(cluster))
+    .filter(Boolean)
+    .slice(0, 3);
+
+  if (supportingTopics.length >= 2) {
+    return finalizeDeterministicText(
+      'Ensuite, ' + buildHumanList(supportingTopics) + ' disent si le choc gagne les coûts européens, la prime de risque et la lecture des banques centrales.',
+      220,
+      'Ensuite, plusieurs dossiers disent si le choc gagne les coûts européens, la prime de risque et les banques centrales.',
+      40,
+    );
+  }
+
+  if (supportingTopics.length === 1) {
+    return finalizeDeterministicText(
+      supportingTopics[0] + ' sert surtout à voir si le mouvement du jour sort du seul brut et s’installe dans le reste de la séance.',
+      220,
+      'Un dossier sert surtout à voir si le mouvement du jour sort du seul brut.',
+      40,
+    );
+  }
+
+  return finalizeDeterministicText(
+    'Les dossiers retenus disent si le mouvement gagne vraiment les coûts, le risque et la politique monétaire.',
+    220,
+    'Les dossiers retenus disent si le mouvement gagne vraiment les coûts, le risque et la politique monétaire.',
+    40,
+  );
+}
+
 function buildDeterministicPayload(packet: DayEditorialPacket): GeneratedOikoEditionV21 {
   const lead = packet.leadTopic || packet.secondaryTopics[0];
   if (!lead) {
@@ -606,13 +662,8 @@ function buildDeterministicPayload(packet: DayEditorialPacket): GeneratedOikoEdi
   }
 
   const sections = deriveNarrativeSections(packet);
-  const openingClusters = sections.opening.slice(0, 4);
+  const openingClusters = buildOpeningSummaryClusters(packet, sections, lead);
   const openingLabels = buildOpeningLabels(openingClusters);
-  const introFragments = uniqueStrings([
-    ...openingClusters.map((cluster) => shortTopic(cluster)),
-    sections.radar[0] ? shortTopic(sections.radar[0]) : '',
-    sections.carnet[0] ? shortTopic(sections.carnet[0]) : '',
-  ].filter(Boolean)).slice(0, 2);
   const actionsLabel = packet.marketContext.equities[0]?.label || 'Actions';
   const cryptoLabel = packet.marketContext.crypto[0]?.label || 'Crypto';
   const displayDate = formatFrenchDisplayDate(packet.editionDate);
@@ -625,32 +676,20 @@ function buildDeterministicPayload(packet: DayEditorialPacket): GeneratedOikoEdi
         40,
       )
     : finalizeDeterministicText(
-        `${displayTitle(lead, 'lead')} remet au premier rang ${familyAngles[lead.topicFamily] || 'les coûts, les taux et le risque'}.`,
+        `${displayTitle(lead, 'lead')} replace au premier plan ${familyAngles[lead.topicFamily] || 'les coûts, les taux et le risque'}.`,
         220,
-        'Le sujet remet au premier rang les coûts, les taux et le risque du matin.',
+        'La matinée revient aux coûts, aux taux et au risque.',
         40,
       );
 
-  const introFollow = introFragments.length
-    ? finalizeDeterministicText(
-        `Le reste du numéro suit ${buildHumanList(introFragments)} : même lecture, un coût mondial plus dur à absorber et un risque plus cher à porter.`,
-        220,
-        'Le reste du numéro suit les sujets qui déplacent vraiment la lecture des coûts, des taux et du risque.',
-        40,
-      )
-    : finalizeDeterministicText(
-        'Le reste du numéro suit les sujets qui déplacent vraiment la lecture des coûts, des taux et du risque.',
-        220,
-        'Le reste du numéro suit les sujets qui déplacent vraiment la lecture des coûts, des taux et du risque.',
-        40,
-      );
+  const introFollow = buildIntroFollowParagraph(lead, openingClusters);
 
   return GeneratedOikoEditionV21Schema.parse({
     content_version: 'v2.1',
     email_subject: `Oiko News - ${displayDate}`,
     preview_text: compactText(
       clusterKind(lead) === 'oil_shock'
-        ? 'Le pétrole requalifie la séance asiatique, pendant que le gaz européen et le cuivre australien prolongent le choc des coûts.'
+        ? "Le pétrole requalifie la séance asiatique, pendant que le gaz européen et les signaux macro testent la diffusion du choc."
         : `Les sujets qui reclassent réellement la matinée du ${displayDate} entre coûts, risque et marchés.`,
       150,
     ),
@@ -748,7 +787,8 @@ function buildEvidenceMap(payload: GeneratedOikoEditionV21, packet: DayEditorial
   if (!lead) return evidence;
   const sections = deriveNarrativeSections(packet);
   const briefSlots = buildBriefSlots(packet, sections);
-  const openingReferences = sections.opening.map((cluster) => clusterEvidence(cluster));
+  const openingClusters = buildOpeningSummaryClusters(packet, sections, lead);
+  const openingReferences = openingClusters.map((cluster) => clusterEvidence(cluster));
   const introReference = combineEvidence(clusterEvidence(lead), ...openingReferences.slice(0, 2));
   const hierarchyReference = combineEvidence(clusterEvidence(lead), ...openingReferences);
 
@@ -757,7 +797,7 @@ function buildEvidenceMap(payload: GeneratedOikoEditionV21, packet: DayEditorial
   });
 
   payload.opening_brief.items.forEach((item, index) => {
-    const cluster = sections.opening[index];
+    const cluster = openingClusters[index];
     if (!cluster) return;
     buildParagraphEvidence(`opening-${index}`, clusterEvidence(cluster), evidence, item.parts.map((part) => part.text).join(' '));
   });
@@ -827,7 +867,11 @@ function buildWriterMessages(packet: DayEditorialPacket, referenceDraft: Generat
 7. Réponds exclusivement en JSON valide conforme au draft de référence.
 8. La section marchés doit aider à lire la séance, jamais expliquer les limites du système.
 9. Les briefs, le radar et le carnet doivent rester propres, courts et informatifs ; jamais de placeholder ni de formule creuse.
-10. La voix doit rester nette, calme et premium ; évite tout ton administratif ou mécanique.`,
+10. La voix doit rester nette, calme et premium ; évite tout ton administratif ou mécanique.
+11. L’opening doit annoncer les lignes de force sans recycler le titre du lead.
+12. Le radar doit élargir le risque ou la transmission du choc, pas redire l’intro.
+13. Le carnet garde les signaux plus lents, institutionnels ou de fond.
+14. Les briefs ferment le numéro avec des repères nets, sans répéter l’opening.`,
     },
     {
       role: 'user',
@@ -847,6 +891,7 @@ function buildWriterMessages(packet: DayEditorialPacket, referenceDraft: Generat
         briefs: sections.briefs.map(buildClusterDossier),
         microBriefCandidates: packet.microBriefCandidates,
         marketContext: packet.marketContext,
+        editorialPlan: packet.editorialPlan || null,
         referenceDraft,
       }),
     },
@@ -921,17 +966,17 @@ function finalizeClusterText(value: string, cluster: TopicCluster, fallback: str
 function buildSafeFrenchFallbackForRadar(cluster: TopicCluster) {
   switch (clusterKind(cluster)) {
     case 'oil_shock':
-      return { title: 'Le pétrole renverse la séance', paragraphs: ['Le pétrole reste le vrai dossier de coût du matin, bien au-delà d’un simple mouvement de marché asiatique.', 'Le sujet pèse d’abord sur l’inflation importée, les marges et la prime de risque globale.'] };
+      return { title: 'Le pétrole renverse la séance', paragraphs: ['Le pétrole reste le vrai sujet de coût du matin, bien au-delà d’un simple mouvement asiatique.', 'Il pèse d’abord sur l’inflation importée, les marges et la prime de risque globale.'] };
     case 'iran_risk':
-      return { title: 'Iran : l’énergie récupère une prime de risque', paragraphs: ['La séquence iranienne pèse d’abord par l’énergie, le fret et l’assurance.', 'Le dossier élargit la lecture du matin sans se réduire à un simple angle diplomatique.'] };
+      return { title: 'Iran : l’énergie récupère une prime de risque', paragraphs: ['La séquence iranienne pèse d’abord par l’énergie, le fret et l’assurance.', 'Elle élargit la lecture du matin sans se réduire à un simple angle diplomatique.'] };
     case 'gas_europe':
-      return { title: 'Gaz russe : le coût européen revient dans le prix', paragraphs: ['Le gaz européen redevient un dossier de coûts pour l’industrie et les prix importés.', 'Le sujet compte surtout pour la vitesse réelle de désinflation en Europe.'] };
+      return { title: 'Gaz russe : le coût européen revient dans le prix', paragraphs: ['Le gaz européen redevient un sujet de coûts pour l’industrie et les prix importés.', 'Il compte surtout pour la vitesse réelle de désinflation en Europe.'] };
     case 'copper_supply':
-      return { title: 'Cuivre australien : la chaîne industrielle évite la rupture', paragraphs: ['Le dossier cuivre vaut comme signal d’offre industrielle et d’investissement, pas comme anecdote minière.', 'Il éclaire la manière dont l’appareil productif absorbe un choc plus large sur l’énergie.'] };
+      return { title: 'Cuivre australien : la chaîne industrielle évite la rupture', paragraphs: ['Le cuivre vaut comme signal d’offre industrielle et d’investissement, pas comme anecdote minière.', 'Il éclaire la manière dont l’appareil productif absorbe un choc plus large sur l’énergie.'] };
     case 'ecb_labour':
-      return { title: 'BCE : l’emploi reste solide, les salaires ralentissent', paragraphs: ['Le signal reste utile pour la désinflation salariale et la lecture future des taux.', 'Le sujet compte davantage pour la politique monétaire que pour le simple bruit conjoncturel.'] };
+      return { title: 'BCE : l’emploi reste solide, les salaires ralentissent', paragraphs: ['Le signal reste utile pour la désinflation salariale et la lecture future des taux.', 'Il compte davantage pour la politique monétaire que pour le simple bruit conjoncturel.'] };
     default:
-      return { title: displayTitle(cluster, 'radar'), paragraphs: [`Le sujet compte surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et le risque'}.`, 'Il élargit la lecture du matin sans prendre toute la hiérarchie de la séance.'] };
+      return { title: displayTitle(cluster, 'radar'), paragraphs: [`Ce signal agit surtout sur ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et le risque'}.`, 'Il aide à voir si la séance diffuse au-delà du thème principal.'] };
   }
 }
 
@@ -940,7 +985,7 @@ function buildSafeFrenchFallbackForCarnet(cluster: TopicCluster) {
     case 'ecb_labour':
       return { title: 'BCE : l’emploi reste solide, les salaires ralentissent', paragraphs: ['La BCE décrit une désinflation salariale plus graduelle que brutale.', 'Le signal compte surtout pour le tempo de la politique monétaire en zone euro.'] };
     default:
-      return { title: displayTitle(cluster, 'carnet'), paragraphs: [`À suivre surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et les marchés'}.`, 'Le dossier mérite une place de second rang dans la lecture du matin.'] };
+      return { title: displayTitle(cluster, 'carnet'), paragraphs: [`Au second plan, ce dossier sert surtout à lire ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et les marchés'}.`, 'C’est ici qu’on voit si le mouvement du jour s’installe vraiment.'] };
   }
 }
 
@@ -953,7 +998,7 @@ function buildSafeFrenchFallbackForBrief(cluster: TopicCluster) {
     case 'uk_labour':
     case 'growth_labour': return 'Travail : le signal renforce surtout l’idée d’une croissance molle avant une vraie reprise.';
     case 'oil_shock': return 'Pétrole : le choc reste central pour lire l’inflation importée et les actifs sensibles à l’énergie.';
-    default: return `Le signal compte surtout pour ${familyAngles[cluster.topicFamily] || 'les coûts, la croissance et le risque'}.`;
+    default: return `Ce signal de second rang \u00e9claire surtout ${familyAngles[cluster.topicFamily] || 'les co\u00fbts, la croissance et le risque'}.`;
   }
 }
 function normalizeGeneratedBlock(block: any, maxLength = 260, minLength = 24) {
@@ -991,10 +1036,65 @@ function mergeRadarOrCarnetItems(referenceItems: Array<{ title: string; paragrap
   return { items, usedGeneratedText };
 }
 
-function parseGeneratedDraftCandidate(rawText: string, usageDate?: string) {
+function buildStageTrace(
+  stage: LlmStageTrace['stage'],
+  result: {
+    providerUsed: string | null;
+    modelUsed: string | null;
+    attempts: Array<{
+      provider: string;
+      model: string;
+      label?: string;
+      status: 'success' | 'failed';
+      tokensUsed?: number;
+      error?: string;
+      timeoutMs?: number;
+    }>;
+  },
+  options: {
+    success: boolean;
+    usedFallback: boolean;
+    fallbackReason?: string | null;
+    contentSource?: 'llm' | 'deterministic' | 'hybrid';
+  },
+): LlmStageTrace {
+  return {
+    stage,
+    providerUsed: result.providerUsed,
+    modelUsed: result.modelUsed,
+    attempts: result.attempts.map((attempt) => ({
+      provider: attempt.provider,
+      model: attempt.model,
+      ...(attempt.label ? { label: attempt.label } : {}),
+      status: attempt.status,
+      ...(typeof attempt.tokensUsed === 'number' ? { tokensUsed: attempt.tokensUsed } : {}),
+      ...(attempt.error ? { error: attempt.error } : {}),
+      ...(typeof attempt.timeoutMs === 'number' ? { timeoutMs: attempt.timeoutMs } : {}),
+    })),
+    success: options.success,
+    usedFallback: options.usedFallback,
+    ...(options.fallbackReason ? { fallbackReason: options.fallbackReason } : {}),
+    ...(options.contentSource ? { contentSource: options.contentSource } : {}),
+  };
+}
+
+async function parseGeneratedDraftCandidateWithTrace(rawText: string, usageDate?: string) {
   const parsed = extractJsonCandidate(rawText);
-  if (parsed) return Promise.resolve(parsed);
-  return repairJsonWithFastModel(rawText, usageDate);
+  if (parsed) {
+    return { parsed, llmStages: [] as LlmStageTrace[], repaired: false };
+  }
+
+  const repaired = await repairJsonWithFastModelDetailed(rawText, usageDate);
+  return {
+    parsed: repaired.parsed,
+    repaired: Boolean(repaired.parsed),
+    llmStages: [buildStageTrace('draft_repair', repaired, {
+      success: Boolean(repaired.parsed),
+      usedFallback: !repaired.parsed,
+      fallbackReason: repaired.parsed ? null : 'repair_failed',
+      contentSource: repaired.parsed ? 'hybrid' : 'deterministic',
+    })],
+  };
 }
 function mergeGeneratedPayload(referencePayload: GeneratedOikoEditionV21, generatedCandidate: any): MergeResult {
   if (!generatedCandidate || typeof generatedCandidate !== 'object') {
@@ -1084,7 +1184,13 @@ function mergeGeneratedPayload(referencePayload: GeneratedOikoEditionV21, genera
   };
 }
 
-function buildDeterministicDraft(packet: DayEditorialPacket): V3Draft {
+function planningSource(packet: DayEditorialPacket) {
+  return packet.llmStages?.some((stage) => stage.stage === 'editorial_plan' && stage.success)
+    ? 'llm' as const
+    : 'deterministic' as const;
+}
+
+function buildDeterministicDraft(packet: DayEditorialPacket, llmStages: LlmStageTrace[] = packet.llmStages || []): V3Draft {
   const payload = buildDeterministicPayload(packet);
   return {
     payload,
@@ -1093,24 +1199,40 @@ function buildDeterministicDraft(packet: DayEditorialPacket): V3Draft {
       writer: 'deterministic-reference',
       model: 'deterministic-reference',
       usedFallback: true,
+      editionFormat: packet.materialTier === 'short' ? 'short' : 'premium',
+      planningSource: planningSource(packet),
+      llmStages,
     },
   };
 }
 
 export async function generateFrenchEditionDraft(packet: DayEditorialPacket, usageDate?: string): Promise<V3Draft> {
   const referencePayload = buildDeterministicPayload(packet);
+  const llmStages = [...(packet.llmStages || [])];
   const generated = await generateWithConfiguredProviders(buildWriterMessages(packet, referencePayload), usageDate, { maxTokens: 7200, temperature: 0.15 });
-  const parsedCandidate = generated.content ? await parseGeneratedDraftCandidate(generated.content, usageDate) : null;
-  const merged = mergeGeneratedPayload(referencePayload, parsedCandidate);
-  const payload = merged.payload;
+  const parsedResult = generated.content ? await parseGeneratedDraftCandidateWithTrace(generated.content, usageDate) : { parsed: null, llmStages: [] as LlmStageTrace[], repaired: false };
+  llmStages.push(buildStageTrace('draft_write', generated, {
+    success: Boolean(parsedResult.parsed),
+    usedFallback: !parsedResult.parsed,
+    fallbackReason: parsedResult.parsed ? (parsedResult.repaired ? 'repaired_json_candidate' : null) : generated.content ? 'invalid_json_candidate' : 'empty_llm_response',
+    contentSource: parsedResult.parsed ? (parsedResult.repaired ? 'hybrid' : 'llm') : 'deterministic',
+  }));
+  llmStages.push(...parsedResult.llmStages);
+  const merged = mergeGeneratedPayload(referencePayload, parsedResult.parsed);
+  if (!merged.usedGeneratedText) {
+    return buildDeterministicDraft(packet, llmStages);
+  }
 
   return {
-    payload,
-    evidence: buildEvidenceMap(payload, packet),
+    payload: merged.payload,
+    evidence: buildEvidenceMap(merged.payload, packet),
     metadata: {
-      writer: merged.usedGeneratedText && generated.providerUsed ? generated.providerUsed : 'deterministic-reference',
-      model: merged.usedGeneratedText && generated.modelUsed ? generated.modelUsed : 'deterministic-reference',
-      usedFallback: !merged.usedGeneratedText,
+      writer: generated.providerUsed || 'deterministic-reference',
+      model: generated.modelUsed || 'deterministic-reference',
+      usedFallback: false,
+      editionFormat: packet.materialTier === 'short' ? 'short' : 'premium',
+      planningSource: planningSource(packet),
+      llmStages,
     },
   };
 }
@@ -1132,17 +1254,26 @@ export async function repairOrRegenerateDraftIfNeeded(currentDraft: V3Draft, cri
           leadTopic: packet.leadTopic ? buildClusterDossier(packet.leadTopic) : null,
           secondaryTopics: packet.secondaryTopics.map(buildClusterDossier),
           marketContext: packet.marketContext,
+          editorialPlan: packet.editorialPlan || null,
         },
       }),
     },
   ];
 
+  const llmStages = [...(currentDraft.metadata.llmStages || packet.llmStages || [])];
   const generated = await generateWithConfiguredProviders(repairMessages, usageDate, { maxTokens: 7200, temperature: 0.05 });
-  const parsedCandidate = generated.content ? await parseGeneratedDraftCandidate(generated.content, usageDate) : null;
-  const merged = mergeGeneratedPayload(currentDraft.payload, parsedCandidate);
+  const parsedResult = generated.content ? await parseGeneratedDraftCandidateWithTrace(generated.content, usageDate) : { parsed: null, llmStages: [] as LlmStageTrace[], repaired: false };
+  llmStages.push(buildStageTrace('draft_repair', generated, {
+    success: Boolean(parsedResult.parsed),
+    usedFallback: !parsedResult.parsed,
+    fallbackReason: parsedResult.parsed ? (parsedResult.repaired ? 'repaired_json_candidate' : null) : generated.content ? 'invalid_json_candidate' : 'empty_llm_response',
+    contentSource: parsedResult.parsed ? (parsedResult.repaired ? 'hybrid' : 'llm') : 'deterministic',
+  }));
+  llmStages.push(...parsedResult.llmStages);
+  const merged = mergeGeneratedPayload(currentDraft.payload, parsedResult.parsed);
 
   if (!merged.usedGeneratedText) {
-    return buildDeterministicDraft(packet);
+    return buildDeterministicDraft(packet, llmStages);
   }
 
   return {
@@ -1152,10 +1283,12 @@ export async function repairOrRegenerateDraftIfNeeded(currentDraft: V3Draft, cri
       writer: generated.providerUsed || 'deterministic-reference',
       model: generated.modelUsed || 'deterministic-reference',
       usedFallback: false,
+      editionFormat: packet.materialTier === 'short' ? 'short' : 'premium',
+      planningSource: planningSource(packet),
+      llmStages,
     },
   };
 }
-
 export const __testables = {
   deriveNarrativeSections,
   buildBriefSlots,

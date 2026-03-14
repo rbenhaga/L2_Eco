@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowRight, CheckCircle2, Clock3, Lock, PlayCircle } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Lock, PlayCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getModuleTheme } from '../../../design-system/tokens';
 import type { ModuleId } from '../types';
@@ -10,18 +10,15 @@ interface ModuleHeroSectionProps {
     title: string;
     description: string;
     chaptersCount: number;
-    totalDuration: string;
-    studyTime: string;
-    todoCount: number;
     moduleId: ModuleId;
     hasIntroVideo?: boolean;
     startButtonLabel?: string;
     startButtonMeta?: string;
-    guidanceTitle?: string;
-    guidanceDescription?: string;
+    overviewTitle?: string;
+    overviewDescription?: string;
     progressSummary?: string;
-    pathHintLabel?: string;
-    completedCoursesCount?: number;
+    resumeLabel?: string;
+    overviewStateLabel?: string;
     lockedItemsCount?: number;
     resourceCounts: {
         fiches: number;
@@ -40,18 +37,15 @@ export function ModuleHeroSection({
     title,
     description,
     chaptersCount,
-    totalDuration,
-    studyTime,
-    todoCount,
     moduleId,
     hasIntroVideo = false,
     startButtonLabel = 'Commencer',
     startButtonMeta,
-    guidanceTitle,
-    guidanceDescription,
+    overviewTitle,
+    overviewDescription,
     progressSummary,
-    pathHintLabel,
-    completedCoursesCount = 0,
+    resumeLabel,
+    overviewStateLabel = 'Apercu',
     lockedItemsCount = 0,
     resourceCounts,
     badgeLabel,
@@ -62,13 +56,23 @@ export function ModuleHeroSection({
 }: ModuleHeroSectionProps) {
     const theme = getModuleTheme(moduleId);
     const [typedCount, setTypedCount] = useState(0);
+    const availableResourceCount =
+        resourceCounts.fiches + resourceCounts.td + resourceCounts.qcm + resourceCounts.annales;
     const overviewItems = [
         { label: chaptersCount > 1 ? 'chapitres' : 'chapitre', value: chaptersCount },
-        { label: resourceCounts.fiches > 1 ? 'fiches' : 'fiche', value: resourceCounts.fiches },
-        { label: 'TD', value: resourceCounts.td },
-        { label: 'QCM', value: resourceCounts.qcm },
-        { label: resourceCounts.annales > 1 ? 'annales' : 'annale', value: resourceCounts.annales },
-    ].filter((item, index) => index === 0 || item.value > 0);
+        {
+            label: availableResourceCount > 1 ? 'ressources disponibles' : 'ressource disponible',
+            value: availableResourceCount,
+        },
+        ...(lockedItemsCount > 0
+            ? [
+                  {
+                      label: lockedItemsCount > 1 ? 'contenus premium' : 'contenu premium',
+                      value: lockedItemsCount,
+                  },
+              ]
+            : []),
+    ];
 
     useEffect(() => {
         setTypedCount(0);
@@ -109,7 +113,6 @@ export function ModuleHeroSection({
                             {char === ' ' ? '\u00A0' : char}
                         </span>
                     ))}
-                    <span className="module-hero-cursor" aria-hidden="true" />
                 </h1>
 
                 <p
@@ -157,7 +160,7 @@ export function ModuleHeroSection({
                             }}
                         >
                             <PlayCircle className="h-4 w-4" />
-                            Voir le cours en vidéo
+                            Voir le cours en video
                         </motion.button>
                     )}
                 </div>
@@ -243,42 +246,26 @@ export function ModuleHeroSection({
                                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: theme.color }} />
                                 <div>
                                     <p className="text-[10px] font-bold uppercase tracking-[0.16em]" style={{ color: 'var(--color-text-muted)' }}>
-                                        Prochaine étape
+                                        {overviewStateLabel}
                                     </p>
                                     <p className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
-                                        {guidanceTitle ?? `${completedCoursesCount} chapitres terminés sur ${chaptersCount}`}
+                                        {overviewTitle ?? `${chaptersCount} chapitres`}
                                     </p>
                                     <p className="mt-1 text-xs" style={{ color: 'var(--color-text-secondary)' }}>
-                                        {guidanceDescription ?? (todoCount > 0 ? `${todoCount} ressources à traiter pour boucler le module.` : 'Le module est intégralement parcouru.')}
+                                        {overviewDescription ?? 'Toutes les ressources du module restent accessibles librement.'}
                                     </p>
                                     {progressSummary && (
                                         <p className="mt-1 text-[11px] font-medium" style={{ color: 'var(--color-text-muted)' }}>
                                             {progressSummary}
                                         </p>
                                     )}
+                                    {resumeLabel && (
+                                        <p className="mt-1 text-[11px] font-medium" style={{ color: 'var(--color-text-muted)' }}>
+                                            {resumeLabel}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
-                        </div>
-
-                        <div
-                            className="rounded-2xl border px-4 py-3"
-                            style={{
-                                borderColor: 'var(--color-border-subtle)',
-                                background: 'var(--color-bg-raised)',
-                            }}
-                        >
-                            <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
-                                <Clock3 className="h-4 w-4" />
-                                Temps étudié : {studyTime}
-                            </div>
-                            <p className="mt-1 text-xs" style={{ color: 'var(--color-text-secondary)' }}>
-                                Module estimé : {totalDuration} min
-                            </p>
-                            {pathHintLabel && (
-                                <p className="mt-1 text-[11px] font-medium" style={{ color: 'var(--color-text-muted)' }}>
-                                    {pathHintLabel}
-                                </p>
-                            )}
                         </div>
                     </div>
                 </div>

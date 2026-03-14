@@ -1,6 +1,6 @@
-import { OIKO_V3_POLICY, isHighQualitySource } from '../policy/v3.ts';
+﻿import { OIKO_V3_POLICY, isHighQualitySource } from '../policy/v3.ts';
 import { average } from '../utils.ts';
-import type { DayEditorialPacket, FactSheetRecord, MicroBriefCandidate, StructuredMarketContext, TopicCluster } from './types.ts';
+import type { DayEditorialPacket, EditorialPlan, FactSheetRecord, MaterialTier, MicroBriefCandidate, StructuredMarketContext, TopicCluster } from './types.ts';
 
 function freshnessScore(cluster: TopicCluster) {
   switch (cluster.freshness.clusterRecencyType) {
@@ -72,6 +72,44 @@ function sectionBucket(cluster: TopicCluster) {
   if (/(labour|labor|job market|hiring|unemployment|wage|salary|salaires|chômage|emploi)/.test(sample)) return 'labour';
   if (/(copper|cuivre|phosphate hill|smelter|mount isa|minier|mine)/.test(sample)) return 'industrial_supply';
   return cluster.topicFamily;
+}
+
+type SectionName = 'opening' | 'radar' | 'carnet' | 'briefs';
+
+function sectionPriority(section: SectionName, cluster: TopicCluster) {
+  const bucket = sectionBucket(cluster);
+  const editorialBase = Math.round(cluster.editorialImportance * 100);
+  const freshnessBase = cluster.freshness.clusterRecencyType === 'fresh_event'
+    ? 12
+    : cluster.freshness.clusterRecencyType === 'fresh_update'
+      ? 8
+      : cluster.freshness.clusterRecencyType === 'context_only'
+        ? 6
+        : 0;
+  const sourceBase = Math.min(6, cluster.sourceArticleIds.length * 2);
+  const familyBase = section === 'carnet' && ['europe_euro_area', 'institutions', 'jobs_consumption_growth'].includes(cluster.topicFamily)
+    ? 10
+    : section === 'opening' && cluster.topicFamily === 'trade_industry_energy'
+      ? 8
+      : 0;
+
+  const bucketBase = section === 'opening'
+    ? bucket === 'energy_prices' ? 22 : bucket === 'gas_supply' ? 20 : bucket === 'iran_risk' ? 18 : bucket === 'industrial_supply' ? 14 : bucket === 'labour' ? 10 : 8
+    : section === 'radar'
+      ? bucket === 'iran_risk' ? 22 : bucket === 'gas_supply' ? 18 : bucket === 'energy_prices' ? 16 : bucket === 'industrial_supply' ? 15 : bucket === 'labour' ? 12 : 8
+      : section === 'carnet'
+        ? bucket === 'labour' ? 22 : bucket === 'industrial_supply' ? 16 : bucket === 'gas_supply' ? 10 : bucket === 'iran_risk' ? 8 : bucket === 'energy_prices' ? 6 : 10
+        : bucket === 'industrial_supply' ? 20 : bucket === 'labour' ? 18 : bucket === 'gas_supply' ? 16 : bucket === 'iran_risk' ? 14 : bucket === 'energy_prices' ? 12 : 10;
+
+  return editorialBase + freshnessBase + sourceBase + familyBase + bucketBase;
+}
+
+function sortSectionCandidates(section: SectionName, clusters: TopicCluster[]) {
+  return [...clusters].sort((left, right) => {
+    const priorityDiff = sectionPriority(section, right) - sectionPriority(section, left);
+    if (priorityDiff !== 0) return priorityDiff;
+    return right.editorialImportance - left.editorialImportance;
+  });
 }
 
 function takeSectionCandidates(
@@ -273,13 +311,20 @@ export function buildDayEditorialPacket(editionDate: string, clusters: TopicClus
   const remainingFresh = remaining.filter((cluster) => cluster.freshness.qualifiesForOpening);
   const targets = chooseSectionTargets(remaining.length, remainingFresh.length);
 
-  const opening = takeSectionCandidates(remainingFresh, targets.opening, usedIds, usedBuckets, (cluster) => cluster.freshness.qualifiesForOpening);
-  const radar = takeSectionCandidates(remaining, targets.radar, usedIds, usedBuckets, (cluster) => isSecondarySignalCandidate(cluster));
-  const carnet = takeSectionCandidates(remaining, targets.carnet, usedIds, usedBuckets, (cluster) => isCarnetCandidate(cluster));
-  const briefs = takeSectionCandidates(remaining, targets.briefs, usedIds, usedBuckets, (cluster) => cluster.freshness.clusterRecencyType !== 'stale');
+  const opening = takeSectionCandidates(sortSectionCandidates('opening', remainingFresh), targets.opening, usedIds, usedBuckets, (cluster) => cluster.freshness.qualifiesForOpening);
+  const radar = takeSectionCandidates(sortSectionCandidates('radar', remaining), targets.radar, usedIds, usedBuckets, (cluster) => isSecondarySignalCandidate(cluster));
+  const carnet = takeSectionCandidates(sortSectionCandidates('carnet', remaining), targets.carnet, usedIds, usedBuckets, (cluster) => isCarnetCandidate(cluster));
+  const briefs = takeSectionCandidates(sortSectionCandidates('briefs', remaining), targets.briefs, usedIds, usedBuckets, (cluster) => cluster.freshness.clusterRecencyType !== 'stale');
   const microBriefCandidates = buildMicroBriefCandidates(leadTopic, remaining, { opening, radar, carnet, briefs }, marketContext);
 
   const freshEventCount = usable.filter((cluster) => isFreshCluster(cluster)).length;
+  const materialTier: MaterialTier = freshEventCount >= OIKO_V3_POLICY.freshness.minimumFreshEventCount
+    && usable.length >= OIKO_V3_POLICY.freshness.minimumDistinctClusterCount
+    ? 'premium'
+    : freshEventCount >= OIKO_V3_POLICY.freshness.shortEdition.minimumFreshEventCount
+      && usable.length >= OIKO_V3_POLICY.freshness.shortEdition.minimumDistinctClusterCount
+      ? 'short'
+      : 'blocked';
 
   return {
     editionDate,
@@ -296,9 +341,85 @@ export function buildDayEditorialPacket(editionDate: string, clusters: TopicClus
     sourceCoverage: accumulateSourceCoverage(usable),
     freshEventCount,
     distinctClusterCount: usable.length,
+    materialTier,
   };
 }
 
+function uniqueClusters(clusters: Array<TopicCluster | null | undefined>) {
+  const seen = new Set<string>();
+  return clusters.filter((cluster): cluster is TopicCluster => Boolean(cluster)).filter((cluster) => {
+    if (seen.has(cluster.id)) return false;
+    seen.add(cluster.id);
+    return true;
+  });
+}
+
+function orderedClustersFromIds(clusterIds: string[], clusterById: Map<string, TopicCluster>) {
+  return uniqueClusters(clusterIds.map((clusterId) => clusterById.get(clusterId) || null));
+}
+
+function fillSectionFromPlan(
+  plannedIds: string[],
+  fallbackSection: TopicCluster[],
+  fallbackPool: TopicCluster[],
+  targetCount: number,
+  usedIds: Set<string>,
+  clusterById: Map<string, TopicCluster>,
+) {
+  const picked: TopicCluster[] = [];
+
+  const push = (cluster?: TopicCluster | null) => {
+    if (!cluster || usedIds.has(cluster.id) || picked.length >= targetCount) return;
+    usedIds.add(cluster.id);
+    picked.push(cluster);
+  };
+
+  orderedClustersFromIds(plannedIds, clusterById).forEach(push);
+  fallbackSection.forEach(push);
+  fallbackPool.forEach(push);
+
+  return picked;
+}
+
+export function applyEditorialPlan(packet: DayEditorialPacket, plan: EditorialPlan): DayEditorialPacket {
+  const allClusters = uniqueClusters([packet.leadTopic, ...packet.secondaryTopics]);
+  const clusterById = new Map(allClusters.map((cluster) => [cluster.id, cluster]));
+  const fallbackLead = packet.leadTopic || allClusters[0] || null;
+  const leadTopic = (plan.leadClusterId ? clusterById.get(plan.leadClusterId) : null) || fallbackLead;
+  const usedIds = new Set<string>(leadTopic ? [leadTopic.id] : []);
+  const fallbackPool = uniqueClusters([
+    ...orderedClustersFromIds(plan.selectedClusterIds, clusterById),
+    ...packet.chosenSections.opening,
+    ...packet.chosenSections.radar,
+    ...packet.chosenSections.carnet,
+    ...packet.chosenSections.briefs,
+    ...packet.secondaryTopics,
+  ]).filter((cluster) => cluster.id !== leadTopic?.id);
+
+  const opening = fillSectionFromPlan(plan.openingClusterIds, packet.chosenSections.opening, fallbackPool, packet.chosenSections.opening.length, usedIds, clusterById);
+  const radar = fillSectionFromPlan(plan.radarClusterIds, packet.chosenSections.radar, fallbackPool, packet.chosenSections.radar.length, usedIds, clusterById);
+  const carnet = fillSectionFromPlan(plan.carnetClusterIds, packet.chosenSections.carnet, fallbackPool, packet.chosenSections.carnet.length, usedIds, clusterById);
+  const briefs = fillSectionFromPlan(plan.briefClusterIds, packet.chosenSections.briefs, fallbackPool, packet.chosenSections.briefs.length, usedIds, clusterById);
+
+  const secondaryTopics = uniqueClusters([
+    ...opening,
+    ...radar,
+    ...carnet,
+    ...briefs,
+    ...fallbackPool,
+    ...allClusters,
+  ]).filter((cluster) => cluster.id !== leadTopic?.id).slice(0, 10);
+  const chosenSections = { opening, radar, carnet, briefs };
+
+  return {
+    ...packet,
+    leadTopic,
+    secondaryTopics,
+    chosenSections,
+    microBriefCandidates: buildMicroBriefCandidates(leadTopic, secondaryTopics, chosenSections, packet.marketContext),
+    editorialPlan: plan,
+  };
+}
 export default {
   scoreTopics,
   buildDayEditorialPacket,

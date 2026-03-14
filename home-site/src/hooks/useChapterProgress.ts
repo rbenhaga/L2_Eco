@@ -10,14 +10,12 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { progressService } from '../services/progressService';
-import { getScrollableProgressMetrics } from '../utils/scrollMetrics';
 
 interface UseChapterProgressOptions {
     moduleId: string;
     chapterId: string;
     estimatedMinutes?: number;
     enabled?: boolean;
-    minimumReadPercentage?: number;
     minimumQCMScore?: number;
 }
 
@@ -25,7 +23,6 @@ export function useChapterProgress({
     moduleId,
     chapterId,
     enabled = true,
-    minimumReadPercentage,
     minimumQCMScore,
 }: UseChapterProgressOptions) {
     const [progress, setProgress] = useState(() =>
@@ -56,7 +53,6 @@ export function useChapterProgress({
         if (!enabled) return;
 
         progressService.configureChapter(moduleId, chapterId, {
-            minimumReadPercentage,
             minimumQCMScore,
         });
         progressService.startReading(moduleId, chapterId);
@@ -123,54 +119,12 @@ export function useChapterProgress({
         return () => clearInterval(interval);
     }, [moduleId, chapterId, enabled, flushTime]);
 
-    // Tracker le scroll
-    useEffect(() => {
-        if (!enabled) return;
-
-        const scrollContainer = document.querySelector<HTMLElement>('.app-scroll-container');
-
-        const handleScroll = () => {
-            const metrics = scrollContainer ? getScrollableProgressMetrics(scrollContainer) : null;
-            const scrollTop = metrics?.scrollTop ?? window.scrollY;
-            const scrollableHeight = metrics?.scrollableHeight ?? Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-
-            const scrollPercentage = scrollableHeight > 0
-                ? Math.floor(Math.min(100, (scrollTop / scrollableHeight) * 100))
-                : 0;
-
-            progressService.updateScrollProgress(moduleId, chapterId, scrollPercentage);
-            setProgress(progressService.getChapter(moduleId, chapterId));
-        };
-
-        // Throttle scroll events
-        let ticking = false;
-        const throttledScroll = () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    handleScroll();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        };
-
-        const scrollTarget: HTMLElement | Window = scrollContainer ?? window;
-        scrollTarget.addEventListener('scroll', throttledScroll, { passive: true });
-
-        // Check initial scroll position
-        handleScroll();
-
-        return () => {
-            scrollTarget.removeEventListener('scroll', throttledScroll);
-        };
-    }, [moduleId, chapterId, enabled, minimumReadPercentage, minimumQCMScore]);
-
     return {
         progress,
-        isReadComplete: progress?.isReadComplete ?? false,
-        isQCMUnlocked: progressService.isQCMUnlocked(moduleId, chapterId),
+        isReadComplete: true,
+        isQCMUnlocked: true,
         isCompleted: progress?.isCompleted ?? false,
-        scrollProgress: progress?.scrollProgress ?? 0,
+        scrollProgress: 0,
         timeSpent: progress?.timeSpent ?? 0,
         qcmBestScore: progress?.qcmBestScore ?? 0,
     };

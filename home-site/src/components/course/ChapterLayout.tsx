@@ -271,7 +271,6 @@ export function ChapterLayout({
         moduleId: trackingModuleId,
         chapterId: chapterId || `${moduleId}-${chapterNumber}`,
         enabled: trackingEnabled,
-        minimumReadPercentage: minimumReadPercent,
         minimumQCMScore: validationScore,
     });
     const qcmStep = steps.find((step) => step.id === 'qcm');

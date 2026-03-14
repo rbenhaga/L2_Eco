@@ -37,10 +37,6 @@ const dropdownAnimation = {
   transition: { duration: 0.15, ease: [0.33, 1, 0.68, 1] as const }
 };
 
-function clampPercent(value: number): number {
-  return Math.max(0, Math.min(100, Math.floor(value)));
-}
-
 function getChapterNumberFromPath(pathname: string): number | null {
   const match = pathname.match(/\/chapitre-?(\d+)/i);
   if (!match) return null;
@@ -172,8 +168,7 @@ useEffect(() => {
         return;
       }
 
-      const scrollPct = clampPercent(currentChapter.scrollProgress ?? 0);
-      setCourseProgress(scrollPct);
+      setCourseProgress(currentChapter.isCompleted ? 100 : 0);
       setCourseValidated(Boolean(currentChapter.isCompleted));
       setBaseCourseTimeSeconds(currentChapter.timeSpent ?? 0);
     };
@@ -260,11 +255,6 @@ useEffect(() => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [externalScrollProgress]);
 
-  useEffect(() => {
-    if (!isChapterPage) return;
-    setCourseProgress(clampPercent(scrollProgress));
-  }, [isChapterPage, scrollProgress]);
-
   const notificationsPanelContent = notifications.length > 0 ? (
     notifications.map((notif) => (
       <div
@@ -331,10 +321,10 @@ useEffect(() => {
     ? `${courseProgress}% · ${activeTimeLabel}`
     : null;
   const hasStudyStatus = studyStatusLabel !== null && courseProgress !== null;
-  const displayStudyStatusLabel = hasStudyStatus
+  const effectiveStudyStatusLabel = hasStudyStatus
     ? courseValidated
       ? 'Cours validé'
-      : `${courseProgress}% · ${activeTimeLabel}`
+      : activeTimeLabel
     : null;
 
   return (
@@ -350,7 +340,7 @@ useEffect(() => {
         }}
       >
         {/* Scroll progress bar - chapter pages only */}
-        {isChapterPage && (
+        {false && isChapterPage && (
           <div
             className="absolute bottom-0 h-[2px] transition-all duration-75 z-20"
             style={{
@@ -467,7 +457,7 @@ useEffect(() => {
                   }}
                 >
                   {courseValidated ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Clock3 className="h-3.5 w-3.5" />}
-                  {displayStudyStatusLabel}
+                  {effectiveStudyStatusLabel}
                 </span>
               </div>
             )}

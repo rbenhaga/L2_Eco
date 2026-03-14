@@ -32,5 +32,4 @@ export interface LearningFicheSection {
 
 export interface LearningValidationConfig {
     minimumScore: number;
-    minimumReadPercent?: number;
 }

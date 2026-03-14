@@ -3,7 +3,6 @@ import type { ModuleChapter } from '../../../../components/layout/ModuleHub';
 const BASE_PATH = '/s4/macro';
 const VALIDATION = {
     minimumScore: 50,
-    minimumReadPercent: 90,
 } as const;
 
 export const macroModuleMeta = {

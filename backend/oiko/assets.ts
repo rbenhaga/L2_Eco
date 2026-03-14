@@ -301,6 +301,85 @@ async function fetchWikimediaCandidates(query: string, spec: SectionImageSpec, e
   }).filter((candidate) => Boolean(candidate.imageUrl));
 }
 
+function compactVisualText(value: string, maxLength = 180) {
+  const normalized = String(value || '').replace(/\s+/g, ' ').trim();
+  if (normalized.length <= maxLength) return normalized;
+  const slice = normalized.slice(0, maxLength + 1);
+  const cut = slice.lastIndexOf(' ');
+  return `${(cut > Math.max(28, maxLength - 28) ? slice.slice(0, cut) : normalized.slice(0, maxLength)).trim().replace(/[,:;]+$/, '')}…`;
+}
+
+function fallbackEyebrow(spec: SectionImageSpec) {
+  switch (spec.sectionKey) {
+    case 'header_visual':
+      return 'Édition du jour';
+    case 'lead_story':
+      return 'Grand angle';
+    case 'radar_section':
+      return 'Sous la surface';
+    case 'carnet_section':
+      return "Point d'appui";
+    default:
+      return 'Oiko News';
+  }
+}
+
+function fallbackSummary(spec: SectionImageSpec) {
+  const subject = compactVisualText(spec.entityHint || spec.titleHint || '', 72);
+  switch (spec.sectionKey) {
+    case 'header_visual':
+      return subject ? `Ouverture éditoriale sur ${subject}.` : 'Ouverture éditoriale sur les lignes de force du matin.';
+    case 'lead_story':
+      return subject ? `Grand angle sur ${subject}.` : 'Grand angle sur le thème qui porte réellement la séance.';
+    case 'radar_section':
+      return subject ? `${subject} éclaire les signaux qui gagnent en importance sous la surface.` : 'Lecture des signaux qui gagnent en importance sous la surface.';
+    case 'carnet_section':
+      return subject ? `${subject} sert de point d'appui pour lire ce qui s'installe dans la durée.` : "Point d'appui pour lire ce qui s'installe dans la durée.";
+    default:
+      return 'Carte éditoriale Oiko News.';
+  }
+}
+
+function buildFallbackCardCopy(spec: SectionImageSpec) {
+  const title = compactVisualText(spec.titleHint || spec.entityHint || 'Oiko News', 64);
+  const summary = compactVisualText(spec.altText || fallbackSummary(spec), 190) || fallbackSummary(spec);
+  return {
+    eyebrow: fallbackEyebrow(spec),
+    title,
+    summary,
+    creditLine: 'Carte éditoriale Oiko News',
+  };
+}
+
+function drawWrappedText(ctx: any, text: string, x: number, y: number, maxWidth: number, lineHeight: number, maxLines = 3) {
+  const words = String(text || '').split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let current = '';
+
+  for (const word of words) {
+    const candidate = current ? `${current} ${word}` : word;
+    if (ctx.measureText(candidate).width <= maxWidth || !current) {
+      current = candidate;
+      continue;
+    }
+    lines.push(current);
+    current = word;
+    if (lines.length === maxLines - 1) break;
+  }
+
+  if (current && lines.length < maxLines) {
+    const remainingWords = words.slice(lines.join(' ').split(/\s+/).filter(Boolean).length);
+    const tail = remainingWords.length && lines.length === maxLines - 1 ? compactVisualText([current, ...remainingWords].join(' '), 96) : current;
+    lines.push(tail);
+  }
+
+  lines.filter(Boolean).forEach((line, index) => {
+    ctx.fillText(line, x, y + (index * lineHeight), maxWidth);
+  });
+
+  return y + Math.max(0, lines.length - 1) * lineHeight;
+}
+
 async function buildFallbackVisual(editionDate: string, spec: SectionImageSpec): Promise<ResolvedAsset> {
   const imageDir = getImagesDir(editionDate);
   ensureDir(imageDir);
@@ -308,27 +387,36 @@ async function buildFallbackVisual(editionDate: string, spec: SectionImageSpec):
   const fileName = `${spec.sectionKey}-fallback.png`;
   const filePath = path.join(imageDir, fileName);
   const altText = sanitizeAltText(spec, spec.altText);
+  const copy = buildFallbackCardCopy({ ...spec, altText });
 
   const canvas = new Canvas(1600, 900);
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = colors.bg;
   ctx.fillRect(0, 0, 1600, 900);
-  ctx.fillStyle = `${colors.accent}22`;
+
+  ctx.fillStyle = `${colors.accent}18`;
   ctx.beginPath();
-  ctx.arc(1280, 180, 260, 0, Math.PI * 2);
+  ctx.arc(1260, 160, 250, 0, Math.PI * 2);
   ctx.fill();
+
   ctx.fillStyle = '#f8fafc';
-  ctx.font = '700 72px Arial';
-  ctx.fillText('Oiko News', 110, 210);
-  ctx.fillStyle = colors.accent;
+  ctx.fillRect(0, 0, 1600, 12);
+  ctx.fillStyle = '#f8fafc';
   ctx.font = '700 34px Arial';
-  ctx.fillText(spec.sectionKey.replace(/_/g, ' ').toUpperCase(), 116, 290);
-  ctx.fillStyle = '#e5e7eb';
-  ctx.font = '400 42px Arial';
-  ctx.fillText(altText, 116, 390, 1240);
-  ctx.strokeStyle = colors.accent;
-  ctx.lineWidth = 8;
-  ctx.strokeRect(80, 80, 1440, 740);
+  ctx.fillText(copy.eyebrow, 116, 144);
+  ctx.fillStyle = '#f8fafc';
+  ctx.font = '700 88px Georgia';
+  const titleBottom = drawWrappedText(ctx, copy.title, 110, 278, 980, 94, 3);
+  ctx.fillStyle = '#dbe4f0';
+  ctx.font = '400 40px Arial';
+  const summaryY = titleBottom + 94;
+  drawWrappedText(ctx, copy.summary, 116, summaryY, 1100, 54, 4);
+
+  ctx.fillStyle = `${colors.accent}33`;
+  ctx.fillRect(110, 720, 520, 2);
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '400 28px Arial';
+  ctx.fillText(copy.creditLine, 110, 786);
 
   const buffer = await canvas.toBuffer('png');
   fs.writeFileSync(filePath, buffer);
@@ -339,8 +427,8 @@ async function buildFallbackVisual(editionDate: string, spec: SectionImageSpec):
     provider: 'oiko-fallback',
     stored_url: toAbsoluteUrl(OIKO_CONFIG.publicBaseUrl, `/static/oiko-news/images/${editionDate}/${fileName}`),
     author: 'Oiko News',
-    license: 'Internal fallback',
-    credit_line: 'Visuel Oiko News',
+    license: 'Internal editorial card',
+    credit_line: copy.creditLine,
     alt_text: altText,
     width: 1600,
     height: 900,

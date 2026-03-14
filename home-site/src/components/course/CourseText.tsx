@@ -10,9 +10,9 @@ interface CourseTextProps {
 
 export function CourseText({ title, lead, children, className = '' }: CourseTextProps) {
   return (
-    <div className={`space-y-4 text-base leading-relaxed text-[rgb(var(--text-secondary))] ${className}`.trim()}>
-      {title ? <h3 className="text-base font-semibold text-[rgb(var(--text))]">{title}</h3> : null}
-      {lead ? <p className="text-base font-medium text-[rgb(var(--text))]">{lead}</p> : null}
+    <div className={`editorial-prose ${className}`.trim()}>
+      {title ? <h3 className="editorial-prose__title text-[rgb(var(--text))]">{title}</h3> : null}
+      {lead ? <p className="editorial-prose__lead text-[rgb(var(--text))]">{lead}</p> : null}
       {children}
     </div>
   );
@@ -27,7 +27,7 @@ interface CourseTextListProps {
 export function CourseTextList({ children, ordered = false, className = '' }: CourseTextListProps) {
   const Tag = ordered ? 'ol' : 'ul';
   const baseClass = ordered ? 'list-decimal' : 'list-disc';
-  return <Tag className={`${baseClass} list-outside pl-6 space-y-2 text-base leading-relaxed ${className}`.trim()}>{children}</Tag>;
+  return <Tag className={`${baseClass} list-outside pl-6 space-y-2.5 text-base leading-relaxed ${className}`.trim()}>{children}</Tag>;
 }
 
 interface CourseTextArrowListProps {
@@ -46,9 +46,15 @@ interface CourseTextArrowItemProps {
 
 export function CourseTextArrowItem({ children, className = '' }: CourseTextArrowItemProps) {
   return (
-    <div className={`flex items-start gap-2 text-base leading-relaxed ${className}`.trim()}>
-      <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[rgb(var(--surface-2))]">
-        <ArrowRight className="h-3.5 w-3.5 text-[rgb(var(--text))]" />
+    <div className={`flex items-start gap-3 text-base leading-relaxed ${className}`.trim()}>
+      <span
+        className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border"
+        style={{
+          borderColor: 'var(--color-border-subtle)',
+          background: 'color-mix(in srgb, var(--color-bg-overlay) 72%, transparent)',
+        }}
+      >
+        <ArrowRight className="h-3.5 w-3.5 text-[rgb(var(--text-secondary))]" />
       </span>
       <div>{children}</div>
     </div>
@@ -64,7 +70,7 @@ interface CourseTextQuoteProps {
 export function CourseTextQuote({ children, author, className = '' }: CourseTextQuoteProps) {
   return (
     <blockquote
-      className={`rounded-xl border-l-4 border-[rgb(var(--color-stats))] bg-[rgb(var(--surface-2))] p-5 space-y-3 text-base leading-relaxed italic text-[rgb(var(--text-secondary))] ${className}`.trim()}
+      className={`editorial-prose__quote ${className}`.trim()}
     >
       <div className="flex items-start gap-3">
         <Quote className="mt-0.5 h-4 w-4 shrink-0 text-[rgb(var(--text))]" />

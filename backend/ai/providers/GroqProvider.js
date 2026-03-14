@@ -1,4 +1,4 @@
-import BaseProvider from './BaseProvider.js';
+﻿import BaseProvider from './BaseProvider.js';
 
 /**
  * GroqProvider
@@ -25,7 +25,8 @@ export class GroqProvider extends BaseProvider {
             messages,
             maxTokens = 1024,
             temperature = 0.7,
-            stream = false
+            stream = false,
+            signal
         } = params;
 
         const requestBody = {
@@ -41,7 +42,8 @@ export class GroqProvider extends BaseProvider {
                 const res = await fetch(`${this.baseUrl}/chat/completions`, {
                     method: 'POST',
                     headers: this.buildHeaders(),
-                    body: JSON.stringify(requestBody)
+                    body: JSON.stringify(requestBody),
+                    signal
                 });
 
                 if (!res.ok) {
@@ -150,3 +152,4 @@ export class GroqProvider extends BaseProvider {
 import { PROVIDER_CONFIG } from '../config/providers.js';
 export const groqProvider = new GroqProvider(PROVIDER_CONFIG.groq);
 export default groqProvider;
+

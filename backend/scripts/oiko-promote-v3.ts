@@ -98,11 +98,11 @@ const upsertPromotedEdition = db.prepare(`
     updated_at = CURRENT_TIMESTAMP
 `);
 
-const getLatestReadyPacket = db.prepare(`
+const getLatestPublishablePacket = db.prepare(`
   SELECT *
   FROM oiko_news_editorial_packets
   WHERE pipeline_version = 'v3'
-    AND status = 'ready'
+    AND status IN ('ready', 'short_draft')
     AND quality_state = 'passed'
   ORDER BY edition_date DESC, id DESC
   LIMIT 1
@@ -140,19 +140,17 @@ const updatePacketVisibility = db.prepare(`
 async function main() {
   initializeDatabase();
   const { date } = parseArgs(process.argv.slice(2));
-  const packet = date ? getPacketByDate.get(date) : getLatestReadyPacket.get();
+  const packet = date ? getPacketByDate.get(date) : getLatestPublishablePacket.get();
 
   if (!packet) {
     throw new Error(
       date
         ? `No V3 editorial packet found for ${date}.`
-        : 'No ready V3 editorial packet available to promote.',
+        : 'No publishable V3 editorial packet available to promote.',
     );
   }
 
-  if (packet.status !== 'ready' || packet.quality_state !== 'passed') {
-    throw new Error(`Packet ${packet.edition_date} is not publishable (status=${packet.status}, quality=${packet.quality_state}).`);
-  }
+  if (!['ready', 'short_draft'].includes(packet.status) || packet.quality_state !== 'passed') {    throw new Error(`Packet ${packet.edition_date} is not publishable (status=${packet.status}, quality=${packet.quality_state}).`);  }
 
   const editionDate = String(packet.edition_date);
   const existingEdition = oikoQueries.editions.getByDate.get(editionDate);
@@ -275,3 +273,7 @@ main().catch((error) => {
   console.error('Oiko V3 promotion failed:', error);
   process.exit(1);
 });
+
+
+
+

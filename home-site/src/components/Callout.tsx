@@ -1,4 +1,4 @@
-﻿import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import {
   Key,
   Lightbulb,
@@ -38,16 +38,16 @@ const calloutConfig: Record<
     cssKey: string;
   }
 > = {
-  key: { icon: Key, label: 'Définition', cssKey: 'key' },
+  key: { icon: Key, label: 'Definition', cssKey: 'key' },
   example: { icon: Lightbulb, label: 'Exemple', cssKey: 'example' },
   warning: { icon: AlertTriangle, label: 'Attention', cssKey: 'warning' },
-  method: { icon: Settings, label: 'Méthode', cssKey: 'method' },
-  insight: { icon: Lightbulb, label: 'Démonstration', cssKey: 'intuition' },
+  method: { icon: Settings, label: 'Methode', cssKey: 'method' },
+  insight: { icon: Lightbulb, label: 'Demonstration', cssKey: 'intuition' },
   tip: { icon: GraduationCap, label: 'Conseil', cssKey: 'tip' },
   quote: { icon: Quote, label: 'Citation', cssKey: 'key' },
-  remember: { icon: BookMarked, label: 'À retenir', cssKey: 'example' },
+  remember: { icon: BookMarked, label: 'A retenir', cssKey: 'example' },
   exam: { icon: Target, label: "Pour l'examen", cssKey: 'formula' },
-  important: { icon: Zap, label: 'Théorème', cssKey: 'key' },
+  important: { icon: Zap, label: 'Theoreme', cssKey: 'key' },
 };
 
 export function Callout({ type, title, children }: CalloutProps) {
@@ -57,31 +57,20 @@ export function Callout({ type, title, children }: CalloutProps) {
 
   return (
     <div
-      className="rounded-xl border border-l-4 p-5 space-y-4"
-      style={{
-        background: 'rgb(var(--surface-1))',
-        borderColor: 'rgb(var(--border))',
-        borderLeftColor: `var(--callout-${k}-text)`,
-        boxShadow: '0 1px 3px color-mix(in srgb, var(--color-text-primary) 4%, transparent)',
-      }}
+      className="editorial-callout"
+      style={{ '--callout-accent': `var(--callout-${k}-text)` } as CSSProperties}
     >
-      <div className="space-y-3">
-        <span
-          className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold shrink-0"
-          style={{
-            background: `var(--callout-${k}-icon-bg)`,
-            color: `var(--callout-${k}-text)`,
-          }}
-        >
+      <div className="editorial-callout__header">
+        <span className="editorial-callout__badge" style={{ color: `var(--callout-${k}-text)` }}>
           <IconComponent size={11} />
           {config.label}
         </span>
-        <h4 className="font-semibold text-base" style={{ color: 'rgb(var(--text))' }}>
+        <h4 className="editorial-callout__title" style={{ color: 'rgb(var(--text))' }}>
           {title ?? config.label}
         </h4>
       </div>
 
-      <div className="text-base leading-relaxed" style={{ color: 'rgb(var(--text-secondary))' }}>
+      <div className="editorial-callout__body" style={{ color: 'rgb(var(--text-secondary))' }}>
         {children}
       </div>
     </div>

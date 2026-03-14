@@ -4,9 +4,10 @@ import { safeJsonParse } from '../utils.ts';
 import { acquireArticleContent } from './acquire.ts';
 import { clusterTopics } from './clusters.ts';
 import { collectRawSources } from './collect.ts';
-import { buildDayEditorialPacket, scoreTopics } from './editorial.ts';
+import { applyEditorialPlan, buildDayEditorialPacket, scoreTopics } from './editorial.ts';
 import { extractFactSheets } from './facts.ts';
 import { generateFrenchEditionDraft, repairOrRegenerateDraftIfNeeded } from './generate.ts';
+import { planEditorialStructure } from './planning.ts';
 import { buildStructuredMarketContext } from './markets.ts';
 import { normalizeArticles } from './normalize.ts';
 import { computeAssetQuality, generateArchiveTeaserFromPacket, persistQualityReports, publishEdition, renderV3Draft } from './publish.ts';
@@ -170,6 +171,20 @@ function persistClusters(editionDate: string, clusters: TopicCluster[]) {
   }
 }
 
+type StoredEditorialPacketRow = {
+  status: string;
+  visibility: 'internal' | 'public';
+  quality_state: 'passed' | 'failed';
+  packet_json: string | null;
+  content_json: string | null;
+  html: string | null;
+  text: string | null;
+  market_context_json: string | null;
+  publication_reason: string | null;
+  publication_reason_code: string | null;
+  archive_teaser: string | null;
+};
+
 type MaterialGateResult = {
   status: 'blocked_insufficient_fresh_material' | 'insufficient_material_review';
   reasonCode: string;
@@ -180,56 +195,102 @@ type MaterialGateResult = {
   reason: string;
 } | null;
 
-function buildMaterialGateDecision(packet: DayEditorialPacket): MaterialGateResult {
-  const full = OIKO_V3_POLICY.freshness;
-  const short = full.shortEdition;
+const KNOWN_MOJIBAKE_REPLACEMENTS: Array<[string, string]> = [
+  ['\u00e2\u20ac\u2122', '\u2019'],
+  ['\u00e2\u20ac\u201c', '\u2013'],
+  ['\u00e2\u20ac\u201d', '\u2014'],
+  ['\u00e2\u20ac\u00a6', '\u2026'],
+  ['\u00c5\u201c', '\u0153'],
+  ['\u00c5\u2019', '\u0152'],
+  ['\u00c3\u20ac', '\u00c0'],
+  ['\u00c3\u201a', '\u00c2'],
+  ['\u00c3\u2021', '\u00c7'],
+  ['\u00c3\u02c6', '\u00c8'],
+  ['\u00c3\u2030', '\u00c9'],
+  ['\u00c3\u0160', '\u00ca'],
+  ['\u00c3\u017d', '\u00ce'],
+  ['\u00c3\u201d', '\u00d4'],
+  ['\u00c3\u2122', '\u00d9'],
+  ['\u00c3\u203a', '\u00db'],
+  ['\u00c3\u00a0', '\u00e0'],
+  ['\u00c3\u00a2', '\u00e2'],
+  ['\u00c3\u00a7', '\u00e7'],
+  ['\u00c3\u00a8', '\u00e8'],
+  ['\u00c3\u00a9', '\u00e9'],
+  ['\u00c3\u00aa', '\u00ea'],
+  ['\u00c3\u00ab', '\u00eb'],
+  ['\u00c3\u00ae', '\u00ee'],
+  ['\u00c3\u00af', '\u00ef'],
+  ['\u00c3\u00b4', '\u00f4'],
+  ['\u00c3\u00b9', '\u00f9'],
+  ['\u00c3\u00bb', '\u00fb'],
+  ['\u00c2 ', ' '],
+  ['\u00c2', ''],
+];
 
-  const meetsFullThreshold = packet.freshEventCount >= full.minimumFreshEventCount
-    && packet.distinctClusterCount >= full.minimumDistinctClusterCount;
-
-  if (meetsFullThreshold) {
-    // Source quality gate still applies for full editions.
-    if (packet.sourceCoverage.highQualitySources < OIKO_V3_POLICY.publication.requireHighQualitySources) {
-      return {
-        status: 'insufficient_material_review',
-        reasonCode: 'source_quality_failed',
-        reason: `Publication bloquée : seulement ${packet.sourceCoverage.highQualitySources} source(s) de qualité élevée ont été retenues, ce qui reste trop faible pour une édition premium.`,
-      };
-    }
-    return null;
+function repairKnownMojibakeText(value: string) {
+  let repaired = String(value || '');
+  for (const [source, target] of KNOWN_MOJIBAKE_REPLACEMENTS) {
+    repaired = repaired.split(source).join(target);
   }
+  return repaired;
+}
 
-  // Not enough for a full edition — check if short edition is viable.
-  const meetsShortThreshold = packet.freshEventCount >= short.minimumFreshEventCount
-    && packet.distinctClusterCount >= short.minimumDistinctClusterCount;
+function repairKnownMojibakeDeep<T>(value: T): T {
+  if (typeof value === 'string') {
+    return repairKnownMojibakeText(value) as T;
+  }
+  if (Array.isArray(value)) {
+    return value.map((entry) => repairKnownMojibakeDeep(entry)) as T;
+  }
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entry]) => [key, repairKnownMojibakeDeep(entry)]),
+    ) as T;
+  }
+  return value;
+}
 
-  if (meetsShortThreshold) {
+function buildMaterialGateDecision(packet: DayEditorialPacket): MaterialGateResult {
+  if (packet.materialTier === 'blocked') {
     return {
-      status: 'short_draft',
-      reasonCode: 'short_edition',
-      reason: `Édition courte : ${packet.freshEventCount} sujet(s) frais et ${packet.distinctClusterCount} cluster(s) distinct(s) — en dessous du seuil premium mais suffisant pour une édition condensée.`,
+      status: 'blocked_insufficient_fresh_material',
+      reasonCode: 'insufficient_fresh_material',
+      reason: `Publication bloquée : seulement ${packet.freshEventCount} sujet(s) frais et ${packet.distinctClusterCount} cluster(s) distinct(s), ce qui reste insuffisant même pour une édition courte.`,
     };
   }
 
-  // Not enough for any edition.
-  return {
-    status: 'blocked_insufficient_fresh_material',
-    reasonCode: 'insufficient_fresh_material',
-    reason: `Publication bloquée : seulement ${packet.freshEventCount} sujet(s) frais et ${packet.distinctClusterCount} cluster(s) distinct(s), ce qui reste insuffisant même pour une édition courte.`,
-  };
+  if (packet.sourceCoverage.highQualitySources < OIKO_V3_POLICY.publication.requireHighQualitySources) {
+    return {
+      status: 'insufficient_material_review',
+      reasonCode: 'source_quality_failed',
+      reason: `Publication bloquée : seulement ${packet.sourceCoverage.highQualitySources} source(s) de qualité élevée ont été retenues, ce qui reste trop faible pour publication.`,
+    };
+  }
+
+  if (packet.materialTier === 'short') {
+    return {
+      status: 'short_draft',
+      reasonCode: 'short_edition',
+      reason: `Édition courte : ${packet.freshEventCount} sujet(s) frais et ${packet.distinctClusterCount} cluster(s) distinct(s), en dessous du seuil premium mais suffisants pour une édition condensée.`,
+    };
+  }
+
+  return null;
 }
 
-function loadPreservablePacket(editionDate: string) {
-  const existingPacket = oikoQueries.v3.editorialPackets.getByEdition.get(editionDate, OIKO_V3_PIPELINE_VERSION);
+function loadPreservablePacket(editionDate: string): StoredEditorialPacketRow | null {
+  const existingPacket = oikoQueries.v3.editorialPackets.getByEdition.get(editionDate, OIKO_V3_PIPELINE_VERSION) as StoredEditorialPacketRow | undefined;
   if (!existingPacket) return null;
-  if (existingPacket.status !== 'ready' || existingPacket.visibility !== 'internal' || existingPacket.quality_state !== 'passed') return null;
+  if (!['ready', 'short_draft'].includes(existingPacket.status)) return null;
+  if (!['internal', 'public'].includes(existingPacket.visibility) || existingPacket.quality_state !== 'passed') return null;
   if (!existingPacket.packet_json || !existingPacket.content_json || !existingPacket.html || !existingPacket.text) return null;
   return existingPacket;
 }
 
-async function rerenderPreservablePacket(editionDate: string, existingPacket: any, blockedDecision: { reason: string; reasonCode: string }) {
-  const packet = safeJsonParse(existingPacket.packet_json, null) as DayEditorialPacket | null;
-  const marketContext = safeJsonParse(existingPacket.market_context_json, null) || packet?.marketContext || null;
+async function rerenderPreservablePacket(editionDate: string, existingPacket: StoredEditorialPacketRow, blockedDecision: { reason: string; reasonCode: string }) {
+  const packet = repairKnownMojibakeDeep(safeJsonParse(existingPacket.packet_json, null)) as DayEditorialPacket | null;
+  const marketContext = repairKnownMojibakeDeep(safeJsonParse(existingPacket.market_context_json, null) || packet?.marketContext || null);
   if (!packet || !marketContext) return null;
 
   const clusters = [packet.leadTopic, ...packet.secondaryTopics].filter(Boolean) as TopicCluster[];
@@ -308,6 +369,11 @@ function persistBlockedPacket(editionDate: string, packet: DayEditorialPacket, r
   };
 }
 
+export const __testables = {
+  loadPreservablePacket,
+  persistBlockedPacket,
+};
+
 export async function runV3ShadowPipeline(editionDate: string) {
   return withV3JobRun(editionDate, async () => {
     const reports: QualityReport[] = [];
@@ -326,7 +392,8 @@ export async function runV3ShadowPipeline(editionDate: string) {
       const marketContext = await buildStructuredMarketContext(editionDate);
       reports.push(stageReport('market_context', 'passed', `Contexte marchés structuré avec confiance ${marketContext.confidence}.`, {}));
 
-      const factSheets = await extractFactSheets(normalizedArticles, marketContext, editionDate);
+      const factExtraction = await extractFactSheets(normalizedArticles, marketContext, editionDate);
+      const factSheets = factExtraction.records;
       if (factSheets.length || !preservablePacket) {
         persistFactSheets(editionDate, factSheets);
       }
@@ -338,18 +405,28 @@ export async function runV3ShadowPipeline(editionDate: string) {
       }
       reports.push(stageReport('clusters', 'passed', `${scoredClusters.length} cluster(s) thématiques consolidés.`, { distinct_cluster_count: scoredClusters.length }));
 
-      const packet = buildDayEditorialPacket(editionDate, scoredClusters, marketContext);
+      const basePacket = buildDayEditorialPacket(editionDate, scoredClusters, marketContext);
+      const planning = await planEditorialStructure(basePacket, editionDate);
+      let packet = applyEditorialPlan({ ...basePacket, llmStages: [...factExtraction.llmStages] }, planning.plan);
+      packet = {
+        ...packet,
+        llmStages: [...factExtraction.llmStages, ...planning.llmStages],
+      };
       reports.push(stageReport('packet', 'passed', `Packet éditorial prêt avec ${packet.freshEventCount} cluster(s) frais et ${packet.distinctClusterCount} cluster(s) distincts.`, {
+        fresh_event_count: packet.freshEventCount,
+        distinct_cluster_count: packet.distinctClusterCount,
+        high_quality_source_count: packet.sourceCoverage.highQualitySources,
+      }));
+      reports.push(stageReport('editorial_plan', 'passed', `Plan éditorial ${packet.llmStages?.some((stage) => stage.stage === 'editorial_plan' && stage.success && !stage.usedFallback) ? 'LLM' : 'déterministe'} prêt pour ${packet.editorialPlan?.leadClusterId || 'le lead courant'}.`, {
         fresh_event_count: packet.freshEventCount,
         distinct_cluster_count: packet.distinctClusterCount,
         high_quality_source_count: packet.sourceCoverage.highQualitySources,
       }));
 
       const materialDecision = buildMaterialGateDecision(packet);
-      const isShortEdition = materialDecision?.status === 'short_draft';
 
-      // Hard block: not enough material even for a short edition.
-      if (materialDecision && !isShortEdition) {
+      // Hard block: packet is not publishable even after applying the explicit material tier.
+      if (materialDecision && materialDecision.status !== 'short_draft') {
         const materialReport: QualityReport = {
           ...stageReport('material_gate', 'failed', materialDecision.reason, {
             fresh_event_count: packet.freshEventCount,
@@ -377,7 +454,7 @@ export async function runV3ShadowPipeline(editionDate: string) {
         };
       }
 
-      if (isShortEdition && materialDecision) {
+      if (materialDecision?.status === 'short_draft') {
         reports.push(stageReport('material_gate', 'passed', materialDecision.reason, {
           fresh_event_count: packet.freshEventCount,
           distinct_cluster_count: packet.distinctClusterCount,
@@ -402,7 +479,7 @@ export async function runV3ShadowPipeline(editionDate: string) {
       reports.push({ ...finalReport, stage: 'final_gate' });
 
       persistQualityReports(editionDate, OIKO_V3_PIPELINE_VERSION, reports);
-      const publication = publishEdition(editionDate, OIKO_V3_PIPELINE_VERSION, packet, draft, rendered, finalReport, assetQuality, { isShortEdition });
+      const publication = publishEdition(editionDate, OIKO_V3_PIPELINE_VERSION, packet, draft, rendered, finalReport, assetQuality);
 
       return {
         editionDate,

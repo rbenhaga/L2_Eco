@@ -1,4 +1,4 @@
-﻿import type { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface TableProps {
   headers: string[];
@@ -10,26 +10,18 @@ const OUTER_COLOR = 'rgb(var(--text) / 0.3)';
 
 export function Table({ headers, children }: TableProps) {
   return (
-    <div
-      className="rounded-xl overflow-hidden border"
-      style={{
-        borderColor: OUTER_COLOR,
-        background: 'rgb(var(--surface-1))',
-        boxShadow: '0 1px 3px color-mix(in srgb, var(--color-text-primary) 4%, transparent)',
-      }}
-    >
+    <div className="editorial-table" style={{ borderColor: OUTER_COLOR }}>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr style={{ background: 'rgb(var(--surface-2))' }}>
+            <tr>
               {headers.map((header, i) => (
                 <th
                   key={i}
-                  className="px-4 py-3 text-left text-base font-semibold"
+                  className="editorial-table__head"
                   style={{
                     color: 'rgb(var(--text))',
                     borderBottom: `1px solid ${GRID_COLOR}`,
-                    borderRight: i < headers.length - 1 ? `1px solid ${GRID_COLOR}` : undefined,
                   }}
                 >
                   {header}
@@ -49,19 +41,7 @@ interface TableRowProps {
 }
 
 export function TableRow({ children }: TableRowProps) {
-  return (
-    <tr
-      className="transition-colors duration-150"
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLTableRowElement).style.background = 'rgb(var(--surface-2) / 0.55)';
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLTableRowElement).style.background = '';
-      }}
-    >
-      {children}
-    </tr>
-  );
+  return <tr className="editorial-table__row">{children}</tr>;
 }
 
 interface TableCellProps {
@@ -73,12 +53,11 @@ interface TableCellProps {
 export function TableCell({ children, className = '', header = false }: TableCellProps) {
   return (
     <td
-      className={`px-4 py-3 text-base ${className}`}
+      className={`editorial-table__cell ${className}`.trim()}
       style={{
         color: header ? 'rgb(var(--text))' : 'rgb(var(--text-secondary))',
         fontWeight: header ? 600 : 400,
         borderBottom: `1px solid ${GRID_COLOR}`,
-        borderRight: `1px solid ${GRID_COLOR}`,
       }}
     >
       {children}

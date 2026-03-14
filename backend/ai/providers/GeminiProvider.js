@@ -1,4 +1,4 @@
-import BaseProvider from './BaseProvider.js';
+﻿import BaseProvider from './BaseProvider.js';
 
 /**
  * GeminiProvider
@@ -26,7 +26,8 @@ export class GeminiProvider extends BaseProvider {
             model,
             messages,
             maxTokens = 1024,
-            temperature = 0.7
+            temperature = 0.7,
+            signal
         } = params;
 
         // Convert OpenAI-style messages to Gemini format
@@ -51,7 +52,8 @@ export class GeminiProvider extends BaseProvider {
                         'Content-Type': 'application/json',
                         'x-goog-api-key': this.apiKey
                     },
-                    body: JSON.stringify(requestBody)
+                    body: JSON.stringify(requestBody),
+                    signal
                 });
 
                 if (!res.ok) {
@@ -189,3 +191,4 @@ export class GeminiProvider extends BaseProvider {
 import { PROVIDER_CONFIG } from '../config/providers.js';
 export const geminiProvider = new GeminiProvider(PROVIDER_CONFIG.gemini);
 export default geminiProvider;
+

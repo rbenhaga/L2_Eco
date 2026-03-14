@@ -2,28 +2,92 @@
 import geminiProvider from '../../ai/providers/GeminiProvider.js';
 import openRouterProvider from '../../ai/providers/OpenRouterProvider.js';
 import OIKO_CONFIG from '../config.ts';
+import { OIKO_V3_POLICY } from '../policy/v3.ts';
 import { getGroqTrackedServiceKey, trackOikoApiUsage } from '../usage.ts';
 
-const providerRegistry = {
+type ProviderName = 'groq' | 'gemini' | 'openrouter';
+type ProviderMessage = { role: string; content: string };
+type ProviderGenerateParams = {
+  model: string;
+  messages: ProviderMessage[];
+  maxTokens?: number;
+  temperature?: number;
+  signal?: AbortSignal;
+};
+
+export type ProviderGenerationResult = {
+  content: string;
+  tokensUsed: number;
+  promptTokens: number;
+  completionTokens: number;
+  finishReason?: string | null;
+  model?: string | null;
+  headers?: Record<string, unknown>;
+  rawResponse?: unknown;
+};
+
+type ProviderClient = {
+  generate(params: ProviderGenerateParams): Promise<ProviderGenerationResult>;
+};
+
+type AttemptDefinition = {
+  provider: string;
+  model: string;
+  label: string;
+};
+
+export type ProviderAttempt = AttemptDefinition & {
+  status: 'success' | 'failed';
+  tokensUsed?: number;
+  error?: string;
+  timeoutMs?: number;
+};
+
+export type ProviderSelectionResult = {
+  content: string;
+  providerUsed: string | null;
+  modelUsed: string | null;
+  attempts: ProviderAttempt[];
+};
+
+export type JsonRepairResult = {
+  parsed: unknown | null;
+  providerUsed: string | null;
+  modelUsed: string | null;
+  attempts: ProviderAttempt[];
+};
+
+const providerRegistry: Record<ProviderName, ProviderClient> = {
   groq: groqProvider,
   gemini: geminiProvider,
   openrouter: openRouterProvider,
 };
 
-/** Default timeout per LLM call in ms — overridable via OIKO_LLM_TIMEOUT_MS env var. */
-const LLM_TIMEOUT_MS = Number(process.env.OIKO_LLM_TIMEOUT_MS) || 45_000;
+function getProvider(providerName: string): ProviderClient | null {
+  if (providerName === 'groq' || providerName === 'gemini' || providerName === 'openrouter') {
+    return providerRegistry[providerName];
+  }
+  return null;
+}
 
-/** Wraps a promise with a hard timeout. Rejects with a clear message if exceeded. */
-function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
-  return new Promise<T>((resolve, reject) => {
-    const timer = setTimeout(() => {
-      reject(new Error(`LLM call timed out after ${timeoutMs}ms [${label}]`));
-    }, timeoutMs);
+function getRequestTimeoutMs(options: { maxTokens?: number }) {
+  const baseTimeoutMs = OIKO_V3_POLICY.llm.requestTimeoutMs;
+  return options.maxTokens && options.maxTokens > 6000 ? Math.round(baseTimeoutMs * 1.5) : baseTimeoutMs;
+}
 
-    promise
-      .then((result) => { clearTimeout(timer); resolve(result); })
-      .catch((error) => { clearTimeout(timer); reject(error); });
-  });
+function createTimeoutController(timeoutMs: number) {
+  const controller = new AbortController();
+  let timedOut = false;
+  const timer = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, timeoutMs);
+
+  return {
+    signal: controller.signal,
+    didTimeout: () => timedOut,
+    clear: () => clearTimeout(timer),
+  };
 }
 
 export function extractJsonCandidate(rawText?: string | null) {
@@ -48,30 +112,28 @@ export function extractJsonCandidate(rawText?: string | null) {
 export async function callConfiguredProvider(
   providerName: string,
   model: string,
-  messages: Array<{ role: string; content: string }>,
+  messages: ProviderMessage[],
   options: { maxTokens?: number; temperature?: number } = {},
   usageDate?: string,
-) {
-  const provider = providerRegistry[providerName as keyof typeof providerRegistry] as any;
+): Promise<ProviderGenerationResult> {
+  const provider = getProvider(providerName);
   if (!provider || !model) {
     throw new Error(`Unknown provider/model combination: ${providerName}/${model}`);
   }
 
   const trackedServiceKey = providerName === 'groq' ? getGroqTrackedServiceKey(model) : null;
-
-  const timeoutMs = options.maxTokens && options.maxTokens > 6000 ? LLM_TIMEOUT_MS * 1.5 : LLM_TIMEOUT_MS;
+  const timeoutMs = getRequestTimeoutMs(options);
+  const timeout = createTimeoutController(timeoutMs);
+  const timeoutMessage = `LLM call timed out after ${timeoutMs}ms [${providerName}/${model}]`;
 
   try {
-    const result = await withTimeout(
-      provider.generate({
-        model,
-        messages,
-        maxTokens: options.maxTokens || 7200,
-        temperature: options.temperature ?? 0.15,
-      }),
-      timeoutMs,
-      `${providerName}/${model}`,
-    );
+    const result = await provider.generate({
+      model,
+      messages,
+      maxTokens: options.maxTokens || 7200,
+      temperature: options.temperature ?? 0.15,
+      signal: timeout.signal,
+    });
 
     if (trackedServiceKey && usageDate) {
       trackOikoApiUsage(trackedServiceKey, { usageDate, requests: 1, tokens: result.tokensUsed || 0 });
@@ -82,11 +144,16 @@ export async function callConfiguredProvider(
     if (trackedServiceKey && usageDate) {
       trackOikoApiUsage(trackedServiceKey, { usageDate, requests: 1 });
     }
+    if (timeout.didTimeout()) {
+      throw new Error(timeoutMessage);
+    }
     throw error;
+  } finally {
+    timeout.clear();
   }
 }
 
-function buildAttemptChain() {
+function buildAttemptChain(): AttemptDefinition[] {
   const configuredAttempts = [
     { provider: OIKO_CONFIG.primaryProvider, model: OIKO_CONFIG.primaryModel, label: 'primary' },
     ...(OIKO_CONFIG.secondaryProvider && OIKO_CONFIG.secondaryModel
@@ -102,7 +169,7 @@ function buildAttemptChain() {
     ...(process.env.OPENROUTER_API_KEY ? [
       { provider: 'openrouter', model: process.env.OIKO_OPENROUTER_FALLBACK_MODEL || 'meta-llama/llama-3.1-8b-instruct:free', label: 'auto-openrouter' },
     ] : []),
-  ] as Array<{ provider: string; model: string; label: string }>; 
+  ] as AttemptDefinition[];
 
   const seen = new Set<string>();
   return [...configuredAttempts, ...autoFallbacks].filter((attempt) => {
@@ -114,17 +181,18 @@ function buildAttemptChain() {
 }
 
 export async function generateWithConfiguredProviders(
-  messages: Array<{ role: string; content: string }>,
+  messages: ProviderMessage[],
   usageDate?: string,
   options: { maxTokens?: number; temperature?: number } = {},
-) {
-  const attempts: Array<Record<string, unknown>> = [];
+): Promise<ProviderSelectionResult> {
+  const attempts: ProviderAttempt[] = [];
   const attemptChain = buildAttemptChain();
+  const timeoutMs = getRequestTimeoutMs(options);
 
   for (const attempt of attemptChain) {
     try {
       const result = await callConfiguredProvider(attempt.provider, attempt.model, messages, options, usageDate);
-      attempts.push({ ...attempt, status: 'success', tokensUsed: result.tokensUsed || 0 });
+      attempts.push({ ...attempt, status: 'success', tokensUsed: result.tokensUsed || 0, timeoutMs });
       return {
         content: String(result.content || ''),
         providerUsed: attempt.provider,
@@ -136,6 +204,7 @@ export async function generateWithConfiguredProviders(
         ...attempt,
         status: 'failed',
         error: error instanceof Error ? error.message : String(error),
+        timeoutMs,
       });
     }
   }
@@ -148,15 +217,15 @@ export async function generateWithConfiguredProviders(
   };
 }
 
-export async function repairJsonWithFastModel(rawText: string, usageDate?: string) {
+export async function repairJsonWithFastModelDetailed(rawText: string, usageDate?: string): Promise<JsonRepairResult> {
   if (!rawText) {
-    return null;
+    return { parsed: null, providerUsed: null, modelUsed: null, attempts: [] };
   }
 
-  const repairMessages = [
+  const repairMessages: ProviderMessage[] = [
     {
       role: 'system',
-      content: 'Répare uniquement le JSON fourni. Réponds avec un JSON valide, sans ajouter ni supprimer de sens.',
+      content: 'R?pare uniquement le JSON fourni. R?ponds avec un JSON valide, sans ajouter ni supprimer de sens.',
     },
     {
       role: 'user',
@@ -171,17 +240,57 @@ export async function repairJsonWithFastModel(rawText: string, usageDate?: strin
       { provider: 'gemini', model: 'gemini-2.0-flash' },
     ] : []),
     ...(process.env.OPENROUTER_API_KEY ? [{ provider: 'openrouter', model: process.env.OIKO_OPENROUTER_FALLBACK_MODEL || 'meta-llama/llama-3.1-8b-instruct:free' }] : []),
-  ] as Array<{ provider: string; model: string }>; 
+  ] as Array<{ provider: string; model: string }>;
+
+  const attempts: ProviderAttempt[] = [];
 
   for (const attempt of repairAttempts) {
     try {
       const repaired = await callConfiguredProvider(attempt.provider, attempt.model, repairMessages, { maxTokens: 4096, temperature: 0 }, usageDate);
       const parsed = extractJsonCandidate(String(repaired.content || ''));
-      if (parsed) return parsed;
-    } catch (_error) {
-      continue;
+      if (parsed) {
+        attempts.push({
+          provider: attempt.provider,
+          model: attempt.model,
+          label: 'repair',
+          status: 'success',
+          tokensUsed: repaired.tokensUsed || 0,
+        });
+        return {
+          parsed,
+          providerUsed: attempt.provider,
+          modelUsed: attempt.model,
+          attempts,
+        };
+      }
+      attempts.push({
+        provider: attempt.provider,
+        model: attempt.model,
+        label: 'repair',
+        status: 'failed',
+        tokensUsed: repaired.tokensUsed || 0,
+        error: 'invalid_json_candidate',
+      });
+    } catch (error) {
+      attempts.push({
+        provider: attempt.provider,
+        model: attempt.model,
+        label: 'repair',
+        status: 'failed',
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   }
 
-  return null;
+  return {
+    parsed: null,
+    providerUsed: null,
+    modelUsed: null,
+    attempts,
+  };
+}
+
+export async function repairJsonWithFastModel(rawText: string, usageDate?: string) {
+  const result = await repairJsonWithFastModelDetailed(rawText, usageDate);
+  return result.parsed;
 }

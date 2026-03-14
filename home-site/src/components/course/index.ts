@@ -13,3 +13,4 @@ export { CourseTable, CourseTableHead, CourseTableBody, CourseTableRow, CourseTa
 export { FigurePlaceholder } from './FigurePlaceholder';
 export { StatsSectionHeader } from './StatsSectionHeader';
 export { CourseText, CourseTextList, CourseTextArrowList, CourseTextArrowItem, CourseTextQuote } from './CourseText';
+export { CourseProof, CourseProofStep, CourseProofEquation, CourseProofConclusion } from './CourseProof';

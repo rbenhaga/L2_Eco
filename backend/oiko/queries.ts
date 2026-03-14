@@ -1,4 +1,4 @@
-import db from '../db/database.js';
+﻿import db from '../db/database.js';
 
 export const oikoQueries = {
   subscriptions: {
@@ -385,15 +385,7 @@ export const oikoQueries = {
         WHERE edition_date = ? AND pipeline_version = ?
         ORDER BY published_at DESC, id ASC
       `),
-      /** Fetch canonical URLs and normalized titles from recent past editions for cross-edition dedup. */
-      listRecentForDedup: db.prepare(`
-        SELECT canonical_url, normalized_title, edition_date
-        FROM oiko_news_raw_articles
-        WHERE edition_date >= ? AND edition_date < ?
-          AND pipeline_version = ?
-          AND acquisition_status != 'blocked'
-        ORDER BY edition_date DESC
-      `),
+
     },
     factSheets: {
       clearByEdition: db.prepare(`
@@ -504,6 +496,33 @@ export const oikoQueries = {
           publication_reason_code = excluded.publication_reason_code,
           updated_at = CURRENT_TIMESTAMP
       `),
+      getLatestPublic: db.prepare(`
+        SELECT * FROM oiko_news_editorial_packets
+        WHERE status IN ('ready', 'short_draft', 'sent')
+          AND visibility = 'public'
+          AND quality_state = 'passed'
+          AND edition_date <= ?
+        ORDER BY edition_date DESC
+        LIMIT 1
+      `),
+      getArchivePublic: db.prepare(`
+        SELECT * FROM oiko_news_editorial_packets
+        WHERE status IN ('ready', 'short_draft', 'sent')
+          AND visibility = 'public'
+          AND quality_state = 'passed'
+          AND edition_date <= ?
+        ORDER BY edition_date DESC
+        LIMIT ? OFFSET ?
+      `),
+      getPublicByEditionDate: db.prepare(`
+        SELECT * FROM oiko_news_editorial_packets
+        WHERE edition_date = ?
+          AND status IN ('ready', 'short_draft', 'sent')
+          AND visibility = 'public'
+          AND quality_state = 'passed'
+        ORDER BY updated_at DESC
+        LIMIT 1
+      `),
       listRecent: db.prepare(`
         SELECT * FROM oiko_news_editorial_packets
         WHERE pipeline_version = ?
@@ -542,3 +561,5 @@ export const oikoQueries = {
 };
 
 export default oikoQueries;
+
+

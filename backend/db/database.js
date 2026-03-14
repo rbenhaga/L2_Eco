@@ -14,6 +14,7 @@ if (!fs.existsSync(dbDir)) {
 
 const dbPath = process.env.DATABASE_PATH || join(dbDir, 'subscriptions.db');
 const db = new Database(dbPath);
+let databaseClosed = false;
 
 db.pragma('foreign_keys = ON');
 db.pragma('journal_mode = WAL');
@@ -201,6 +202,14 @@ bootstrapDatabase();
 export function initializeDatabase() {
   bootstrapDatabase();
   console.log(`Database ready at ${dbPath}`);
+}
+
+export function closeDatabase() {
+  if (databaseClosed) {
+    return;
+  }
+  db.close();
+  databaseClosed = true;
 }
 
 export const subscriptionQueries = {

@@ -1,4 +1,4 @@
-import { authFetch } from '../utils/authFetch';
+﻿import { authFetch } from '../utils/authFetch';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 const API_ORIGIN = (() => {
@@ -49,6 +49,31 @@ export interface OikoMenuItem {
 export interface OikoLabeledParagraph {
   label: string;
   parts: OikoRichTextPart[];
+}
+
+export interface OikoMarketSeries {
+  key: string;
+  label: string;
+  latestValue: number | null;
+  changePct: number | null;
+  period: string;
+  points: number[];
+  labels: string[];
+}
+
+export interface OikoMarketContext {
+  windowStart?: string;
+  windowEnd?: string;
+  generatedAt?: string;
+  marketRegime?: string;
+  confidence?: number | null;
+  missingDataFlags: string[];
+  narrativeHints: string[];
+  equities: OikoMarketSeries[];
+  rates: OikoMarketSeries[];
+  fx: OikoMarketSeries[];
+  crypto: OikoMarketSeries[];
+  commodities: OikoMarketSeries[];
 }
 
 export interface OikoEditionContent {
@@ -127,6 +152,10 @@ export interface OikoEdition {
   assetManifest: OikoAssetManifestEntry[];
   emailHtmlUrl?: string;
   content: OikoEditionContent | null;
+  sourceKind?: string;
+  pipelineVersion?: string;
+  generationMeta?: Record<string, unknown> | null;
+  marketContext?: OikoMarketContext | null;
 }
 
 export interface OikoArchiveEntry {
@@ -141,6 +170,8 @@ export interface OikoArchiveEntry {
   intro: string;
   emailSubject: string;
   summary: string[];
+  sourceKind?: string;
+  pipelineVersion?: string;
 }
 
 export interface OikoSubscription {
@@ -194,6 +225,65 @@ function normalizeAssetUrl(url?: string | null) {
       return url;
     }
   }
+}
+
+function normalizeMarketParagraphLabel(label?: string | null) {
+  const normalized = normalizeText(label);
+  return normalized === 'Valeur' ? 'Change' : normalized;
+}
+
+function normalizeNumber(value: unknown) {
+  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+}
+
+function normalizeStringList(value: unknown) {
+  return Array.isArray(value) ? value.map((item) => normalizeText(String(item))).filter(Boolean) : [];
+}
+
+function normalizeNumberList(value: unknown) {
+  return Array.isArray(value)
+    ? value.filter((item) => typeof item === 'number' && Number.isFinite(item))
+    : [];
+}
+
+function normalizeMarketSeriesList(value: unknown): OikoMarketSeries[] {
+  return Array.isArray(value)
+    ? value
+        .map((entry: any) => ({
+          key: normalizeText(String(entry?.key || '')),
+          label: normalizeText(String(entry?.label || '')),
+          latestValue: normalizeNumber(entry?.latestValue),
+          changePct: normalizeNumber(entry?.changePct),
+          period: normalizeText(String(entry?.period || '')),
+          points: normalizeNumberList(entry?.points),
+          labels: normalizeStringList(entry?.labels),
+        }))
+        .filter((entry) => entry.key || entry.label)
+    : [];
+}
+
+function normalizeMarketContext(raw: any): OikoMarketContext | null {
+  if (!raw || typeof raw !== 'object') return null;
+
+  const context: OikoMarketContext = {
+    windowStart: normalizeText(raw.windowStart) || undefined,
+    windowEnd: normalizeText(raw.windowEnd) || undefined,
+    generatedAt: normalizeText(raw.generatedAt) || undefined,
+    marketRegime: normalizeText(raw.marketRegime) || undefined,
+    confidence: normalizeNumber(raw.confidence),
+    missingDataFlags: normalizeStringList(raw.missingDataFlags),
+    narrativeHints: normalizeStringList(raw.narrativeHints),
+    equities: normalizeMarketSeriesList(raw.equities),
+    rates: normalizeMarketSeriesList(raw.rates),
+    fx: normalizeMarketSeriesList(raw.fx),
+    crypto: normalizeMarketSeriesList(raw.crypto),
+    commodities: normalizeMarketSeriesList(raw.commodities),
+  };
+
+  const populatedBuckets = [context.equities, context.rates, context.fx, context.crypto, context.commodities]
+    .reduce((count, bucket) => count + bucket.length, 0);
+
+  return populatedBuckets || context.narrativeHints.length || context.missingDataFlags.length ? context : null;
 }
 
 function normalizeParts(parts?: OikoRichTextPart[]) {
@@ -295,12 +385,12 @@ function adaptLegacyToV21(raw: any, edition: Pick<OikoEdition, 'editionDate' | '
         })),
       paragraphs: Array.isArray(raw.markets?.paragraphs)
         ? raw.markets.paragraphs.slice(0, 3).map((paragraph: string, index: number) => ({
-            label: (['March\u00e9s', 'Valeur', 'Crypto'][index] || 'March\u00e9s') as 'March\u00e9s' | 'Valeur' | 'Crypto',
+            label: (['March\u00e9s', 'Change', 'Crypto'][index] || 'March\u00e9s') as 'March\u00e9s' | 'Change' | 'Crypto',
             parts: [{ text: normalizeText(paragraph) }],
           }))
         : [
             { label: 'March\u00e9s', parts: [{ text: normalizeText(raw.markets?.intro) || 'March\u00e9s actions ferm\u00e9s, derni\u00e8re cl\u00f4ture disponible.' }] },
-            { label: 'Valeur', parts: [{ text: 'Le nouveau format n\u2019\u00e9tait pas encore actif sur cette \u00e9dition.' }] },
+            { label: 'Change', parts: [{ text: 'Le nouveau format n\u2019\u00e9tait pas encore actif sur cette \u00e9dition.' }] },
             { label: 'Crypto', parts: [{ text: 'La lecture crypto reste disponible dans l\u2019archive historique.' }] },
           ],
     },
@@ -363,7 +453,7 @@ function normalizeModernContent(raw: any, edition: Pick<OikoEdition, 'assetManif
           }))
         : [],
       paragraphs: Array.isArray(raw.markets_section?.paragraphs)
-        ? raw.markets_section.paragraphs.map((paragraph: any) => ({ label: normalizeText(paragraph.label), parts: normalizeParts(paragraph.parts) }))
+        ? raw.markets_section.paragraphs.map((paragraph: any) => ({ label: normalizeMarketParagraphLabel(paragraph.label), parts: normalizeParts(paragraph.parts) }))
         : [],
     },
     lead_story: {
@@ -418,6 +508,8 @@ function normalizeArchiveEntry(raw: any): OikoArchiveEntry {
     intro: normalizeText(raw.intro),
     emailSubject: normalizeText(raw.emailSubject),
     summary: Array.isArray(raw.summary) ? raw.summary.map((item: string) => normalizeText(item)) : [],
+    sourceKind: normalizeText(raw.sourceKind),
+    pipelineVersion: normalizeText(raw.pipelineVersion),
   };
 }
 
@@ -468,6 +560,10 @@ function normalizeEdition(raw: any): OikoEdition | null {
     assetManifest,
     emailHtmlUrl: raw.emailHtmlUrl ? normalizeAssetUrl(raw.emailHtmlUrl) : undefined,
     content,
+    sourceKind: normalizeText(raw.sourceKind),
+    pipelineVersion: normalizeText(raw.pipelineVersion),
+    generationMeta: raw.generationMeta && typeof raw.generationMeta === 'object' ? raw.generationMeta : null,
+    marketContext: normalizeMarketContext(raw.marketContext),
   };
 }
 

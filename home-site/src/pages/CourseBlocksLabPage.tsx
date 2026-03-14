@@ -5,6 +5,10 @@
   CourseTextArrowItem,
   CourseTextArrowList,
   CourseTextList,
+  CourseProof,
+  CourseProofConclusion,
+  CourseProofEquation,
+  CourseProofStep,
   CourseTextQuote,
   DefBox,
   Exercise,
@@ -105,6 +109,8 @@ export default function CourseBlocksLabPage() {
                         Inline : <Math>{`\\mathbb{E}(X)=\\sum_i x_i p_i`}</Math>
                       </p>
                       <FormulaBox>{`\\mathrm{Var}(X)=\\mathbb{E}(X^2)-\\left(\\mathbb{E}(X)\\right)^2`}</FormulaBox>
+                      <FormulaBox label="Relation de reference" variant="reference">{`\\mathbb{P}(a \\le X \\le b)=F(b)-F(a)`}</FormulaBox>
+                      <FormulaBox label="Enchainement de calcul" variant="derivation">{`\\begin{aligned}\\mathbb{E}(aX+b)&=\\sum_i (ax_i+b)p_i\\\\&=a\\sum_i x_i p_i+b\\sum_i p_i\\\\&=a\\mathbb{E}(X)+b\\end{aligned}`}</FormulaBox>
                     </div>
                   </DefBox>
 
@@ -126,6 +132,30 @@ export default function CourseBlocksLabPage() {
                     </TableRow>
                   </Table>
                 </div>
+              </section>
+
+              <section id="proof" data-section-title="Demonstration longue" className="space-y-8">
+                <StatsSectionHeader title="Demonstration longue" />
+                <CourseProof result="Montrer que l'esperance est lineaire.">
+                  <CourseProofStep title="Point de depart">
+                    <p>
+                      On part de la definition de l&apos;esperance pour une variable discrete, puis on applique
+                      la distributivite sans empiler des callouts artificiels.
+                    </p>
+                  </CourseProofStep>
+                  <CourseProofStep title="Calcul">
+                    <CourseProofEquation label="Preuve">{`\\begin{aligned}\\mathbb{E}(aX+b)&=\\sum_i (ax_i+b)p_i\\\\&=a\\sum_i x_i p_i+b\\sum_i p_i\\\\&=a\\mathbb{E}(X)+b\\end{aligned}`}</CourseProofEquation>
+                  </CourseProofStep>
+                  <CourseProofStep title="Transition">
+                    <p>
+                      Le terme constant sort de la somme via <Math>{`\\sum_i p_i = 1`}</Math>, tandis que le coefficient
+                      multiplicatif se factorise directement.
+                    </p>
+                  </CourseProofStep>
+                  <CourseProofConclusion>
+                    On obtient bien <Math>{`\\mathbb{E}(aX+b)=a\\mathbb{E}(X)+b`}</Math>, ce qui clot la demonstration.
+                  </CourseProofConclusion>
+                </CourseProof>
               </section>
 
               <section id="exercise" data-section-title="Exercice interactif" className="space-y-8">

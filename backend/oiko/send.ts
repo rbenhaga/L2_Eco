@@ -1,36 +1,76 @@
-﻿import nodemailer from 'nodemailer';
+﻿import nodemailer, { type SendMailOptions, type Transporter } from 'nodemailer';
 import OIKO_CONFIG from './config.ts';
 import { renderEditionHtml, renderEditionText } from './render.ts';
 import { oikoQueries } from './queries.ts';
 import { buildUnsubscribeToken, safeJsonParse, toAbsoluteUrl } from './utils.ts';
 
-let cachedTransporter: any = null;
+type SubscriptionRecipient = {
+  id: number;
+  email_original: string;
+};
 
-/** Max retry attempts per recipient. Overridable via OIKO_SEND_MAX_RETRIES. */
+type SendRetryError = Error & {
+  code?: string;
+  errno?: string;
+  responseCode?: number;
+};
+
+let cachedTransporter: Transporter | null = null;
+
 const MAX_RETRIES = Number(process.env.OIKO_SEND_MAX_RETRIES) || 2;
+const RETRY_BASE_DELAY_MS = 1000;
+const TRANSIENT_ERROR_CODES = new Set(['ETIMEDOUT', 'ECONNRESET', 'ECONNREFUSED', 'ESOCKET', 'EPIPE']);
+const TRANSIENT_SMTP_CODES = new Set([421, 450, 451, 452]);
 
-/** Base delay in ms for exponential backoff between retries. */
-const RETRY_BASE_DELAY_MS = 1500;
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isTransientSendError(error: unknown) {
+  if (!(error instanceof Error)) return false;
+  const typedError = error as SendRetryError;
+  return TRANSIENT_ERROR_CODES.has(String(typedError.code || typedError.errno || ''))
+    || TRANSIENT_SMTP_CODES.has(Number(typedError.responseCode || 0));
+}
+
+function withAttemptCount(error: unknown, attempts: number) {
+  if (error instanceof Error) {
+    const wrapped = new Error(`${error.message} (after ${attempts} attempt(s))`);
+    const typedWrapped = wrapped as SendRetryError;
+    const typedError = error as SendRetryError;
+    typedWrapped.code = typedError.code;
+    typedWrapped.errno = typedError.errno;
+    typedWrapped.responseCode = typedError.responseCode;
+    return wrapped;
+  }
+  return new Error(`${String(error)} (after ${attempts} attempt(s))`);
+}
 
 async function sendWithRetry(
-  transporter: any,
-  mailOptions: Record<string, unknown>,
+  transporter: Transporter,
+  mailOptions: SendMailOptions,
   maxRetries: number,
-): Promise<{ messageId: string | null }> {
-  let lastError: Error | null = null;
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+): Promise<{ messageId: string | null; attempts: number }> {
+  const maxAttempts = Math.max(1, maxRetries + 1);
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
       const info = await transporter.sendMail(mailOptions);
-      return { messageId: info.messageId || null };
+      return {
+        messageId: info.messageId || null,
+        attempts: attempt,
+      };
     } catch (error) {
-      lastError = error instanceof Error ? error : new Error(String(error));
-      if (attempt < maxRetries) {
-        const delay = RETRY_BASE_DELAY_MS * Math.pow(2, attempt);
-        await new Promise((resolve) => setTimeout(resolve, delay));
+      const shouldRetry = attempt < maxAttempts && isTransientSendError(error);
+      if (!shouldRetry) {
+        throw withAttemptCount(error, attempt);
       }
+      const delay = RETRY_BASE_DELAY_MS * Math.pow(2, attempt - 1);
+      await sleep(delay);
     }
   }
-  throw lastError;
+
+  throw new Error('Unexpected mail retry state.');
 }
 
 function isLocalPublicBaseUrl(url: string) {
@@ -75,11 +115,11 @@ function getTransporter() {
   return null;
 }
 
-export async function sendEdition(edition: any, { dryRun = false } = {}) {
+export async function sendEdition(edition: { id: number; content_json: string }, { dryRun = false } = {}) {
   assertSendablePublicBaseUrl({ dryRun });
   const transporter = getTransporter();
-  const recipients = oikoQueries.subscriptions.listActiveRecipients.all();
-  const results = [];
+  const recipients = oikoQueries.subscriptions.listActiveRecipients.all() as SubscriptionRecipient[];
+  const results: Array<Record<string, unknown>> = [];
   const content = safeJsonParse(edition.content_json, null);
 
   if (!content) {
@@ -99,8 +139,9 @@ export async function sendEdition(edition: any, { dryRun = false } = {}) {
     const text = renderEditionText({ payload: content, unsubscribeUrl });
 
     if (dryRun || !transporter) {
-      oikoQueries.sendLogs.insert.run(edition.id, subscription.id, subscription.email_original, 'skipped', null, dryRun ? 'dry_run' : 'missing_transporter');
-      results.push({ subscriptionId: subscription.id, status: 'skipped', reason: dryRun ? 'dry_run' : 'missing_transporter' });
+      const reason = dryRun ? 'dry_run' : 'missing_transporter';
+      oikoQueries.sendLogs.insert.run(edition.id, subscription.id, subscription.email_original, 'skipped', null, reason);
+      results.push({ subscriptionId: subscription.id, status: 'skipped', reason });
       continue;
     }
 
@@ -119,8 +160,8 @@ export async function sendEdition(edition: any, { dryRun = false } = {}) {
 
       oikoQueries.sendLogs.insert.run(edition.id, subscription.id, subscription.email_original, 'sent', info.messageId, null);
       oikoQueries.subscriptions.updateLastSentEdition.run(edition.id, subscription.id);
-      results.push({ subscriptionId: subscription.id, status: 'sent', messageId: info.messageId });
-    } catch (error: unknown) {
+      results.push({ subscriptionId: subscription.id, status: 'sent', messageId: info.messageId, attempts: info.attempts });
+    } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       oikoQueries.sendLogs.insert.run(edition.id, subscription.id, subscription.email_original, 'error', null, message);
       results.push({ subscriptionId: subscription.id, status: 'error', error: message });

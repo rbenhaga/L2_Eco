@@ -1,4 +1,4 @@
-import type { GeneratedOikoEditionV21 } from '../content.ts';
+﻿import type { GeneratedOikoEditionV21 } from '../content.ts';
 
 export type SourceTier = 'official' | 'tier1' | 'tier2' | 'secondary';
 export type SourceTypeProfile = 'institution' | 'wire' | 'press' | 'analysis' | 'market_blog';
@@ -11,6 +11,38 @@ export type ClusterRecencyType = 'fresh_event' | 'fresh_update' | 'context_only'
 export type V3StageStatus = 'pending' | 'passed' | 'failed';
 export type V3PublicationStatus = 'draft' | 'ready' | 'sent' | 'short_draft' | 'insufficient_material_review' | 'blocked_insufficient_fresh_material' | 'failed_quality';
 export type V3Visibility = 'public' | 'internal';
+export type MaterialTier = 'premium' | 'short' | 'blocked';
+export type DraftEditionFormat = 'premium' | 'short';
+export type LlmStageName =
+  | 'facts_extract'
+  | 'facts_extract_repair'
+  | 'facts_localize'
+  | 'facts_localize_repair'
+  | 'editorial_plan'
+  | 'editorial_plan_repair'
+  | 'draft_write'
+  | 'draft_repair';
+
+export type LlmAttemptTrace = {
+  provider: string;
+  model: string;
+  label?: string;
+  status: 'success' | 'failed';
+  tokensUsed?: number;
+  error?: string;
+  timeoutMs?: number;
+};
+
+export type LlmStageTrace = {
+  stage: LlmStageName;
+  providerUsed: string | null;
+  modelUsed: string | null;
+  attempts: LlmAttemptTrace[];
+  success: boolean;
+  usedFallback: boolean;
+  fallbackReason?: string | null;
+  contentSource?: 'llm' | 'deterministic' | 'hybrid';
+};
 
 export type SourceProfile = {
   sourceName: string;
@@ -113,6 +145,11 @@ export type FactSheetRecord = {
   factRecords: FactRecord[];
 };
 
+export type FactSheetExtractionResult = {
+  records: FactSheetRecord[];
+  llmStages: LlmStageTrace[];
+};
+
 export type ClusterFreshness = {
   clusterId: string;
   clusterRecencyType: ClusterRecencyType;
@@ -178,6 +215,41 @@ export type StructuredMarketContext = {
   narrativeHints: string[];
 };
 
+export type EditorialPlanDecision = {
+  clusterId: string;
+  decision: 'lead' | 'opening' | 'radar' | 'carnet' | 'brief' | 'reject';
+  reason: string;
+};
+
+export type EditorialPlan = {
+  schemaVersion: 'v1';
+  editorialAngle: string;
+  leadClusterId: string | null;
+  selectedClusterIds: string[];
+  openingClusterIds: string[];
+  radarClusterIds: string[];
+  carnetClusterIds: string[];
+  briefClusterIds: string[];
+  rejectedClusterIds: string[];
+  selectionReasons: EditorialPlanDecision[];
+  risks: string[];
+  sectionMissions: {
+    intro: string;
+    lead: string;
+    opening: string;
+    radar: string;
+    carnet: string;
+    briefs: string;
+  };
+  writingGuidance: {
+    intro: string;
+    lead: string;
+    radar: string;
+    carnet: string;
+    briefs: string;
+  };
+};
+
 export type DayEditorialPacket = {
   editionDate: string;
   leadTopic: TopicCluster | null;
@@ -190,6 +262,8 @@ export type DayEditorialPacket = {
     briefs: TopicCluster[];
   };
   microBriefCandidates: MicroBriefCandidate[];
+  editorialPlan?: EditorialPlan | null;
+  llmStages?: LlmStageTrace[];
   sourceCoverage: {
     distinctSources: number;
     distinctDomains: number;
@@ -198,6 +272,7 @@ export type DayEditorialPacket = {
   };
   freshEventCount: number;
   distinctClusterCount: number;
+  materialTier: MaterialTier;
 };
 
 export type EvidenceRef = {
@@ -219,6 +294,9 @@ export type V3Draft = {
     writer: string;
     model: string;
     usedFallback: boolean;
+    editionFormat: DraftEditionFormat;
+    planningSource?: 'llm' | 'deterministic';
+    llmStages?: LlmStageTrace[];
   };
 };
 
@@ -262,3 +340,5 @@ export type QualityReport = {
   publicationReasonCode: string;
   visibility: V3Visibility;
 };
+
+

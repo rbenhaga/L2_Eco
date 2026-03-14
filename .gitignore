@@ -68,6 +68,8 @@ backend/database/*.db
 # Kiro & Claude config (local only)
 .kiro/
 .claude/
+.codex-headless/
+*.codex-*.log
 
 # Documentation (local only, except content and asset docs)
 *.md
